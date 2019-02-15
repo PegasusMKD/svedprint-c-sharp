@@ -23,6 +23,7 @@ namespace Frontend
         public MainWindow()
         {
             InitializeComponent();
+            MessageBox.Show("Heeloo World !");
         }
     }
 }
