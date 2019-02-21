@@ -32,13 +32,16 @@ namespace Frontend
 
         private void Login_Btn_Click(object sender, RoutedEventArgs e)
         {
-            if (data.CheckUser(Username_txt.Text, Password_txt.Text) > -1)
-            {
+            byte[] bytes = Encoding.Default.GetBytes(Username_txt.Text);
+           
 
+            if (data.CheckUser(" ", " " )> -1)
+            {
+                //Se logirase Uspesno so broj na korisnik
             }
             else
             {
-
+                AlertPanel.Visibility = Visibility.Visible ;
             }
 
         }

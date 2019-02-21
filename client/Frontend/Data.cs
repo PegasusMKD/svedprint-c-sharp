@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Middleware
+namespace MainWindows
 {
     class Data
     {
@@ -17,7 +17,7 @@ namespace Middleware
         
         public int CheckUser(string Username, string Password)
         {
-            for(int i=0;i<Users.Length;i++)
+            for(int i=0;i< Users.Length / 2;i++)
             {
                 if(Users[i,0] == Username && Users[i,1] == Password)
                 {

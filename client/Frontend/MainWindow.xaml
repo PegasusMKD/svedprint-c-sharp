@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Frontend"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="900" Background="#FFF1F3CE">
-	<Grid Margin="10,10,2,1" RenderTransformOrigin="0.489,0.685">
+	<Grid Margin="0,10,-8,0" RenderTransformOrigin="0.489,0.685">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="134*"/>
 			<RowDefinition Height="65*"/>
@@ -17,6 +17,7 @@
 			<RowDefinition Height="135*"/>
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="0*"/>
 			<ColumnDefinition Width="18*"/>
 			<ColumnDefinition Width="47*"/>
 			<ColumnDefinition Width="6*"/>
@@ -24,12 +25,15 @@
 			<ColumnDefinition Width="44*"/>
 		</Grid.ColumnDefinitions>
 
-		<Image x:Name="Logo_img" Source="grades_icon.png" Panel.ZIndex="1" UseLayoutRounding="False" Margin="3,0.5,0,1.5" Grid.RowSpan="5" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2"/>
-		<StackPanel x:Name="Username_panel" Grid.Column="2" Margin="1,0,20,0" Background="#FF5184B6" Grid.Row="3" Grid.ColumnSpan="2" Height="4" VerticalAlignment="Top"/>
-		<StackPanel x:Name="Password_panel" Grid.Column="2" Margin="1,0,20,10" Background="#FF5184B6" Height="4" VerticalAlignment="Bottom" Grid.Row="4" Grid.ColumnSpan="2"/>
-		<Button x:Name="Login_Btn"  Content="Логирај се" Grid.Column="3" Margin="31,10,62,33" Background="#FFFF5D00" BorderBrush="{x:Null}" Foreground="White" FontSize="36" Grid.Row="5" Width="212" HorizontalAlignment="Center" VerticalAlignment="Center" Height="61" FontFamily="Segoe UI Black" Click="Login_Btn_Click"/>
-		<TextBox x:Name="Username_txt" Grid.Column="3" Grid.Row="2" TextWrapping="Wrap" Text="Корисничко Име" FontSize="27" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Black" FontFamily="Segoe UI Black" TextDecorations="{x:Null}" Height="45" VerticalAlignment="Bottom" SelectionBrush="#FFFF5D00" Margin="0,0,20,0" CaretBrush="#FFFF5D00" OpacityMask="White"/>
-		<TextBox x:Name="Password_txt" Grid.Column="3" Grid.Row="3" TextWrapping="Wrap" Text="Лозинка" FontSize="27" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Black" FontFamily="Segoe UI Black" TextDecorations="{x:Null}" Height="45" VerticalAlignment="Bottom" SelectionBrush="{x:Null}" Margin="0,0,20,12" Grid.RowSpan="2"/>
+		<Image x:Name="Logo_img" Source="grades_icon.png" Panel.ZIndex="1" UseLayoutRounding="False" Margin="3,0.5,0,1.5" Grid.RowSpan="5" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2"/>
+		<StackPanel x:Name="Username_panel" Grid.Column="3" Margin="1,0,20,0" Background="#FF5184B6" Grid.Row="3" Grid.ColumnSpan="2" Height="4" VerticalAlignment="Top"/>
+		<StackPanel x:Name="Password_panel" Grid.Column="3" Margin="1,0,20,10" Background="#FF5184B6" Height="4" VerticalAlignment="Bottom" Grid.Row="4" Grid.ColumnSpan="2"/>
+		<Button x:Name="Login_Btn"  Content="Логирај се" Grid.Column="4" Margin="31,10,62,33" Background="#FFFF5D00" BorderBrush="{x:Null}" Foreground="White" FontSize="36" Grid.Row="5" Width="212" HorizontalAlignment="Center" VerticalAlignment="Center" Height="61" FontFamily="Segoe UI Black" Click="Login_Btn_Click"/>
+		<TextBox x:Name="Username_txt" Grid.Column="4" Grid.Row="2" TextWrapping="Wrap" Text="Корисничко Име" FontSize="27" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Black" FontFamily="Segoe UI Black" TextDecorations="{x:Null}" Height="45" VerticalAlignment="Bottom" SelectionBrush="#FFFF5D00" Margin="0,0,20,0" CaretBrush="#FFFF5D00" OpacityMask="White"/>
+		<TextBox x:Name="Password_txt" Grid.Column="4" Grid.Row="3" TextWrapping="Wrap" Text="Лозинка" FontSize="27" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Black" FontFamily="Segoe UI Black" TextDecorations="{x:Null}" Height="45" VerticalAlignment="Bottom" SelectionBrush="{x:Null}" Margin="0,0,20,12" Grid.RowSpan="2"/>
+		<StackPanel x:Name ="AlertPanel" Grid.ColumnSpan="5" Grid.Column="1" Margin="-2,0,1,0" Grid.Row="6" Background="#FF343C6E" Height="51" VerticalAlignment="Bottom" Visibility="Hidden">
+			<Label x:Name="AlertLabel" Content="Грешно Корисничко име или Лозинка" Height="52" FontSize="36" Foreground="White" Margin="128,0,129,0" VerticalAlignment="Center"/>
+		</StackPanel>
 	</Grid>
 
 </Window>
