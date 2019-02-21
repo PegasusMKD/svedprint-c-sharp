@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MainWindows;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
 namespace Frontend
 {
     /// <summary>
@@ -20,10 +22,27 @@ namespace Frontend
     /// </summary>
     public partial class MainWindow : Window
     {
+        Data data;
+
         public MainWindow()
         {
             InitializeComponent();
-            MessageBox.Show("Heeloo World !");
+            data = new Data();
         }
+
+        private void Login_Btn_Click(object sender, RoutedEventArgs e)
+        {
+            if (data.CheckUser(Username_txt.Text, Password_txt.Text) > -1)
+            {
+
+            }
+            else
+            {
+
+            }
+
+        }
+
+       
     }
 }
