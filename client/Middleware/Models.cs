@@ -4,38 +4,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Middleware
 {
     public class Ucenik
     {
         [JsonProperty("ime")]
-        public string _ime { get; set; }
+        public string _ime          { get; set; }
         [JsonProperty("tatkovo")]
-        public string _tatkovo { get; set; }
+        public string _tatkovo      { get; set; }
         [JsonProperty("prezime")]
-        public string _prezime { get; set; }
+        public string _prezime      { get; set; }
         [JsonProperty("oceni")]
-        public List<int> _oceni { get; set; }
+        public List<int> _oceni     { get; set; }
         [JsonProperty("paralelka")]
-        public string _paralelka { get; set; }
+        public string _paralelka    { get; set; }
         [JsonProperty("smer")]
-        public string _smer { get; set; }
+        public string _smer         { get; set; }
 
         public Ucenik()
         {
-            _ime = "";
-            _tatkovo = "";
-            _prezime = "";
-            _oceni = new List<int>();
-            _paralelka = "";
-            _smer = "";
-        }
-
-        public string Serialize()
-        {
-            string json = JsonConvert.SerializeObject(this);
-            return json;
+            _ime        = "";
+            _tatkovo    = "";
+            _prezime    = "";
+            _oceni      = new List<int>();
+            _paralelka  = "";
+            _smer       = "";
         }
     }
 
@@ -54,16 +49,27 @@ namespace Middleware
     {
         [JsonProperty("predmeti")]
         public List<string> _predmeti { get; set; }
+        [JsonProperty("smer")]
+        public string _smer { get; set; }
 
         public Smer()
         {
             _predmeti = new List<string>();
-        }
-
-        public string Serialize()
-        {
-            string json = JsonConvert.SerializeObject(this);
-            return json;
+            _smer = "";
         }
     }
+
+    class Request
+    {
+        public string _type;
+        public string _scope;
+        public Ucenik _params;
+    }
+
+    public static class RequestTypes
+    {
+        public const string GET = "looking";
+        public const string ADD = "type";
+    }
+    
 }
