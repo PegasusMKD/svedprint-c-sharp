@@ -76,6 +76,15 @@ namespace Middleware
         }
     }
 
+    class RequestType
+    {
+        public const string GetCelSmer = "cel_smer";
+        public const string GetParalelka = "paralelka";
+        public const string GetUcenik = "ucenik";
+        public const string GetSmerVoKlas = "smer_vo_klas";
+        public const string GetPredmetiSmer = "smer";
+    }
+
     class RequestConverter : JsonConverter<Request>
     {
         public override Request ReadJson(JsonReader reader, Type objectType, Request existingValue, bool hasExistingValue, JsonSerializer serializer)
@@ -94,23 +103,6 @@ namespace Middleware
             writer.WriteRawAsync(@"}");
             //writer.WriteValueAsync(value._params);
             // TODO: make custom serializer to leave out null values instead of sending empty values
-        }
-    }
-
-    class ResponseConverter : JsonConverter<List<Ucenik>>
-    {
-        public override List<Ucenik> ReadJson(JsonReader reader, Type objectType, List<Ucenik> existingValue, bool hasExistingValue, JsonSerializer serializer)
-        {
-            List<Ucenik> ucenici = new List<Ucenik>();
-
-
-
-            return ucenici;
-        }
-
-        public override void WriteJson(JsonWriter writer, List<Ucenik> value, JsonSerializer serializer)
-        {
-            throw new NotImplementedException();
         }
     }
 
