@@ -1,31 +1,21 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
-using System.Net.Http;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Serialization;
-using System.Net;
 using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Middleware
 {
     public class Requests
     {
         private static HttpClient http = new HttpClient();
-        
+
         // DONE
         public static async Task<List<Ucenik>> GetUceniciAsync(Ucenik queryParams, string scope)
         {
-            Request request = new Request
-            {
-                _type = RequestTypes.GET,
-                _scope = scope,
-                _params = queryParams
-            };
+            Request request = new Request(type: RequestTypes.GET, scope: scope, queryParams: queryParams);
 
             string json = JsonConvert.SerializeObject(request, new RequestConverter());
             //Console.WriteLine("{0}: {1}", "getucenici", json);
@@ -42,7 +32,7 @@ namespace Middleware
                 writer.Close();
             }
 
-            var httpResponse = (HttpWebResponse) await httpRequest.GetResponseAsync();
+            var httpResponse = (HttpWebResponse)await httpRequest.GetResponseAsync();
             var responseJson = await new StreamReader(httpResponse.GetResponseStream()).ReadToEndAsync();
 
             //var response = await http.PostAsync(uri, new StringContent(json));
@@ -52,16 +42,14 @@ namespace Middleware
             queryResult = JsonConvert.DeserializeObject<List<Ucenik>>(responseJson);
             return queryResult;
         }
-        
+
         // TODO
         public static async Task AddUcenikAsync(Ucenik queryParams, string scope)
         {
             Request request = new Request
-            {
-                _type = RequestTypes.ADD,
-                _scope = scope,
-                _params = queryParams
-            };
+                (type: RequestTypes.ADD,
+                scope: scope,
+                queryParams: queryParams);
 
             string json = JsonConvert.SerializeObject(request, new RequestConverter());
             Console.WriteLine("{0}: {1}", "adddata", json);
@@ -99,7 +87,7 @@ namespace Middleware
             writer.WriteValueAsync(value._scope);
             writer.WritePropertyNameAsync("_params");
             serializer.Converters.Add(new UcenikConverter());
-            serializer.Serialize(writer, value._params);
+            serializer.Serialize(writer, value._queryParams);
             writer.WriteRawAsync(@"}");
             //writer.WriteValueAsync(value._params);
             // TODO: make custom serializer to leave out null values instead of sending empty values
