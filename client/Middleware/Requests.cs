@@ -81,7 +81,12 @@ namespace Middleware
         public const string prezime = "last_name";
         public const string paralelka = "paralelka";
         public const string token = "token";
-        
+        public const string smer = "smer";
+        public const string oceni = "oceni";
+        public const string broj = "broj";
+        public const string predmeti = "predmeti";
+        public const string ucenici = "ucenici";
+        public const string klasen = "klasen";
     }
     //_queryParams : { "ime" : "asfasf", ... }
     class RequestConverter : JsonConverter<Request>

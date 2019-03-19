@@ -6,20 +6,20 @@ using System.Collections.Generic;
 namespace Middleware
 {
     public class Ucenik
-    {
+    { 
         [JsonProperty(RequestParameters.ime)]
         public string _ime { get; set; }
         [JsonProperty(RequestParameters.srednoIme)]
         public string _tatkovo { get; set; }
         [JsonProperty(RequestParameters.prezime)]
         public string _prezime { get; set; }
-        [JsonProperty("oceni")]
+        [JsonProperty(RequestParameters.oceni)]
         public List<int> _oceni { get; set; }
-        [JsonProperty("paralelka")]
+        [JsonProperty(RequestParameters.paralelka)]
         public string _paralelka { get; set; }
-        [JsonProperty("smer")]
+        [JsonProperty(RequestParameters.smer)]
         public string _smer { get; set; }
-        [JsonProperty("broj")]
+        [JsonProperty(RequestParameters.broj)]
         public int _broj { get; set; }
 
         public Ucenik(string ime, string tatkovo, string prezime, List<int> oceni, string paralelka, string smer, int broj)
@@ -39,7 +39,7 @@ namespace Middleware
             _tatkovo = valuePairs[RequestParameters.srednoIme];
             _prezime = valuePairs[RequestParameters.prezime];
 
-            string[] s = valuePairs["oceni"].Split(' ');
+            string[] s = valuePairs[RequestParameters.oceni].Split(' ');
             _oceni = new List<int>();
             foreach(string x in s)
             {
@@ -47,8 +47,22 @@ namespace Middleware
             }
 
             _paralelka = valuePairs[RequestParameters.paralelka];
-            _smer = valuePairs["smer"];
-            _broj = int.Parse(valuePairs["broj"]);
+            _smer = valuePairs[RequestParameters.smer];
+            _broj = int.Parse(valuePairs[RequestParameters.broj]);
+        }
+
+        public Dictionary<string,string> ToDict()
+        {
+            Dictionary<string, string> dictionary = new Dictionary<string, string>();
+            dictionary[RequestParameters.ime] = _ime;
+            dictionary[RequestParameters.srednoIme] = _tatkovo;
+            dictionary[RequestParameters.prezime] = _prezime;
+            dictionary[RequestParameters.oceni] = string.Join(" ", _oceni);
+            dictionary[RequestParameters.paralelka] = _paralelka;
+            dictionary[RequestParameters.smer] = _smer;
+            dictionary[RequestParameters.broj] = _broj.ToString();
+
+            return dictionary;
         }
     }
 
@@ -65,9 +79,9 @@ namespace Middleware
 
     public class Smer
     {
-        [JsonProperty("predmeti")]
+        [JsonProperty(RequestParameters.predmeti)]
         public List<string> _predmeti { get; set; }
-        [JsonProperty("smer")]
+        [JsonProperty(RequestParameters.smer)]
         public string _smer { get; set; }
 
         public Smer(List<string> predmeti, string smer)
@@ -81,11 +95,11 @@ namespace Middleware
 
     public class Paralelka
     {
-        [JsonProperty("paralelka")]
+        [JsonProperty(RequestParameters.paralelka)]
         public string _paralelka { get; set; }
-        [JsonProperty("ucenici")]
+        [JsonProperty(RequestParameters.ucenici)]
         public List<Ucenik> _ucenici { get; set; }
-        [JsonProperty("klasen")]
+        [JsonProperty(RequestParameters.klasen)]
         public Klasen _klasen { get; set; }
 
         public Paralelka(string paralelka, List<Ucenik> ucenici, Klasen klasen)
