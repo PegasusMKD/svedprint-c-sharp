@@ -19,8 +19,10 @@ namespace Middleware
         public string _paralelka { get; set; }
         [JsonProperty("smer")]
         public string _smer { get; set; }
+        [JsonProperty("broj")]
+        public int _broj { get; set; }
 
-        public Ucenik(string ime, string tatkovo, string prezime, List<int> oceni, string paralelka, string smer)
+        public Ucenik(string ime, string tatkovo, string prezime, List<int> oceni, string paralelka, string smer, int broj)
         {
             _ime = ime ?? throw new ArgumentNullException(nameof(ime));
             _tatkovo = tatkovo ?? throw new ArgumentNullException(nameof(tatkovo));
@@ -28,6 +30,7 @@ namespace Middleware
             _oceni = oceni ?? throw new ArgumentNullException(nameof(oceni));
             _paralelka = paralelka ?? throw new ArgumentNullException(nameof(paralelka));
             _smer = smer ?? throw new ArgumentNullException(nameof(smer));
+            _broj = broj;
         }
         public Ucenik() { }
     }
@@ -80,26 +83,24 @@ namespace Middleware
 
     public class Klasen
     {
-        [JsonProperty("ime")]
+        [JsonProperty(RequestParameters.ime)]
         public string _ime { get; set; }
-        [JsonProperty("prezime")]
-        public string _tatkovo { get; set; }
-        [JsonProperty("prezime2")]
-        public string _prezime2 { get; set; }
-        [JsonProperty("username")]
-        public string _username { get; set; }
-        [JsonProperty("password")]
-        public string _password { get; set; }
-        [JsonProperty("token")]
+        [JsonProperty(RequestParameters.srednoIme)]
+        public string _srednoIme { get; set; }
+        [JsonProperty(RequestParameters.prezime)]
+        public string _prezime { get; set; }
+        [JsonProperty(RequestParameters.paralelka)]
+        public string _paralelka { get; set; }
+        [JsonProperty(RequestParameters.token)]
         public string _token { get; set; }
 
-        public Klasen(string ime, string tatkovo, string prezime2, string username, string password)
+        public Klasen(string ime, string srednoIme, string prezime, string token, string paralelka)
         {
             _ime = ime ?? throw new ArgumentNullException(nameof(ime));
-            _tatkovo = tatkovo ?? throw new ArgumentNullException(nameof(tatkovo));
-            _prezime2 = prezime2 ?? throw new ArgumentNullException(nameof(prezime2));
-            _username = username ?? throw new ArgumentNullException(nameof(username));
-            _password = password ?? throw new ArgumentNullException(nameof(password));
+            _srednoIme = srednoIme ?? throw new ArgumentNullException(nameof(srednoIme));
+            _prezime = prezime ?? throw new ArgumentNullException(nameof(prezime));
+            _token = token ?? throw new ArgumentNullException(nameof(token));
+            _paralelka = paralelka ?? throw new ArgumentNullException(nameof(paralelka));
         }
 
         public Klasen() { }
