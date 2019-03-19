@@ -71,6 +71,7 @@ namespace Middleware
         public const string GetUcenik = "ucenik";
         public const string GetSmerVoKlas = "smer_vo_klas";
         public const string GetPredmetiSmer = "smer";
+        public const string AddUcenici = "ucenici";
     }
 
     public class RequestParameters
@@ -80,7 +81,7 @@ namespace Middleware
         public const string prezime = "last_name";
         public const string paralelka = "paralelka";
         public const string token = "token";
-
+        
     }
     //_queryParams : { "ime" : "asfasf", ... }
     class RequestConverter : JsonConverter<Request>
@@ -142,7 +143,7 @@ namespace Middleware
 
         public override void WriteJson(JsonWriter writer, List<Dictionary<string, string>> value, JsonSerializer serializer)
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

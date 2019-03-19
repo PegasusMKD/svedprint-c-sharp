@@ -7,11 +7,11 @@ namespace Middleware
 {
     public class Ucenik
     {
-        [JsonProperty("ime")]
+        [JsonProperty(RequestParameters.ime)]
         public string _ime { get; set; }
-        [JsonProperty("tatkovo")]
+        [JsonProperty(RequestParameters.srednoIme)]
         public string _tatkovo { get; set; }
-        [JsonProperty("prezime")]
+        [JsonProperty(RequestParameters.prezime)]
         public string _prezime { get; set; }
         [JsonProperty("oceni")]
         public List<int> _oceni { get; set; }
@@ -33,6 +33,23 @@ namespace Middleware
             _broj = broj;
         }
         public Ucenik() { }
+        public Ucenik(Dictionary<string,string> valuePairs)
+        {
+            _ime = valuePairs[RequestParameters.ime];
+            _tatkovo = valuePairs[RequestParameters.srednoIme];
+            _prezime = valuePairs[RequestParameters.prezime];
+
+            string[] s = valuePairs["oceni"].Split(' ');
+            _oceni = new List<int>();
+            foreach(string x in s)
+            {
+                _oceni.Add(int.Parse(x));
+            }
+
+            _paralelka = valuePairs[RequestParameters.paralelka];
+            _smer = valuePairs["smer"];
+            _broj = int.Parse(valuePairs["broj"]);
+        }
     }
 
     static public class Smerovi
