@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Middleware
@@ -106,9 +107,9 @@ namespace Middleware
     {
         public string _type;
         public string _scope;
-        public Ucenik _queryParams;
+        public Dictionary<string,string> _queryParams;
 
-        public Request(string type, string scope, Ucenik queryParams)
+        public Request(string type, string scope, Dictionary<string,string> queryParams)
         {
             _type = type ?? throw new ArgumentNullException(nameof(type));
             _scope = scope ?? throw new ArgumentNullException(nameof(scope));

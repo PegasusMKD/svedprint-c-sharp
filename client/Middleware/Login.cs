@@ -11,6 +11,7 @@ namespace Middleware
         public static int UserLogin(string username, string password)
         {
             // TODO: password checking, hashing?
+            // user, pass
             return 0;
         }
     }
