@@ -330,3 +330,4 @@ ASALocalRun/
 .mfractor/
 /client/TestingApp
 /test-req.py
+/server

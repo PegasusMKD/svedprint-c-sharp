@@ -25,7 +25,7 @@ namespace Middleware {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("localhost")]
+        [global::System.Configuration.DefaultSettingValueAttribute("192.168.1.107")]
         public string DB_HOST {
             get {
                 return ((string)(this["DB_HOST"]));
@@ -34,7 +34,7 @@ namespace Middleware {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("80")]
+        [global::System.Configuration.DefaultSettingValueAttribute("8000")]
         public string DB_PORT {
             get {
                 return ((string)(this["DB_PORT"]));
