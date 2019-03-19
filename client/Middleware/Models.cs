@@ -90,6 +90,8 @@ namespace Middleware
         public string _username { get; set; }
         [JsonProperty("password")]
         public string _password { get; set; }
+        [JsonProperty("token")]
+        public string _token { get; set; }
 
         public Klasen(string ime, string tatkovo, string prezime2, string username, string password)
         {

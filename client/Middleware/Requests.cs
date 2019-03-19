@@ -19,7 +19,7 @@ namespace Middleware
             Request request = new Request(type: RequestTypes.GET, scope: scope, queryParams: queryParams);
 
             string json = JsonConvert.SerializeObject(request, new RequestConverter());
-            string uri = string.Format(@"http://{0}:{1}/main/return", settings.Default.DB_HOST, settings.Default.DB_PORT);
+            string uri = string.Format(@"http://{0}:{1}/main/return/", settings.Default.DB_HOST, settings.Default.DB_PORT);
             var httpRequest = (HttpWebRequest)WebRequest.Create(uri);
             httpRequest.Method = @"POST";
             httpRequest.ContentType = @"application/json";
@@ -47,7 +47,7 @@ namespace Middleware
             Request request = new Request(type: RequestTypes.ADD, scope: scope, queryParams: queryParams);
 
             string json = JsonConvert.SerializeObject(request, new RequestConverter());
-            string uri = string.Format(@"http://{0}:{1}/main/setup", settings.Default.DB_HOST, settings.Default.DB_PORT);
+            string uri = string.Format(@"http://{0}:{1}/main/setup/", settings.Default.DB_HOST, settings.Default.DB_PORT);
             var httpRequest = (HttpWebRequest)WebRequest.Create(uri);
             httpRequest.Method = @"POST";
             httpRequest.ContentType = @"application/json";
@@ -75,9 +75,9 @@ namespace Middleware
 
     public class RequestParameters
     {
-
+        //public const string 
     }
-
+    //_queryParams : { "ime" : "asfasf", ... }
     class RequestConverter : JsonConverter<Request>
     {
         public override Request ReadJson(JsonReader reader, Type objectType, Request existingValue, bool hasExistingValue, JsonSerializer serializer)
