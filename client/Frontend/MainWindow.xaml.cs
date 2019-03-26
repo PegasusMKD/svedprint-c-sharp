@@ -31,17 +31,28 @@ namespace Frontend
         }
 
         private void Login_Btn_Click(object sender, RoutedEventArgs e)
-        {
-            byte[] bytes = Encoding.Default.GetBytes(Username_txt.Text);
-           
+        {           
 
-            if (data.CheckUser(" ", " " )> -1)
+            if (data.CheckUser(Username_txt.Text, Password_txt.Text )> -1)
             {
-                //Se logirase Uspesno so broj na korisnik
+                AlertPanel.Visibility = Visibility.Hidden;
+                ShowAlertBox("Успешно логирање");
             }
             else
             {
                 AlertPanel.Visibility = Visibility.Visible ;
+                ShowAlertBox("неуспешно логирање");
+            }
+
+        }
+
+        private void ShowAlertBox(string Alert)
+        {
+
+            AlertLabel.Content = Alert;
+            if(AlertPanel.Margin.Bottom == -54)
+            {
+                AlertPanel.Margin = new Thickness(-2, 0, 1, 0);
             }
 
         }
