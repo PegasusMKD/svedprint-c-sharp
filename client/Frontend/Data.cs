@@ -14,7 +14,7 @@ namespace MainWindows
        {
 
        }
-        String[,] Users = new string[2, 2] { {"усер", "пасс"} , {"username1", "pass1"} };
+        String[,] Users = new string[2, 2] { {"Корисничко Име", "Лозинка"} , {"username1", "pass1"} };
         
         public int CheckUser(string Username, string Password)
         {

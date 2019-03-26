@@ -1,5 +1,4 @@
-﻿using MainWindows;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,20 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-
 namespace Frontend
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaktionslogik für Settings.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Settings : Page
     {
-
-        public MainWindow()
+        public Settings()
         {
             InitializeComponent();
-            Main.Content = new Login_Page(Main);
         }
-
     }
 }

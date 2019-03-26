@@ -1,5 +1,4 @@
-﻿using MainWindows;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,19 +13,28 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-
 namespace Frontend
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaktionslogik für Home_Page.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Home_Page : Page
     {
 
-        public MainWindow()
+        Frame Main;
+        Page loginPage;
+        public Home_Page(Frame m ,  Page loginpage)
         {
             InitializeComponent();
-            Main.Content = new Login_Page(Main);
+            Main = m;
+            loginPage = loginpage;
+           
+        }
+
+        private void MouseEnter(object sender, MouseButtonEventArgs e)
+        {
+            //Main.Content = loginPage;
+            Main.Content = new Oceni();
         }
 
     }
