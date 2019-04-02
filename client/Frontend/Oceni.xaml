@@ -10,24 +10,35 @@
 
 	<Grid>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="17*"/>
-			<RowDefinition Height="183*"/>
+			<RowDefinition Height="31*"/>
+			<RowDefinition Height="50*"/>
+			<RowDefinition Height="219*"/>
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="8*"/>
-			<ColumnDefinition Width="17*"/>
+			<ColumnDefinition Width="83*"/>
+			<ColumnDefinition Width="217*"/>
 		</Grid.ColumnDefinitions>
-		<ListView HorizontalAlignment="Left" Height="600" VerticalAlignment="Top" Width="288" Grid.RowSpan="2" Background="#FFF1F3CE">
-			<ListView.View>
-				<GridView>
-					<GridViewColumn/>
-				</GridView>
-			</ListView.View>
+		<ListView Name ="Menu" Height="Auto" VerticalAlignment="Stretch" Grid.RowSpan="3" Background="#FFF1F3CE" Margin="0,15,0,0" BorderThickness="1,1,1,2" BorderBrush="#FFF1F3CE" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+
 		</ListView>
-		<StackPanel Grid.Column="1" Background="#FFED6A3D" HorizontalAlignment="Left" Width="612"/>
-		<StackPanel Grid.Column="1" Background="#FF3E4959" Grid.Row="1" HorizontalAlignment="Left" Width="612">
-			<StackPanel Height="70" Background="#FF4B86C6" Margin="25"/>
+		<StackPanel Grid.Column="1" Background="#FFED6A3D">
+			<Label Name="Ucenik_Name" Content="Име Презиме" FontFamily="Arial Black" FontSize="48" HorizontalAlignment="Center" Foreground="White"/>
 		</StackPanel>
+		<StackPanel Background="#FF4B86C6" Grid.Column="1" Grid.Row="1"/>
+		<ScrollViewer Grid.Column="1" Grid.Row="2">
+			<Grid Name="OcenkiGrid" Grid.Column="1" Background="#FF3E4959" Grid.Row="2" ShowGridLines="True" Height="0">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="46*"/>
+					<RowDefinition Height="173*"/>
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="157*"/>
+					<ColumnDefinition Width="157*"/>
+					<ColumnDefinition Width="158*"/>
+					<ColumnDefinition Width="157*"/>
+				</Grid.ColumnDefinitions>
+			</Grid>
+		</ScrollViewer>
 
 	</Grid>
 </Page>
