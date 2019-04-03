@@ -34,8 +34,12 @@ namespace Frontend
         private void MouseEnter(object sender, MouseButtonEventArgs e)
         {
             //Main.Content = loginPage;
-            Main.Content = new Oceni();
+            Main.Content = new Oceni(Main,this);
         }
 
+        private void PrintImgClicked(object sender, MouseButtonEventArgs e)
+        {
+            Main.Content = new PrintFrame(Main, this);
+        }
     }
 }

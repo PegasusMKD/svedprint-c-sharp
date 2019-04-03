@@ -18,7 +18,7 @@
 			<RowDefinition/>
 		</Grid.RowDefinitions>
 		<Image Grid.Column="1" Source="MainIcon.png" Margin="30,0" MaxWidth="350" MaxHeight="350" MouseLeftButtonDown="MouseEnter"/>
-		<Image Source="print.png" Margin="25,0,0,0" MaxWidth="280" MaxHeight="280" />
+		<Image Source="print.png" Margin="25,0,0,0" MaxWidth="280" MaxHeight="280" MouseLeftButtonDown="PrintImgClicked" />
 		<Image Source="settings.png" Margin="0,0,25,0" Grid.Column="2" MaxWidth="280" MaxHeight="280" />
 
 	</Grid>

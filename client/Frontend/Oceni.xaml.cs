@@ -21,13 +21,27 @@ namespace Frontend
     /// </summary>
     public partial class Oceni : Page
     {
-        public Oceni()
+
+        Frame Main;
+        Page loginPage;
+        public string[] smer { get; set; }
+
+        public Oceni(Frame m, Page loginpage)
         {
             InitializeComponent();
+            Main = m;
+            loginPage = loginpage;
+
             LoadListView();
 
-            string[] str = { "Математика", "Математика", "Математика", "Математика", "Математика", "Математика", "Математика", "Математика", "Математика", "Математика", "Математика", "Математика" };
+            string[] str = { "Математика", "Македонски", "Физика", "Хемија", "Биологија", "Географија", "Физичко", "Ликовно", "Музичко", "Математика", "физка", "Математика", "географија", "Математика" };
             LoadOcenki(str);
+
+            smer = new string[] { "pma", "pmb", "oha" };
+            DataContext = this;
+            home_img.MouseLeftButtonDown += new MouseButtonEventHandler(Back_Home);
+            hide_menu_img.MouseLeftButtonDown += new MouseButtonEventHandler(Menu_hide);
+
         }
 
         void LoadListView()
@@ -38,7 +52,6 @@ namespace Frontend
                
                 Menu.Items.Add(MenuDP("Име" , "Презиме", i));
             }
-           
 
         }
 
@@ -65,88 +78,6 @@ namespace Frontend
             return st;
         }
 
-
-        private void LoadOcenki(String[] predmeti)
-        {
-
-            int Size = predmeti.Length;
-            int ctr = 0;
-            int ImgHeight = 150;
-            int TxtHeight = 75;
-
-            for (int i=0;i<Size*2;i++)
-            {
-
-                RowDefinition rowDefImg = new RowDefinition();
-                OcenkiGrid.RowDefinitions.Add(rowDefImg);
-
-                int last = -2;
-
-                for (int j=0;j<4;j++)
-                {
-
-                    if (ctr == Size - 1)
-                    {
-                        last = j ;
-                        break ;
-                    }
-
-                    OcenkiGrid.RowDefinitions[i].Height = new GridLength(ImgHeight);
-                 
-                    System.Windows.Controls.Image img = new System.Windows.Controls.Image();
-                    BitmapImage bm = new BitmapImage();
-                    bm.BeginInit();
-                    bm.UriSource = new Uri("print.png", UriKind.Relative);
-                    bm.EndInit();
-                    img.Stretch = Stretch.Uniform;
-                    img.Source = bm;
-
-                    Border panel = new Border();
-                    Grid.SetColumn(panel, j);
-                    Grid.SetRow(panel, i);
-                    panel.Child = img;
-                    panel.Margin = new Thickness(15);
-
-                    OcenkiGrid.Children.Add(panel);
-                    ctr++;
-                }
-          
-                i++;
-
-
-                RowDefinition rowDefTxt = new RowDefinition();
-                OcenkiGrid.RowDefinitions.Add(rowDefTxt);
-
-                for (int j=0;j<4;j++)
-                {
-                    if (last == j) break;
-
-                    Label tx = new Label();
-                    tx.FontSize = 15;
-                    tx.FontFamily = new System.Windows.Media.FontFamily("Arial Black");
-                    tx.Foreground = System.Windows.Media.Brushes.White;
-                    tx.VerticalAlignment = VerticalAlignment.Center;
-                    tx.HorizontalAlignment = HorizontalAlignment.Center;
-                    tx.Content = predmeti[ctr];
-
-                    OcenkiGrid.RowDefinitions[i].Height = new GridLength(TxtHeight);
-                    Border panel = new Border();
-                    Grid.SetColumn(panel, j);
-                    Grid.SetRow(panel, i);
-                    panel.Child = tx;
-                    panel.Margin = new Thickness(15);
-
-                    OcenkiGrid.Children.Add(panel);
-
-                }
-
-                OcenkiGrid.Height = OcenkiGrid.Height + ImgHeight + TxtHeight;
-                if (last != -2) break;
-            }
-
-
-        }
-
         private void MouseEnter(object sender,MouseEventArgs e)
         {
             DockPanel st = (DockPanel)sender;
@@ -162,7 +93,134 @@ namespace Frontend
         private void MouseLeftButtonDown(object sender, MouseButtonEventArgs e , int brojDn)
         {
             Ucenik_Name.Content = "Име Презиме " + brojDn.ToString();
+            BrojDn_label.Content = brojDn.ToString();
         }
 
+        private void LoadOcenki(String[] predmeti)
+        {
+
+            int Size = predmeti.Length;
+            int ctr = 0;
+            int ImgHeight = 80;
+            int TxtHeight = 50;
+
+            for (int i = 0; ctr < Size ; i++)
+            {
+
+                RowDefinition rowDefImg = new RowDefinition();
+                OcenkiGrid.RowDefinitions.Add(rowDefImg);
+
+                int last = -2;
+
+                for (int j = 0; j < 4 ; j++)
+                {
+
+                    if (ctr == Size )
+                    {
+                        last = j;
+                        break;
+                    }
+
+                    OcenkiGrid.RowDefinitions[i].Height = new GridLength(ImgHeight);
+
+                    System.Windows.Controls.Image img = new System.Windows.Controls.Image();
+                    BitmapImage bm = new BitmapImage();
+                    bm.BeginInit();
+                    bm.UriSource = new Uri("ocenki_bk.png", UriKind.Relative);
+                    bm.EndInit();
+                    img.Stretch = Stretch.Uniform;
+                    img.Source = bm;
+
+                    Border panel = new Border();
+                    Grid.SetColumn(panel, j);
+                    Grid.SetRow(panel, i);
+                    panel.Child = img;
+                    panel.Margin = new Thickness(15);
+
+                    OcenkiGrid.Children.Add(panel);
+
+                    TextBox tx = new TextBox();
+                    
+                    tx.VerticalAlignment = VerticalAlignment.Center;
+                    tx.HorizontalAlignment = HorizontalAlignment.Center;
+                    tx.FontSize = 23;
+                    tx.TextAlignment = TextAlignment.Center;
+                    tx.FontFamily = new System.Windows.Media.FontFamily("Crimson Text");
+                    tx.FontWeight = FontWeights.Medium;
+                    tx.BorderThickness = new Thickness(0 , 0 ,0, 2);
+                    tx.BorderBrush = System.Windows.Media.Brushes.White;
+                    tx.Width = 20;
+                    tx.Foreground = System.Windows.Media.Brushes.White;
+                    tx.Background = System.Windows.Media.Brushes.Transparent;
+
+
+                    Border panel2 = new Border();
+                    Grid.SetColumn(panel2, j);
+                    Grid.SetRow(panel2, i);
+                    panel2.Child = tx;
+                    OcenkiGrid.Children.Add(panel2);
+                    ctr++;
+                }
+
+                i++;
+
+                RowDefinition rowDefTxt = new RowDefinition();
+                OcenkiGrid.RowDefinitions.Add(rowDefTxt);
+
+                for (int j = 0; j < 4; j++)
+                {
+                    if (last == j) break;
+
+                    OcenkiGrid.RowDefinitions[i].Height = new GridLength(TxtHeight);
+
+                    Label tx = new Label();
+                    tx.FontSize = 20;
+                    tx.FontFamily = new System.Windows.Media.FontFamily("Arial Black");
+                    tx.Foreground = System.Windows.Media.Brushes.White;
+                    tx.Content = predmeti[ctr+j-4];
+
+                    Border panel = new Border();
+                    Grid.SetColumn(panel, j);
+                    Grid.SetRow(panel, i);
+                    panel.Child = tx;
+                    panel.VerticalAlignment = VerticalAlignment.Top;
+                    panel.HorizontalAlignment = HorizontalAlignment.Center;
+                    OcenkiGrid.Children.Add(panel);
+
+                }
+
+                OcenkiGrid.Height = OcenkiGrid.Height + ImgHeight + TxtHeight;
+                if (last != -2) break;
+            }
+
+        }
+
+        private void Menu_hide(object sender, MouseButtonEventArgs e)
+        {
+            if (MainGrid.ColumnDefinitions[0].Width == new GridLength(0))
+            {
+                MainGrid.ColumnDefinitions[0].Width = new GridLength(83, GridUnitType.Star);
+                //  hide_menu_img2.Visibility = Visibility.Hidden;
+                BitmapImage bm = new BitmapImage();
+                bm.BeginInit();
+                bm.UriSource = new Uri("arrow-back-icon.png", UriKind.Relative);
+                bm.EndInit();
+                hide_menu_img.Source = bm;
+                return;
+            }
+            MainGrid.ColumnDefinitions[0].Width = new GridLength(0);
+
+            BitmapImage bm2 = new BitmapImage();
+            bm2.BeginInit();
+            bm2.UriSource = new Uri("arrow_back_reverse.png", UriKind.Relative);
+            bm2.EndInit();
+            hide_menu_img.Source = bm2;
+            //hide_menu_img2.Visibility = Visibility.Visible;
+        }
+
+        private void Back_Home(object sender, MouseButtonEventArgs e)
+        {
+            Main.Content = loginPage;
+        }
     }
 }
