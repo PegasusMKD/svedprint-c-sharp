@@ -33,6 +33,7 @@ namespace Middleware
             var httpResponse = (HttpWebResponse)await httpRequest.GetResponseAsync();
             var responseJson = await new StreamReader(httpResponse.GetResponseStream()).ReadToEndAsync();
             Klasen klasen = JsonConvert.DeserializeObject<Klasen>(responseJson);
+            // if (klasen._ime == "-1") throw new System.Exception("password");
             return klasen;
         }
     }
