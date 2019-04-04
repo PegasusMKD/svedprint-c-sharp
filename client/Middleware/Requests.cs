@@ -120,7 +120,7 @@ namespace Middleware
         public override List<Dictionary<string, string>> ReadJson(JsonReader reader, Type objectType, List<Dictionary<string, string>> existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             List<Dictionary<string, string>> pairs = new List<Dictionary<string, string>>();
-            string property, value;
+            
             JObject x;
             do
             {
