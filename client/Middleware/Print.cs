@@ -40,14 +40,27 @@ namespace Middleware
         }
         public static void print2prntr()
         {
-            string input = @"C:\Users\darij\Desktop\dio.jpg";
+            string input = @"C:\Users\darij\Desktop\sveditelstvo.jpg";
             PrintDialog printDialog = new PrintDialog();
             PrintDocument pd = new PrintDocument();
             pd.PrintPage += (sender, args) => {
-                args.Graphics.DrawImage(System.Drawing.Image.FromFile(input), 0, 0);
+                args.Graphics.DrawImage(System.Drawing.Image.FromFile(input), args.PageBounds);
             };
             pd.OriginAtMargins = false;
+            //pd.PrinterSettings.PrinterName = PrinterSettings.InstalledPrinters
             
+            Console.WriteLine("Choose printer:");
+            for(int i = 0; i < PrinterSettings.InstalledPrinters.Count; i++)
+            {
+                Console.WriteLine(String.Format("{0}: {1}", i, PrinterSettings.InstalledPrinters[i]));
+            }
+            int choice = int.Parse(Console.ReadLine());
+            
+            //int choice = 3;
+            pd.PrinterSettings.PrinterName = PrinterSettings.InstalledPrinters[choice];
+            
+            pd.DefaultPageSettings.PaperSize = pd.PrinterSettings.PaperSizes.Cast<PaperSize>().First<PaperSize>(size => size.Kind == PaperKind.A4);
+
             pd.Print();
         }
     }
