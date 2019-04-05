@@ -18,10 +18,12 @@
 			<ColumnDefinition Width="83*"/>
 			<ColumnDefinition Width="217*"/>
 		</Grid.ColumnDefinitions>
-		<Image Name="home_img" HorizontalAlignment="Left" Source="home_icon.png" Margin="15,0,0,0" VerticalAlignment="Center"/>
-		<Image HorizontalAlignment="Left" Margin="82,5,0,5" VerticalAlignment="Top" Source="print.png"/>
-		<Image HorizontalAlignment="Left" Margin="144,5,0,5" VerticalAlignment="Top" Source="settings.png"/>
-		<ListView Name ="Menu" Grid.RowSpan="2" Background="#FFF1F3CE" BorderThickness="1,1,1,2" BorderBrush="#FFF1F3CE" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Row="1"/>
+		<Grid VerticalAlignment="Center" Margin="26,0,27,0">
+			<Image x:Name="home_img" HorizontalAlignment="Center" Source="home_icon.png" Margin="0" VerticalAlignment="Center"/>
+			<Image HorizontalAlignment="Left" Margin="0,5" VerticalAlignment="Top" Source="print.png"/>
+			<Image HorizontalAlignment="Right" Margin="0,5" VerticalAlignment="Top" Source="settings.png"/>
+		</Grid>
+		<ListView Name ="Menu" Grid.RowSpan="2" Background="#FFF1F3CE" BorderThickness="1,1,1,2" BorderBrush="#FFF1F3CE" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Row="1" SelectionChanged="Menu_SelectionChanged"/>
 		<StackPanel Grid.Column="1" Background="#FFED6A3D">
 			<Label x:Name="Ucenik_Name" Content="Име Презиме" FontFamily="Arial Black" FontSize="48" HorizontalAlignment="Center" Foreground="White" VerticalAlignment="Center"/>
 		</StackPanel>
@@ -37,7 +39,8 @@
 				<ColumnDefinition Width="121*"/>
 			</Grid.ColumnDefinitions>
 			<Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="prosek_krug.png" Margin="0" Height="65" Grid.RowSpan="2" Width="65"/>
-			<ComboBox Grid.Column="2" Height="36" VerticalAlignment="Center" Margin="0,32" Grid.RowSpan="2" ItemsSource="{Binding smer}"  FontSize="20" HorizontalContentAlignment="Center" Foreground="Black" BorderBrush="#FF395F86">
+			
+			<ComboBox Name ="combobox_smer" Grid.Column="2" Height="36" VerticalAlignment="Center" Margin="0,32" Grid.RowSpan="2"  FontSize="20" HorizontalContentAlignment="Center" Foreground="Black" BorderBrush="#FF395F86">
 				<ComboBox.Background>
 					<LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
 						<GradientStop Color="#FF27517C" Offset="0"/>
@@ -68,7 +71,7 @@
 		<Grid Grid.Column="1" Background="#FFED6A3D" HorizontalAlignment="Left" Width="81">
 			<Image Name="hide_menu_img" Source="arrow-back-icon.png" Margin="15,5,0,5" HorizontalAlignment="Left"/>
 		</Grid>
-		
+
 
 	</Grid>
 </Page>

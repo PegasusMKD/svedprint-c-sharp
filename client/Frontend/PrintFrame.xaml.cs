@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Printing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,61 +28,123 @@ namespace Frontend
         public PrintFrame(Frame m, Page homepage)
         {
             InitializeComponent();
+            SvedImg.Source = new BitmapImage(new Uri(new Uri(Directory.GetCurrentDirectory(), UriKind.Absolute), new Uri(@"C:\Users\lukaj\Documents\sved.png", UriKind.Relative)));
             Main = m;
             HomePage = homepage;
-            Print();
+            LoadListView();
         }
-        
-        private void InsertText()
+
+        string[] Menuitems = { "Сведителство", "Главна Книга", "Постапки" };
+        private void LoadListView()
         {
-            /*
-            string oldFile = "oldFile.pdf";
-            string newFile = "newFile.pdf";
 
-            // open the reader
-            PdfReader reader = new PdfReader(oldFile);
-            Rectangle size = reader.GetPageSizeWithRotation(1);
-            Document document = new Document(size);
+            for(int i=0; i < Menuitems.Length; i++)
+            {
+                Menu.Items.Add(MenuDP(Menuitems[i], i));
+            }
+        }
 
-            // open the writer
-            FileStream fs = new FileStream(newFile, FileMode.Create, FileAccess.Write);
-            PdfWriter writer = PdfWriter.GetInstance(document, fs);
-            document.Open();
+        private Bitmap InsertText(string text,string imageFilePath)
+        {
 
-            // the pdf content
-            PdfContentByte cb = writer.DirectContent;
+            PointF firstLocation = new PointF(900, 050);
 
-            // select the font properties
-            BaseFont bf = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
-            cb.SetColorFill(BaseColor.DARK_GRAY);
-            cb.SetFontAndSize(bf, 8);
+            //string imageFilePath = @"C:\Users\lukaj\OneDrive\Desktop";
+            Bitmap bitmap = (Bitmap)System.Drawing.Image.FromFile(imageFilePath);// + @"\bk.png");//load the image file
 
-            // write the text in the pdf content
-            cb.BeginText();
-            string text = "Some random blablablabla...";
-            // put the alignment and coordinates here
-            cb.ShowTextAligned(1, text, 520, 640, 0);
-            cb.EndText();
-            cb.BeginText();
-            text = "Other random blabla...";
-            // put the alignment and coordinates here
-            cb.ShowTextAligned(2, text, 100, 200, 0);
-            cb.EndText();
+            using (Graphics graphics = Graphics.FromImage(bitmap))
+            {
+                using (Font arialFont = new Font("Arial", 50 , System.Drawing.FontStyle.Bold ))
+                {
+                    graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+                    graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                    graphics.DrawString(text, arialFont, SystemBrushes.WindowText, firstLocation);
+                }
+            }
 
-            // create the new page and add it to the pdf
-            PdfImportedPage page = writer.GetImportedPage(reader, 1);
-            cb.AddTemplate(page, 0, 0);
-
-            // close the streams and voilá the file should be changed :)
-            document.Close();
-            fs.Close();
-            writer.Close();
-            reader.Close();*/
+            //bitmap.Save(imageFilePath+ @"\bk2.jpeg");
+            return bitmap;
         }
 
         private void Print()
         {
-            //https://ourcodeworld.com/articles/read/502/how-to-print-a-pdf-from-your-winforms-application-in-c-sharp
+            string input = @"C:\Users\lukaj\OneDrive\Desktop\bk1.jpeg";
+            PrintDialog printDialog = new PrintDialog();
+            PrintDocument pd = new PrintDocument();
+            pd.PrintPage += (sender, args) => {
+                args.Graphics.DrawImage(InsertText("македонски", @"C:\Users\lukaj\OneDrive\Desktop\bk.jpeg"), args.PageBounds);
+            };
+            pd.OriginAtMargins = false;
+            //pd.PrinterSettings.PrinterName = PrinterSettings.InstalledPrinters
+
+            for (int i = 0; i < PrinterSettings.InstalledPrinters.Count; i++)
+            {
+               // MessageBox.Show(String.Format("{0}: {1}", i, PrinterSettings.InstalledPrinters[i]));
+            }
+            //int choice = 0;
+
+            int choice = 3;
+            pd.PrinterSettings.PrinterName = PrinterSettings.InstalledPrinters[choice];
+
+            pd.DefaultPageSettings.PaperSize = pd.PrinterSettings.PaperSizes.Cast<PaperSize>().First<PaperSize>(size => size.Kind == PaperKind.A4);
+            pd.DefaultPageSettings.Landscape = true;
+
+            pd.Print();
+        }
+
+        private void Menu_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private DockPanel MenuDP(string Name, int brojDn)
+        {
+            DockPanel st = new DockPanel();
+            Label tx = new Label();
+            tx.Content =Name;
+            st.Children.Add(tx);
+            st.Height = 50;
+            st.Width = 400;
+            st.MaxWidth = 400;
+            st.HorizontalAlignment = HorizontalAlignment.Left;
+            st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(165, 166, 140));
+            tx.FontSize = 22;
+            tx.FontFamily = new System.Windows.Media.FontFamily("Arial Black");
+            tx.Foreground = System.Windows.Media.Brushes.White;
+            tx.VerticalAlignment = VerticalAlignment.Center;
+
+            st.MouseLeftButtonDown += new MouseButtonEventHandler((sender, e) => MouseLeftButtonDown(sender, e, brojDn + 1));
+            st.MouseEnter += new MouseEventHandler(MouseEnter);
+            st.MouseLeave += new MouseEventHandler(MouseLeave);
+
+            return st;
+        }
+
+        object ClickedMenuItem;
+        private void MouseEnter(object sender, MouseEventArgs e)
+        {
+            DockPanel st = (DockPanel)sender;
+            st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(237, 106, 61));
+        }
+
+        private void MouseLeave(object sender, MouseEventArgs e)
+        {
+            DockPanel st = (DockPanel)sender;
+            if (ClickedMenuItem != sender) st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(165, 166, 140));
+        }
+
+        private void MouseLeftButtonDown(object sender, MouseButtonEventArgs e, int i)
+        { 
+            if (ClickedMenuItem != null)
+            {
+                DockPanel st2 = (DockPanel)ClickedMenuItem;
+                st2.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(165, 166, 140));
+            }
+            DockPanel st = (DockPanel)sender;
+            st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(237, 106, 61));
+            ClickedMenuItem = sender;
+
+            Title.Content = Menuitems[i-1];  
         }
     }
 }

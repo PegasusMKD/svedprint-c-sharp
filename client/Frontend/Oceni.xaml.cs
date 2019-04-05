@@ -24,7 +24,6 @@ namespace Frontend
 
         Frame Main;
         Page loginPage;
-        public string[] smer { get; set; }
 
         public Oceni(Frame m, Page loginpage)
         {
@@ -37,8 +36,7 @@ namespace Frontend
             string[] str = { "Математика", "Македонски", "Физика", "Хемија", "Биологија", "Географија", "Физичко", "Ликовно", "Музичко", "Математика", "физка", "Математика", "географија", "Математика" };
             LoadOcenki(str);
 
-            smer = new string[] { "pma", "pmb", "oha" };
-            DataContext = this;
+
             home_img.MouseLeftButtonDown += new MouseButtonEventHandler(Back_Home);
             hide_menu_img.MouseLeftButtonDown += new MouseButtonEventHandler(Menu_hide);
 
@@ -52,6 +50,13 @@ namespace Frontend
                
                 Menu.Items.Add(MenuDP("Име" , "Презиме", i));
             }
+
+            string[] smer = { "Природно Математико подрачје - А", "Природно Математичко Подрачје - Б", "Општествено Х Подрачје А", "Општествено Х Подрачје Б" };
+            for (int i = 0; i < smer.Length; i++)//combobox
+            {
+                combobox_smer.Items.Add(smer[i]);
+            }
+            combobox_smer.SelectedItem = combobox_smer.Items[0];
 
         }
 
@@ -78,6 +83,7 @@ namespace Frontend
             return st;
         }
 
+        object ClickedMenuItem ;
         private void MouseEnter(object sender,MouseEventArgs e)
         {
             DockPanel st = (DockPanel)sender;
@@ -87,13 +93,21 @@ namespace Frontend
         private void MouseLeave(object sender,MouseEventArgs e)
         {
             DockPanel st = (DockPanel)sender;
-            st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(165, 166, 140));
+            if(ClickedMenuItem != sender)st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(165, 166, 140));
         }
 
         private void MouseLeftButtonDown(object sender, MouseButtonEventArgs e , int brojDn)
         {
             Ucenik_Name.Content = "Име Презиме " + brojDn.ToString();
             BrojDn_label.Content = brojDn.ToString();
+            if(ClickedMenuItem != null)
+            {
+                DockPanel st2 = (DockPanel)ClickedMenuItem;
+                st2.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(165, 166, 140));
+            }
+            DockPanel st = (DockPanel)sender;
+            st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(237, 106, 61));
+            ClickedMenuItem = sender;
         }
 
         private void LoadOcenki(String[] predmeti)
@@ -221,6 +235,11 @@ namespace Frontend
         private void Back_Home(object sender, MouseButtonEventArgs e)
         {
             Main.Content = loginPage;
+        }
+
+        private void Menu_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }
