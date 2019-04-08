@@ -11,28 +11,51 @@
 	<Grid >
 		<Grid.RowDefinitions>
 			<RowDefinition Height="31*"/>
-			<RowDefinition Height="50*"/>
-			<RowDefinition Height="219*"/>
+			<RowDefinition Height="269*"/>
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="83*"/>
 			<ColumnDefinition Width="217*"/>
 		</Grid.ColumnDefinitions>
 		<Grid VerticalAlignment="Center" Margin="26,0,27,0">
-			<Image x:Name="home_img" HorizontalAlignment="Right" Source="home_icon.png" Margin="0,0,67,0" VerticalAlignment="Center"/>
+			<Image x:Name="home_img" HorizontalAlignment="Center" Source="home_icon.png" Margin="0" VerticalAlignment="Center" MouseLeftButtonDown="Home_Button_Clicked"/>
 			<Image HorizontalAlignment="Left" Margin="0,5" VerticalAlignment="Top" Source="MainIcon.png"/>
 			<Image HorizontalAlignment="Right" Margin="0,5" VerticalAlignment="Top" Source="settings.png"/>
 		</Grid>
-		<ListView Name ="Menu" Grid.RowSpan="2" Background="#FFF1F3CE" BorderThickness="1,1,1,2" BorderBrush="#FFF1F3CE" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Row="1" SelectionChanged="Menu_SelectionChanged"/>
-		<Grid Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Background="#FF3E4959">
+		<Grid Margin="0,0,0,0" Background="#FF4B84C3" Grid.Column="1">
+			<Label x:Name="Title" Content="Сведителство" FontSize="48" FontFamily="Arial Black" Foreground="White" VerticalAlignment="Center" Margin="0" HorizontalAlignment="Center"/>
+		</Grid>
+		<ListView Name ="Menu" Background="#FFF1F3CE" BorderThickness="1,1,1,2" BorderBrush="#FFF1F3CE" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Row="1" SelectionChanged="Menu_SelectionChanged"/>
+		<Grid Grid.Row="1" Grid.Column="1" Background="#FF3E4959">
+			<Grid.RowDefinitions>
+				<RowDefinition/>
+			</Grid.RowDefinitions>
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="311*"/>
 				<ColumnDefinition Width="340*"/>
 			</Grid.ColumnDefinitions>
-			<StackPanel HorizontalAlignment="Left" Height="62" Margin="0,-62,0,0" VerticalAlignment="Top" Width="651" Background="#FF4B84C3" Grid.ColumnSpan="2">
-				<Label Name="Title" Content="Принтај Сведителство" FontSize="48" FontFamily="Arial Black" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+			<Image Name="SvedImg" HorizontalAlignment="Center" Margin="10,40,10,35" VerticalAlignment="Center" />
+			<StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,0">
+				<StackPanel Margin="0,0,0,80" >
+					<Border Height="50" Margin="20,0" VerticalAlignment="Center" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10">
+						<Label Content="Принтај цел клас" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
+					</Border>
+				</StackPanel>
+				<StackPanel Margin="0,0,0,80">
+					<Border Height="50" Margin="20,0" VerticalAlignment="Center" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10">
+						<Label Content="Принтај Единечно" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
+					</Border>
+					<TextBox Text ="1,2,3" FontSize="24" Background="{x:Null}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0"/>
+					<Border Height="10" Margin="25,0" VerticalAlignment="Center" Background="White" BorderThickness="2" CornerRadius="10"/>
+				</StackPanel>
+				<StackPanel Margin="0,0,0,0">
+					<Border Height="50" Margin="20,0" VerticalAlignment="Center" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10">
+						<Label Content="Избери Принтер" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
+					</Border>
+					<TextBox Text="Printer XP jetPro" FontSize="24" Background="{x:Null}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0"/>
+					<Border Height="10" Margin="25,0" VerticalAlignment="Center" Background="White" BorderThickness="2" CornerRadius="10"/>
+				</StackPanel>
 			</StackPanel>
-			<Image Name="SvedImg" HorizontalAlignment="Center" Margin="25" VerticalAlignment="Center" />
 		</Grid>
 	</Grid>
 </Page>

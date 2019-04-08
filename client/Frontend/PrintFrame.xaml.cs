@@ -146,5 +146,10 @@ namespace Frontend
 
             Title.Content = Menuitems[i-1];  
         }
+
+        private void Home_Button_Clicked(object sender, MouseButtonEventArgs e)
+        {
+            Main.Content = HomePage;
+        }
     }
 }
