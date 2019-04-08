@@ -160,5 +160,11 @@
   <ItemGroup>
     <Resource Include="home_icon.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Middleware\Middleware.csproj">
+      <Project>{c1d39008-641b-4cac-8938-f2ad79c1360e}</Project>
+      <Name>Middleware</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

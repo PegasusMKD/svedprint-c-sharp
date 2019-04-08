@@ -60,9 +60,9 @@ namespace Middleware
         public Ucenik() { }
         public Ucenik(Dictionary<string, string> valuePairs)
         {
-            _ime = valuePairs[RequestParameters.ime];
-            _tatkovo = valuePairs[RequestParameters.srednoIme];
-            _prezime = valuePairs[RequestParameters.prezime];
+            _ime = valuePairs["ime"];
+            _tatkovo = valuePairs["tatkovo"];
+            _prezime = valuePairs["prezime"];
 
             string[] s = valuePairs[RequestParameters.oceni].Split(' ');
             _oceni = new List<int>();
