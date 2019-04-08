@@ -67,8 +67,8 @@ namespace Frontend
             tx.Content = (brojDn + 1).ToString() + ". " + Name + " " + Prezime;
             st.Children.Add(tx);
             st.Height = 50;
-            st.Width = 400;
-            st.MaxWidth = 400;
+            st.Width = 800;
+            st.MaxWidth = 800;
             st.HorizontalAlignment = HorizontalAlignment.Left;
             st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(165, 166, 140));
             tx.FontSize = 22;
