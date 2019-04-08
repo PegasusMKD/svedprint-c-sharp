@@ -20,6 +20,7 @@ namespace Middleware
         [JsonProperty(RequestParameters.smer)]
         public string _smer { get; set; }
         [JsonProperty(RequestParameters.broj)]
+        public Smer _s;
         public int _broj { get; set; }
         [JsonProperty(RequestParameters.dob)]
         public string _dob { get; set; }
@@ -33,10 +34,11 @@ namespace Middleware
         public int _neopravdani { get; set; }
         [JsonProperty(RequestParameters.tip)]
         public string _tip { get; set; }
+        [JsonProperty(RequestParameters.pat)]
+        public int _pat {get;set;}
 
 
-
-        public Ucenik(string ime, string tatkovo, string prezime, List<int> oceni, string paralelka, string smer, int broj, string dob, string mesto, string povedenie, int opravdani, int neopravdani, string tip)
+        public Ucenik(string ime, string tatkovo, string prezime, List<int> oceni, string paralelka, string smer, int broj, string dob, string mesto, string povedenie, int opravdani, int neopravdani, string tip, int pat)
         {
             _ime = ime ?? "";
             _tatkovo = tatkovo ?? "";
@@ -51,6 +53,9 @@ namespace Middleware
             _opravdani = opravdani ?? -1;
             _neopravdani = neopravdani ?? -1;
             _tip = tip ?? "";
+            _pat = pat ?? -1;
+
+            _s = new Smer(new List<string>(), _smer);
         }
         public Ucenik() { }
         public Ucenik(Dictionary<string, string> valuePairs)
@@ -121,12 +126,16 @@ namespace Middleware
         public List<Ucenik> _ucenici { get; set; }
         [JsonProperty(RequestParameters.klasen)]
         public Klasen _klasen { get; set; }
+        public List<Smer> _smerovi;
+        
 
-        public Paralelka(string paralelka, List<Ucenik> ucenici, Klasen klasen)
+
+        public Paralelka(string paralelka, List<Ucenik> ucenici, Klasen klasen, List<Smer> smerovi)
         {
             _paralelka = paralelka ?? throw new ArgumentNullException(nameof(paralelka));
             _ucenici = ucenici ?? throw new ArgumentNullException(nameof(ucenici));
             _klasen = klasen ?? throw new ArgumentNullException(nameof(klasen));
+            _smerovi = smerovi ?? new List<Smer>();
         }
 
         public Paralelka() { }
@@ -142,6 +151,7 @@ namespace Middleware
         public string _prezime { get; set; }
         [JsonProperty(RequestParameters.paralelka)]
         public string _paralelka { get; set; }
+        public Paralelka _p {get;set;}
         [JsonProperty(RequestParameters.token)]
         public string _token { get; set; }
         [JsonProperty(RequestParameters.uchilishte)]
@@ -161,6 +171,8 @@ namespace Middleware
             _uchilishte = uchilishte ?? "";
             _grad = grad ?? "";
             _godina = godina ?? 1111;
+
+            _p = new Paralelka(_paralelka, new List<Ucenik>(), this, new List<Smer>());
         }
 
         public Klasen() { }
