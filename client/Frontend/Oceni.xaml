@@ -7,27 +7,70 @@
       mc:Ignorable="d" Background="#FFF1F3CE"
       d:DesignHeight="600" d:DesignWidth="900"
       Title="Oceni">
-
-	<Grid>
+   
+	<Grid Name="MainGrid">
 		<Grid.RowDefinitions>
-			<RowDefinition Height="17*"/>
-			<RowDefinition Height="183*"/>
+			<RowDefinition Height="31*"/>
+			<RowDefinition Height="50*"/>
+			<RowDefinition Height="219*"/>
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="8*"/>
-			<ColumnDefinition Width="17*"/>
+			<ColumnDefinition Width="83*"/>
+			<ColumnDefinition Width="217*"/>
 		</Grid.ColumnDefinitions>
-		<ListView HorizontalAlignment="Left" Height="600" VerticalAlignment="Top" Width="288" Grid.RowSpan="2" Background="#FFF1F3CE">
-			<ListView.View>
-				<GridView>
-					<GridViewColumn/>
-				</GridView>
-			</ListView.View>
-		</ListView>
-		<StackPanel Grid.Column="1" Background="#FFED6A3D" HorizontalAlignment="Left" Width="612"/>
-		<StackPanel Grid.Column="1" Background="#FF3E4959" Grid.Row="1" HorizontalAlignment="Left" Width="612">
-			<StackPanel Height="70" Background="#FF4B86C6" Margin="25"/>
+		<Grid VerticalAlignment="Center" Margin="26,0,27,0">
+			<Image x:Name="home_img" HorizontalAlignment="Center" Source="home_icon.png" Margin="0" VerticalAlignment="Center"/>
+			<Image HorizontalAlignment="Left" Margin="0,5" VerticalAlignment="Top" Source="print.png"/>
+			<Image HorizontalAlignment="Right" Margin="0,5" VerticalAlignment="Top" Source="settings.png"/>
+		</Grid>
+		<ListView Name ="Menu" Grid.RowSpan="2" Background="#FFF1F3CE" BorderThickness="1,1,1,2" BorderBrush="#FFF1F3CE" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Row="1" SelectionChanged="Menu_SelectionChanged"/>
+		<StackPanel Grid.Column="1" Background="#FFED6A3D">
+			<Label x:Name="Ucenik_Name" Content="Име Презиме" FontFamily="Arial Black" FontSize="48" HorizontalAlignment="Center" Foreground="White" VerticalAlignment="Center"/>
 		</StackPanel>
+		<Grid Background="#FF4B86C6" Grid.Column="1" Grid.Row="1">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="2*"/>
+				<RowDefinition Height="3*"/>
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="108*"/>
+				<ColumnDefinition Width="13*"/>
+				<ColumnDefinition Width="409*"/>
+				<ColumnDefinition Width="121*"/>
+			</Grid.ColumnDefinitions>
+			<Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="prosek_krug.png" Margin="0" Height="65" Grid.RowSpan="2" Width="65"/>
+			
+			<ComboBox Name ="combobox_smer" Grid.Column="2" Height="36" VerticalAlignment="Center" Margin="0,32" Grid.RowSpan="2"  FontSize="20" HorizontalContentAlignment="Center" Foreground="Black" BorderBrush="#FF395F86">
+				<ComboBox.Background>
+					<LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+						<GradientStop Color="#FF27517C" Offset="0"/>
+						<GradientStop Color="#FF395F86" Offset="1"/>
+					</LinearGradientBrush>
+				</ComboBox.Background>
+			</ComboBox>
+			<Label Name ="Prosek_out" Content="4.93" Grid.Column="3" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Top" FontSize="20" BorderBrush="Black" Background="#FF395F86" Foreground="White" Height="37" Width="80" Grid.Row="1" HorizontalContentAlignment="Center"/>
+			<Label Content="просек" Grid.Column="3" HorizontalAlignment="Center" Margin="0" FontSize="23" Foreground="White" VerticalAlignment="Bottom" HorizontalContentAlignment="Center"/>
+			<Label Name ="BrojDn_label" Content="" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center" Grid.RowSpan="2" FontSize="36" Foreground="White"/>
+
+		</Grid>
+		<ScrollViewer Grid.Column="1" Grid.Row="2" Background="#FF3E4959" VerticalScrollBarVisibility="Auto">
+			<Grid Name="OcenkiGrid" Grid.Column="1" Background="#FF3E4959" Grid.Row="2" Height="0" VerticalAlignment="Top">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="46*"/>
+					<RowDefinition Height="173*"/>
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="157*"/>
+					<ColumnDefinition Width="157*"/>
+					<ColumnDefinition Width="158*"/>
+					<ColumnDefinition Width="157*"/>
+				</Grid.ColumnDefinitions>
+			</Grid>
+		</ScrollViewer>
+
+		<Grid Grid.Column="1" Background="#FFED6A3D" HorizontalAlignment="Left" Width="81">
+			<Image Name="hide_menu_img" Source="arrow-back-icon.png" Margin="15,5,0,5" HorizontalAlignment="Left"/>
+		</Grid>
 
 	</Grid>
 </Page>

@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Middleware;
 
 namespace Frontend
 {
@@ -36,11 +37,17 @@ namespace Frontend
 
         private void Login_Btn_Click(object sender, RoutedEventArgs e)
         {
-
-            if (data.CheckUser(Username_txt.Text, Password_txt.Text) > -1)
+            Klasen temp = Login.LoginWithCred(Username_txt.Text, Password_txt.Text);
+            Klasen klas = new Klasen
+            {
+                _ime = "luka",
+                _prezime = "prez",
+                _paralelka = "IV5"
+            };
+            if (temp._ime != "002" && temp._ime != string.Empty)
             {
                 ShowAlertBox("Успешно логирање");
-                Main.Content = new Home_Page(Main,this);
+                Main.Content = new Home_Page(Main,this,temp);
             }
             else
             {
