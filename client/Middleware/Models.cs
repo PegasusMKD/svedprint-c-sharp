@@ -156,6 +156,7 @@ namespace Middleware
     {
         public const string GET = "looking";
         public const string ADD = "type";
+        public const string UPDATE = "updating";
     }
 
 }

@@ -44,6 +44,7 @@ namespace Middleware
         // TODO
         public static async Task AddDataAsync(Dictionary<string, string> queryParams, string scope)
         {
+
             Request request = new Request(type: RequestTypes.ADD, scope: scope, queryParams: queryParams);
 
             string json = JsonConvert.SerializeObject(request, new RequestConverter());
@@ -62,6 +63,27 @@ namespace Middleware
             var responseJson = await new StreamReader(httpResponse.GetResponseStream()).ReadToEndAsync();
 
         }
+
+        public static async Task UpdateDataAsync(Dictionary<string, string> queryParams, string scope) {
+            Request request = new Request(type: RequestTypes.UPDATE, scope: scope, queryParams: queryParams);
+
+            string json = JsonConvert.SerializeObject(request, new RequestConverter());
+            string uri = string.Format(@"http://{0}:{1}/main/update/", settings.Default.DB_HOST, settings.Default.DB_PORT);
+            var httpRequest = (HttpWebRequest)WebRequest.Create(uri);
+            httpRequest.Method = @"POST";
+            httpRequest.ContentType = @"application/json";
+            using (var writer = new StreamWriter(await httpRequest.GetRequestStreamAsync()))
+            {
+                await writer.WriteAsync(json);
+                await writer.FlushAsync();
+                writer.Close();
+            }
+
+            var httpResponse = (HttpWebResponse)await httpRequest.GetResponseAsync();
+            var responseJson = await new StreamReader(httpResponse.GetResponseStream()).ReadToEndAsync();
+            
+        }
+
     }
 
     public class RequestScopes
@@ -72,6 +94,11 @@ namespace Middleware
         public const string GetSmerVoKlas = "smer_vo_klas";
         public const string GetPredmetiSmer = "smer";
         public const string AddUcenici = "ucenici";
+        public const string UpdateKlasen = "user";
+        public const string UpdateParalelka = "paralelka";        
+        public const string UpdateSmer = "smer";
+        public const string UpdateUcenik = "ucenik";
+        public const string UpdateUchilishte = "uchilishte";
     }
 
     public class RequestParameters
@@ -87,6 +114,28 @@ namespace Middleware
         public const string predmeti = "predmeti";
         public const string ucenici = "ucenici";
         public const string klasen = "klasen";
+        public const string uchilishte = "uchilishte";
+        public const string new_school = "new_school";
+        public const string new_password = "new_password";
+        public const string smer_add = "smer_add";
+        public const string smer_remove = "smer_remove";
+        public const string godina = "godina";
+        public const string godishte = "godishte";
+        public const string new_smer = "new_smer";
+        public const string new_first_name = "new_first_name";
+        public const string new_middle_name = "new_middle_name";
+        public const string new_last_name = "new_last_name";
+        public const string new_first_name = "new_first_name";
+        public const string new_broj_vo_dnevnik = "new_broj_vo_dnevnik";
+        public const string roditel = "roditel";
+        public const string roden = "roden";
+        public const string mesto = "mesto";
+        public const string opravdani = "opravdani";
+        public const string neopravdani = "neopravdani";
+        public const string tip = "tip";
+        public const string povedenie = "povedenie";
+
+
     }
     //_queryParams : { "ime" : "asfasf", ... }
     class RequestConverter : JsonConverter<Request>
