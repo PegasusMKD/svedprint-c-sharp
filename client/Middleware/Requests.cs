@@ -126,7 +126,6 @@ namespace Middleware
         public const string new_first_name = "new_first_name";
         public const string new_middle_name = "new_middle_name";
         public const string new_last_name = "new_last_name";
-        public const string new_first_name = "new_first_name";
         public const string new_broj_vo_dnevnik = "new_broj_vo_dnevnik";
         public const string roditel = "roditel";
         public const string roden = "roden";
@@ -135,8 +134,8 @@ namespace Middleware
         public const string neopravdani = "neopravdani";
         public const string tip = "tip";
         public const string povedenie = "povedenie";
-
-
+        public const string dob = "dob";
+        public const string pat = "pat";
     }
     //_queryParams : { "ime" : "asfasf", ... }
     class RequestConverter : JsonConverter<Request>

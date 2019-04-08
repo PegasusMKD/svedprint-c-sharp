@@ -46,14 +46,14 @@ namespace Middleware
             _oceni = oceni ?? new List<int>();
             _paralelka = paralelka ?? "";
             _smer = smer ?? "";
-            _broj = broj ?? 0;
+            _broj = broj;
             _dob = dob ?? "01.01.1111";
             _mesto = mesto ?? "";
             _povedenie = povedenie ?? "";
-            _opravdani = opravdani ?? -1;
-            _neopravdani = neopravdani ?? -1;
+            _opravdani = opravdani;
+            _neopravdani = neopravdani;
             _tip = tip ?? "";
-            _pat = pat ?? -1;
+            _pat = pat;
 
             _s = new Smer(new List<string>(), _smer);
         }
@@ -170,7 +170,7 @@ namespace Middleware
             _paralelka = paralelka ?? "";
             _uchilishte = uchilishte ?? "";
             _grad = grad ?? "";
-            _godina = godina ?? 1111;
+            _godina = godina;
 
             _p = new Paralelka(_paralelka, new List<Ucenik>(), this, new List<Smer>());
         }

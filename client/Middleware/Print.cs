@@ -11,6 +11,7 @@ using iText.Layout;
 using System.IO;
 using iText.Kernel.Pdf;
 using System.Diagnostics;
+using System.Windows;
 
 namespace Middleware
 {
@@ -42,15 +43,11 @@ namespace Middleware
         {
             List<string> data = init(ucenici, klasen);
             string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
-            string front = rootFolder + "\\front.jpg";
-            string back = rootFolder + "\\back.jpg";
+            string front = ".\\sveditelstva0.jpg";
+            string back = ".\\back0.jpg";
             PrintDialog printDialog = new PrintDialog();
             PrintDocument pd = new PrintDocument();
-            
-            pd.OriginAtMargins = false;
-            if(pd.PrinterSettings.CanDuplex) {
-                pd.PrinterSettings.Duplex = Duplex.Vertical;
-            }
+
             //pd.PrinterSettings.PrinterName = PrinterSettings.InstalledPrinters
 
             Console.WriteLine("Choose printer:");
@@ -62,30 +59,60 @@ namespace Middleware
 
             //int choice = 3;
             pd.PrinterSettings.PrinterName = PrinterSettings.InstalledPrinters[choice];
+
             pd.DefaultPageSettings.PaperSize = pd.PrinterSettings.PaperSizes.Cast<PaperSize>().First<PaperSize>(size => size.Kind == PaperKind.A4);
+            pd.OriginAtMargins = false;
+            if (pd.PrinterSettings.CanDuplex)
+            {
+                pd.PrinterSettings.Duplex = Duplex.Vertical;
+            }
 
             string outparam = String.Join("?", data);
+
+            outparam = "\"Македонски Јазик/ Математичка Анализа / Бизнис и Претприемништво/ ФЗО / Германски Јазик / Програмски Јазици/ Predmet123/ Predmet321/ Predmet221/ Predmet 231\";\"1 2 3 4 5 2 2 3 5 4\";\"Коце Металец, Скопје,,IV, Лука Јовановски,Славка Јовановска,22.09.2000,Скопје,Скопје,Северна Македонија, северно-македонец,19,20,прв,IV 1,Добро,0,0,Гимназиско образование,ПМА,,\"" + "?" + 
+                "\"makedonski jazik/ calculus IV/ Бизнис и Претприемништво/ ФЗО / Германски Јазик / Програмски Јазици/ Predmet123/ Predmet321/ Predmet221/ Predmet 231\";\"1 2 3 4 5 2 2 3 5 4\";\"Коце Металец, Скопје,,IV, Лука Јовановски,Славка Јовановска,22.09.2000,Скопје,Скопје,Северна Македонија, северно-македонец,19,20,прв,IV 1,Добро,0,0,Гимназиско образование,ПМА,,\"";
+            data = new List<string>() {
+                "\"Македонски Јазик/ Математичка Анализа / Бизнис и Претприемништво/ ФЗО / Германски Јазик / Програмски Јазици/ Predmet123/ Predmet321/ Predmet221/ Predmet 231\";\"1 2 3 4 5 2 2 3 5 4\";\"Коце Металец, Скопје,,IV, Лука Јовановски,Славка Јовановска,22.09.2000,Скопје,Скопје,Северна Македонија, северно-македонец,19,20,прв,IV 1,Добро,0,0,Гимназиско образование,ПМА,,\"",
+                "\"makedonski jazik/ calculus IV/ Бизнис и Претприемништво/ ФЗО / Германски Јазик / Програмски Јазици/ Predmet123/ Predmet321/ Predmet221/ Predmet 231\";\"1 2 3 4 5 2 2 3 5 4\";\"Коце Металец, Скопје,,IV, Лука Јовановски,Славка Јовановска,22.09.2000,Скопје,Скопје,Северна Македонија, северно-македонец,19,20,прв,IV 1,Добро,0,0,Гимназиско образование,ПМА,,\""
+            };
+
+            string pyscript = rootFolder + "\\main.exe";
             Process py = new Process();
-            py.Start(rootFolder + "\\main.exe", outparam);
+            py.StartInfo.FileName = new Uri(pyscript).AbsolutePath;
+            py.StartInfo.UseShellExecute = false;
+            py.StartInfo.RedirectStandardInput = true;
+            py.StartInfo.Arguments = String.Join("?", data);
+            py.Start();
+
+            StreamWriter processStdin = py.StandardInput;
+            processStdin.AutoFlush = true;
+            while (!py.HasExited)
+            {
+                processStdin.WriteLine("x");
+            }
+            
+            //py.StartInfo.CreateNoWindow = true;
+
             for(int i = 0; i < data.Count; i++) {
-                py.WaitForInputIdle();
+                int page = 0;
+
                 pd.PrintPage += (sender, args) => {
-                    args.Graphics.DrawImage(System.Drawing.Image.FromFile(front), args.PageBounds);
+                    if (page%2 == 0)
+                    {
+                        args.Graphics.DrawImage(System.Drawing.Image.FromFile(String.Format(".\\sveditelstva{0}.jpg", i)), args.PageBounds);
+                        pd.DocumentName = String.Format(".\\sveditelstva{0}.jpg", i);
+                        args.HasMorePages = true;
+                    } else
+                    {
+                        args.HasMorePages = false;
+                        args.Graphics.DrawImage(System.Drawing.Image.FromFile(String.Format(".\\back{0}.jpg", i)), args.PageBounds);
+                        pd.DocumentName = String.Format(".\\back{0}.jpg", i);
+                    }
+                    page++;
                 };
-                pd.Print();
-                if(!pd.PrinterSettings.CanDuplex) {
-                    MessageBox.Show("svrti list");
-                }
-                pd.PrintPage += (sender, args) => {
-                    args.Graphics.DrawImage(System.Drawing.Image.FromFile(back), args.PageBounds);
-                };
+
                 pd.Print();
                 
-                py.StandardInput.WriteLineAsync();
-            }
-            while(!py.HasExited) {
-                py.WaitForInputIdle();
-                py.StandardInput.WriteLineAsync();
             }
         }
         public static List<string> init(List<Ucenik> ucenici, Klasen klasen)
@@ -115,7 +142,7 @@ namespace Middleware
                 // ime prezime na ucenik, ime prezime na roditel, DOB, naselba, opshtina, drzhava, drzhavjanstvo (hardcode)
                 sw.WriteAsync(u._ime + " " + u._prezime);
                 sw.WriteAsync(", ");
-                sw.WriteAsync(u._tatkovo + " " + i._prezime);
+                sw.WriteAsync(u._tatkovo + " " + u._prezime);
                 sw.WriteAsync(", ");
                 sw.WriteAsync(u._dob);
                 sw.WriteAsync(", ");
@@ -142,8 +169,7 @@ namespace Middleware
                 sw.WriteAsync(u._neopravdani.ToString());
                 sw.WriteAsync(", ");
 
-                // XX, mesto datum XX, YY
-                sw.WriteAsync(", "); // XX
+                // XX, YY
                 sw.WriteAsync(", "); // XX
                 sw.WriteAsync(""); // YY
 
