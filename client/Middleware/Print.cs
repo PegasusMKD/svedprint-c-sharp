@@ -63,5 +63,8 @@ namespace Middleware
 
             pd.Print();
         }
+        public static void init(Ucenik u) {
+            
+        }
     }
 }

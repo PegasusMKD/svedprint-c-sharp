@@ -115,6 +115,7 @@ namespace Middleware
         public const string ucenici = "ucenici";
         public const string klasen = "klasen";
         public const string uchilishte = "uchilishte";
+        public const string grad = "grad";
         public const string new_school = "new_school";
         public const string new_password = "new_password";
         public const string smer_add = "smer_add";
