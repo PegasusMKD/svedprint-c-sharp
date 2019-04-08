@@ -7,7 +7,7 @@
       mc:Ignorable="d" Background="#FFF1F3CE"
       d:DesignHeight="600" d:DesignWidth="900"
       Title="Oceni">
-
+   
 	<Grid Name="MainGrid">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="31*"/>
@@ -71,7 +71,6 @@
 		<Grid Grid.Column="1" Background="#FFED6A3D" HorizontalAlignment="Left" Width="81">
 			<Image Name="hide_menu_img" Source="arrow-back-icon.png" Margin="15,5,0,5" HorizontalAlignment="Left"/>
 		</Grid>
-
 
 	</Grid>
 </Page>

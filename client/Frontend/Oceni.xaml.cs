@@ -1,4 +1,5 @@
-﻿using Middleware;
+
+using Middleware;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -22,7 +23,6 @@ namespace Frontend
     /// </summary>
     public partial class Oceni : Page
     {
-
         Frame Main;
         Page loginPage;
         Klasen UserKlas;
@@ -268,6 +268,5 @@ namespace Frontend
         {
 
         }
-
     }
 }
