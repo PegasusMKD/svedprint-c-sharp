@@ -14,7 +14,7 @@ namespace Middleware
         private static readonly HttpClient http = new HttpClient();
 
         // DONE
-        public static async Task<List<Dictionary<string, string>>> GetDataAsync(Dictionary<string, string> queryParams, string scope)
+        public static List<Dictionary<string, string>> GetData(Dictionary<string, string> queryParams, string scope)
         {
             Request request = new Request(type: RequestTypes.GET, scope: scope, queryParams: queryParams);
 
@@ -23,15 +23,15 @@ namespace Middleware
             var httpRequest = (HttpWebRequest)WebRequest.Create(uri);
             httpRequest.Method = @"POST";
             httpRequest.ContentType = @"application/json";
-            using (var writer = new StreamWriter(await httpRequest.GetRequestStreamAsync()))
+            using (var writer = new StreamWriter(httpRequest.GetRequestStream()))
             {
-                await writer.WriteAsync(json);
-                await writer.FlushAsync();
+                writer.Write(json);
+                writer.Flush();
                 writer.Close();
             }
 
-            var httpResponse = (HttpWebResponse)await httpRequest.GetResponseAsync();
-            var responseJson = await new StreamReader(httpResponse.GetResponseStream()).ReadToEndAsync();
+            var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+            var responseJson = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
 
             //var response = await http.PostAsync(uri, new StringContent(json));
             //string responseJson = await response.Content.ReadAsStringAsync();
