@@ -46,11 +46,11 @@ namespace Middleware
             string back = rootFolder + "\\back.jpg";
             PrintDialog printDialog = new PrintDialog();
             PrintDocument pd = new PrintDocument();
-            pd.PrintPage += (sender, args) =>
-            {
-                args.Graphics.DrawImage(System.Drawing.Image.FromFile(input), args.PageBounds);
-            };
+            
             pd.OriginAtMargins = false;
+            if(pd.PrinterSettings.CanDuplex) {
+                pd.PrinterSettings.Duplex = Duplex.Vertical;
+            }
             //pd.PrinterSettings.PrinterName = PrinterSettings.InstalledPrinters
 
             Console.WriteLine("Choose printer:");
@@ -69,7 +69,18 @@ namespace Middleware
             py.Start(rootFolder + "\\main.exe", outparam);
             for(int i = 0; i < data.Count; i++) {
                 py.WaitForInputIdle();
+                pd.PrintPage += (sender, args) => {
+                    args.Graphics.DrawImage(System.Drawing.Image.FromFile(front), args.PageBounds);
+                };
                 pd.Print();
+                if(!pd.PrinterSettings.CanDuplex) {
+                    MessageBox.Show("svrti list");
+                }
+                pd.PrintPage += (sender, args) => {
+                    args.Graphics.DrawImage(System.Drawing.Image.FromFile(back), args.PageBounds);
+                };
+                pd.Print();
+                
                 py.StandardInput.WriteLineAsync();
             }
             while(!py.HasExited) {
