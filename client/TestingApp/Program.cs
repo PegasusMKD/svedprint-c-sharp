@@ -16,7 +16,7 @@ namespace TestingApp
 
             Dictionary<string, Smer> smerovi = new Dictionary<string, Smer>();
             Smerovi s = new Smerovi();
-            foreach (string smer in s.GetType().GetFields().Select(field => field.GetValue(s)).ToList())
+            foreach (string smer in klasen.GetSmerovi())
             {
                 var res = Requests.GetData(
                     new Dictionary<string, string>()
@@ -29,6 +29,7 @@ namespace TestingApp
                 Smer x = new Smer(res[0]["predmeti"].Split(',').ToList(), smer);
                 smerovi.Add(smer, x);
             }
+            klasen._p._smerovi = smerovi;
             var tmp = Requests.GetData(
                 new Dictionary<string, string>()
                 {
