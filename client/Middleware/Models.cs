@@ -15,15 +15,13 @@ namespace Middleware
         public string _prezime { get; set; }
         [JsonProperty(RequestParameters.oceni)]
         public List<int> _oceni { get; set; }
-        [JsonProperty(RequestParameters.paralelka)]
-        public string _paralelka { get; set; }
         [JsonProperty(RequestParameters.smer)]
         public string _smer { get; set; }
+        public Smer _s { get; set; }
         [JsonProperty(RequestParameters.broj)]
-        public Smer _s;
         public int _broj { get; set; }
-        [JsonProperty(RequestParameters.dob)]
-        public string _dob { get; set; }
+        [JsonProperty(RequestParameters.roden)]
+        public string _roden { get; set; }
         [JsonProperty(RequestParameters.mesto)]
         public string _mesto { get; set; }
         [JsonProperty(RequestParameters.povedenie)]
@@ -35,34 +33,33 @@ namespace Middleware
         [JsonProperty(RequestParameters.tip)]
         public string _tip { get; set; }
         [JsonProperty(RequestParameters.pat)]
-        public int _pat {get;set;}
+        public string _pat {get;set;}
 
 
-        public Ucenik(string ime, string tatkovo, string prezime, List<int> oceni, string paralelka, string smer, int broj, string dob, string mesto, string povedenie, int opravdani, int neopravdani, string tip, int pat)
+        public Ucenik(string ime, string tatkovo, string prezime, List<int> oceni, string smer, int broj, string roden, string mesto, string povedenie, int opravdani, int neopravdani, string tip, string pat)
         {
             _ime = ime ?? "";
             _tatkovo = tatkovo ?? "";
             _prezime = prezime ?? "";
             _oceni = oceni ?? new List<int>();
-            _paralelka = paralelka ?? "";
             _smer = smer ?? "";
             _broj = broj;
-            _dob = dob ?? "01.01.1111";
+            _roden = roden ?? "01.01.1111";
             _mesto = mesto ?? "";
             _povedenie = povedenie ?? "";
             _opravdani = opravdani;
             _neopravdani = neopravdani;
             _tip = tip ?? "";
-            _pat = pat;
+            _pat = pat ?? "-1";
 
             _s = new Smer(new List<string>(), _smer);
         }
         public Ucenik() { }
         public Ucenik(Dictionary<string, string> valuePairs)
         {
-            _ime = valuePairs["ime"];
-            _tatkovo = valuePairs["tatkovo"];
-            _prezime = valuePairs["prezime"];
+            _ime = valuePairs["ime"] ?? "";
+            _tatkovo = valuePairs["tatkovo"] ?? "";
+            _prezime = valuePairs["prezime"] ?? "";
 
             string[] s = valuePairs[RequestParameters.oceni].Split(' ');
             _oceni = new List<int>();
@@ -70,10 +67,17 @@ namespace Middleware
             {
                 _oceni.Add(int.Parse(x));
             }
-
-            _paralelka = valuePairs[RequestParameters.paralelka];
-            _smer = valuePairs[RequestParameters.smer];
-            _broj = int.Parse(valuePairs[RequestParameters.broj]);
+            
+            _smer = valuePairs[RequestParameters.smer] ?? "";
+            _s = new Smer(new List<string>(), _smer);
+            _broj = int.Parse(valuePairs[RequestParameters.broj] ?? "0");
+            _roden = valuePairs[RequestParameters.roden] ?? "";
+            _mesto = valuePairs[RequestParameters.mesto] ?? "";
+            _povedenie = valuePairs[RequestParameters.povedenie] ?? "";
+            _opravdani = int.Parse(valuePairs[RequestParameters.opravdani] ?? "0");
+            _neopravdani = int.Parse(valuePairs[RequestParameters.neopravdani] ?? "0");
+            _tip = valuePairs[RequestParameters.tip] ?? "";
+            _pat = valuePairs[RequestParameters.pat] ?? "";
         }
 
         public Dictionary<string, string> ToDict()
@@ -83,7 +87,6 @@ namespace Middleware
             dictionary[RequestParameters.srednoIme] = _tatkovo;
             dictionary[RequestParameters.prezime] = _prezime;
             dictionary[RequestParameters.oceni] = string.Join(" ", _oceni);
-            dictionary[RequestParameters.paralelka] = _paralelka;
             dictionary[RequestParameters.smer] = _smer;
             dictionary[RequestParameters.broj] = _broj.ToString();
 
@@ -91,9 +94,9 @@ namespace Middleware
         }
     }
 
-    static public class Smerovi
+    public class Smerovi
     {
-        public const string PMA = "PMA";
+        public const string PMA = "ПМА";
         public const string PMB = "PMB";
         public const string OHA = "OHA";
         public const string OHB = "OHB";

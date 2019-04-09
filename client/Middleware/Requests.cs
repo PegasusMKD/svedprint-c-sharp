@@ -42,7 +42,7 @@ namespace Middleware
         }
 
         // TODO
-        public static async Task AddDataAsync(Dictionary<string, string> queryParams, string scope)
+        public static void AddData(Dictionary<string, string> queryParams, string scope)
         {
 
             Request request = new Request(type: RequestTypes.ADD, scope: scope, queryParams: queryParams);
@@ -52,19 +52,19 @@ namespace Middleware
             var httpRequest = (HttpWebRequest)WebRequest.Create(uri);
             httpRequest.Method = @"POST";
             httpRequest.ContentType = @"application/json";
-            using (var writer = new StreamWriter(await httpRequest.GetRequestStreamAsync()))
+            using (var writer = new StreamWriter(httpRequest.GetRequestStream()))
             {
-                await writer.WriteAsync(json);
-                await writer.FlushAsync();
+                writer.Write(json);
+                writer.Flush();
                 writer.Close();
             }
 
-            var httpResponse = (HttpWebResponse)await httpRequest.GetResponseAsync();
-            var responseJson = await new StreamReader(httpResponse.GetResponseStream()).ReadToEndAsync();
+            var httpResponse = (HttpWebResponse) httpRequest.GetResponse();
+            var responseJson = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
 
         }
 
-        public static async Task UpdateDataAsync(Dictionary<string, string> queryParams, string scope) {
+        public static void UpdateData(Dictionary<string, string> queryParams, string scope) {
             Request request = new Request(type: RequestTypes.UPDATE, scope: scope, queryParams: queryParams);
 
             string json = JsonConvert.SerializeObject(request, new RequestConverter());
@@ -72,16 +72,15 @@ namespace Middleware
             var httpRequest = (HttpWebRequest)WebRequest.Create(uri);
             httpRequest.Method = @"POST";
             httpRequest.ContentType = @"application/json";
-            using (var writer = new StreamWriter(await httpRequest.GetRequestStreamAsync()))
+            using (var writer = new StreamWriter(httpRequest.GetRequestStream()))
             {
-                await writer.WriteAsync(json);
-                await writer.FlushAsync();
+                writer.Write(json);
+                writer.Flush();
                 writer.Close();
             }
 
-            var httpResponse = (HttpWebResponse)await httpRequest.GetResponseAsync();
-            var responseJson = await new StreamReader(httpResponse.GetResponseStream()).ReadToEndAsync();
-            
+            var httpResponse = (HttpWebResponse) httpRequest.GetResponse();
+            var responseJson = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
         }
 
     }
@@ -128,13 +127,12 @@ namespace Middleware
         public const string new_last_name = "new_last_name";
         public const string new_broj_vo_dnevnik = "new_broj_vo_dnevnik";
         public const string roditel = "roditel";
-        public const string roden = "roden";
         public const string mesto = "mesto";
         public const string opravdani = "opravdani";
         public const string neopravdani = "neopravdani";
         public const string tip = "tip";
         public const string povedenie = "povedenie";
-        public const string dob = "dob";
+        public const string roden = "roden";
         public const string pat = "pat";
     }
     //_queryParams : { "ime" : "asfasf", ... }
