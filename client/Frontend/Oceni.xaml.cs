@@ -26,7 +26,7 @@ namespace Frontend
         Frame Main;
         Page loginPage;
         Klasen UserKlas;
-
+        List<Dictionary<string, string>> result;
         public Oceni(Frame m, Page loginpage)
         {
             InitializeComponent();
@@ -34,7 +34,7 @@ namespace Frontend
             loginPage = loginpage;
             UserKlas = Home_Page.KlasenKlasa;
 
-            List<Dictionary<string, string>> result = Requests.GetData(new Dictionary<string, string>() {
+            result = Requests.GetData(new Dictionary<string, string>() {
                 {RequestParameters.token, UserKlas._token }
             }, RequestScopes.GetParalelka);
             //
@@ -109,7 +109,9 @@ namespace Frontend
 
         private void MouseLeftButtonDown(object sender, MouseButtonEventArgs e, int brojDn)
         {
-            Ucenik_Name.Content = "Име Презиме " + brojDn.ToString();
+            Ucenik_Name.Content = result[brojDn-1]["ime"] + " " + result[brojDn-1]["prezime"];
+            Prosek_out.Content = Array.ConvertAll(result[brojDn - 1]["oceni"].Split(' '), x => float.Parse(x)).Average().ToString("n2");
+
             BrojDn_label.Content = brojDn.ToString();
             if (ClickedMenuItem != null)
             {
@@ -132,7 +134,7 @@ namespace Frontend
             int TxtHeight = 50;
             foreach (var x in Result)
             {
-                predmeti = x["oceni"].Split(' ');
+                string[] ocenki = x["oceni"].Split(' ');
 
                 for (int i = 0; ctr < Size; i++)
                 {
@@ -170,7 +172,7 @@ namespace Frontend
                         OcenkiGrid.Children.Add(panel);
 
                         TextBox tx = new TextBox();
-
+                        tx.Text = ocenki[j];
                         tx.VerticalAlignment = VerticalAlignment.Center;
                         tx.HorizontalAlignment = HorizontalAlignment.Center;
                         tx.FontSize = 23;
@@ -210,7 +212,9 @@ namespace Frontend
                         tx.FontSize = 20;
                         tx.FontFamily = new System.Windows.Media.FontFamily("Arial Black");
                         tx.Foreground = System.Windows.Media.Brushes.White;
+                    
                         tx.Content = predmeti[ctr + j - 4];
+                        
 
                         Border panel = new Border();
                         Grid.SetColumn(panel, j);

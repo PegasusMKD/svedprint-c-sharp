@@ -25,8 +25,9 @@
 		</Grid>
 		<ListView Name ="Menu" Grid.RowSpan="2" Background="#FFF1F3CE" BorderThickness="1,1,1,2" BorderBrush="#FFF1F3CE" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Row="1" SelectionChanged="Menu_SelectionChanged"/>
 		<StackPanel Grid.Column="1" Background="#FFED6A3D">
-			<Label x:Name="Ucenik_Name" Content="Име Презиме" FontFamily="Arial Black" FontSize="48" HorizontalAlignment="Center" Foreground="White" VerticalAlignment="Center"/>
+			<Label x:Name="Ucenik_Name" Content="Ucenik_Name"  FontFamily="Arial Black" FontSize="48" HorizontalAlignment="Center" Foreground="White" VerticalAlignment="Center"/>
 		</StackPanel>
+        <!--Content="Име Презиме"-->
 		<Grid Background="#FF4B86C6" Grid.Column="1" Grid.Row="1">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="2*"/>
@@ -48,7 +49,7 @@
 					</LinearGradientBrush>
 				</ComboBox.Background>
 			</ComboBox>
-			<Label Name ="Prosek_out" Content="4.93" Grid.Column="3" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Top" FontSize="20" BorderBrush="Black" Background="#FF395F86" Foreground="White" Height="37" Width="80" Grid.Row="1" HorizontalContentAlignment="Center"/>
+			<Label Name ="Prosek_out" Content="" Grid.Column="3" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Top" FontSize="20" BorderBrush="Black" Background="#FF395F86" Foreground="White" Height="37" Width="80" Grid.Row="1" HorizontalContentAlignment="Center"/>
 			<Label Content="просек" Grid.Column="3" HorizontalAlignment="Center" Margin="0" FontSize="23" Foreground="White" VerticalAlignment="Bottom" HorizontalContentAlignment="Center"/>
 			<Label Name ="BrojDn_label" Content="" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center" Grid.RowSpan="2" FontSize="36" Foreground="White"/>
 
