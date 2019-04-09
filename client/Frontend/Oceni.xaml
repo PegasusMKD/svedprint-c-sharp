@@ -20,7 +20,7 @@
 		</Grid.ColumnDefinitions>
 		<Grid VerticalAlignment="Center" Margin="26,0,27,0">
 			<Image x:Name="home_img" HorizontalAlignment="Center" Source="home_icon.png" Margin="0" VerticalAlignment="Center"/>
-			<Image HorizontalAlignment="Left" Margin="0,5" VerticalAlignment="Top" Source="print.png"/>
+            <Image x:Name="print_img" HorizontalAlignment="Left" Margin="0,5" VerticalAlignment="Top" Source="print.png"/>
 			<Image HorizontalAlignment="Right" Margin="0,5" VerticalAlignment="Top" Source="settings.png"/>
 		</Grid>
 		<ListView Name ="Menu" Grid.RowSpan="2" Background="#FFF1F3CE" BorderThickness="1,1,1,2" BorderBrush="#FFF1F3CE" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Row="1" SelectionChanged="Menu_SelectionChanged"/>
