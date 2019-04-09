@@ -1,52 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing.Printing;
-using System.Drawing;
-using System.Windows.Controls;
-using iText;
-using iText.Layout;
-using System.IO;
-using iText.Kernel.Pdf;
 using System.Diagnostics;
+using System.Drawing.Printing;
+using System.IO;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace Middleware
 {
     public class Print
     {
-        public static void print2pdf()
-        {
-            string input = @"C:\Users\darij\Desktop\dio.jpg";
-            string output = @"C:\Users\darij\Desktop\print.pdf";
-
-            Document doc = new Document(new PdfDocument(new PdfWriter(output)));
-            doc.Add(new iText.Layout.Element.Image(iText.IO.Image.ImageDataFactory.Create(input)));
-
-            doc.Close();
-            return;
-
-            PrintDocument pd = new PrintDocument();
-            pd.PrintPage += (sender, args) =>
-            {
-                System.Drawing.Image img = System.Drawing.Image.FromFile(@"C:\Users\darij\Desktop\dio.jpg");
-                args.Graphics.DrawImage(img, args.PageBounds);
-            };
-            PrintDialog d = new PrintDialog();
-
-            pd.PrinterSettings.PrintFileName = @"C:\Users\darij\Desktop\print123.pdf";
-            pd.Print();
-        }
         public static void print2prntr(List<Ucenik> ucenici, Klasen klasen)
         {
-            //List<string> data = init(ucenici, klasen);
+            List<string> data = init(ucenici, klasen);
             string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
             PrintDialog printDialog = new PrintDialog();
             PrintDocument pd = new PrintDocument();
-
-            //pd.PrinterSettings.PrinterName = PrinterSettings.InstalledPrinters
 
             Console.WriteLine("Choose printer:");
             for (int i = 0; i < PrinterSettings.InstalledPrinters.Count; i++)
@@ -55,21 +25,18 @@ namespace Middleware
             }
             int choice = int.Parse(Console.ReadLine());
 
-            //int choice = 3;
+            // PrinterSettings.InstalledPrinters - lista na printeri
             pd.PrinterSettings.PrinterName = PrinterSettings.InstalledPrinters[choice];
 
             pd.DefaultPageSettings.PaperSize = pd.PrinterSettings.PaperSizes.Cast<PaperSize>().First<PaperSize>(size => size.Kind == PaperKind.A4);
             pd.OriginAtMargins = false;
-            
 
-
-            //outparam = "\"Македонски Јазик/ Математичка Анализа / Бизнис и Претприемништво/ ФЗО / Германски Јазик / Програмски Јазици/ Predmet123/ Predmet321/ Predmet221/ Predmet 231\";\"1 2 3 4 5 2 2 3 5 4\";\"Коце Металец, Скопје,,IV, Лука Јовановски,Славка Јовановска,22.09.2000,Скопје,Скопје,Северна Македонија, северно-македонец,19,20,прв,IV 1,Добро,0,0,Гимназиско образование,ПМА,,\"" + "?" + 
-            //    "\"makedonski jazik/ calculus IV/ Бизнис и Претприемништво/ ФЗО / Германски Јазик / Програмски Јазици/ Predmet123/ Predmet321/ Predmet221/ Predmet 231\";\"1 2 3 4 5 2 2 3 5 4\";\"Коце Металец, Скопје,,IV, Лука Јовановски,Славка Јовановска,22.09.2000,Скопје,Скопје,Северна Македонија, северно-македонец,19,20,прв,IV 1,Добро,0,0,Гимназиско образование,ПМА,,\"";
-            List<string> data = new List<string>() {
-                "\"Македонски Јазик/ Математичка Анализа / Бизнис и Претприемништво/ ФЗО / Германски Јазик / Програмски Јазици/ Predmet123/ Predmet321/ Predmet221/ Predmet 231\";\"1 2 3 4 5 2 2 3 5 4\";\"Коце Металец, Скопје,,IV, Лука Јовановски,Славка Јовановска,22.09.2000,Скопје,Скопје,Северна Македонија, северно-македонец,19,20,прв,IV 1,Добро,0,0,Гимназиско образование,ПМА,,\"",
-                "\"makedonski jazik/ calculus IV/ Бизнис и Претприемништво/ ФЗО / Германски Јазик / Програмски Јазици/ Predmet123/ Predmet321/ Predmet221/ Predmet 231\";\"1 2 3 4 5 2 2 3 5 4\";\"Коце Металец, Скопје,,IV, Лука Јовановски,Славка Јовановска,22.09.2000,Скопје,Скопје,Северна Македонија, северно-македонец,19,20,прв,IV 1,Добро,0,0,Гимназиско образование,ПМА,,\"",
-                 "\"SOCIOLOGIJAAA/ Математичка Анализа / Бизнис и Претприемништво/ ФЗО / Германски Јазик / Програмски Јазици/ Predmet123/ Predmet321/ Predmet221/ Predmet 231\";\"1 2 3 4 5 2 2 3 5 4\";\"Коце Металец, Скопје,,IV, Лука Јовановски,Славка Јовановска,22.09.2000,Скопје,Скопје,Северна Македонија, северно-македонец,19,20,прв,IV 1,Добро,0,0,Гимназиско образование,ПМА,,\""
-            };
+            /*List<string> data = new List<string>() {
+            //    "\"Македонски Јазик/ Математичка Анализа / Бизнис и Претприемништво/ ФЗО / Германски Јазик / Програмски Јазици/ Predmet123/ Predmet321/ Predmet221/ Predmet 231\";\"1 2 3 4 5 2 2 3 5 4\";\"Коце Металец, Скопје,,IV, Лука Јовановски,Славка Јовановска,22.09.2000,Скопје,Скопје,Северна Македонија, северно-македонец,19,20,прв,IV 1,Добро,0,0,Гимназиско образование,ПМА,,\"",
+            //    "\"makedonski jazik/ calculus IV/ Бизнис и Претприемништво/ ФЗО / Германски Јазик / Програмски Јазици/ Predmet123/ Predmet321/ Predmet221/ Predmet 231\";\"1 2 3 4 5 2 2 3 5 4\";\"Коце Металец, Скопје,,IV, Лука Јовановски,Славка Јовановска,22.09.2000,Скопје,Скопје,Северна Македонија, северно-македонец,19,20,прв,IV 1,Добро,0,0,Гимназиско образование,ПМА,,\"",
+            //     "\"SOCIOLOGIJAAA/ Математичка Анализа / Бизнис и Претприемништво/ ФЗО / Германски Јазик / Програмски Јазици/ Predmet123/ Predmet321/ Predmet221/ Predmet 231\";\"1 2 3 4 5 2 2 3 5 4\";\"Коце Металец, Скопје,,IV, Лука Јовановски,Славка Јовановска,22.09.2000,Скопје,Скопје,Северна Македонија, северно-македонец,19,20,прв,IV 1,Добро,0,0,Гимназиско образование,ПМА,,\""
+            //};
+            */
             string outparam = String.Join("?", data);
 
             string pyscript = rootFolder + "\\main.exe";
@@ -88,29 +55,44 @@ namespace Middleware
 
             //py.StartInfo.CreateNoWindow = true;
 
-            for (int i = 0; i < data.Count; i++) {
+            for (int i = 0; i < data.Count; i++)
+            {
                 int page = 0;
 
-                pd.PrintPage += (sender, args) => {
-                    if (page%2 == 0)
+                if (pd.PrinterSettings.CanDuplex)
+                {
+                    pd.PrintPage += (sender, args) =>
                     {
-                        args.Graphics.DrawImage(System.Drawing.Image.FromFile(String.Format(".\\front-{0}.jpg", i)), args.PageBounds);
-                        pd.DocumentName = String.Format("{0}\\front-{1}.jpg", rootFolder, i);
-                        args.HasMorePages = true;
-                    } else
+                        if (page % 2 == 0)
+                        {
+                            args.Graphics.DrawImage(System.Drawing.Image.FromFile(String.Format(".\\front-{0}.jpg", i)), args.PageBounds);
+                            pd.DocumentName = String.Format("{0}\\front-{1}.jpg", rootFolder, i);
+                            args.HasMorePages = true;
+                        }
+                        else
+                        {
+                            args.HasMorePages = false;
+                            args.Graphics.DrawImage(System.Drawing.Image.FromFile(String.Format(".\\back-{0}.jpg", i)), args.PageBounds);
+                            pd.DocumentName = String.Format("{0}\\back-{1}.jpg", rootFolder, i);
+                        }
+                        page++;
+                    };
+                    pd.Print();
+                }
+                else
+                {
+                    pd.PrintPage += (sender, args) =>
                     {
-                        args.HasMorePages = false;
-                        args.Graphics.DrawImage(System.Drawing.Image.FromFile(String.Format(".\\back-{0}.jpg", i)), args.PageBounds);
-                        pd.DocumentName = String.Format("{0}\\back-{1}.jpg",rootFolder, i);
-                    }
-                    page++;
-                };
-
-                
-                pd.Print();
-
-                //MessageBox.Show("svrti list");
-                //pd.Print();
+                        args.Graphics.DrawImage(System.Drawing.Image.FromFile(
+                            String.Format(".\\{0}-{1}.jpg", (page % 2 == 0 ? "front" : "back"), i)),
+                            args.PageBounds);
+                        pd.DocumentName = String.Format("{2}\\{0}-{1}.jpg", (page % 2 == 0 ? "front" : "back"), i, rootFolder);
+                        page++;
+                    };
+                    pd.Print();
+                    MessageBox.Show("Ве молиме свртете го листот.");
+                    pd.Print();
+                }
             }
         }
         public static List<string> init(List<Ucenik> ucenici, Klasen klasen)

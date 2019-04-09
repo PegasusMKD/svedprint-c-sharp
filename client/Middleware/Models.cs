@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace Middleware
@@ -33,7 +32,7 @@ namespace Middleware
         [JsonProperty(RequestParameters.tip)]
         public string _tip { get; set; }
         [JsonProperty(RequestParameters.pat)]
-        public string _pat {get;set;}
+        public string _pat { get; set; }
 
 
         public Ucenik(string ime, string tatkovo, string prezime, List<int> oceni, string smer, int broj, string roden, string mesto, string povedenie, int opravdani, int neopravdani, string tip, string pat)
@@ -67,7 +66,7 @@ namespace Middleware
             {
                 _oceni.Add(int.Parse(x));
             }
-            
+
             _smer = valuePairs[RequestParameters.smer] ?? "";
             _s = new Smer(new List<string>(), _smer);
             _broj = int.Parse(valuePairs[RequestParameters.broj] ?? "0");
@@ -82,13 +81,15 @@ namespace Middleware
 
         public Dictionary<string, string> ToDict()
         {
-            Dictionary<string, string> dictionary = new Dictionary<string, string>();
-            dictionary[RequestParameters.ime] = _ime;
-            dictionary[RequestParameters.srednoIme] = _tatkovo;
-            dictionary[RequestParameters.prezime] = _prezime;
-            dictionary[RequestParameters.oceni] = string.Join(" ", _oceni);
-            dictionary[RequestParameters.smer] = _smer;
-            dictionary[RequestParameters.broj] = _broj.ToString();
+            Dictionary<string, string> dictionary = new Dictionary<string, string>
+            {
+                [RequestParameters.ime] = _ime,
+                [RequestParameters.srednoIme] = _tatkovo,
+                [RequestParameters.prezime] = _prezime,
+                [RequestParameters.oceni] = string.Join(" ", _oceni),
+                [RequestParameters.smer] = _smer,
+                [RequestParameters.broj] = _broj.ToString()
+            };
 
             return dictionary;
         }
@@ -102,7 +103,7 @@ namespace Middleware
         public const string OHB = "OHB";
         public const string JUA = "JUA";
         public const string JUB = "JUB";
-
+        // TODO: smerovite da bidat na kirilica
     }
 
     public class Smer
@@ -130,7 +131,7 @@ namespace Middleware
         [JsonProperty(RequestParameters.klasen)]
         public Klasen _klasen { get; set; }
         public List<Smer> _smerovi;
-        
+
 
 
         public Paralelka(string paralelka, List<Ucenik> ucenici, Klasen klasen, List<Smer> smerovi)
@@ -154,7 +155,7 @@ namespace Middleware
         public string _prezime { get; set; }
         [JsonProperty(RequestParameters.paralelka)]
         public string _paralelka { get; set; }
-        public Paralelka _p {get;set;}
+        public Paralelka _p { get; set; }
         [JsonProperty(RequestParameters.token)]
         public string _token { get; set; }
         [JsonProperty(RequestParameters.uchilishte)]

@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace Middleware
 {
@@ -13,7 +12,6 @@ namespace Middleware
     {
         private static readonly HttpClient http = new HttpClient();
 
-        // DONE
         public static List<Dictionary<string, string>> GetData(Dictionary<string, string> queryParams, string scope)
         {
             Request request = new Request(type: RequestTypes.GET, scope: scope, queryParams: queryParams);
@@ -26,25 +24,18 @@ namespace Middleware
             using (var writer = new StreamWriter(httpRequest.GetRequestStream()))
             {
                 writer.Write(json);
-                writer.Flush();
-                writer.Close();
             }
 
             var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
             var responseJson = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
-
-            //var response = await http.PostAsync(uri, new StringContent(json));
-            //string responseJson = await response.Content.ReadAsStringAsync();
 
             List<Dictionary<string, string>> queryResult = new List<Dictionary<string, string>>();
             queryResult = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(responseJson, new DictConverter());
             return queryResult;
         }
 
-        // TODO
         public static void AddData(Dictionary<string, string> queryParams, string scope)
         {
-
             Request request = new Request(type: RequestTypes.ADD, scope: scope, queryParams: queryParams);
 
             string json = JsonConvert.SerializeObject(request, new RequestConverter());
@@ -55,16 +46,14 @@ namespace Middleware
             using (var writer = new StreamWriter(httpRequest.GetRequestStream()))
             {
                 writer.Write(json);
-                writer.Flush();
-                writer.Close();
             }
 
-            var httpResponse = (HttpWebResponse) httpRequest.GetResponse();
+            var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
             var responseJson = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
-
         }
 
-        public static void UpdateData(Dictionary<string, string> queryParams, string scope) {
+        public static void UpdateData(Dictionary<string, string> queryParams, string scope)
+        {
             Request request = new Request(type: RequestTypes.UPDATE, scope: scope, queryParams: queryParams);
 
             string json = JsonConvert.SerializeObject(request, new RequestConverter());
@@ -75,11 +64,9 @@ namespace Middleware
             using (var writer = new StreamWriter(httpRequest.GetRequestStream()))
             {
                 writer.Write(json);
-                writer.Flush();
-                writer.Close();
             }
 
-            var httpResponse = (HttpWebResponse) httpRequest.GetResponse();
+            var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
             var responseJson = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
         }
 
@@ -94,7 +81,7 @@ namespace Middleware
         public const string GetPredmetiSmer = "smer";
         public const string AddUcenici = "ucenici";
         public const string UpdateKlasen = "user";
-        public const string UpdateParalelka = "paralelka";        
+        public const string UpdateParalelka = "paralelka";
         public const string UpdateSmer = "smer";
         public const string UpdateUcenik = "ucenik";
         public const string UpdateUchilishte = "uchilishte";
@@ -135,7 +122,7 @@ namespace Middleware
         public const string roden = "roden";
         public const string pat = "pat";
     }
-    //_queryParams : { "ime" : "asfasf", ... }
+
     class RequestConverter : JsonConverter<Request>
     {
         public override Request ReadJson(JsonReader reader, Type objectType, Request existingValue, bool hasExistingValue, JsonSerializer serializer)
@@ -145,20 +132,15 @@ namespace Middleware
 
         public override void WriteJson(JsonWriter writer, Request value, JsonSerializer serializer)
         {
-            //writer.WriteRawAsync(@"{");
-            writer.WriteStartObjectAsync();
-            writer.WritePropertyNameAsync(value._type);
-            writer.WriteValueAsync(value._scope);
+            writer.WriteStartObject();
+            writer.WritePropertyName(value._type);
+            writer.WriteValue(value._scope);
             foreach (KeyValuePair<string, string> x in value._queryParams)
             {
                 writer.WritePropertyNameAsync(x.Key);
                 writer.WriteValueAsync(x.Value);
             }
-            writer.WriteEndObjectAsync();
-            //serializer.Serialize(writer, value._queryParams);
-            //writer.WriteRawAsync(@"}");
-            //writer.WriteValueAsync(value._params);
-            // TODO: make custom serializer to leave out null values instead of sending empty values
+            writer.WriteEndObject();
         }
     }
 
@@ -167,7 +149,7 @@ namespace Middleware
         public override List<Dictionary<string, string>> ReadJson(JsonReader reader, Type objectType, List<Dictionary<string, string>> existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             List<Dictionary<string, string>> pairs = new List<Dictionary<string, string>>();
-            
+
             JObject x;
             do
             {
@@ -175,13 +157,14 @@ namespace Middleware
                 {
                     Dictionary<string, string> pair = new Dictionary<string, string>();
                     x = JObject.Load(reader);
-                    foreach(JToken k in x.PropertyValues())
+                    foreach (JToken k in x.PropertyValues())
                     {
-                        if(k.Path == "oceni")
+                        if (k.Path == "oceni")
                         {
                             List<int> l = k.ToObject<List<int>>();
                             pair[k.Path] = String.Join<int>(" ", l);
-                        } else
+                        }
+                        else
                         {
                             pair[k.Path] = k.ToObject<string>().ToString();
                         }
@@ -195,7 +178,7 @@ namespace Middleware
 
         public override void WriteJson(JsonWriter writer, List<Dictionary<string, string>> value, JsonSerializer serializer)
         {
-            
+            throw new NotImplementedException();
         }
     }
 }
