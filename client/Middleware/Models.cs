@@ -128,18 +128,15 @@ namespace Middleware
         public string _paralelka { get; set; }
         [JsonProperty(RequestParameters.ucenici)]
         public List<Ucenik> _ucenici { get; set; }
-        [JsonProperty(RequestParameters.klasen)]
-        public Klasen _klasen { get; set; }
-        public List<Smer> _smerovi;
+        public Dictionary<string,Smer> _smerovi;
 
 
 
-        public Paralelka(string paralelka, List<Ucenik> ucenici, Klasen klasen, List<Smer> smerovi)
+        public Paralelka(string paralelka, List<Ucenik> ucenici, Dictionary<string,Smer> smerovi)
         {
             _paralelka = paralelka ?? throw new ArgumentNullException(nameof(paralelka));
             _ucenici = ucenici ?? throw new ArgumentNullException(nameof(ucenici));
-            _klasen = klasen ?? throw new ArgumentNullException(nameof(klasen));
-            _smerovi = smerovi ?? new List<Smer>();
+            _smerovi = smerovi ?? new Dictionary<string, Smer>();
         }
 
         public Paralelka() { }
@@ -164,22 +161,30 @@ namespace Middleware
         public string _grad { get; set; }
         [JsonProperty(RequestParameters.godina)]
         public int _godina { get; set; } // ucebna godina
+        [JsonProperty("smerovi")]
+        public string _smerovi { get; set; }
 
-        public Klasen(string ime, string srednoIme, string prezime, string token, string paralelka, string uchilishte, string grad, int godina)
+        public Klasen(string ime, string srednoIme, string prezime, string token, string paralelka, string uchilishte, string grad, int godina, string smerovi)
         {
             _ime = ime ?? "";
             _srednoIme = srednoIme ?? "";
             _prezime = prezime ?? "";
             _token = token ?? "";
-            _paralelka = paralelka ?? "";
+            _paralelka = paralelka;
+            _p = new Paralelka(_paralelka, new List<Ucenik>(), new Dictionary<string, Smer>());
             _uchilishte = uchilishte ?? "";
             _grad = grad ?? "";
             _godina = godina;
+            _smerovi = smerovi;
 
-            _p = new Paralelka(_paralelka, new List<Ucenik>(), this, new List<Smer>());
         }
 
         public Klasen() { }
+        public string[] GetSmerovi()
+        {
+            char delimiter = ',';
+            return _smerovi.Split(delimiter);
+        }
     }
 
     class Request
