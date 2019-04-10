@@ -25,7 +25,7 @@ namespace Middleware {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("192.168.1.100")]
+        [global::System.Configuration.DefaultSettingValueAttribute("192.168.1.101")]
         public string DB_HOST {
             get {
                 return ((string)(this["DB_HOST"]));

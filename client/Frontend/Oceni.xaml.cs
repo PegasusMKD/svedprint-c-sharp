@@ -26,7 +26,9 @@ namespace Frontend
         Frame Main;
         Page loginPage;
         Klasen UserKlas;
-
+        List<Dictionary<string, string>> result;
+        Dictionary<string,Smer> smerovi;
+        Dictionary<string, string> res;
         public Oceni(Frame m, Page loginpage)
         {
             InitializeComponent();
@@ -34,7 +36,8 @@ namespace Frontend
             loginPage = loginpage;
             UserKlas = Home_Page.KlasenKlasa;
 
-            List<Dictionary<string, string>> result = Requests.GetData(new Dictionary<string, string>() {
+
+            result = Requests.GetData(new Dictionary<string, string>() {
                 {RequestParameters.token, UserKlas._token }
             }, RequestScopes.GetParalelka);
             //
@@ -44,8 +47,42 @@ namespace Frontend
             string[] str = { "Математика", "Македонски", "Физика", "Хемија", "Биологија", "Географија", "Физичко", "Ликовно", "Музичко", "Математика", "физка", "Математика", "географија", "Математика" };
             LoadOcenki(str, result);
 
+            smerovi = new Dictionary<string, Smer>();
+
+            foreach (var x in "ПМА,PMB,OHA,OHB,JUA,JUB".Split(','))
+            {
+                smerovi.Add(x,new Smer(Requests.GetData(new Dictionary<string, string>(){
+                    { RequestParameters.token, UserKlas._token},
+                    { RequestParameters.smer, "ПМА"}
+                }, RequestScopes.GetPredmetiSmer)[0]["predmeti"].Split(',').ToList(), "PMA"));
+            }
+                
+            
+            //Smer pmb = new Smer(Requests.GetData(new Dictionary<string, string>(){
+            //        { RequestParameters.token, UserKlas._token},
+            //        { RequestParameters.smer, "PMB"}
+            //    }, RequestScopes.GetPredmetiSmer)[0]["predmeti"].Split(',').ToList(), "PMA");
+            //Smer oha = new Smer(Requests.GetData(new Dictionary<string, string>(){
+            //        { RequestParameters.token, UserKlas._token},
+            //        { RequestParameters.smer, "OHA"}
+            //    }, RequestScopes.GetPredmetiSmer)[0]["predmeti"].Split(',').ToList(), "PMA");
+            //Smer ohb = new Smer(Requests.GetData(new Dictionary<string, string>(){
+            //        { RequestParameters.token, UserKlas._token},
+            //        { RequestParameters.smer, "OHB"}
+            //    }, RequestScopes.GetPredmetiSmer)[0]["predmeti"].Split(',').ToList(), "PMA");
+            //Smer jua = new Smer(Requests.GetData(new Dictionary<string, string>(){
+            //        { RequestParameters.token, UserKlas._token},
+            //        { RequestParameters.smer, "JUA"}
+            //    }, RequestScopes.GetPredmetiSmer)[0]["predmeti"].Split(',').ToList(), "PMA");
+            //Smer jub = new Smer(Requests.GetData(new Dictionary<string, string>(){
+            //        { RequestParameters.token, UserKlas._token},
+            //        { RequestParameters.smer, "JUB"}
+             //   }, RequestScopes.GetPredmetiSmer)[0]["predmeti"].Split(',').ToList(), "PMA");
+
 
             home_img.MouseLeftButtonDown += new MouseButtonEventHandler(Back_Home);
+            print_img.MouseLeftButtonDown += new MouseButtonEventHandler(Back_Print);
+            //settings_img.MouseLeftButtonDown += new MouseButtonEventHandler(Back_Home);
             hide_menu_img.MouseLeftButtonDown += new MouseButtonEventHandler(Menu_hide);
 
         }
@@ -87,9 +124,9 @@ namespace Frontend
             tx.Foreground = System.Windows.Media.Brushes.White;
             tx.VerticalAlignment = VerticalAlignment.Center;
 
-            st.MouseLeftButtonDown += new MouseButtonEventHandler((sender, e) => MouseLeftButtonDown(sender, e, brojDn + 1));
+            st.MouseLeftButtonDown += new MouseButtonEventHandler((sender, e) => MouseLeftButtonDown(sender, e, brojDn));
             st.MouseEnter += new MouseEventHandler(MouseEnter);
-            st.MouseLeave += new MouseEventHandler(MouseLeave);
+            st.MouseLeave += new MouseEventHandler(MouseLeave); 
 
             return st;
         }
@@ -109,9 +146,8 @@ namespace Frontend
 
         private void MouseLeftButtonDown(object sender, MouseButtonEventArgs e, int brojDn)
         {
-            Ucenik_Name.Content = "Име Презиме " + brojDn.ToString();
-            BrojDn_label.Content = brojDn.ToString();
-            if (ClickedMenuItem != null)
+
+            if (ClickedMenuItem != null)//hover
             {
                 DockPanel st2 = (DockPanel)ClickedMenuItem;
                 st2.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(165, 166, 140));
@@ -119,20 +155,38 @@ namespace Frontend
             DockPanel st = (DockPanel)sender;
             st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(237, 106, 61));
             ClickedMenuItem = sender;
+
+
+            Ucenik_Name.Content = result[brojDn]["ime"] + " " + result[brojDn]["prezime"];
+            Prosek_out.Content = Array.ConvertAll(result[brojDn]["oceni"].Split(' '), x => float.Parse(x)).Average().ToString("n2");
+
+            BrojDn_label.Content = brojDn.ToString();
+
+            string[] ocenki = result[brojDn]["oceni"].Split(' ');
+            //string[] predmeti = result[brojDn]["predmeti"].Split(',');
+            for (int i = 0; i < ocenki.Length; i++)
+            {
+                Ocenkibox[i].Text = ocenki[i];//5 5 5 5 5 5 5 5
+                //Predmetibox[i].Content = result[brojDn]["predmeti"][i];
+                
+                if(i < smerovi[result[brojDn]["smer"]]._predmeti.Count)
+                {
+                Predmetibox[i].Content = smerovi[result[brojDn]["smer"]]._predmeti[i];
+                }
+                
+            }
         }
 
         List<TextBox> Ocenkibox = new List<TextBox>();
+        List<Label> Predmetibox = new List<Label>();
         private void LoadOcenki(String[] predmeti, List<Dictionary<string, string>> Result)
         {
 
             int Size = predmeti.Length;
             int ctr = 0;
-            int txtCounter = 0;
             int ImgHeight = 80;
             int TxtHeight = 50;
-            foreach (var x in Result)
-            {
-                predmeti = x["oceni"].Split(' ');
+                
 
                 for (int i = 0; ctr < Size; i++)
                 {
@@ -170,7 +224,7 @@ namespace Frontend
                         OcenkiGrid.Children.Add(panel);
 
                         TextBox tx = new TextBox();
-
+                        //tx.Text = ocenki[j];
                         tx.VerticalAlignment = VerticalAlignment.Center;
                         tx.HorizontalAlignment = HorizontalAlignment.Center;
                         tx.FontSize = 23;
@@ -211,6 +265,7 @@ namespace Frontend
                         tx.FontFamily = new System.Windows.Media.FontFamily("Arial Black");
                         tx.Foreground = System.Windows.Media.Brushes.White;
                         tx.Content = predmeti[ctr + j - 4];
+                        Predmetibox.Add(tx);
 
                         Border panel = new Border();
                         Grid.SetColumn(panel, j);
@@ -224,7 +279,6 @@ namespace Frontend
 
                     OcenkiGrid.Height = OcenkiGrid.Height + ImgHeight + TxtHeight;
                     if (last != -2) break;
-                }
             }
 
         }
@@ -262,6 +316,10 @@ namespace Frontend
         private void Back_Home(object sender, MouseButtonEventArgs e)
         {
             Main.Content = loginPage;
+        }
+        private void Back_Print(object sender, MouseButtonEventArgs e)
+        {
+            Main.Content = PrintFrame.ContentProperty;
         }
 
         private void Menu_SelectionChanged(object sender, SelectionChangedEventArgs e)
