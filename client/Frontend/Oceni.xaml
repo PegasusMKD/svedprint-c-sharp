@@ -18,11 +18,11 @@
 			<ColumnDefinition Width="83*"/>
 			<ColumnDefinition Width="217*"/>
 		</Grid.ColumnDefinitions>
-		<Grid VerticalAlignment="Center" Margin="26,0,27,0">
-			<Image x:Name="home_img" HorizontalAlignment="Center" Source="home_icon.png" Margin="0" VerticalAlignment="Center"/>
-            <Image x:Name="print_img" HorizontalAlignment="Left" Margin="0,5" VerticalAlignment="Top" Source="print.png"/>
-			<Image HorizontalAlignment="Right" Margin="0,5" VerticalAlignment="Top" Source="settings.png"/>
-		</Grid>
+		<UniformGrid VerticalAlignment="Center" HorizontalAlignment="Stretch" Columns="3">
+            <Image x:Name="home_img" Source="home_icon.png" Margin="0,5" Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UniformGrid}}, Path=Height}"/>
+            <Image x:Name="print_img" Margin="0,5" Source="print.png" Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UniformGrid}}, Path=Height}" />
+            <Image x:Name="settings_img" Margin="0,5" Source="settings.png" Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UniformGrid}}, Path=Height}" />
+        </UniformGrid>
 		<ListView Name ="Menu" Grid.RowSpan="2" Background="#FFF1F3CE" BorderThickness="1,1,1,2" BorderBrush="#FFF1F3CE" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Row="1" SelectionChanged="Menu_SelectionChanged"/>
 		<StackPanel Grid.Column="1" Background="#FFED6A3D">
 			<Label x:Name="Ucenik_Name" Content="Ucenik_Name"  FontFamily="Arial Black" FontSize="48" HorizontalAlignment="Center" Foreground="White" VerticalAlignment="Center"/>
