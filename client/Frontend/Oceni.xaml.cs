@@ -53,9 +53,10 @@ namespace Frontend
             {
                 smerovi.Add(x,new Smer(Requests.GetData(new Dictionary<string, string>(){
                     { RequestParameters.token, UserKlas._token},
-                    { RequestParameters.smer, "ПМА"}
-                }, RequestScopes.GetPredmetiSmer)[0]["predmeti"].Split(',').ToList(), "PMA"));
+                    { RequestParameters.smer, x }
+                }, RequestScopes.GetPredmetiSmer)[0]["predmeti"].Split(',').ToList(), x));
             }
+            populateData(0);
                 
             
             //Smer pmb = new Smer(Requests.GetData(new Dictionary<string, string>(){
@@ -104,7 +105,6 @@ namespace Frontend
                 combobox_smer.Items.Add(smer[j]);
             }
             combobox_smer.SelectedItem = combobox_smer.Items[0];
-
         }
 
         private DockPanel MenuDP(string Name, string Prezime, int brojDn)
@@ -155,25 +155,28 @@ namespace Frontend
             DockPanel st = (DockPanel)sender;
             st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(237, 106, 61));
             ClickedMenuItem = sender;
+            populateData(brojDn);
+        }
 
-
+        private void populateData(int brojDn)
+        {
             Ucenik_Name.Content = result[brojDn]["ime"] + " " + result[brojDn]["prezime"];
             Prosek_out.Content = Array.ConvertAll(result[brojDn]["oceni"].Split(' '), x => float.Parse(x)).Average().ToString("n2");
 
-            BrojDn_label.Content = brojDn.ToString();
+            BrojDn_label.Content = (brojDn + 1).ToString();
 
             string[] ocenki = result[brojDn]["oceni"].Split(' ');
             //string[] predmeti = result[brojDn]["predmeti"].Split(',');
             for (int i = 0; i < ocenki.Length; i++)
             {
                 Ocenkibox[i].Text = ocenki[i];//5 5 5 5 5 5 5 5
-                //Predmetibox[i].Content = result[brojDn]["predmeti"][i];
-                
-                if(i < smerovi[result[brojDn]["smer"]]._predmeti.Count)
+                                              //Predmetibox[i].Content = result[brojDn]["predmeti"][i];
+
+                if (i < smerovi[result[brojDn]["smer"]]._predmeti.Count)
                 {
-                Predmetibox[i].Content = smerovi[result[brojDn]["smer"]]._predmeti[i];
+                    Predmetibox[i].Content = smerovi[result[brojDn]["smer"]]._predmeti[i];
                 }
-                
+
             }
         }
 
