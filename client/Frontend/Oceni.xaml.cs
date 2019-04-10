@@ -26,8 +26,9 @@ namespace Frontend
         Frame Main;
         Page loginPage;
         Klasen UserKlas;
-        List<Dictionary<string, string>> result;
+
         Dictionary<string,Smer> smerovi;
+        List<Dictionary<string, string>> result;
         Dictionary<string, string> res;
         public Oceni(Frame m, Page loginpage)
         {
@@ -37,9 +38,7 @@ namespace Frontend
             UserKlas = Home_Page.KlasenKlasa;
 
 
-            result = Requests.GetData(new Dictionary<string, string>() {
-                {RequestParameters.token, UserKlas._token }
-            }, RequestScopes.GetParalelka);
+            result = Home_Page.result;
             //
             //MessageBox.Show(result[4]["ime"]);
             LoadListView(result);
@@ -47,18 +46,10 @@ namespace Frontend
             string[] str = { "Математика", "Македонски", "Физика", "Хемија", "Биологија", "Географија", "Физичко", "Ликовно", "Музичко", "Математика", "физка", "Математика", "географија", "Математика" };
             LoadOcenki(str, result);
 
-            smerovi = new Dictionary<string, Smer>();
-
-            foreach (var x in "ПМА,PMB,OHA,OHB,JUA,JUB".Split(','))
-            {
-                smerovi.Add(x,new Smer(Requests.GetData(new Dictionary<string, string>(){
-                    { RequestParameters.token, UserKlas._token},
-                    { RequestParameters.smer, x }
-                }, RequestScopes.GetPredmetiSmer)[0]["predmeti"].Split(',').ToList(), x));
-            }
+            smerovi = Home_Page.smerovi;
             populateData(0);
-                
-            
+
+
             //Smer pmb = new Smer(Requests.GetData(new Dictionary<string, string>(){
             //        { RequestParameters.token, UserKlas._token},
             //        { RequestParameters.smer, "PMB"}
@@ -78,7 +69,7 @@ namespace Frontend
             //Smer jub = new Smer(Requests.GetData(new Dictionary<string, string>(){
             //        { RequestParameters.token, UserKlas._token},
             //        { RequestParameters.smer, "JUB"}
-             //   }, RequestScopes.GetPredmetiSmer)[0]["predmeti"].Split(',').ToList(), "PMA");
+            //   }, RequestScopes.GetPredmetiSmer)[0]["predmeti"].Split(',').ToList(), "PMA");
 
 
             home_img.MouseLeftButtonDown += new MouseButtonEventHandler(Back_Home);
@@ -322,7 +313,7 @@ namespace Frontend
         }
         private void Back_Print(object sender, MouseButtonEventArgs e)
         {
-            Main.Content = PrintFrame.ContentProperty;
+            Main.Content = loginPage;
         }
 
         private void Menu_SelectionChanged(object sender, SelectionChangedEventArgs e)

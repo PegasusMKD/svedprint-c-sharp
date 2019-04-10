@@ -149,7 +149,7 @@ namespace Frontend
 
         private void Home_Button_Clicked(object sender, MouseButtonEventArgs e)
         {
-            Main.Content = Home_Page.ContentProperty;
+            Main.Content = HomePage;
         }
     }
 }
