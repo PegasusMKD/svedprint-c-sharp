@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -60,6 +60,9 @@
     <Compile Include="Oceni.xaml.cs">
       <DependentUpon>Oceni.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PrintFrame.xaml.cs">
+      <DependentUpon>PrintFrame.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
@@ -91,6 +94,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Oceni.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PrintFrame.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -134,6 +141,30 @@
   <ItemGroup>
     <Resource Include="settings.png" />
     <Resource Include="print.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ocenki_bk.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="prosek_krug.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="prosek_rk.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="arrow-back-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="arrow_back_reverse.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="home_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Middleware\Middleware.csproj">
+      <Project>{c1d39008-641b-4cac-8938-f2ad79c1360e}</Project>
+      <Name>Middleware</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

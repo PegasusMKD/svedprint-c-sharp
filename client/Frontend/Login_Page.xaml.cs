@@ -13,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Middleware;
+using System.Windows.Forms;
 
 namespace Frontend
 {
@@ -32,15 +34,26 @@ namespace Frontend
             AlertTimer.Tick += new EventHandler(AlertTimer_Tick);
             AlertTimer.Interval = new TimeSpan(0, 0, 5);
         }
-
+        
 
         private void Login_Btn_Click(object sender, RoutedEventArgs e)
         {
+            login();
 
-            if (data.CheckUser(Username_txt.Text, Password_txt.Text) > -1)
+        }
+
+
+
+        private void login()
+        {
+            Username_txt.Text = "Pazzio2";
+            Password_txt.Text = "test_pass";
+            Klasen temp = Login.LoginWithCred(Username_txt.Text, Password_txt.Text);
+
+            if (temp._ime != "002" && temp._ime != string.Empty)
             {
                 ShowAlertBox("Успешно логирање");
-                Main.Content = new Home_Page(Main,this);
+                Main.Content = new Home_Page(Main, this, temp);
             }
             else
             {
@@ -60,5 +73,47 @@ namespace Frontend
         {
            AlertPanel.Visibility = Visibility.Hidden;
         }
+
+        private void Username_txt_GotFocus(object sender, RoutedEventArgs e)
+        {
+            RemoveText(sender);
+        }
+
+        private void Username_txt_LostFocus(object sender, RoutedEventArgs e)
+        {
+            AddText(sender, "Корисничко име");
+        }
+
+        private void AddText(object sender, string v)
+        {
+            if (string.IsNullOrWhiteSpace(((System.Windows.Controls.TextBox)sender).Text))
+            {
+                ((System.Windows.Controls.TextBox)sender).Text = v;
+            }
+        }
+
+        private void Password_txt_GotFocus(object sender, RoutedEventArgs e)
+        {
+            RemoveText(sender);
+        }
+
+        private void RemoveText(object sender)
+        {
+            ((System.Windows.Controls.TextBox)sender).Text = "";
+        }
+
+        private void Password_txt_LostFocus(object sender, RoutedEventArgs e)
+        {
+            AddText(sender, "Лозинка");
+        }
+       
+        private void Login_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                login();
+            }
+        }
+        
     }
 }
