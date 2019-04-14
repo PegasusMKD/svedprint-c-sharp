@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Middleware
 {
@@ -175,7 +176,7 @@ namespace Middleware
             _uchilishte = uchilishte ?? "";
             _grad = grad ?? "";
             _godina = godina;
-            _smerovi = smerovi;
+            _smerovi = smerovi ?? "";
 
         }
 
@@ -184,6 +185,13 @@ namespace Middleware
         {
             char delimiter = ',';
             return _smerovi.Split(delimiter);
+        }
+        public void PopulateSmeroviFromUcenici(List<Ucenik> ucenici)
+        {
+            if (_p == null) _p = new Paralelka(_paralelka, ucenici, new Dictionary<string, Smer>());
+            _p._ucenici = new List<Ucenik>(ucenici);
+            HashSet<string> smerovi = new HashSet<string>(ucenici.ConvertAll(x => x._smer));
+            _smerovi = string.Join(",", smerovi);
         }
     }
 

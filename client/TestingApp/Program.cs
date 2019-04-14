@@ -14,6 +14,14 @@ namespace TestingApp
             string pass = "test_pass";
             klasen = Login.LoginWithCred(user, pass);
 
+            List<Dictionary<string, string>> paralelka = Requests.GetData(new Dictionary<string, string>()
+            {
+                { "token", klasen._token},
+                {"paralelka", klasen._paralelka }
+            }, RequestScopes.GetParalelka);
+
+            klasen.PopulateSmeroviFromUcenici(uceniks = paralelka.ConvertAll(x => new Ucenik(x)));
+
             Dictionary<string, Smer> smerovi = new Dictionary<string, Smer>();
             foreach (string smer in klasen.GetSmerovi())
             {
@@ -29,26 +37,14 @@ namespace TestingApp
                 smerovi.Add(smer, x);
             }
             klasen._p._smerovi = smerovi;
-            var tmp = Requests.GetData(
-                new Dictionary<string, string>()
-                {
-                    {RequestParameters.token, klasen._token},
-                },
-                RequestScopes.GetParalelka
-            );
-
-            uceniks = new List<Ucenik>();
-            tmp.ForEach(x => uceniks.Add(new Ucenik(x)
-            {
-                _s = smerovi[x["smer"]]
-            }));
+            
             //Console.WriteLine(uceniks[0]._paralelka);
 
         }
         static void Main()
         {
-            //init();
-            print();
+            init();
+            //print();
         }
 
         static void print()
