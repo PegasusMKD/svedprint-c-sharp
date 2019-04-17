@@ -1,5 +1,10 @@
 ﻿using Middleware;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing.Printing;
+using System.IO;
 using System.Linq;
 
 namespace TestingApp
@@ -10,9 +15,23 @@ namespace TestingApp
         static List<Ucenik> uceniks;
         static void init()
         {
+           string path = Environment.CurrentDirectory + "\\outnew.json";
+           string path2 = Environment.CurrentDirectory + "\\outold.json";
+           File.Copy(path, path2, true);
+           StreamWriter sw = new StreamWriter(path);
+           Console.SetOut(sw);
+           Console.WriteLine(DateTime.Now);
+
             string user = "Pazzio2";
             string pass = "test_pass";
             klasen = Login.LoginWithCred(user, pass);
+
+            List<Dictionary<string, string>> paralelka = Requests.GetData(new Dictionary<string, string>()
+            {
+                { "token", klasen._token}
+            }, RequestScopes.GetParalelka);
+
+            klasen.PopulateSmeroviFromUcenici(uceniks = paralelka.ConvertAll(x => new Ucenik(x)));            
 
             Dictionary<string, Smer> smerovi = new Dictionary<string, Smer>();
             foreach (string smer in klasen.GetSmerovi())
@@ -29,33 +48,31 @@ namespace TestingApp
                 smerovi.Add(smer, x);
             }
             klasen._p._smerovi = smerovi;
-            var tmp = Requests.GetData(
-                new Dictionary<string, string>()
-                {
-                    {RequestParameters.token, klasen._token},
-                },
-                RequestScopes.GetParalelka
-            );
-
-            uceniks = new List<Ucenik>();
-            tmp.ForEach(x => uceniks.Add(new Ucenik(x)
-            {
-                _s = smerovi[x["smer"]]
-            }));
+            
+            sw.Close();
+            
             //Console.WriteLine(uceniks[0]._paralelka);
 
         }
         static void Main()
         {
-            //init();
-            print();
+            init();
+            //print();
         }
 
         static void print()
         {
             // Print.print2pdf();
             //Print.print2prntr(new List<Ucenik>() { uceniks[0], uceniks[1], uceniks[2] }, klasen);
-            Print.print2prntr(new List<Ucenik>(), new Klasen());
+
+            Console.WriteLine("Choose printer:");
+            for (int i = 0; i < PrinterSettings.InstalledPrinters.Count; i++)
+            {
+                Console.WriteLine(string.Format("{0}: {1}", i, PrinterSettings.InstalledPrinters[i]));
+            }
+            int choice = int.Parse(Console.ReadLine());
+
+            Print.PrintSveditelstvo(new List<Ucenik>(), new Klasen(), choice);
         }
     }
 }

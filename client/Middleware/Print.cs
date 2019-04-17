@@ -11,22 +11,15 @@ namespace Middleware
 {
     public class Print
     {
-        public static void print2prntr(List<Ucenik> ucenici, Klasen klasen)
+        public static void PrintSveditelstvo(List<Ucenik> ucenici, Klasen klasen, int printerChoice)
         {
             List<string> data = init(ucenici, klasen);
             string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
             PrintDialog printDialog = new PrintDialog();
             PrintDocument pd = new PrintDocument();
 
-            Console.WriteLine("Choose printer:");
-            for (int i = 0; i < PrinterSettings.InstalledPrinters.Count; i++)
-            {
-                Console.WriteLine(String.Format("{0}: {1}", i, PrinterSettings.InstalledPrinters[i]));
-            }
-            int choice = int.Parse(Console.ReadLine());
-
             // PrinterSettings.InstalledPrinters - lista na printeri
-            pd.PrinterSettings.PrinterName = PrinterSettings.InstalledPrinters[choice];
+            pd.PrinterSettings.PrinterName = PrinterSettings.InstalledPrinters[printerChoice];
 
             pd.DefaultPageSettings.PaperSize = pd.PrinterSettings.PaperSizes.Cast<PaperSize>().First<PaperSize>(size => size.Kind == PaperKind.A4);
             pd.OriginAtMargins = false;

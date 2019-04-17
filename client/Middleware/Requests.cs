@@ -17,7 +17,7 @@ namespace Middleware
             Request request = new Request(type: RequestTypes.GET, scope: scope, queryParams: queryParams);
 
             string json = JsonConvert.SerializeObject(request, new RequestConverter());
-            string uri = string.Format(@"http://{0}:{1}/main/return/", settings.Default.DB_HOST, settings.Default.DB_PORT);
+            string uri = string.Format(@"http://{0}{1}/main/return/", settings.Default.DB_HOST, settings.Default.DB_PORT);
             var httpRequest = (HttpWebRequest)WebRequest.Create(uri);
             httpRequest.Method = @"POST";
             httpRequest.ContentType = @"application/json";
@@ -31,6 +31,11 @@ namespace Middleware
 
             List<Dictionary<string, string>> queryResult = new List<Dictionary<string, string>>();
             queryResult = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(responseJson, new DictConverter());
+
+            Console.WriteLine("GetData:");
+            Console.WriteLine(String.Format("Request:{0}{1}", Environment.NewLine, JToken.Parse(json).ToString(Formatting.Indented)));
+            Console.WriteLine(String.Format("Response:{0}{1}", Environment.NewLine, JToken.Parse(responseJson).ToString(Formatting.Indented)));
+
             return queryResult;
         }
 
@@ -39,7 +44,7 @@ namespace Middleware
             Request request = new Request(type: RequestTypes.ADD, scope: scope, queryParams: queryParams);
 
             string json = JsonConvert.SerializeObject(request, new RequestConverter());
-            string uri = string.Format(@"http://{0}:{1}/main/setup/", settings.Default.DB_HOST, settings.Default.DB_PORT);
+            string uri = string.Format(@"http://{0}{1}/main/setup/", settings.Default.DB_HOST, settings.Default.DB_PORT);
             var httpRequest = (HttpWebRequest)WebRequest.Create(uri);
             httpRequest.Method = @"POST";
             httpRequest.ContentType = @"application/json";
@@ -57,7 +62,7 @@ namespace Middleware
             Request request = new Request(type: RequestTypes.UPDATE, scope: scope, queryParams: queryParams);
 
             string json = JsonConvert.SerializeObject(request, new RequestConverter());
-            string uri = string.Format(@"http://{0}:{1}/main/update/", settings.Default.DB_HOST, settings.Default.DB_PORT);
+            string uri = string.Format(@"http://{0}{1}/main/update/", settings.Default.DB_HOST, settings.Default.DB_PORT);
             var httpRequest = (HttpWebRequest)WebRequest.Create(uri);
             httpRequest.Method = @"POST";
             httpRequest.ContentType = @"application/json";
@@ -121,6 +126,11 @@ namespace Middleware
         public const string povedenie = "povedenie";
         public const string roden = "roden";
         public const string pat = "pat";
+        public const string gender = "gender";
+        public const string maturska = "maturska";
+        public const string izborni = "izborni";
+        public const string proektni = "proektni";
+        public const string merki = "merki";
     }
 
     class RequestConverter : JsonConverter<Request>

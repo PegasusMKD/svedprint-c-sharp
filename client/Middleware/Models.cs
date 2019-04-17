@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Middleware
 {
@@ -33,9 +34,21 @@ namespace Middleware
         public string _tip { get; set; }
         [JsonProperty(RequestParameters.pat)]
         public string _pat { get; set; }
+        [JsonProperty(RequestParameters.roditel)]
+        public string _roditel { get; set; }
+        [JsonProperty(RequestParameters.gender)]
+        public string _gender { get; set; }
+        [JsonProperty(RequestParameters.maturska)]
+        public string _maturska { get; set; }
+        [JsonProperty(RequestParameters.izborni)]
+        public string _izborni { get; set; }
+        [JsonProperty(RequestParameters.proektni)]
+        public string _proektni { get; set; }
+        [JsonProperty(RequestParameters.merki)]
+        public string _merki { get; set; }
+        
 
-
-        public Ucenik(string ime, string tatkovo, string prezime, List<int> oceni, string smer, int broj, string roden, string mesto, string povedenie, int opravdani, int neopravdani, string tip, string pat)
+        public Ucenik(string ime, string tatkovo, string prezime, List<int> oceni, string smer, int broj, string roden, string mesto, string povedenie, int opravdani, int neopravdani, string tip, string pat, string roditel, string gender, string maturska, string izborni, string proektni, string merki)
         {
             _ime = ime ?? "";
             _tatkovo = tatkovo ?? "";
@@ -50,6 +63,13 @@ namespace Middleware
             _neopravdani = neopravdani;
             _tip = tip ?? "";
             _pat = pat ?? "-1";
+            _roditel = roditel ?? "";
+            _gender = gender ?? "";
+            _maturska = maturska ?? "";
+            _izborni = izborni ?? "";
+            _proektni = proektni ?? "";
+            _merki = merki ?? "";
+
 
             _s = new Smer(new List<string>(), _smer);
         }
@@ -93,17 +113,6 @@ namespace Middleware
 
             return dictionary;
         }
-    }
-
-    public class Smerovi
-    {
-        public const string PMA = "ПМА";
-        public const string PMB = "PMB";
-        public const string OHA = "OHA";
-        public const string OHB = "OHB";
-        public const string JUA = "JUA";
-        public const string JUB = "JUB";
-        // TODO: smerovite da bidat na kirilica
     }
 
     public class Smer
@@ -175,7 +184,7 @@ namespace Middleware
             _uchilishte = uchilishte ?? "";
             _grad = grad ?? "";
             _godina = godina;
-            _smerovi = smerovi;
+            _smerovi = smerovi ?? "";
 
         }
 
@@ -184,6 +193,12 @@ namespace Middleware
         {
             char delimiter = ',';
             return _smerovi.Split(delimiter);
+        }
+        public void PopulateSmeroviFromUcenici(List<Ucenik> ucenici)
+        {
+            if (_p == null) _p = new Paralelka(_paralelka, ucenici, new Dictionary<string, Smer>());
+            _p._ucenici = new List<Ucenik>(ucenici);
+            _smerovi = string.Join(",", ucenici.ConvertAll(x => x._smer).Distinct());
         }
     }
 
