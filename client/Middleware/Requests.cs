@@ -31,6 +31,11 @@ namespace Middleware
 
             List<Dictionary<string, string>> queryResult = new List<Dictionary<string, string>>();
             queryResult = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(responseJson, new DictConverter());
+
+            Console.WriteLine("GetData:");
+            Console.WriteLine(String.Format("Request:{0}{1}", Environment.NewLine, JToken.Parse(json).ToString(Formatting.Indented)));
+            Console.WriteLine(String.Format("Response:{0}{1}", Environment.NewLine, JToken.Parse(responseJson).ToString(Formatting.Indented)));
+
             return queryResult;
         }
 
@@ -121,6 +126,11 @@ namespace Middleware
         public const string povedenie = "povedenie";
         public const string roden = "roden";
         public const string pat = "pat";
+        public const string gender = "gender";
+        public const string maturska = "maturska";
+        public const string izborni = "izborni";
+        public const string proektni = "proektni";
+        public const string merki = "merki";
     }
 
     class RequestConverter : JsonConverter<Request>

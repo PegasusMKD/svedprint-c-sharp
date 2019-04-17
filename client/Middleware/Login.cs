@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -28,7 +30,18 @@ namespace Middleware
 
             var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
             var responseJson = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
-            Klasen klasen = JsonConvert.DeserializeObject<Klasen>(responseJson);
+
+            Console.WriteLine(JToken.Parse(responseJson).ToString(Formatting.Indented));
+
+            Klasen klasen = new Klasen();
+            try
+            {
+                klasen = JsonConvert.DeserializeObject<Klasen>(responseJson);
+            } catch(Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                klasen._ime = "100";
+            }
             return klasen;
         }
     }
