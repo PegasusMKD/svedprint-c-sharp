@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,7 +24,6 @@ namespace Frontend
 
         Frame Main;
         Page loginPage;
-
         public static Klasen KlasenKlasa;
         public Home_Page(Frame m ,  Page loginpage , Klasen Klasen)
         {
