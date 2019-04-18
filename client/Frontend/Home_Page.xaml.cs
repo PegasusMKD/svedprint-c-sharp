@@ -25,6 +25,7 @@ namespace Frontend
         Frame Main;
         Page loginPage;
         public static Klasen KlasenKlasa;
+        public static List<Ucenik> ucenici;
         public static List<Dictionary<string, string>> result;
         public static Dictionary<string, Smer> smerovi;
 
@@ -41,6 +42,9 @@ namespace Frontend
                 {RequestParameters.token, Klasen._token }
             }, RequestScopes.GetParalelka);
 
+            ucenici = result.ConvertAll(x => new Ucenik(x));
+            KlasenKlasa.PopulateSmeroviFromUcenici(ucenici);
+
             getPredmeti();
             
         }
@@ -54,13 +58,15 @@ namespace Frontend
         {
             smerovi = new Dictionary<string, Smer>();
 
-            foreach (var x in "ПМА,PMB,OHA,OHB,JUA,JUB".Split(','))
+            foreach (var x in KlasenKlasa.GetSmerovi())
             {
                 smerovi.Add(x, new Smer(Requests.GetData(new Dictionary<string, string>(){
                     { RequestParameters.token, KlasenKlasa._token},
                     { RequestParameters.smer, x }
                 }, RequestScopes.GetPredmetiSmer)[0]["predmeti"].Split(',').ToList(), x));
             }
+
+            KlasenKlasa._p._smerovi = smerovi;
         }
 
         private void MouseEnter(object sender, MouseButtonEventArgs e)

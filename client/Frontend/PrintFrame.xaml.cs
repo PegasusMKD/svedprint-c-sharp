@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Middleware;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Printing;
@@ -31,7 +32,20 @@ namespace Frontend
             //SvedImg.Source = new BitmapImage(new Uri(new Uri(Directory.GetCurrentDirectory(), UriKind.Absolute), new Uri(@"C:\Users\lukaj\Documents\sved.png", UriKind.Relative)));
             Main = m;
             HomePage = homepage;
+            LoadPrinterBox();
             LoadListView();
+        }
+
+        private void LoadPrinterBox()
+        {
+            combobox_printer.ItemsSource = PrinterSettings.InstalledPrinters;
+            if (combobox_printer.HasItems)
+            {
+                combobox_printer.SelectedIndex = 0;
+            } else
+            {
+                MessageBox.Show("Програмата не пронајде принтер." + Environment.NewLine + "Ве молиме поврзете принтер!", "Грешка!", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         string[] Menuitems = { "Сведителство", "Главна Книга", "Постапки" };
@@ -150,6 +164,21 @@ namespace Frontend
         private void Home_Button_Clicked(object sender, MouseButtonEventArgs e)
         {
             Main.Content = HomePage;
+        }
+
+        private void Btn_edinecnoprint_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            List<int> toPrint = uceniciToPrint.Text.Split(',').ToList().ConvertAll(x => int.Parse(x));
+            // fix dodeka broevite vo dnevnik se isti
+            List<Ucenik> uceniks = Home_Page.ucenici.Where(x => toPrint.Contains(Home_Page.ucenici.IndexOf(x)+1)).ToList();
+            // posle fix za razlicni broevi
+            //List<Ucenik> uceniks = Home_Page.ucenici.Where(x => toPrint.Contains(x._broj)).ToList();
+            Middleware.Print.PrintSveditelstvo(uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex);
+        }
+
+        private void Btn_celprint_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            Middleware.Print.PrintSveditelstvo(Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex);
         }
     }
 }
