@@ -19,8 +19,8 @@
 			<ColumnDefinition Width="217*"/>
 		</Grid.ColumnDefinitions>
 		<UniformGrid VerticalAlignment="Center" HorizontalAlignment="Stretch" Columns="3">
-            <Image x:Name="home_img" Source="home_icon.png" Margin="0,5" Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UniformGrid}}, Path=Height}"/>
             <Image x:Name="print_img" Margin="0,5" Source="print.png" Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UniformGrid}}, Path=Height}" />
+            <Image x:Name="home_img" Source="home_icon.png" Margin="0" Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UniformGrid}}, Path=Height}"/>
             <Image x:Name="settings_img" Margin="0,5" Source="settings.png" Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UniformGrid}}, Path=Height}" />
         </UniformGrid>
 		<ListView Name ="Menu" Grid.RowSpan="2" Background="#FFF1F3CE" BorderThickness="1,1,1,2" BorderBrush="#FFF1F3CE" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Row="1" SelectionChanged="Menu_SelectionChanged"/>

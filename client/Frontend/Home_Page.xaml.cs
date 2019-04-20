@@ -37,9 +37,34 @@ namespace Frontend
 
             SettingsImg.MouseLeftButtonDown += new MouseButtonEventHandler(SettingsImg_Clicked);
 
+            /*
             result =  Requests.GetData(new Dictionary<string, string>() {
                 {RequestParameters.token, Klasen._token }
-            }, RequestScopes.GetParalelka);
+            }, RequestScopes.GetParalelka);*/
+
+            result = new List <Dictionary<string, string> >();
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            dic.Add("ime", "luka");
+            dic.Add("prezime", "jov");
+            dic.Add("oceni", "1 2 3 5 2 5 1");
+            dic.Add("smer", "0");
+            result.Add(dic);
+
+            dic = new Dictionary<string, string>();
+
+            dic.Add("ime", "marce");
+            dic.Add("prezime", "jov");
+            dic.Add("oceni", "4 4 4 4 4 4");
+            dic.Add("smer", "1");
+            result.Add(dic);
+
+            dic = new Dictionary<string, string>();
+
+            dic.Add("ime","ime3");
+            dic.Add("prezime", "prez3");
+            dic.Add("oceni", "5 5 5 5 5 5 5");
+            dic.Add("smer", "0");
+            result.Add(dic);
 
             getPredmeti();
             
@@ -53,6 +78,33 @@ namespace Frontend
         private void getPredmeti()
         {
             smerovi = new Dictionary<string, Smer>();
+
+            Dictionary<string, Smer> dic = new Dictionary<string, Smer>();
+            Smer s = new Smer();
+            s._smer = "PMA";
+            s._predmeti = new List<string>();
+            s._predmeti.Add("makedonski");
+            s._predmeti.Add("makedonski");
+            s._predmeti.Add("makedonski");
+            s._predmeti.Add("makedonski");
+            s._predmeti.Add("makedonski");
+            s._predmeti.Add("makedonski");
+            s._predmeti.Add("makedonski");
+
+            smerovi.Add("0", s);
+
+            s = new Smer();
+            s._smer = "OHA";
+            s._predmeti = new List<string>();
+            s._predmeti.Add("matematika");
+            s._predmeti.Add("makedonski");
+            s._predmeti.Add("filozofija");
+            s._predmeti.Add("germanski");
+            s._predmeti.Add("makedonski");
+            s._predmeti.Add("makedonski");
+
+            smerovi.Add("1", s);
+            return;
 
             foreach (var x in "ПМА,PMB,OHA,OHB,JUA,JUB".Split(','))
             {

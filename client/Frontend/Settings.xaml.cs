@@ -23,18 +23,37 @@ namespace Frontend
 
         Frame Main;
         Page HomePage;
+        List<Page> ListPages = new List<Page>();
         public Settings(Frame m, Page homepage)
         {
             InitializeComponent();
             Main = m;
             HomePage = homepage;
             LoadListView();
+            Title.Content = Menuitems[0];
+
+            LoadMainList();
+            ListPages.Add(new Smerovi_Page());
+            ListPages.Add(new EditUcenici_Page());
+            ListPages.Add(new Prosek_Frame());
+            Settings_Frame.Content = ListPages[0];
         }
 
-        string[] Menuitems = { "Групи", "Ученици", "Кориснички податоци" , "Просек", "Админ" };
+        private void LoadMainList()
+        {
+            Border border = new Border();
+            border.Height = 50;
+            border.Margin = new Thickness(20, 0, 20, 10);
+            border.VerticalAlignment = VerticalAlignment.Center;
+            border.Background = System.Windows.Media.Brushes.White;
+            border.BorderThickness = new Thickness(2);
+            border.CornerRadius = new System.Windows.CornerRadius(10);
+            Label lbl = new Label();
+        }
+
+        string[] Menuitems = { "Смерови", "Ученици", "Просек", "Админ" };
         private void LoadListView()
         {
-
             for (int i = 0; i < Menuitems.Length; i++)
             {
                 Menu.Items.Add(MenuDP(Menuitems[i], i));
@@ -67,27 +86,27 @@ namespace Frontend
             tx.Foreground = System.Windows.Media.Brushes.White;
             tx.VerticalAlignment = VerticalAlignment.Center;
 
-            st.MouseLeftButtonDown += new MouseButtonEventHandler((sender, e) => MouseLeftButtonDown(sender, e, brojDn + 1));
-            st.MouseEnter += new MouseEventHandler(MouseEnter);
-            st.MouseLeave += new MouseEventHandler(MouseLeave);
+            st.MouseLeftButtonDown += new MouseButtonEventHandler((sender, e) => MenuMouseClick(sender, e, brojDn));
+            st.MouseEnter += new MouseEventHandler(MenuMouseEnter);
+            st.MouseLeave += new MouseEventHandler(MenuMouseLeave);
 
             return st;
         }
 
         object ClickedMenuItem;
-        private void MouseEnter(object sender, MouseEventArgs e)
+        private void MenuMouseEnter(object sender, MouseEventArgs e)
         {
             DockPanel st = (DockPanel)sender;
             st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(237, 106, 61));
         }
 
-        private void MouseLeave(object sender, MouseEventArgs e)
+        private void MenuMouseLeave(object sender, MouseEventArgs e)
         {
             DockPanel st = (DockPanel)sender;
             if (ClickedMenuItem != sender) st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(165, 166, 140));
         }
 
-        private void MouseLeftButtonDown(object sender, MouseButtonEventArgs e, int i)
+        private void MenuMouseClick(object sender, MouseButtonEventArgs e, int i)
         {
             if (ClickedMenuItem != null)
             {
@@ -98,7 +117,9 @@ namespace Frontend
             st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(237, 106, 61));
             ClickedMenuItem = sender;
 
-            Title.Content = Menuitems[i - 1];
+            Settings_Frame.Content = ListPages[i];
+
+            Title.Content = Menuitems[i];
         }
 
 

@@ -30,6 +30,8 @@ namespace Frontend
         Dictionary<string,Smer> smerovi;
         List<Dictionary<string, string>> result;
         Dictionary<string, string> res;
+        string[] str = { "Математика", "Македонски", "Физика", "Хемија", "Биологија", "Географија", "Физичко", "Ликовно", "Музичко", "Математика", "физка", "Математика", "географија", "Математика" };
+
         public Oceni(Frame m, Page loginpage)
         {
             InitializeComponent();
@@ -37,16 +39,14 @@ namespace Frontend
             loginPage = loginpage;
             UserKlas = Home_Page.KlasenKlasa;
 
-
             result = Home_Page.result;
-            //
-            //MessageBox.Show(result[4]["ime"]);
-            LoadListView(result);
-
-            string[] str = { "Математика", "Македонски", "Физика", "Хемија", "Биологија", "Географија", "Физичко", "Ликовно", "Музичко", "Математика", "физка", "Математика", "географија", "Математика" };
-            LoadOcenki(str, result);
 
             smerovi = Home_Page.smerovi;
+
+            LoadListView(result);
+
+            LoadOcenki(str, result , smerovi[result[0]["smer"]]._predmeti.Count);
+
             populateData(0);
 
 
@@ -74,7 +74,7 @@ namespace Frontend
 
             home_img.MouseLeftButtonDown += new MouseButtonEventHandler(Back_Home);
             print_img.MouseLeftButtonDown += new MouseButtonEventHandler(Back_Print);
-            //settings_img.MouseLeftButtonDown += new MouseButtonEventHandler(Back_Home);
+            settings_img.MouseLeftButtonDown += new MouseButtonEventHandler(Back_Settings);
             hide_menu_img.MouseLeftButtonDown += new MouseButtonEventHandler(Menu_hide);
 
         }
@@ -115,27 +115,27 @@ namespace Frontend
             tx.Foreground = System.Windows.Media.Brushes.White;
             tx.VerticalAlignment = VerticalAlignment.Center;
 
-            st.MouseLeftButtonDown += new MouseButtonEventHandler((sender, e) => MouseLeftButtonDown(sender, e, brojDn));
-            st.MouseEnter += new MouseEventHandler(MouseEnter);
-            st.MouseLeave += new MouseEventHandler(MouseLeave); 
+            st.MouseLeftButtonDown += new MouseButtonEventHandler((sender, e) => MenuItemClicked(sender, e, brojDn));
+            st.MouseEnter += new MouseEventHandler(MenuItemMouseEnter);
+            st.MouseLeave += new MouseEventHandler(MenuItemMouseLeave); 
 
             return st;
         }
 
         object ClickedMenuItem;
-        private void MouseEnter(object sender, MouseEventArgs e)
+        private void MenuItemMouseEnter(object sender, MouseEventArgs e)
         {
             DockPanel st = (DockPanel)sender;
             st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(237, 106, 61));
         }
 
-        private void MouseLeave(object sender, MouseEventArgs e)
+        private void MenuItemMouseLeave(object sender, MouseEventArgs e)
         {
             DockPanel st = (DockPanel)sender;
             if (ClickedMenuItem != sender) st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(165, 166, 140));
         }
 
-        private void MouseLeftButtonDown(object sender, MouseButtonEventArgs e, int brojDn)
+        private void MenuItemClicked(object sender, MouseButtonEventArgs e, int brojDn)
         {
 
             if (ClickedMenuItem != null)//hover
@@ -146,7 +146,20 @@ namespace Frontend
             DockPanel st = (DockPanel)sender;
             st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(237, 106, 61));
             ClickedMenuItem = sender;
+
+            if (combobox_smer.SelectedIndex != GetSmerIndex(brojDn))
+            {
+                OcenkiGrid.Children.Clear();
+                LoadOcenki(str, result, smerovi[result[brojDn]["smer"]]._predmeti.Count);
+            }
             populateData(brojDn);
+        }
+
+        int GetSmerIndex(int brojDn)
+        {
+            if (smerovi[result[brojDn]["smer"]]._smer == "PMA") return 0;
+            if (smerovi[result[brojDn]["smer"]]._smer == "OHA") return 1;
+            return 3;
         }
 
         private void populateData(int brojDn)
@@ -154,33 +167,33 @@ namespace Frontend
             Ucenik_Name.Content = result[brojDn]["ime"] + " " + result[brojDn]["prezime"];
             Prosek_out.Content = Array.ConvertAll(result[brojDn]["oceni"].Split(' '), x => float.Parse(x)).Average().ToString("n2");
 
-            BrojDn_label.Content = (brojDn + 1).ToString();
+            BrojDn_label.Content = (brojDn + 1).ToString();  //main ui
+            combobox_smer.SelectedIndex = GetSmerIndex(brojDn);
 
-            string[] ocenki = result[brojDn]["oceni"].Split(' ');
-            //string[] predmeti = result[brojDn]["predmeti"].Split(',');
+            string[] ocenki = result[brojDn]["oceni"].Split(' ');//ocenki tab
+
             for (int i = 0; i < ocenki.Length; i++)
             {
                 Ocenkibox[i].Text = ocenki[i];//5 5 5 5 5 5 5 5
-                                              //Predmetibox[i].Content = result[brojDn]["predmeti"][i];
-
-                if (i < smerovi[result[brojDn]["smer"]]._predmeti.Count)
-                {
-                    Predmetibox[i].Content = smerovi[result[brojDn]["smer"]]._predmeti[i];
-                }
-
+                Predmetibox[i].Content = smerovi[result[brojDn]["smer"]]._predmeti[i];
             }
         }
 
         List<TextBox> Ocenkibox = new List<TextBox>();
         List<Label> Predmetibox = new List<Label>();
-        private void LoadOcenki(String[] predmeti, List<Dictionary<string, string>> Result)
+        //List<Border> OcenkiBorderBox = new List<Border>();
+        //List<Border> PredmetiBorderBox = new List<Border>();
+        private void LoadOcenki(String[] predmeti, List<Dictionary<string, string>> Result , int Size)//size na predmeti
         {
-
-            int Size = predmeti.Length;
+ 
+            //int Size = smerovi[result[BrojDn]["smer"]]._predmeti.Count;
             int ctr = 0;
             int ImgHeight = 80;
             int TxtHeight = 50;
-                
+            OcenkiGrid.Height = 0;
+
+            Ocenkibox.Clear();
+            Predmetibox.Clear();
 
                 for (int i = 0; ctr < Size; i++)
                 {
@@ -214,6 +227,7 @@ namespace Frontend
                         Grid.SetRow(panel, i);
                         panel.Child = img;
                         panel.Margin = new Thickness(15);
+                       // OcenkiBorderBox.Add(panel);
 
                         OcenkiGrid.Children.Add(panel);
 
@@ -239,6 +253,8 @@ namespace Frontend
                         Grid.SetColumn(panel2, j);
                         Grid.SetRow(panel2, i);
                         panel2.Child = tx;
+                       // PredmetiBorderBox.Add(panel2);
+
                         OcenkiGrid.Children.Add(panel2);
                         ctr++;
                     }
@@ -258,7 +274,7 @@ namespace Frontend
                         tx.FontSize = 20;
                         tx.FontFamily = new System.Windows.Media.FontFamily("Arial Black");
                         tx.Foreground = System.Windows.Media.Brushes.White;
-                        tx.Content = predmeti[ctr + j - 4];
+                        tx.Content = "5";//predmeti[ctr + j - 4];
                         Predmetibox.Add(tx);
 
                         Border panel = new Border();
@@ -276,12 +292,12 @@ namespace Frontend
             }
 
         }
-        int ctr = 0;
+
         private void TextBox_Text_Changed(object sender, EventArgs e)
         {
             TextBox tx = (TextBox)sender;
             int i = int.Parse(tx.Name.Substring(1, tx.Name.Length - 1));
-            Ocenkibox[++i % 14].Focus();
+            Ocenkibox[++i % result.Count].Focus();
         }
 
         private void Menu_hide(object sender, MouseButtonEventArgs e)
@@ -311,9 +327,15 @@ namespace Frontend
         {
             Main.Content = loginPage;
         }
+
         private void Back_Print(object sender, MouseButtonEventArgs e)
         {
-            Main.Content = loginPage;
+            Main.Content = new PrintFrame(Main,loginPage);
+        }
+
+        private void Back_Settings(object sender, MouseButtonEventArgs e)
+        {
+            Main.Content = new Settings(Main,loginPage);
         }
 
         private void Menu_SelectionChanged(object sender, SelectionChangedEventArgs e)

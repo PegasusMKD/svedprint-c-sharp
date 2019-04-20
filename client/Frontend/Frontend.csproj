@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -57,15 +57,29 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="EditUcenici_Page.xaml.cs">
+      <DependentUpon>EditUcenici_Page.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Oceni.xaml.cs">
       <DependentUpon>Oceni.xaml</DependentUpon>
     </Compile>
     <Compile Include="PrintFrame.xaml.cs">
       <DependentUpon>PrintFrame.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Prosek_Frame.xaml.cs">
+      <DependentUpon>Prosek_Frame.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SettingsDesign.cs" />
+    <Compile Include="Smerovi_Page.xaml.cs">
+      <DependentUpon>Smerovi_Page.xaml</DependentUpon>
+    </Compile>
+    <Page Include="EditUcenici_Page.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Home_Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -101,7 +115,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Prosek_Frame.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Settings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Smerovi_Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -165,6 +187,10 @@
       <Project>{c1d39008-641b-4cac-8938-f2ad79c1360e}</Project>
       <Name>Middleware</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="triangle right.png" />
+    <Resource Include="triangle left.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

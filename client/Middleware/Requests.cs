@@ -33,6 +33,7 @@ namespace Middleware
             var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
             var responseJson = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
 
+
             //var response = await http.PostAsync(uri, new StringContent(json));
             //string responseJson = await response.Content.ReadAsStringAsync();
 

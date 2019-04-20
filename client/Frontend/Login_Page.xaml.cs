@@ -48,8 +48,13 @@ namespace Frontend
         {
             Username_txt.Text = "Pazzio2";
             Password_txt.Text = "test_pass";
-            Klasen temp = Login.LoginWithCred(Username_txt.Text, Password_txt.Text);
-
+            //Klasen temp = Login.LoginWithCred(Username_txt.Text, Password_txt.Text);
+            Klasen temp = new Klasen
+            {
+                _ime = "luka",
+                _prezime = "jov",
+                _paralelka = "IV1"
+            };
             if (temp._ime != "002" && temp._ime != string.Empty)
             {
                 ShowAlertBox("Успешно логирање");
