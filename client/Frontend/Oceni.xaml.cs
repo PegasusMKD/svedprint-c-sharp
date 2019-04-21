@@ -195,103 +195,101 @@ namespace Frontend
             Ocenkibox.Clear();
             Predmetibox.Clear();
 
-                for (int i = 0; ctr < Size/4 + 1; i++)
+            for (int i = 0; ctr < Size; i++)
+            {
+
+                RowDefinition rowDefImg = new RowDefinition();
+                OcenkiGrid.RowDefinitions.Add(rowDefImg);
+
+                int last = -2;
+
+                for (int j = 0; j < 4; j++)
                 {
 
-                    RowDefinition rowDefImg = new RowDefinition();
-                    OcenkiGrid.RowDefinitions.Add(rowDefImg);
-
-                    int last = -2;
-
-                    if (i * 4 >= Size) break;
-
-                    for (int j = 0; j < 4; j++)
+                    if (ctr == Size)
                     {
-                        if (i * 4 + j >= Size) break;
-                        if (ctr == Size)
-                        {
-                            last = j;
-                            break;
-                        }
-
-                        OcenkiGrid.RowDefinitions[i*2].Height = new GridLength(ImgHeight);
-
-                        System.Windows.Controls.Image img = new System.Windows.Controls.Image();
-                        BitmapImage bm = new BitmapImage();
-                        bm.BeginInit();
-                        bm.UriSource = new Uri("ocenki_bk.png", UriKind.Relative);
-                        bm.EndInit();
-                        img.Stretch = Stretch.Uniform;
-                        img.Source = bm;
-
-                        Border panel = new Border();
-                        Grid.SetColumn(panel, j);
-                        Grid.SetRow(panel, i*2);
-                        panel.Child = img;
-                        panel.Margin = new Thickness(15);
-                       // OcenkiBorderBox.Add(panel);
-
-                        OcenkiGrid.Children.Add(panel);
-
-                        TextBox tx = new TextBox();
-                        //tx.Text = ocenki[j];
-                        tx.VerticalAlignment = VerticalAlignment.Center;
-                        tx.HorizontalAlignment = HorizontalAlignment.Center;
-                        tx.FontSize = 23;
-                        tx.TextAlignment = TextAlignment.Center;
-                        tx.FontFamily = new System.Windows.Media.FontFamily("Crimson Text");
-                        tx.FontWeight = FontWeights.Medium;
-                        tx.BorderThickness = new Thickness(0, 0, 0, 2);
-                        tx.BorderBrush = System.Windows.Media.Brushes.White;
-                        tx.Width = 20;
-                        tx.Foreground = System.Windows.Media.Brushes.White;
-                        tx.CaretBrush = System.Windows.Media.Brushes.White;
-                        tx.Background = System.Windows.Media.Brushes.Transparent;
-                        tx.TextChanged += TextBox_Text_Changed;
-                        tx.Name = "t" + (Ocenkibox.Count).ToString();
-                        Ocenkibox.Add(tx);
-
-                        Border panel2 = new Border();
-                        Grid.SetColumn(panel2, j);
-                        Grid.SetRow(panel2, i*2);
-                        panel2.Child = tx;
-                       // PredmetiBorderBox.Add(panel2);
-
-                        OcenkiGrid.Children.Add(panel2);
-                        ctr++;
+                        last = j;
+                        break;
                     }
 
-                    RowDefinition rowDefTxt = new RowDefinition();
-                    OcenkiGrid.RowDefinitions.Add(rowDefTxt);
+                    OcenkiGrid.RowDefinitions[i].Height = new GridLength(ImgHeight);
 
-                    for (int j = 0; j < 4; j++)
-                    {
-                        if (i*4 + j >= Size) continue;
-                        if (last == j) break;
+                    System.Windows.Controls.Image img = new System.Windows.Controls.Image();
+                    BitmapImage bm = new BitmapImage();
+                    bm.BeginInit();
+                    bm.UriSource = new Uri("ocenki_bk.png", UriKind.Relative);
+                    bm.EndInit();
+                    img.Stretch = Stretch.Uniform;
+                    img.Source = bm;
 
-                        OcenkiGrid.RowDefinitions[i*2+1].Height = new GridLength(TxtHeight);
+                    Border panel = new Border();
+                    Grid.SetColumn(panel, j);
+                    Grid.SetRow(panel, i);
+                    panel.Child = img;
+                    panel.Margin = new Thickness(15);
+                    // OcenkiBorderBox.Add(panel);
 
-                        Label tx = new Label();
-                        tx.FontSize = 20;
-                        tx.FontFamily = new System.Windows.Media.FontFamily("Arial Black");
-                        tx.Foreground = System.Windows.Media.Brushes.White;
-                        tx.Content = predmeti[i * 4 + j];
-                        Predmetibox.Add(tx);
+                    OcenkiGrid.Children.Add(panel);
 
-                        Border panel = new Border();
-                        Grid.SetColumn(panel, j);
-                        Grid.SetRow(panel, i*2+1);
-                        panel.Child = tx;
-                        panel.VerticalAlignment = VerticalAlignment.Top;
-                        panel.HorizontalAlignment = HorizontalAlignment.Center;
-                        OcenkiGrid.Children.Add(panel);
+                    TextBox tx = new TextBox();
+                    //tx.Text = ocenki[j];
+                    tx.VerticalAlignment = VerticalAlignment.Center;
+                    tx.HorizontalAlignment = HorizontalAlignment.Center;
+                    tx.FontSize = 23;
+                    tx.TextAlignment = TextAlignment.Center;
+                    tx.FontFamily = new System.Windows.Media.FontFamily("Crimson Text");
+                    tx.FontWeight = FontWeights.Medium;
+                    tx.BorderThickness = new Thickness(0, 0, 0, 2);
+                    tx.BorderBrush = System.Windows.Media.Brushes.White;
+                    tx.Width = 20;
+                    tx.Foreground = System.Windows.Media.Brushes.White;
+                    tx.CaretBrush = System.Windows.Media.Brushes.White;
+                    tx.Background = System.Windows.Media.Brushes.Transparent;
+                    tx.TextChanged += TextBox_Text_Changed;
+                    tx.Name = "t" + (Ocenkibox.Count).ToString();
+                    Ocenkibox.Add(tx);
 
-                    }
+                    Border panel2 = new Border();
+                    Grid.SetColumn(panel2, j);
+                    Grid.SetRow(panel2, i);
+                    panel2.Child = tx;
+                    // PredmetiBorderBox.Add(panel2);
 
-                    OcenkiGrid.Height = OcenkiGrid.Height + ImgHeight + TxtHeight;
-                    if (last != -2) break;
+                    OcenkiGrid.Children.Add(panel2);
+                    ctr++;
+                }
+
+                i++;
+
+                RowDefinition rowDefTxt = new RowDefinition();
+                OcenkiGrid.RowDefinitions.Add(rowDefTxt);
+
+                for (int j = 0; j < 4; j++)
+                {
+                    if (last == j) break;
+
+                    OcenkiGrid.RowDefinitions[i].Height = new GridLength(TxtHeight);
+
+                    Label tx = new Label();
+                    tx.FontSize = 20;
+                    tx.FontFamily = new System.Windows.Media.FontFamily("Arial Black");
+                    tx.Foreground = System.Windows.Media.Brushes.White;
+                    //tx.Content = predmeti[ctr + j - 4];
+                    Predmetibox.Add(tx);
+
+                    Border panel = new Border();
+                    Grid.SetColumn(panel, j);
+                    Grid.SetRow(panel, i);
+                    panel.Child = tx;
+                    panel.VerticalAlignment = VerticalAlignment.Top;
+                    panel.HorizontalAlignment = HorizontalAlignment.Center;
+                    OcenkiGrid.Children.Add(panel);
+
+                }
+
+                OcenkiGrid.Height = OcenkiGrid.Height + ImgHeight + TxtHeight;
+                if (last != -2) break;
             }
-
         }
 
         private void TextBox_Text_Changed(object sender, EventArgs e)

@@ -60,6 +60,9 @@
     <Compile Include="EditUcenici_Page.xaml.cs">
       <DependentUpon>EditUcenici_Page.xaml</DependentUpon>
     </Compile>
+    <Compile Include="OcenaControl.xaml.cs">
+      <DependentUpon>OcenaControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Oceni.xaml.cs">
       <DependentUpon>Oceni.xaml</DependentUpon>
     </Compile>
@@ -107,6 +110,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="OcenaControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Oceni.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
