@@ -192,5 +192,8 @@
     <Resource Include="triangle right.png" />
     <Resource Include="triangle left.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="check_icon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

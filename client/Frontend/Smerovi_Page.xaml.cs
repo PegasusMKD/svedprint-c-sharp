@@ -28,7 +28,7 @@ namespace Frontend
             dic.Add("PMA", "matematika,makedonski,fizika,muzicko");
             dic.Add("PMB", "matematika,filozofija,istorija");
             dic.Add("OHA", "makedonski,fizika,fizicko,geografija");
-            dic.Add("OHB", "makedonski,fizika,fizicko,geografija");
+            dic.Add("OHБ", "makedonski,fizika,fizicko,geografija");
 
             GetData(dic);
         }
@@ -53,11 +53,15 @@ namespace Frontend
                 {
                     st1.Children.Add(ContentBorder(entry.Key));
                     st1.Children.Add(st);
+                    st.Children.Add(ContentTextBox("Додавај Предмет"));
+                    st.Children.Add(TextBorderGrid());
                 }
                 else
                 {
                     st2.Children.Add(ContentBorder(entry.Key));
                     st2.Children.Add(st);
+                    st.Children.Add(ContentTextBox("Додавај Предмет"));
+                    st.Children.Add(TextBorderGrid());
                 }
                 ctr++;
             }
@@ -82,7 +86,7 @@ namespace Frontend
             border.HorizontalAlignment = HorizontalAlignment.Right;
 
             Image img = new Image();
-            img.Source = new BitmapImage(new Uri("prosek_rk.png", UriKind.Relative));
+            img.Source = new BitmapImage(new Uri("check_icon.png", UriKind.Relative));
             border.Child = img;
 
             gd.Children.Add(border);
