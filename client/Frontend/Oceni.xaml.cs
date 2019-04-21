@@ -1,20 +1,12 @@
-
 using Middleware;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Frontend
 {
@@ -158,7 +150,7 @@ namespace Frontend
             if (combobox_smer.SelectedIndex != GetSmerIndex(brojDn))
             {
                 OcenkiGrid.Children.Clear();
-                LoadOcenki(str, result, smerovi[result[brojDn]["smer"]]._predmeti.Count);
+                LoadOcenki(brojDn);
             }
             populateData(brojDn);
         }
@@ -358,6 +350,18 @@ namespace Frontend
         private void Menu_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+
+        private void MouseEnter(object sender, MouseEventArgs e)
+        {
+            DockPanel st = (DockPanel)sender;
+            st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(237, 106, 61));
+        }
+
+        private void MouseLeave(object sender, MouseEventArgs e)
+        {
+            DockPanel st = (DockPanel)sender;
+            if (ClickedMenuItem != sender) st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(165, 166, 140));
         }
     }
 }

@@ -38,34 +38,10 @@ namespace Frontend
 
             SettingsImg.MouseLeftButtonDown += new MouseButtonEventHandler(SettingsImg_Clicked);
 
-            /*
-            result =  Requests.GetData(new Dictionary<string, string>() {
+
+            result = Requests.GetData(new Dictionary<string, string>() {
                 {RequestParameters.token, Klasen._token }
-            }, RequestScopes.GetParalelka);*/
-
-            result = new List <Dictionary<string, string> >();
-            Dictionary<string, string> dic = new Dictionary<string, string>();
-            dic.Add("ime", "luka");
-            dic.Add("prezime", "jov");
-            dic.Add("oceni", "1 2 3 5 2 5 1");
-            dic.Add("smer", "0");
-            result.Add(dic);
-
-            dic = new Dictionary<string, string>();
-
-            dic.Add("ime", "marce");
-            dic.Add("prezime", "jov");
-            dic.Add("oceni", "4 4 4 4 4 4");
-            dic.Add("smer", "1");
-            result.Add(dic);
-
-            dic = new Dictionary<string, string>();
-
-            dic.Add("ime","ime3");
-            dic.Add("prezime", "prez3");
-            dic.Add("oceni", "5 5 5 5 5 5 5");
-            dic.Add("smer", "0");
-            result.Add(dic);
+            }, RequestScopes.GetParalelka);
 
             ucenici = result.ConvertAll(x => new Ucenik(x));
             KlasenKlasa.PopulateSmeroviFromUcenici(ucenici);
