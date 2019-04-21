@@ -157,9 +157,14 @@ namespace Frontend
 
         int GetSmerIndex(int brojDn)
         {
-            if (smerovi[result[brojDn]["smer"]]._smer == "PMA") return 0;
-            if (smerovi[result[brojDn]["smer"]]._smer == "OHA") return 1;
-            return 3;
+            string[] MozniSmerovi = UserKlas._smerovi.Split(',');
+            int i = 0;
+            foreach (string x in MozniSmerovi)
+            {
+                if (smerovi[result[brojDn]["smer"]]._smer == x) return i;
+                i++;
+            }
+            return 0;
         }
 
         private void populateData(int brojDn)
