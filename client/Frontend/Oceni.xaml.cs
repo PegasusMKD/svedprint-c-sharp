@@ -157,7 +157,7 @@ namespace Frontend
 
         int GetSmerIndex(int brojDn)
         {
-            string[] MozniSmerovi = UserKlas._smerovi.Split(',');
+            string[] MozniSmerovi = { "ПМА","ПМБ", "ОХА", "ОХБ", "ЈУА", "ЈУБ" };
             int i = 0;
             foreach (string x in MozniSmerovi)
             {
@@ -249,6 +249,7 @@ namespace Frontend
                     tx.Width = 20;
                     tx.Foreground = System.Windows.Media.Brushes.White;
                     tx.CaretBrush = System.Windows.Media.Brushes.White;
+                    tx.SelectionBrush = System.Windows.Media.Brushes.Coral;
                     tx.Background = System.Windows.Media.Brushes.Transparent;
                     tx.TextChanged += TextBox_Text_Changed;
                     tx.Name = "t" + (Ocenkibox.Count).ToString();
