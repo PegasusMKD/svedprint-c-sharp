@@ -25,6 +25,7 @@ namespace Frontend
         Frame Main;
         Page loginPage;
         public static Klasen KlasenKlasa;
+        public static List<Ucenik> ucenici;
         public static List<Dictionary<string, string>> result;
         public static Dictionary<string, Smer> smerovi;
 
@@ -66,6 +67,9 @@ namespace Frontend
             dic.Add("smer", "0");
             result.Add(dic);
 
+            ucenici = result.ConvertAll(x => new Ucenik(x));
+            KlasenKlasa.PopulateSmeroviFromUcenici(ucenici);
+
             getPredmeti();
             
         }
@@ -79,40 +83,15 @@ namespace Frontend
         {
             smerovi = new Dictionary<string, Smer>();
 
-            Dictionary<string, Smer> dic = new Dictionary<string, Smer>();
-            Smer s = new Smer();
-            s._smer = "PMA";
-            s._predmeti = new List<string>();
-            s._predmeti.Add("makedonski");
-            s._predmeti.Add("makedonski");
-            s._predmeti.Add("makedonski");
-            s._predmeti.Add("makedonski");
-            s._predmeti.Add("makedonski");
-            s._predmeti.Add("makedonski");
-            s._predmeti.Add("makedonski");
-
-            smerovi.Add("0", s);
-
-            s = new Smer();
-            s._smer = "OHA";
-            s._predmeti = new List<string>();
-            s._predmeti.Add("matematika");
-            s._predmeti.Add("makedonski");
-            s._predmeti.Add("filozofija");
-            s._predmeti.Add("germanski");
-            s._predmeti.Add("makedonski");
-            s._predmeti.Add("makedonski");
-
-            smerovi.Add("1", s);
-            return;
-
-            foreach (var x in "ПМА,PMB,OHA,OHB,JUA,JUB".Split(','))
+            foreach (var x in KlasenKlasa.GetSmerovi())
             {
                 smerovi.Add(x, new Smer(Requests.GetData(new Dictionary<string, string>(){
                     { RequestParameters.token, KlasenKlasa._token},
                     { RequestParameters.smer, x }
                 }, RequestScopes.GetPredmetiSmer)[0]["predmeti"].Split(',').ToList(), x));
             }
+
+            KlasenKlasa._p._smerovi = smerovi;
         }
 
         private void MouseEnter(object sender, MouseButtonEventArgs e)

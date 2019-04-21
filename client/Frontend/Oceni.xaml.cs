@@ -29,9 +29,18 @@ namespace Frontend
 
         Dictionary<string,Smer> smerovi;
         List<Dictionary<string, string>> result;
-        Dictionary<string, string> res;
-        string[] str = { "Математика", "Македонски", "Физика", "Хемија", "Биологија", "Географија", "Физичко", "Ликовно", "Музичко", "Математика", "физка", "Математика", "географија", "Математика" };
+        private static Dictionary<string, string> smerovi_naslov = new Dictionary<string, string>()
+        {
+            {"ПМА",  "Природно Математико подрачје - А" },
+            {"ПМБ", "Природно Математичко Подрачје - Б" },
+            {"ОХА", "Општествено Х Подрачје А" },
+            {"ОХБ", "Општествено Х Подрачје Б" },
+            {"ЈУА", "Јазично Уметничко Подрачје А" },
+            {"ЈУБ", "Јазично Уметничко Подрачје Б" }
 
+        };
+        Dictionary<string, string> res;
+        static int brPredmeti;
         public Oceni(Frame m, Page loginpage)
         {
             InitializeComponent();
@@ -45,7 +54,7 @@ namespace Frontend
 
             LoadListView(result);
 
-            LoadOcenki(str, result , smerovi[result[0]["smer"]]._predmeti.Count);
+            LoadOcenki(0);
 
             populateData(0);
 
@@ -89,11 +98,10 @@ namespace Frontend
                 Menu.Items.Add(MenuDP(x["ime"], x["prezime"], i++));
 
             }
-
-            string[] smer = { "Природно Математико подрачје - А", "Природно Математичко Подрачје - Б", "Општествено Х Подрачје А", "Општествено Х Подрачје Б" };
-            for (int j = 0; j < smer.Length; j++)//combobox
+            
+            foreach(string val in smerovi_naslov.Values)
             {
-                combobox_smer.Items.Add(smer[j]);
+                combobox_smer.Items.Add(val);
             }
             combobox_smer.SelectedItem = combobox_smer.Items[0];
         }
@@ -115,9 +123,9 @@ namespace Frontend
             tx.Foreground = System.Windows.Media.Brushes.White;
             tx.VerticalAlignment = VerticalAlignment.Center;
 
-            st.MouseLeftButtonDown += new MouseButtonEventHandler((sender, e) => MenuItemClicked(sender, e, brojDn));
-            st.MouseEnter += new MouseEventHandler(MenuItemMouseEnter);
-            st.MouseLeave += new MouseEventHandler(MenuItemMouseLeave); 
+            st.MouseUp += new MouseButtonEventHandler((sender, e) => MouseUp(sender, e, brojDn));
+            st.MouseEnter += new MouseEventHandler(MouseEnter);
+            st.MouseLeave += new MouseEventHandler(MouseLeave); 
 
             return st;
         }
@@ -135,7 +143,7 @@ namespace Frontend
             if (ClickedMenuItem != sender) st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(165, 166, 140));
         }
 
-        private void MenuItemClicked(object sender, MouseButtonEventArgs e, int brojDn)
+        private void MouseUp(object sender, MouseButtonEventArgs e, int brojDn)
         {
 
             if (ClickedMenuItem != null)//hover
@@ -167,12 +175,13 @@ namespace Frontend
             Ucenik_Name.Content = result[brojDn]["ime"] + " " + result[brojDn]["prezime"];
             Prosek_out.Content = Array.ConvertAll(result[brojDn]["oceni"].Split(' '), x => float.Parse(x)).Average().ToString("n2");
 
-            BrojDn_label.Content = (brojDn + 1).ToString();  //main ui
-            combobox_smer.SelectedIndex = GetSmerIndex(brojDn);
+            BrojDn_label.Content = (brojDn + 1).ToString();
+            combobox_smer.SelectedValue = smerovi_naslov[result[brojDn]["smer"]];
 
-            string[] ocenki = result[brojDn]["oceni"].Split(' ');//ocenki tab
 
-            for (int i = 0; i < ocenki.Length; i++)
+            string[] ocenki = result[brojDn]["oceni"].Split(' ');
+            //string[] predmeti = result[brojDn]["predmeti"].Split(',');
+            for (int i = 0; i < brPredmeti; i++)
             {
                 Ocenkibox[i].Text = ocenki[i];//5 5 5 5 5 5 5 5
                 Predmetibox[i].Content = smerovi[result[brojDn]["smer"]]._predmeti[i];
@@ -181,12 +190,11 @@ namespace Frontend
 
         List<TextBox> Ocenkibox = new List<TextBox>();
         List<Label> Predmetibox = new List<Label>();
-        //List<Border> OcenkiBorderBox = new List<Border>();
-        //List<Border> PredmetiBorderBox = new List<Border>();
-        private void LoadOcenki(String[] predmeti, List<Dictionary<string, string>> Result , int Size)//size na predmeti
+        private void LoadOcenki(int broj_dn)
         {
- 
-            //int Size = smerovi[result[BrojDn]["smer"]]._predmeti.Count;
+            List<string> predmeti = UserKlas._p._smerovi[result[broj_dn]["smer"]]._predmeti;
+            int Size = predmeti.Count;
+            brPredmeti = Size;
             int ctr = 0;
             int ImgHeight = 80;
             int TxtHeight = 50;
@@ -195,7 +203,7 @@ namespace Frontend
             Ocenkibox.Clear();
             Predmetibox.Clear();
 
-                for (int i = 0; ctr < Size; i++)
+                for (int i = 0; ctr < Size/4 + 1; i++)
                 {
 
                     RowDefinition rowDefImg = new RowDefinition();
@@ -203,16 +211,18 @@ namespace Frontend
 
                     int last = -2;
 
+                    if (i * 4 >= Size) break;
+
                     for (int j = 0; j < 4; j++)
                     {
-
+                        if (i * 4 + j >= Size) break;
                         if (ctr == Size)
                         {
                             last = j;
                             break;
                         }
 
-                        OcenkiGrid.RowDefinitions[i].Height = new GridLength(ImgHeight);
+                        OcenkiGrid.RowDefinitions[i*2].Height = new GridLength(ImgHeight);
 
                         System.Windows.Controls.Image img = new System.Windows.Controls.Image();
                         BitmapImage bm = new BitmapImage();
@@ -224,7 +234,7 @@ namespace Frontend
 
                         Border panel = new Border();
                         Grid.SetColumn(panel, j);
-                        Grid.SetRow(panel, i);
+                        Grid.SetRow(panel, i*2);
                         panel.Child = img;
                         panel.Margin = new Thickness(15);
                        // OcenkiBorderBox.Add(panel);
@@ -251,7 +261,7 @@ namespace Frontend
 
                         Border panel2 = new Border();
                         Grid.SetColumn(panel2, j);
-                        Grid.SetRow(panel2, i);
+                        Grid.SetRow(panel2, i*2);
                         panel2.Child = tx;
                        // PredmetiBorderBox.Add(panel2);
 
@@ -259,27 +269,26 @@ namespace Frontend
                         ctr++;
                     }
 
-                    i++;
-
                     RowDefinition rowDefTxt = new RowDefinition();
                     OcenkiGrid.RowDefinitions.Add(rowDefTxt);
 
                     for (int j = 0; j < 4; j++)
                     {
+                        if (i*4 + j >= Size) continue;
                         if (last == j) break;
 
-                        OcenkiGrid.RowDefinitions[i].Height = new GridLength(TxtHeight);
+                        OcenkiGrid.RowDefinitions[i*2+1].Height = new GridLength(TxtHeight);
 
                         Label tx = new Label();
                         tx.FontSize = 20;
                         tx.FontFamily = new System.Windows.Media.FontFamily("Arial Black");
                         tx.Foreground = System.Windows.Media.Brushes.White;
-                        tx.Content = "5";//predmeti[ctr + j - 4];
+                        tx.Content = predmeti[i * 4 + j];
                         Predmetibox.Add(tx);
 
                         Border panel = new Border();
                         Grid.SetColumn(panel, j);
-                        Grid.SetRow(panel, i);
+                        Grid.SetRow(panel, i*2+1);
                         panel.Child = tx;
                         panel.VerticalAlignment = VerticalAlignment.Top;
                         panel.HorizontalAlignment = HorizontalAlignment.Center;
@@ -297,7 +306,15 @@ namespace Frontend
         {
             TextBox tx = (TextBox)sender;
             int i = int.Parse(tx.Name.Substring(1, tx.Name.Length - 1));
-            Ocenkibox[++i % result.Count].Focus();
+            Ocenkibox[(i + 1) % brPredmeti].GotFocus += TextBox_GotFocus;
+            Ocenkibox[(i+1) % brPredmeti].Focus();
+        }
+
+        private void TextBox_GotFocus(object sender, EventArgs e)
+        {
+            TextBox tx = (TextBox)sender;
+            int i = int.Parse(tx.Name.Substring(1, tx.Name.Length - 1));
+            Ocenkibox[i].SelectAll();
         }
 
         private void Menu_hide(object sender, MouseButtonEventArgs e)
