@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Middleware;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,61 +22,71 @@ namespace Frontend
     /// </summary>
     public partial class Smerovi_Page : Page
     {
+
+        Klasen UserKlas;
+        Dictionary<string, Smer> smerovi;
+        List<Dictionary<string, string>> result;
+
+
         public Smerovi_Page()
         {
             InitializeComponent();
-            Dictionary<String, String> dic = new Dictionary<string, string> ();
-            dic.Add("PMA", "matematika,makedonski,fizika,muzicko");
-            dic.Add("PMB", "matematika,filozofija,istorija");
-            dic.Add("OHA", "makedonski,fizika,fizicko,geografija");
-            dic.Add("OHБ", "makedonski,fizika,fizicko,geografija");
 
-            GetData(dic);
+            UserKlas = Home_Page.KlasenKlasa;
+            smerovi = Home_Page.smerovi;
+            result = Home_Page.result;
+
+            GetData();
         }
 
-        private void GetData(Dictionary<String, String> res)
+        List<TextBox> DodajPredmeti = new List<TextBox>();
+
+        private void GetData()
         {
 
-            Predmeti = new List<StackPanel>();
             int ctr = 0;
-            foreach (KeyValuePair<string, string> entry in res)
+            DodajPredmeti.Clear();
+            st1.Children.Clear();
+            st2.Children.Clear();
+
+            String[] smer = UserKlas._smerovi.Split(',');
+            foreach (string x in smer)
             {
+                List<String> Predmeti = UserKlas._p._smerovi[x]._predmeti;
+
                 StackPanel st = new StackPanel();
-                foreach (string s in entry.Value.Split(','))
+                foreach (string s in Predmeti)
                 {
                     st.Children.Add(ContentTextBox(s));
-                    st.Children.Add(TextBorderGrid());
+                    st.Children.Add(TextBorderGrid(true , ctr));
                 }
-
-                Predmeti.Add(st);
 
                 if (ctr % 2 == 0)
                 {
-                    st1.Children.Add(ContentBorder(entry.Key));
+                    st1.Children.Add(ContentBorder(x));
                     st1.Children.Add(st);
-                    st.Children.Add(ContentTextBox("Додавај Предмет"));
-                    st.Children.Add(TextBorderGrid());
                 }
                 else
                 {
-                    st2.Children.Add(ContentBorder(entry.Key));
+                    st2.Children.Add(ContentBorder(x));
                     st2.Children.Add(st);
-                    st.Children.Add(ContentTextBox("Додавај Предмет"));
-                    st.Children.Add(TextBorderGrid());
                 }
+                DodajPredmeti.Add(ContentTextBox("Додавај Предмет"));
+                st.Children.Add(DodajPredmeti[Predmeti.Count-1]);
+                st.Children.Add(TextBorderGrid(false , ctr));
+
                 ctr++;
             }
         }
 
         private Border ContentBorder(string LabelContent)
         {
-
             Border bd = CreateBorder(50, 5, 20, 10, "#FFED6A3E");
             bd.Child = CreateLabel(LabelContent, 30, "Arial");
             return bd;
         }
 
-        private Grid TextBorderGrid()
+        private Grid TextBorderGrid(bool IsX,int i)
         {
             Grid gd = new Grid();
             gd.Margin = new Thickness(0, 0, 0, 10);
@@ -90,8 +101,29 @@ namespace Frontend
             border.Child = img;
 
             gd.Children.Add(border);
-
+            if(IsX == false)
+            {
+                img.MouseLeftButtonDown += new MouseButtonEventHandler((sender, e) => NewPredmetImgClicked(sender, e, i));
+            }
+            if(IsX == true)
+            {
+                img.MouseLeftButtonDown += new MouseButtonEventHandler((sender, e) => RemovePredmetImgClicked(sender, e, i));
+            }
             return gd;
+        }
+
+        private void NewPredmetImgClicked(object sender, MouseButtonEventArgs e , int i)
+        {
+            MessageBox.Show(DodajPredmeti[i].Text);
+            UserKlas._p._smerovi[UserKlas._smerovi.Split(',')[i]]._predmeti.Add(DodajPredmeti[i].Text);
+            GetData();
+        }
+
+        private void RemovePredmetImgClicked(object sender, MouseButtonEventArgs e, int i)
+        {
+            MessageBox.Show(DodajPredmeti[i].Text);
+            UserKlas._p._smerovi[UserKlas._smerovi.Split(',')[i]]._predmeti.RemoveAt(i);
+            GetData();
         }
 
         private TextBox ContentTextBox(string Text)
@@ -103,7 +135,21 @@ namespace Frontend
             return tx;
         }
 
-        List<StackPanel> Predmeti;
+        private void Update()
+        {
+            foreach(string x in UserKlas._smerovi.Split(','))
+            {
+                string res = "";
+                foreach(string s in UserKlas._p._smerovi[x]._predmeti)
+                {
+                    res += s + ",";
+                }
+                Requests.UpdateData(new Dictionary<string, string>() {
+                 {RequestParameters.smer , x }, { RequestParameters.token , UserKlas._token }
+                }, res);
+            }
+
+        }
 
     }
 }
