@@ -20,11 +20,11 @@
         <Grid Margin="0,2,0,2" VerticalAlignment="Top" HorizontalAlignment="Center" >
             <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="prosek_krug.png" Margin="0" Width="65" Grid.Row="1" Grid.Column="1"/>
             <TextBox Grid.Column="1" Margin="0" Grid.Row="1" TextWrapping="Wrap" Text="5" Background="{x:Null}" BorderBrush="{x:Null}" SelectionBrush="White" Foreground="White" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Image Margin="0,0,150,0" VerticalAlignment="Center" Source="triangle left.png" Height="50"/>
-            <Image Margin="150,0,0,0" VerticalAlignment="Center" Source="triangle right.png" Height="50"/>
+            <Image Name="LeftTriangle" Margin="0,0,150,3" VerticalAlignment="Bottom" Source="triangle left.png" Height="50" MouseLeftButtonDown="LeftTriangleClicked"/>
+            <Image Name="RightTriangle" Margin="150,0,0,3" VerticalAlignment="Bottom" Source="triangle right.png" Height="50" MouseLeftButtonDown="RightTriangleClicked"/>
         </Grid>
 
-        
+
         <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" HorizontalContentAlignment="Stretch" VerticalAlignment="Top" VerticalContentAlignment="Stretch" >
             <Grid Name = "MainGrid" Grid.Row="1"  Height="0">
                 <Grid.ColumnDefinitions>

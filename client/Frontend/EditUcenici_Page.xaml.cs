@@ -22,6 +22,7 @@ namespace Frontend
     public partial class EditUcenici_Page : Page
     {
 
+        int BrojDn = 0;
         public EditUcenici_Page()
         {
             InitializeComponent();
@@ -32,8 +33,8 @@ namespace Frontend
         void GetData()
         {
             Results = new List<TextBox>();
-            String[] Fields = { "Име Презиме", "Смер", "Државјанство", "Година на раѓање", "Година", "Година", "Година", "Година", "Година", "Година", "Година", "IV" };
-            String[] Content = { "Лука", "ПМА", "Македонски", "20.6.1996", "IV", "IV", "IV", "IV", "IV", "IV", "IV", "IV" };
+            String[] Fields = { "Име", "Средно Име", "Презиме", "Смер", "број во дневник", "родител(Татко)", "роден, место на раѓање", "пат на запишување", "вид на образование, пол", "нахнаден" };
+            String[] Content = { "", "", "", "", "", "", "", "", "", "", "", "" };
             MainGrid.Height = 0;
             for (int i = 0; i < Fields.Length; i++)
             {
@@ -62,7 +63,22 @@ namespace Frontend
             Border bd = CreateBorder(40, 5 , 20,10, "#FFED6A3E");
             bd.Child = CreateLabel(LabelContent, 20, "Arial");
             return bd;
-        }      
-        
+        }
+
+        private void LeftTriangleClicked(object sender, MouseButtonEventArgs e)
+        {
+            BrojDn = valid(+1);
+        }
+
+        private void RightTriangleClicked(object sender, MouseButtonEventArgs e)
+        {
+            BrojDn = valid(-1);
+        }
+
+        int valid(int x)
+        {
+            if (BrojDn + x >= 0 && BrojDn + x <= 35) return BrojDn + x;
+            else return BrojDn;
+        }
     }
 }
