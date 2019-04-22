@@ -157,9 +157,14 @@ namespace Frontend
 
         int GetSmerIndex(int brojDn)
         {
-            if (smerovi[result[brojDn]["smer"]]._smer == "PMA") return 0;
-            if (smerovi[result[brojDn]["smer"]]._smer == "OHA") return 1;
-            return 3;
+            string[] MozniSmerovi = { "ПМА","ПМБ", "ОХА", "ОХБ", "ЈУА", "ЈУБ" };
+            int i = 0;
+            foreach (string x in MozniSmerovi)
+            {
+                if (smerovi[result[brojDn]["smer"]]._smer == x) return i;
+                i++;
+            }
+            return 0;
         }
 
         private void populateData(int brojDn)
@@ -244,6 +249,7 @@ namespace Frontend
                     tx.Width = 20;
                     tx.Foreground = System.Windows.Media.Brushes.White;
                     tx.CaretBrush = System.Windows.Media.Brushes.White;
+                    tx.SelectionBrush = System.Windows.Media.Brushes.Coral;
                     tx.Background = System.Windows.Media.Brushes.Transparent;
                     tx.TextChanged += TextBox_Text_Changed;
                     tx.Name = "t" + (Ocenkibox.Count).ToString();
