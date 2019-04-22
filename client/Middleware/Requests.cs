@@ -175,7 +175,7 @@ namespace Middleware
                     {
                         if (k.Path == "oceni")
                         {
-                            List<int> l = k.ToObject<List<int>>();
+                            List<int> l = k.ToObject<List<int>>() ?? new List<int>();
                             pair[k.Path] = String.Join<int>(" ", l);
                         }
                         else
