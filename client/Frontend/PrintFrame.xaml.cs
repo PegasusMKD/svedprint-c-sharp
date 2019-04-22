@@ -29,7 +29,7 @@ namespace Frontend
         public PrintFrame(Frame m, Page homepage)
         {
             InitializeComponent();
-            SvedImg.Source = new BitmapImage(new Uri(new Uri(Directory.GetCurrentDirectory(), UriKind.Absolute), new Uri(@"C:\Users\lukaj\Documents\sved.png", UriKind.Relative)));
+            // SvedImg.Source = new BitmapImage(new Uri(new Uri(Directory.GetCurrentDirectory(), UriKind.Absolute), new Uri(@"C:\Users\lukaj\Documents\sved.png", UriKind.Relative)));
             Main = m;
             HomePage = homepage;
             LoadPrinterBox();
