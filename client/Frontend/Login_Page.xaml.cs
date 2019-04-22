@@ -34,7 +34,7 @@ namespace Frontend
             AlertTimer.Tick += new EventHandler(AlertTimer_Tick);
             AlertTimer.Interval = new TimeSpan(0, 0, 5);
 
-            Username_txt.Focus();
+            
         }
         
 
@@ -48,8 +48,8 @@ namespace Frontend
 
         private void login()
         {
-            Username_txt.Text = "Pazzio2";
-            Password_txt.Text = "test_pass";
+            //Username_txt.Text = "Pazzio2";
+            //Password_txt.Text = "test_pass";
             Klasen temp = Login.LoginWithCred(Username_txt.Text, Password_txt.Text);
 
             if (temp._ime != "002" && temp._ime != string.Empty)
