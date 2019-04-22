@@ -62,6 +62,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="arialbd.ttf" />
+    <None Include="main.exe" />
     <None Include="packages.config" />
     <None Include="settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -69,9 +71,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="main.exe">
+    <Content Include="dipl.jpg" />
+    <None Include="print.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="glavna.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
