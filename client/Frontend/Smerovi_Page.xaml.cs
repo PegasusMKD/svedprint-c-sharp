@@ -44,10 +44,10 @@ namespace Frontend
         private void GetData()
         {
 
-            int ctr = 0;
             DodajPredmeti.Clear();
             st1.Children.Clear();
             st2.Children.Clear();
+            int SmerCtr = 0;
 
             String[] smer = UserKlas._smerovi.Split(',');
             foreach (string x in smer)
@@ -55,13 +55,14 @@ namespace Frontend
                 List<String> Predmeti = UserKlas._p._smerovi[x]._predmeti;
 
                 StackPanel st = new StackPanel();
+                int PredmetCtr = 0;
                 foreach (string s in Predmeti)
                 {
                     st.Children.Add(ContentTextBox(s));
-                    st.Children.Add(TextBorderGrid(true , ctr));
+                    st.Children.Add(TextBorderGrid(true ,SmerCtr, PredmetCtr++));
                 }
 
-                if (ctr % 2 == 0)
+                if (SmerCtr % 2 == 0)
                 {
                     st1.Children.Add(ContentBorder(x));
                     st1.Children.Add(st);
@@ -72,10 +73,10 @@ namespace Frontend
                     st2.Children.Add(st);
                 }
                 DodajPredmeti.Add(ContentTextBox("Додавај Предмет"));
-                st.Children.Add(DodajPredmeti[Predmeti.Count-1]);
-                st.Children.Add(TextBorderGrid(false , ctr));
+                st.Children.Add(DodajPredmeti[DodajPredmeti.Count-1]);
+                st.Children.Add(TextBorderGrid(false , SmerCtr , DodajPredmeti.Count - 1));
 
-                ctr++;
+                SmerCtr++;
             }
         }
 
@@ -86,7 +87,7 @@ namespace Frontend
             return bd;
         }
 
-        private Grid TextBorderGrid(bool IsX,int i)
+        private Grid TextBorderGrid(bool IsX,int i , int j)
         {
             Grid gd = new Grid();
             gd.Margin = new Thickness(0, 0, 0, 10);
@@ -103,34 +104,47 @@ namespace Frontend
             gd.Children.Add(border);
             if(IsX == false)
             {
-                img.MouseLeftButtonDown += new MouseButtonEventHandler((sender, e) => NewPredmetImgClicked(sender, e, i));
+                img.MouseLeftButtonDown += new MouseButtonEventHandler((sender, e) => NewPredmetImgClicked(sender, e, i, j));
             }
             if(IsX == true)
             {
-                img.MouseLeftButtonDown += new MouseButtonEventHandler((sender, e) => RemovePredmetImgClicked(sender, e, i));
+                img.MouseLeftButtonDown += new MouseButtonEventHandler((sender, e) => RemovePredmetImgClicked(sender, e, i , j));
+                img.MouseEnter += RemovePredmedimgMouseEnter;
+                img.MouseLeave += RemovePredmedimgMouseLeave;
             }
             return gd;
         }
 
-        private void NewPredmetImgClicked(object sender, MouseButtonEventArgs e , int i)
+        private void NewPredmetImgClicked(object sender, MouseButtonEventArgs e , int i , int j)
         {
-            MessageBox.Show(DodajPredmeti[i].Text);
-            UserKlas._p._smerovi[UserKlas._smerovi.Split(',')[i]]._predmeti.Add(DodajPredmeti[i].Text);
+            UserKlas._p._smerovi[UserKlas._smerovi.Split(',')[i]]._predmeti.Add(DodajPredmeti[j].Text);
             GetData();
         }
 
-        private void RemovePredmetImgClicked(object sender, MouseButtonEventArgs e, int i)
+        private void RemovePredmetImgClicked(object sender, MouseButtonEventArgs e, int i , int j)
         {
-            MessageBox.Show(DodajPredmeti[i].Text);
-            UserKlas._p._smerovi[UserKlas._smerovi.Split(',')[i]]._predmeti.RemoveAt(i);
+            UserKlas._p._smerovi[UserKlas._smerovi.Split(',')[i]]._predmeti.RemoveAt(j);
             GetData();
         }
+
+        private void RemovePredmedimgMouseEnter(object sender, MouseEventArgs e)
+        {
+            Image img = (Image)sender;
+            img.Source = new BitmapImage(new Uri("x_2.png", UriKind.Relative));
+        }
+
+        private void RemovePredmedimgMouseLeave(object sender, MouseEventArgs e)
+        {
+            Image img = (Image)sender;
+            img.Source = new BitmapImage(new Uri("check_icon.png", UriKind.Relative));
+        }
+
 
         private TextBox ContentTextBox(string Text)
         {
             TextBox tx = CreateTextBox(24);
             tx.HorizontalAlignment = HorizontalAlignment.Left;
-            tx.Margin = new Thickness(30, 0, 0, 0);
+            tx.Margin = new Thickness(30, 0, 70, 0);
             tx.Text = Text;
             return tx;
         }
@@ -144,11 +158,11 @@ namespace Frontend
                 {
                     res += s + ",";
                 }
+                res = res.Substring(0, res.Length - 1);
                 Requests.UpdateData(new Dictionary<string, string>() {
                  {RequestParameters.smer , x }, { RequestParameters.token , UserKlas._token }
                 }, res);
             }
-
         }
 
     }

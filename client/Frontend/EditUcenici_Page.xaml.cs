@@ -26,15 +26,17 @@ namespace Frontend
         public EditUcenici_Page()
         {
             InitializeComponent();
-            GetData();
+            BrojDnLabel.BorderThickness = new Thickness(0);
+            GetData(0);
         }
 
         List<TextBox> Results;
-        void GetData()
+        void GetData(int dn)
         {
+            MainGrid.Children.Clear();
             Results = new List<TextBox>();
-            String[] Fields = { "Име", "Средно Име", "Презиме", "Смер", "број во дневник", "родител(Татко)", "роден, место на раѓање", "пат на запишување", "вид на образование, пол", "нахнаден" };
-            String[] Content = { "", "", "", "", "", "", "", "", "", "", "", "" };
+            String[] Fields = { "Име", "Средно Име", "Презиме", "Смер", "број во дневник", "родител(Татко или Мајка)", "роден, место на раѓање", "пат на запишување", "вид на образование, пол", "нахнаден" };
+            String[] Content = { "", "", "", "", "", "", "", "", "Прв", "", "", "" };
             MainGrid.Height = 0;
             for (int i = 0; i < Fields.Length; i++)
             {
@@ -59,26 +61,28 @@ namespace Frontend
 
         private Border ContentBorder(string LabelContent)
         {
-
             Border bd = CreateBorder(40, 5 , 20,10, "#FFED6A3E");
             bd.Child = CreateLabel(LabelContent, 20, "Arial");
             return bd;
         }
 
-        private void LeftTriangleClicked(object sender, MouseButtonEventArgs e)
+        private void LeftTriangleClicked(object sender, MouseEventArgs e)
         {
-            BrojDn = valid(+1);
+            BrojDnLabel.Text = valid(-1);
+            GetData(BrojDn-1);
         }
 
         private void RightTriangleClicked(object sender, MouseButtonEventArgs e)
         {
-            BrojDn = valid(-1);
+            BrojDnLabel.Text = valid(+1);
+            GetData(BrojDn -1);
         }
 
-        int valid(int x)
+        String valid(int x)
         {
-            if (BrojDn + x >= 0 && BrojDn + x <= 35) return BrojDn + x;
-            else return BrojDn;
+            BrojDn = int.Parse(BrojDnLabel.Text);
+            if (BrojDn + x >= 1 && BrojDn + x <= 35) BrojDn += x;
+            return BrojDn.ToString();
         }
     }
 }
