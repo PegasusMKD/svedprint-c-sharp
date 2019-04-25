@@ -45,7 +45,7 @@ namespace Frontend
             res.Add("пат на запишување", "прв");
             res.Add("вид на образование", "");
             res.Add("пол", "");
-            res.Add("нахнадно", "0");
+            res.Add("нахнадно", "1");
             MainGrid.Height = 0;
 
             int i = 0;
