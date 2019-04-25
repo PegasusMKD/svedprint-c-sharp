@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,19 +26,30 @@ namespace Frontend
         public EditUcenici_Page()
         {
             InitializeComponent();
-            BrojDnLabel.BorderThickness = new Thickness(0);
-            GetData(0);
+            GetData();
         }
 
-        List<TextBox> Results;
-        void GetData(int dn)
+        List<TextBox> Answer;
+        void GetData()
         {
-            MainGrid.Children.Clear();
-            Results = new List<TextBox>();
-            String[] Fields = { "Име", "Средно Име", "Презиме", "Смер", "број во дневник", "родител(Татко или Мајка)", "роден, место на раѓање", "пат на запишување", "вид на образование, пол", "нахнаден" };
-            String[] Content = { "", "", "", "", "", "", "", "", "Прв", "", "", "" };
+            Answer = new List<TextBox>();
+            Dictionary<string, string> res = new Dictionary<string, string>();
+            res.Add("Име", "");
+            res.Add("Средно Име", "");
+            res.Add("Презиме", "");
+            res.Add("Смер", "");
+            res.Add("број во дневник", "");
+            res.Add("родител(Татко)", "");
+            res.Add("роден", "");
+            res.Add("место на раѓање", "");
+            res.Add("пат на запишување", "прв");
+            res.Add("вид на образование", "");
+            res.Add("пол", "");
+            res.Add("нахнадно", "0");
             MainGrid.Height = 0;
-            for (int i = 0; i < Fields.Length; i++)
+
+            int i = 0;
+            foreach (KeyValuePair<string, string> x in res)
             {
                 StackPanel st = new StackPanel();
                 if (i % 2 == 0)
@@ -48,14 +59,15 @@ namespace Frontend
                     MainGrid.Height += 100;
                 }
 
-                Results.Add(ContentTextBox(Content[i]));
-                st.Children.Add(ContentBorder(Fields[i]));
-                st.Children.Add(Results[i]);
+                Answer.Add(ContentTextBox(x.Value));
+                st.Children.Add(ContentBorder(x.Key));
+                st.Children.Add(Answer[i]);
                 st.Children.Add(UnderTextBorder());
 
                 Grid.SetRow(st, i / 2);
                 Grid.SetColumn(st, i % 2);
                 MainGrid.Children.Add(st);
+                i++;
             }
         }
 
@@ -69,13 +81,13 @@ namespace Frontend
         private void LeftTriangleClicked(object sender, MouseEventArgs e)
         {
             BrojDnLabel.Text = valid(-1);
-            GetData(BrojDn-1);
+            GetData();
         }
 
         private void RightTriangleClicked(object sender, MouseButtonEventArgs e)
         {
             BrojDnLabel.Text = valid(+1);
-            GetData(BrojDn -1);
+            GetData();
         }
 
         String valid(int x)
