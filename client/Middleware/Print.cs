@@ -205,27 +205,38 @@ namespace Middleware
                 {
                     tmparr.Add("NaN");
                 }
-                sw.Write("\"" + String.Join("/", u._s._predmeti) + "\"");
+                sw.Write("\"" + String.Join("/", tmparr) + "\"");
                 sw.Write(";");
 
                 // oceni
-                sw.Write("\"" + String.Join(" ", u._oceni) + "\"");
+                tmparr.Clear();
+                tmparr.AddRange(u._oceni.ConvertAll(x => x.ToString()));
+                while (tmparr.Count < 17)
+                {
+                    tmparr.Add("NaN");
+                }
+                sw.Write("\"" + String.Join(" ", u._oceni) + " ");
+
+                // polozil
+                sw.Write(string.Join(" ", u._polozhil) + "\"");
                 sw.Write(";");
 
-                // uchilishte, grad, broj glavna kniga, godina (klas)
+                // delovoden broj, godina (klas), paralelka, broj vo dnevnik
                 sw.Write("\"");
-                sw.Write(klasen._uchilishte);
+                sw.Write(u._delovoden_broj);
                 sw.Write(delimiter);
-                sw.Write(klasen._grad);
+                sw.Write(klasen._paralelka.Replace('-', delimiter[0]));
                 sw.Write(delimiter);
-                sw.Write(delimiter); // broj glavna kniga
-                sw.Write(klasen._paralelka.Split('-').FirstOrDefault());
+                sw.Write(u._broj);
                 sw.Write(delimiter);
+                
 
                 // ime prezime na ucenik, ime prezime na roditel, DOB, naselba, opshtina, drzhava, drzhavjanstvo (hardcode)
                 sw.Write(u._ime + " " + u._prezime);
                 sw.Write(delimiter);
-                sw.Write(u._tatkovo + " " + u._prezime);
+                sw.Write(u._tatkovo);
+                sw.Write(delimiter);
+                sw.Write(u._majkino);
                 sw.Write(delimiter);
                 sw.Write(u._roden);
                 sw.Write(delimiter);

@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -35,12 +36,17 @@ namespace Middleware
 
             List<Dictionary<string, string>> queryResult = new List<Dictionary<string, string>>();
             queryResult = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(responseJson, new DictConverter());
+            printData(json, responseJson);
 
+            return queryResult;
+        }
+
+        [Conditional("DEBUG")]
+        private static void printData(string json, string responseJson)
+        {
             Console.WriteLine("GetData:");
             Console.WriteLine(String.Format("Request:{0}{1}", Environment.NewLine, JToken.Parse(json).ToString(Formatting.Indented)));
             Console.WriteLine(String.Format("Response:{0}{1}", Environment.NewLine, JToken.Parse(responseJson).ToString(Formatting.Indented)));
-
-            return queryResult;
         }
 
         public static void AddData(Dictionary<string, string> queryParams, string scope)
@@ -135,6 +141,13 @@ namespace Middleware
         public const string izborni = "izborni";
         public const string proektni = "proektni";
         public const string merki = "merki";
+        public const string prethodna_godina = "prethodna_godina";
+        public const string prethoden_uspeh = "prethoden_uspeh";
+        public const string prethodno_uchilishte = "prethodno_uchilishte";
+        public const string delovoden_broj = "delovoden_broj";
+        public const string datum_sveditelstvo = "datum_sveditelstvo";
+        public const string polozhil = "polozhil";
+        public const string majkino = "majkino";
     }
 
     class RequestConverter : JsonConverter<Request>

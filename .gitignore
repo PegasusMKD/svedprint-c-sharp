@@ -333,3 +333,5 @@ ASALocalRun/
 /server
 /client/ConsoleApp1
 /client/UnitTest
+/client/Middleware/script_args
+/client/Middleware/json_dump

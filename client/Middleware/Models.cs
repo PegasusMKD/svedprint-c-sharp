@@ -46,9 +46,22 @@ namespace Middleware
         public string _proektni { get; set; }
         [JsonProperty(RequestParameters.merki)]
         public string _merki { get; set; }
-        
+        [JsonProperty(RequestParameters.prethodna_godina)]
+        public string _prethodna_godina { get; set; }
+        [JsonProperty(RequestParameters.prethoden_uspeh)]
+        public string _prethoden_uspeh { get; set; }
+        [JsonProperty(RequestParameters.prethodno_uchilishte)]
+        public string _prethodno_uchilishte { get; set; }
+        [JsonProperty(RequestParameters.delovoden_broj)]
+        public string _delovoden_broj { get; set; }
+        [JsonProperty(RequestParameters.datum_sveditelstvo)]
+        public string _datum_sveditelstvo { get; set; }
+        [JsonProperty(RequestParameters.polozhil)]
+        public string _polozhil { get; set; }
+        [JsonProperty(RequestParameters.majkino)]
+        public string _majkino { get; set; }
 
-        public Ucenik(string ime, string tatkovo, string prezime, List<int> oceni, string smer, int broj, string roden, string mesto, string povedenie, int opravdani, int neopravdani, string tip, string pat, string roditel, string gender, string maturska, string izborni, string proektni, string merki)
+        public Ucenik(string ime, string tatkovo, string prezime, List<int> oceni, string smer, int broj, string roden, string mesto, string povedenie, int opravdani, int neopravdani, string tip, string pat, string roditel, string gender, string maturska, string izborni, string proektni, string merki, string prethodna_godina, string prethoden_uspeh, string prethodno_uchilishte, string delovoden_broj, string datum_sveditelstvo, string polozhil, string majkino)
         {
             _ime = ime ?? "";
             _tatkovo = tatkovo ?? "";
@@ -69,7 +82,13 @@ namespace Middleware
             _izborni = izborni ?? "";
             _proektni = proektni ?? "";
             _merki = merki ?? "";
-
+            _prethodna_godina = prethodna_godina ?? "";
+            _prethoden_uspeh = prethoden_uspeh ?? "";
+            _prethodno_uchilishte = prethodno_uchilishte ?? "";
+            _delovoden_broj = delovoden_broj ?? "";
+            _datum_sveditelstvo = datum_sveditelstvo ?? "";
+            _polozhil = polozhil ?? "";
+            _majkino = majkino ?? "";
 
             _s = new Smer(new List<string>(), _smer);
         }
@@ -97,6 +116,19 @@ namespace Middleware
             _neopravdani = int.Parse(valuePairs[RequestParameters.neopravdani] ?? "0");
             _tip = valuePairs[RequestParameters.tip] ?? "";
             _pat = valuePairs[RequestParameters.pat] ?? "";
+            _roditel = valuePairs[RequestParameters.roditel] ?? "";
+            _gender = valuePairs[RequestParameters.gender] ?? "";
+            _maturska = valuePairs[RequestParameters.maturska] ?? "";
+            _izborni = valuePairs[RequestParameters.izborni] ?? "";
+            _proektni = valuePairs[RequestParameters.proektni] ?? "";
+            _merki = valuePairs[RequestParameters.merki] ?? "";
+            _prethodna_godina = valuePairs[RequestParameters.prethodna_godina] ?? "";
+            _prethoden_uspeh = valuePairs[RequestParameters.prethoden_uspeh] ?? "";
+            _prethodno_uchilishte = valuePairs[RequestParameters.prethodno_uchilishte] ?? "";
+            _delovoden_broj = valuePairs[RequestParameters.delovoden_broj] ?? "";
+            _datum_sveditelstvo = valuePairs[RequestParameters.datum_sveditelstvo] ?? "";
+            _polozhil = valuePairs[RequestParameters.polozhil] ?? "";
+            _majkino = valuePairs[RequestParameters.majkino] ?? "";
         }
 
         public Dictionary<string, string> ToDict()
