@@ -229,9 +229,10 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._broj);
                 sw.Write(delimiter);
-                
 
-                // ime prezime na ucenik, ime prezime na roditel, DOB, naselba, opshtina, drzhava, drzhavjanstvo (hardcode)
+		
+
+                // ime prezime na ucenik, ime na tatko, ime na majka, DOB, mesto na raganje, naselba, opshtina, drzhava, drzhavjanstvo (hardcode)
                 sw.Write(u._ime + " " + u._prezime);
                 sw.Write(delimiter);
                 sw.Write(u._tatkovo);
@@ -240,19 +241,25 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._roden);
                 sw.Write(delimiter);
+		sw.Write(""); // mesto na ragjanje
+		sw.Write(delimiter);
                 sw.Write(u._mesto);
                 sw.Write(delimiter);
                 sw.Write("Македонец"); // hardcoded drzavjanstvo
                 sw.Write(delimiter);
 
-                // momentalna i sledna ucebna godina, po koj pat ja uci godinata
-                sw.Write(klasen._godina.ToString());
+		// uspeh od prethodna i segasna godina, prethodna ucebna godina, prethodno uciliste, pat
+		sw.Write(u._prethoden_uspeh);
+		sw.Write(delimiter);
+		sw.Write(u._oceni.Average());
+		sw.Write(delimiter);
+		sw.Write(u._prethodna_godina);
+		sw.Write(delimiter);
+		sw.Write(u._prethodno_uchilishte);
+		sw.Write(delimiter);
+                sw.Write(u._pat);
                 sw.Write(delimiter);
-                sw.Write((klasen._godina + 1).ToString());
-                sw.Write(delimiter);
-                sw.Write(u._pat.ToString());
-                sw.Write(delimiter);
-
+		
                 // paralelka, povedenie, opravdani, neopravdani, tip, smer
                 sw.Write(klasen._paralelka);
                 sw.Write(delimiter);
