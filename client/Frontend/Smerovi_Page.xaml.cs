@@ -139,7 +139,6 @@ namespace Frontend
             img.Source = new BitmapImage(new Uri("check_icon.png", UriKind.Relative));
         }
 
-
         private TextBox ContentTextBox(string Text)
         {
             TextBox tx = CreateTextBox(24);

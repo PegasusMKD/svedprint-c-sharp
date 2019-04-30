@@ -180,7 +180,8 @@ namespace Frontend
             //string[] predmeti = result[brojDn]["predmeti"].Split(',');
             for (int i = 0; i < brPredmeti; i++)
             {
-                Ocenkibox[i].Text = ocenki[i];//5 5 5 5 5 5 5 5
+                if (i < ocenki.Length) Ocenkibox[i].Text = ocenki[i];//5 5 5 5 5 5 5 5
+                else Ocenkibox[i].Text = "";
                 Predmetibox[i].Content = smerovi[result[brojDn]["smer"]]._predmeti[i];
             }
         }
