@@ -148,6 +148,10 @@ namespace Middleware
         public const string datum_sveditelstvo = "datum_sveditelstvo";
         public const string polozhil = "polozhil";
         public const string majkino = "majkino";
+        public const string prethodna_uchebna = "prethodna_uchebna";
+        public const string pedagoshki_merki = "pedagoshki_merki";
+        public const string direktor = "direktor";
+        public const string drzavjanstvo = "drzavjanstvo";
     }
 
     class RequestConverter : JsonConverter<Request>

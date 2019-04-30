@@ -117,7 +117,7 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._mesto);
                 sw.Write(delimiter);
-                sw.Write("Македонец"); // hardcoded drzavjanstvo
+                sw.Write(u._drzavjanstvo); // hardcoded drzavjanstvo
                 sw.Write(delimiter);
 
                 // momentalna i sledna ucebna godina, po koj pat ja uci godinata
@@ -201,7 +201,12 @@ namespace Middleware
                 // predmeti
                 tmparr.Clear();
                 tmparr.AddRange(u._s._predmeti);
-                while(tmparr.Count < 17)
+                while (tmparr.Count < 17)
+                {
+                    tmparr.Add("NaN");
+                }
+                tmparr.AddRange(u._proektni.Split(' '));
+                while (tmparr.Count < 22)
                 {
                     tmparr.Add("NaN");
                 }
@@ -215,22 +220,20 @@ namespace Middleware
                 {
                     tmparr.Add("NaN");
                 }
-                sw.Write("\"" + String.Join(" ", u._oceni) + " ");
-
-                // polozil
-                sw.Write(string.Join(" ", u._polozhil) + "\"");
+                tmparr.AddRange(u._polozhil.Split(' '));
+                while (tmparr.Count < 22)
+                {
+                    tmparr.Add("NaN");
+                }
+                sw.Write("\"" + String.Join(" ", tmparr) + "\"");
                 sw.Write(";");
-
+                
                 // delovoden broj, godina (klas), paralelka, broj vo dnevnik
                 sw.Write("\"");
-                sw.Write(u._delovoden_broj);
-                sw.Write(delimiter);
                 sw.Write(klasen._paralelka.Replace('-', delimiter[0]));
                 sw.Write(delimiter);
                 sw.Write(u._broj);
                 sw.Write(delimiter);
-
-		
 
                 // ime prezime na ucenik, ime na tatko, ime na majka, DOB, mesto na raganje, naselba, opshtina, drzhava, drzhavjanstvo (hardcode)
                 sw.Write(u._ime + " " + u._prezime);
@@ -241,42 +244,51 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._roden);
                 sw.Write(delimiter);
-		sw.Write(""); // mesto na ragjanje
-		sw.Write(delimiter);
+                sw.Write(""); // mesto na ragjanje
+                sw.Write(delimiter);
                 sw.Write(u._mesto);
                 sw.Write(delimiter);
-                sw.Write("Македонец"); // hardcoded drzavjanstvo
+                sw.Write(u._drzavjanstvo); // hardcoded drzavjanstvo
                 sw.Write(delimiter);
 
-		// uspeh od prethodna i segasna godina, prethodna ucebna godina, prethodno uciliste, pat
-		sw.Write(u._prethoden_uspeh);
-		sw.Write(delimiter);
-		sw.Write(u._oceni.Average());
-		sw.Write(delimiter);
-		sw.Write(u._prethodna_godina);
-		sw.Write(delimiter);
-		sw.Write(u._prethodno_uchilishte);
-		sw.Write(delimiter);
+                // prethodna godina (oddelenie), uspeh od prethodna godina, prethodna ucebna godina, prethodno uciliste, pat
+                sw.Write(u._prethodna_godina);
+                sw.Write(delimiter);
+                sw.Write(u._prethoden_uspeh);
+                sw.Write(delimiter);
+                sw.Write(u._prethodna_uchebna);
+                sw.Write(delimiter);
+                sw.Write(u._prethodno_uchilishte);
+                sw.Write(delimiter);
                 sw.Write(u._pat);
                 sw.Write(delimiter);
-		
-                // paralelka, povedenie, opravdani, neopravdani, tip, smer
-                sw.Write(klasen._paralelka);
-                sw.Write(delimiter);
-                sw.Write(u._povedenie);
-                sw.Write(delimiter);
-                sw.Write(u._opravdani.ToString());
-                sw.Write(delimiter);
-                sw.Write(u._neopravdani.ToString());
-                sw.Write(delimiter);
+
+                
                 sw.Write(u._tip);
                 sw.Write(delimiter);
                 sw.Write(u._smer);
                 sw.Write(delimiter);
+                sw.Write(u._povedenie);
+                sw.Write(delimiter);
+                sw.Write(u._opravdani);
+                sw.Write(delimiter);
+                sw.Write(u._neopravdani);
+                sw.Write(delimiter);
 
-                // XX, YY
-                sw.Write(delimiter); // XX
-                sw.Write(""); // YY
+                sw.Write(klasen._godina);
+                sw.Write(delimiter);
+                sw.Write(klasen._paralelka.Split('-')[0]);
+                sw.Write(delimiter);
+                sw.Write($"{klasen._ime} {klasen._srednoIme}-{klasen._prezime}");
+                sw.Write(delimiter);
+                sw.Write(klasen._direktor);
+                sw.Write(delimiter);
+                sw.Write(u._pedagoshki_merki.Split(','));
+                sw.Write(delimiter);
+                sw.Write(u._delovoden_broj);
+                sw.Write(delimiter);
+                sw.Write(u._datum_sveditelstvo);
+
 
                 sw.Write("\"");
 

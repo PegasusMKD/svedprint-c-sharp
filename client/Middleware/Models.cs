@@ -52,6 +52,8 @@ namespace Middleware
         public string _prethoden_uspeh { get; set; }
         [JsonProperty(RequestParameters.prethodno_uchilishte)]
         public string _prethodno_uchilishte { get; set; }
+        [JsonProperty(RequestParameters.prethodna_uchebna)]
+        public string _prethodna_uchebna { get; private set; }
         [JsonProperty(RequestParameters.delovoden_broj)]
         public string _delovoden_broj { get; set; }
         [JsonProperty(RequestParameters.datum_sveditelstvo)]
@@ -60,8 +62,12 @@ namespace Middleware
         public string _polozhil { get; set; }
         [JsonProperty(RequestParameters.majkino)]
         public string _majkino { get; set; }
+        [JsonProperty(RequestParameters.pedagoshki_merki)]
+        public string _pedagoshki_merki { get; set; }
+        [JsonProperty(RequestParameters.drzavjanstvo)]
+        public string _drzavjanstvo { get; set; }
 
-        public Ucenik(string ime, string tatkovo, string prezime, List<int> oceni, string smer, int broj, string roden, string mesto, string povedenie, int opravdani, int neopravdani, string tip, string pat, string roditel, string gender, string maturska, string izborni, string proektni, string merki, string prethodna_godina, string prethoden_uspeh, string prethodno_uchilishte, string delovoden_broj, string datum_sveditelstvo, string polozhil, string majkino)
+        public Ucenik(string ime, string tatkovo, string prezime, List<int> oceni, string smer, int broj, string roden, string mesto, string povedenie, int opravdani, int neopravdani, string tip, string pat, string roditel, string gender, string maturska, string izborni, string proektni, string merki, string prethodna_godina, string prethoden_uspeh, string prethodno_uchilishte, string delovoden_broj, string datum_sveditelstvo, string polozhil, string majkino, string prethodna_uchebna, string pedagoshki_merki, string drzavjanstvo)
         {
             _ime = ime ?? "";
             _tatkovo = tatkovo ?? "";
@@ -85,10 +91,13 @@ namespace Middleware
             _prethodna_godina = prethodna_godina ?? "";
             _prethoden_uspeh = prethoden_uspeh ?? "";
             _prethodno_uchilishte = prethodno_uchilishte ?? "";
+            _prethodna_uchebna = prethodna_uchebna ?? "";
             _delovoden_broj = delovoden_broj ?? "";
             _datum_sveditelstvo = datum_sveditelstvo ?? "";
             _polozhil = polozhil ?? "";
             _majkino = majkino ?? "";
+            _pedagoshki_merki = pedagoshki_merki ?? "";
+            _drzavjanstvo = drzavjanstvo ?? "";
 
             _s = new Smer(new List<string>(), _smer);
         }
@@ -204,6 +213,10 @@ namespace Middleware
         public int _godina { get; set; } // ucebna godina
         [JsonProperty("smerovi")]
         public string _smerovi { get; set; }
+        [JsonProperty(RequestParameters.direktor)]
+        public string _direktor { get; set; }
+        [JsonProperty(RequestParameters.delovoden_broj)]
+        public string _delovoden_broj { get; set; }
 
         public Klasen(string ime, string srednoIme, string prezime, string token, string paralelka, string uchilishte, string grad, int godina, string smerovi)
         {
