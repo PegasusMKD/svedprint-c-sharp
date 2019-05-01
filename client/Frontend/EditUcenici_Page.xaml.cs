@@ -1,3 +1,4 @@
+using Middleware;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,11 +23,18 @@ namespace Frontend
     public partial class EditUcenici_Page : Page
     {
 
+        Klasen UserKlas;
+        List<Dictionary<string, string>> result;
         int BrojDn = 0;
+
         public EditUcenici_Page()
         {
             InitializeComponent();
+            UserKlas = Home_Page.KlasenKlasa;
+            result = Home_Page.result;
             GetData();
+
+            UpdateUcenik(0, RequestParameters.new_first_name, "Trpe");
         }
 
         List<TextBox> Answer;
@@ -59,7 +67,9 @@ namespace Frontend
                     MainGrid.Height += 100;
                 }
 
-                Answer.Add(ContentTextBox(x.Value));
+                TextBox tx = ContentTextBox(x.Value);
+                tx.LostFocus += new RoutedEventHandler(ContentTextBoxLostFocusEvent);
+                Answer.Add(tx);
                 st.Children.Add(ContentBorder(x.Key));
                 st.Children.Add(Answer[i]);
                 st.Children.Add(UnderTextBorder());
@@ -69,6 +79,11 @@ namespace Frontend
                 MainGrid.Children.Add(st);
                 i++;
             }
+        }
+
+        private void ContentTextBoxLostFocusEvent(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("5");
         }
 
         private Border ContentBorder(string LabelContent)
@@ -95,6 +110,14 @@ namespace Frontend
             BrojDn = int.Parse(BrojDnLabel.Text);
             if (BrojDn + x >= 1 && BrojDn + x <= 35) BrojDn += x;
             return BrojDn.ToString();
+        }
+
+        private void UpdateUcenik(int BrojDn,string UpdateParametar,string Value)
+        {
+            Requests.UpdateData(new Dictionary<string, string>() {
+            { RequestParameters.token , UserKlas._token} , { RequestParameters.ime , result[BrojDn]["ime"] } , {RequestParameters.prezime , result[BrojDn]["prezime"] } , { RequestParameters.broj , BrojDn.ToString() } ,  {RequestParameters.srednoIme , result[BrojDn]["tatkovo"] }  , { UpdateParametar , Value }
+            }, RequestScopes.UpdateUcenik);
+
         }
     }
 }

@@ -25,7 +25,7 @@ namespace Middleware
             {
                 writer.Write(json);
             }
-
+            
             var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
             var responseJson = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
 

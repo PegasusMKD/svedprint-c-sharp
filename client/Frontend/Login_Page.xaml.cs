@@ -29,6 +29,7 @@ namespace Frontend
 
         private void Login_Btn_Click(object sender, RoutedEventArgs e)
         {
+            Gif.Visibility = Visibility.Visible;
             login();
 
         }
@@ -37,8 +38,11 @@ namespace Frontend
 
         private void login()
         {
+            Username_txt.Text = "vgZ1Cm";
+            Password_txt.Text = "1yrSdQ";
+
             Klasen temp = Login.LoginWithCred(Username_txt.Text, Password_txt.Text);
-            
+
             if (temp._ime != "002" && temp._ime != string.Empty)
             {
                 ShowAlertBox("Успешно логирање");
@@ -65,12 +69,12 @@ namespace Frontend
 
         private void Username_txt_GotFocus(object sender, RoutedEventArgs e)
         {
-            RemoveText(sender);
+            if (Username_txt.Text == "Корисничко име") RemoveText(sender);
         }
 
         private void Username_txt_LostFocus(object sender, RoutedEventArgs e)
         {
-            AddText(sender, "Корисничко име");
+            if (Username_txt.Text == "") AddText(sender, "Корисничко име");
         }
 
         private void AddText(object sender, string v)
@@ -83,7 +87,7 @@ namespace Frontend
 
         private void Password_txt_GotFocus(object sender, RoutedEventArgs e)
         {
-            RemoveText(sender);
+            if(Password_txt.Text == "Лозинка") RemoveText(sender);
         }
 
         private void RemoveText(object sender)
@@ -93,7 +97,7 @@ namespace Frontend
 
         private void Password_txt_LostFocus(object sender, RoutedEventArgs e)
         {
-            AddText(sender, "Лозинка");
+            if(Password_txt.Text == "") AddText(sender, "Лозинка");
         }
        
         private void Login_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
