@@ -23,9 +23,9 @@ namespace Middleware
         [JsonProperty(RequestParameters.roden)]
         public string _roden { get; set; }
         [JsonProperty(RequestParameters.mesto_na_zhiveenje)]
-        public string _mesto { get; set; }
+        public string _mesto_na_zhiveenje { get; set; }
         [JsonProperty(RequestParameters.mesto_na_ragjanje)]
-        public string _mesto { get; set; }
+        public string _mesto_na_ragjanje { get; set; }
         [JsonProperty(RequestParameters.povedenie)]
         public string _povedenie { get; set; }
         [JsonProperty(RequestParameters.opravdani)]
@@ -147,7 +147,7 @@ namespace Middleware
             _pat_polaga = valuePairs[RequestParameters.pat_polaga] ?? "";
             _pat_polaga_ispit = valuePairs[RequestParameters.pat_polaga_ispit] ?? "";
             _ispiten = valuePairs[RequestParameters.ispiten] ?? "";
-            _prethoden_delovoden = valuePairs[RequestParameters._prethoden_delovoden] ?? "";
+            _prethoden_delovoden = valuePairs[RequestParameters.prethoden_delovoden] ?? "";
             _tatko = valuePairs[RequestParameters.tatko] ?? "";
             _majka = valuePairs[RequestParameters.majka] ?? "";
             _gender = valuePairs[RequestParameters.gender] ?? "";
@@ -187,9 +187,9 @@ namespace Middleware
         [JsonProperty(RequestParameters.smer)]
         public string _smer { get; set; }
         [JsonProperty(RequestParameters.cel_smer)]
-        public string _smer { get; set; }
+        public string _cel_smer { get; set; }
 
-        public Smer(List<string> predmeti, string smer, string cel_smer = '')
+        public Smer(List<string> predmeti, string smer, string cel_smer = "")
         {
             _predmeti = predmeti ?? throw new ArgumentNullException(nameof(predmeti));
             _smer = smer ?? throw new ArgumentNullException(nameof(smer));

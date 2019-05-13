@@ -101,7 +101,7 @@ namespace Middleware
         public const string UpdateUcenik = "ucenik";
         public const string UpdateUchilishte = "uchilishte";
     }
-
+    
     public class RequestParameters
     {
         public const string ime = "first_name";
@@ -139,6 +139,7 @@ namespace Middleware
         public const string pat_polaga_ispit = "pat_polaga_ispit";
         public const string ispiten = "ispiten rok";
         public const string pat_polaga = "pat_polaga";
+        public const string cel_smer = "cel_smer";
         //
         public const string tip = "tip_ucenik";
         public const string povedenie = "povedenie";
