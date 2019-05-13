@@ -3,19 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Printing;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Frontend
 {
@@ -29,7 +21,7 @@ namespace Frontend
         public PrintFrame(Frame m, Page homepage)
         {
             InitializeComponent();
-            // SvedImg.Source = new BitmapImage(new Uri(new Uri(Directory.GetCurrentDirectory(), UriKind.Absolute), new Uri(@"C:\Users\lukaj\Documents\sved.png", UriKind.Relative)));
+            // SvedImg.Source = new BitmapImage(new Uri(new Uri(Directory.GetCurrentDirectory(), UriKind.Absolute), new Uri(@"C:\Users\lukaj\Documents\front-0.png", UriKind.Relative)));
             Main = m;
             HomePage = homepage;
             LoadPrinterBox();
@@ -96,10 +88,9 @@ namespace Frontend
                // MessageBox.Show(String.Format("{0}: {1}", i, PrinterSettings.InstalledPrinters[i]));
             }
             //int choice = 0;
-
+            
             int choice = 3;
             pd.PrinterSettings.PrinterName = PrinterSettings.InstalledPrinters[choice];
-
             pd.DefaultPageSettings.PaperSize = pd.PrinterSettings.PaperSizes.Cast<PaperSize>().First<PaperSize>(size => size.Kind == PaperKind.A4);
             pd.DefaultPageSettings.Landscape = true;
 
@@ -114,7 +105,7 @@ namespace Frontend
         private DockPanel MenuDP(string Name, int brojDn)
         {
             DockPanel st = new DockPanel();
-            Label tx = new Label();
+            System.Windows.Controls.Label tx = new System.Windows.Controls.Label();
             tx.Content =Name;
             st.Children.Add(tx);
             st.Height = 50;
@@ -126,7 +117,6 @@ namespace Frontend
             tx.FontFamily = new System.Windows.Media.FontFamily("Arial Black");
             tx.Foreground = System.Windows.Media.Brushes.White;
             tx.VerticalAlignment = VerticalAlignment.Center;
-
             st.MouseLeftButtonDown += new MouseButtonEventHandler((sender, e) => MouseLeftButtonDown(sender, e, brojDn + 1));
             st.MouseEnter += new MouseEventHandler(MouseEnter);
             st.MouseLeave += new MouseEventHandler(MouseLeave);

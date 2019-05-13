@@ -25,12 +25,13 @@ namespace Frontend
         {
             {"ПМА",  "Природно Математико подрачје - А" },
             {"ПМБ", "Природно Математичко Подрачје - Б" },
-            {"ОХА", "Општествено Х Подрачје А" },
+            {"ОxА", "Општествено Х Подрачје А" },
             {"ОХБ", "Општествено Х Подрачје Б" },
             {"ЈУА", "Јазично Уметничко Подрачје А" },
             {"ЈУБ", "Јазично Уметничко Подрачје Б" }
 
         };
+
         Dictionary<string, string> res;
         static int brPredmeti;
         public Oceni(Frame m, Page loginpage)
@@ -157,7 +158,7 @@ namespace Frontend
 
         int GetSmerIndex(int brojDn)
         {
-            string[] MozniSmerovi = { "ПМА","ПМБ", "ОХА", "ОХБ", "ЈУА", "ЈУБ" };
+            string[] MozniSmerovi = { "ПМА","ПМБ", "ОxА", "ОХБ", "ЈУА", "ЈУБ" };
             int i = 0;
             foreach (string x in MozniSmerovi)
             {
@@ -173,14 +174,15 @@ namespace Frontend
             Prosek_out.Content = Array.ConvertAll(result[brojDn]["oceni"].Split(' '), x => float.Parse(x)).Average().ToString("n2");
 
             BrojDn_label.Content = (brojDn + 1).ToString();
-            combobox_smer.SelectedValue = smerovi_naslov[result[brojDn]["smer"]];
+            combobox_smer.SelectedIndex = GetSmerIndex(brojDn);//smerovi_naslov[result[brojDn]["smer"]]
 
 
             string[] ocenki = result[brojDn]["oceni"].Split(' ');
             //string[] predmeti = result[brojDn]["predmeti"].Split(',');
             for (int i = 0; i < brPredmeti; i++)
             {
-                Ocenkibox[i].Text = ocenki[i];//5 5 5 5 5 5 5 5
+                if (i < ocenki.Length) Ocenkibox[i].Text = ocenki[i];//5 5 5 5 5 5 5 5
+                else Ocenkibox[i].Text = "";
                 Predmetibox[i].Content = smerovi[result[brojDn]["smer"]]._predmeti[i];
             }
         }

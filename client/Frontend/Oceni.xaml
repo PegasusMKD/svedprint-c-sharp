@@ -69,6 +69,8 @@
 			</Grid>
 		</ScrollViewer>
 
+        <Image  Grid.Column="1" Name="Update_pic"  Source="check_icon.png" Margin="10,10" HorizontalAlignment="Right"/>
+        
 		<Grid Grid.Column="1" Background="#FFED6A3D" HorizontalAlignment="Left" Width="81">
 			<Image Name="hide_menu_img" Source="arrow-back-icon.png" Margin="15,5,0,5" HorizontalAlignment="Left"/>
 		</Grid>

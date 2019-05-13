@@ -40,7 +40,7 @@ namespace Frontend
 
 
             result = Requests.GetData(new Dictionary<string, string>() {
-                {RequestParameters.token, Klasen._token }
+                {RequestParameters.token, Klasen._token } 
             }, RequestScopes.GetParalelka);
 
             ucenici = result.ConvertAll(x => new Ucenik(x));
@@ -63,14 +63,15 @@ namespace Frontend
             {
                 smerovi.Add(x, new Smer(Requests.GetData(new Dictionary<string, string>(){
                     { RequestParameters.token, KlasenKlasa._token},
-                    { RequestParameters.smer, x }
+                    { RequestParameters.smer, x } ,
+                    { RequestParameters.paralelka, KlasenKlasa._paralelka}
                 }, RequestScopes.GetPredmetiSmer)[0]["predmeti"].Split(',').ToList(), x));
             }
 
             KlasenKlasa._p._smerovi = smerovi;
         }
 
-        private void MouseEnter(object sender, MouseButtonEventArgs e)
+        private void MainImgClicked(object sender, MouseButtonEventArgs e)
         {
            //Main.Content = loginPage;
            Main.Content = new Oceni(Main,this);

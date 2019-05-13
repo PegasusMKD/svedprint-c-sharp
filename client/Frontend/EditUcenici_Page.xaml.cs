@@ -1,3 +1,4 @@
+using Middleware;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,18 +23,30 @@ namespace Frontend
     public partial class EditUcenici_Page : Page
     {
 
-        int BrojDn = 0;
+        Klasen UserKlas;
+        List<Dictionary<string, string>> result;
+        int BrojDn = 1;
+        int Ucenici_Size;
+
         public EditUcenici_Page()
         {
             InitializeComponent();
+            UserKlas = Home_Page.KlasenKlasa;
+            result = Home_Page.result;
+
+            Ucenici_Size = result.Count;
             GetData();
+
         }
 
         List<TextBox> Answer;
+        Dictionary<string, string> res;
         void GetData()
         {
             Answer = new List<TextBox>();
-            Dictionary<string, string> res = new Dictionary<string, string>();
+            MainGrid.Children.Clear();
+            BrojDn--;
+            res = new Dictionary<string, string>();
             res.Add("Име", "");
             res.Add("Средно Име", "");
             res.Add("Презиме", "");
@@ -46,9 +59,17 @@ namespace Frontend
             res.Add("вид на образование", "");
             res.Add("пол", "");
             res.Add("нахнадно", "1");
+
+            res["Име"] = result[BrojDn]["ime"];
+            res["Средно Име"] = result[BrojDn]["tatkovo"];
+            res["Презиме"] = result[BrojDn]["prezime"];
+            res["Смер"] = result[BrojDn]["smer"];
+
+            BrojDn++;
             MainGrid.Height = 0;
 
             int i = 0;
+            int ctr = 0;//nz zs so i ne raboti
             foreach (KeyValuePair<string, string> x in res)
             {
                 StackPanel st = new StackPanel();
@@ -59,7 +80,10 @@ namespace Frontend
                     MainGrid.Height += 100;
                 }
 
-                Answer.Add(ContentTextBox(x.Value));
+                TextBox tx = ContentTextBox(x.Value);
+                tx.LostFocus += new RoutedEventHandler((sender, e) => ContentTextBoxLostFocusEvent(sender, e, x.Key));
+                Answer.Add(tx);
+
                 st.Children.Add(ContentBorder(x.Key));
                 st.Children.Add(Answer[i]);
                 st.Children.Add(UnderTextBorder());
@@ -69,6 +93,15 @@ namespace Frontend
                 MainGrid.Children.Add(st);
                 i++;
             }
+        }
+
+        private void ContentTextBoxLostFocusEvent(object sender, RoutedEventArgs e, string i)
+        {
+            TextBox tx = (TextBox)sender;
+            Dictionary<string, string> RequestsString = new Dictionary<string, string>() { { "Име", RequestParameters.new_first_name }, { "Средно Име", RequestParameters.new_middle_name }, { "Презиме", RequestParameters.new_last_name }, { "Смер", RequestParameters.smer } }; ;
+            Dictionary<string, string> resultDic = new Dictionary<string, string>() { { "Име" , "ime" } , { "Средно Име", "tatkovo" } , { "Презиме" , "prezime" } , { "Смер" , "smer" }  };
+            UpdateUcenik(BrojDn-1, RequestsString[i], tx.Text);
+            result[BrojDn-1][resultDic[i]] = tx.Text;
         }
 
         private Border ContentBorder(string LabelContent)
@@ -93,8 +126,16 @@ namespace Frontend
         String valid(int x)
         {
             BrojDn = int.Parse(BrojDnLabel.Text);
-            if (BrojDn + x >= 1 && BrojDn + x <= 35) BrojDn += x;
+            if (BrojDn + x >= 1 && BrojDn + x <= Ucenici_Size) BrojDn += x;
             return BrojDn.ToString();
+        }
+
+        private void UpdateUcenik(int BrojDn,string UpdateParametar,string Value)
+        {
+            Requests.UpdateData(new Dictionary<string, string>() {
+            { RequestParameters.token , UserKlas._token} , { RequestParameters.ime , result[BrojDn]["ime"] } , {RequestParameters.prezime , result[BrojDn]["prezime"] } , { RequestParameters.broj , BrojDn.ToString() } ,  {RequestParameters.srednoIme , result[BrojDn]["tatkovo"] }  , { UpdateParametar , Value }
+            }, RequestScopes.UpdateUcenik);
+
         }
     }
 }

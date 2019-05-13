@@ -17,9 +17,6 @@ using static Frontend.SettingsDesign;
 
 namespace Frontend
 {
-    /// <summary>
-    /// Interaktionslogik für Smerovi_Page.xaml
-    /// </summary>
     public partial class Smerovi_Page : Page
     {
 
@@ -87,7 +84,7 @@ namespace Frontend
             return bd;
         }
 
-        private Grid TextBorderGrid(bool IsX,int i , int j)
+        private Grid TextBorderGrid(bool IsX,int SmerCtr , int PredmetCtr)
         {
             Grid gd = new Grid();
             gd.Margin = new Thickness(0, 0, 0, 10);
@@ -104,11 +101,11 @@ namespace Frontend
             gd.Children.Add(border);
             if(IsX == false)
             {
-                img.MouseLeftButtonDown += new MouseButtonEventHandler((sender, e) => NewPredmetImgClicked(sender, e, i, j));
+                img.MouseLeftButtonDown += new MouseButtonEventHandler((sender, e) => NewPredmetImgClicked(sender, e, SmerCtr, PredmetCtr));
             }
             if(IsX == true)
             {
-                img.MouseLeftButtonDown += new MouseButtonEventHandler((sender, e) => RemovePredmetImgClicked(sender, e, i , j));
+                img.MouseLeftButtonDown += new MouseButtonEventHandler((sender, e) => RemovePredmetImgClicked(sender, e, SmerCtr , PredmetCtr));
                 img.MouseEnter += RemovePredmedimgMouseEnter;
                 img.MouseLeave += RemovePredmedimgMouseLeave;
             }
@@ -117,13 +114,33 @@ namespace Frontend
 
         private void NewPredmetImgClicked(object sender, MouseButtonEventArgs e , int i , int j)
         {
-            UserKlas._p._smerovi[UserKlas._smerovi.Split(',')[i]]._predmeti.Add(DodajPredmeti[j].Text);
+            string toBeChanged = UserKlas._smerovi.Split(',')[i];
+            result.ForEach(x =>
+            {
+                if (x["smer"] == toBeChanged)
+                {
+                    x["oceni"] += " 0";
+                }
+            });
+            UserKlas._p._smerovi[toBeChanged]._predmeti.Add(DodajPredmeti[j].Text);
+            UpdateSmer(i);
             GetData();
         }
 
         private void RemovePredmetImgClicked(object sender, MouseButtonEventArgs e, int i , int j)
         {
-            UserKlas._p._smerovi[UserKlas._smerovi.Split(',')[i]]._predmeti.RemoveAt(j);
+            string toBeChanged = UserKlas._smerovi.Split(',')[i];
+            result.ForEach(x =>
+            {
+                if (x["smer"] == toBeChanged)
+                {
+                    var zz = x["oceni"].Split(' ').ToList();
+                    zz.RemoveAt(j);
+                    x["oceni"] = string.Join(" ", zz);
+                }
+            });
+            UserKlas._p._smerovi[toBeChanged]._predmeti.RemoveAt(j);
+            UpdateSmer(i);
             GetData();
         }
 
@@ -139,7 +156,6 @@ namespace Frontend
             img.Source = new BitmapImage(new Uri("check_icon.png", UriKind.Relative));
         }
 
-
         private TextBox ContentTextBox(string Text)
         {
             TextBox tx = CreateTextBox(24);
@@ -149,20 +165,19 @@ namespace Frontend
             return tx;
         }
 
-        private void Update()
+        private void UpdateSmer(int SmerCtr)
         {
-            foreach(string x in UserKlas._smerovi.Split(','))
+            string Smer = UserKlas._smerovi.Split(',')[SmerCtr];
+            string res = "";
+            foreach (string s in UserKlas._p._smerovi[Smer]._predmeti)
             {
-                string res = "";
-                foreach(string s in UserKlas._p._smerovi[x]._predmeti)
-                {
-                    res += s + ",";
-                }
-                res = res.Substring(0, res.Length - 1);
-                Requests.UpdateData(new Dictionary<string, string>() {
-                 {RequestParameters.smer , x }, { RequestParameters.token , UserKlas._token }
-                }, res);
+                res += s + ",";
             }
+            res = res.Substring(0, res.Length - 1);
+            Requests.UpdateData(new Dictionary<string, string>() {
+            { RequestParameters.smer , Smer}, { RequestParameters.token , UserKlas._token } , { RequestParameters.predmeti, res} 
+            }, RequestParameters.smer);
+
         }
 
     }
