@@ -37,31 +37,38 @@ namespace Middleware
             py.Start();
             py.WaitForExit();
             System.Diagnostics.Debug.WriteLine(outparam);
+            System.Diagnostics.Debug.WriteLine(tmpFolder);
 
             if (pd.PrinterSettings.CanDuplex)
             {
                 pd.PrinterSettings.Duplex = Duplex.Vertical;
             }
 
+            int page = 0;
+
             for (int i = 0; i < data.Count-1; i++)
             {
-                int page = 0;
-
                 if (pd.PrinterSettings.CanDuplex)
                 {
                     pd.PrintPage += (sender, args) =>
                     {
                         if (page % 2 == 0)
                         {
-                            args.Graphics.DrawImage(System.Drawing.Image.FromFile(String.Format(".\\front-{0}.jpg", i)), args.PageBounds);
-                            pd.DocumentName = String.Format("{0}\\front-{1}.jpg", tmpFolder, i);
+                            args.Graphics.DrawImage(
+                                System.Drawing.Image.FromFile(String.Format("{1}front-{0}.jpg", i, tmpFolder)),
+                                args.PageBounds);
+                            pd.DocumentName = String.Format("{0}front-{1}.jpg", tmpFolder, i);
+                            System.Diagnostics.Debug.WriteLine(pd.DocumentName);
                             args.HasMorePages = true;
                         }
                         else
                         {
                             args.HasMorePages = false;
-                            args.Graphics.DrawImage(System.Drawing.Image.FromFile(String.Format(".\\back-{0}.jpg", i)), args.PageBounds);
-                            pd.DocumentName = String.Format("{0}\\back-{1}.jpg", tmpFolder, i);
+                            args.Graphics.DrawImage(
+                                System.Drawing.Image.FromFile(String.Format("{1}back-{0}.jpg", i, tmpFolder)),
+                                args.PageBounds);
+                            pd.DocumentName = String.Format("{0}back-{1}.jpg", tmpFolder, i);
+                            System.Diagnostics.Debug.WriteLine(pd.DocumentName);
                         }
                         page++;
                     };
@@ -72,9 +79,9 @@ namespace Middleware
                     pd.PrintPage += (sender, args) =>
                     {
                         args.Graphics.DrawImage(System.Drawing.Image.FromFile(
-                            String.Format(".\\{0}-{1}.jpg", (page % 2 == 0 ? "front" : "back"), i)),
+                            String.Format(".{2}{0}-{1}.jpg", (page % 2 == 0 ? "front" : "back"), i,tmpFolder)),
                             args.PageBounds);
-                        pd.DocumentName = String.Format("{2}\\{0}-{1}.jpg", (page % 2 == 0 ? "front" : "back"), i, tmpFolder);
+                        pd.DocumentName = String.Format("{2}{0}-{1}.jpg", (page % 2 == 0 ? "front" : "back"), i, tmpFolder);
                         page++;
                     };
                     pd.Print();
@@ -83,7 +90,7 @@ namespace Middleware
                 }
             }
 
-            Directory.Delete(tmpFolder, true);
+            //Directory.Delete(tmpFolder, true);
         }
 
         //public static string InitSveditelstvoPreview(Ucenik u, Klasen klasen)
