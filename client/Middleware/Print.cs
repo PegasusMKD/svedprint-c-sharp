@@ -238,15 +238,15 @@ namespace Middleware
                 // ime prezime na ucenik, ime na tatko, ime na majka, DOB, mesto na raganje, naselba, opshtina, drzhava, drzhavjanstvo (hardcode)
                 sw.Write(u._ime + " " + u._prezime);
                 sw.Write(delimiter);
-                sw.Write(u._tatkovo);
+                sw.Write(u._tatko);
                 sw.Write(delimiter);
-                sw.Write(u._majkino);
+                sw.Write(u._majka);
                 sw.Write(delimiter);
                 sw.Write(u._roden);
                 sw.Write(delimiter);
-                sw.Write(""); // mesto na ragjanje
+                sw.Write(u._mesto_na_ragjanje); // mesto na ragjanje
                 sw.Write(delimiter);
-                sw.Write(u._mesto);
+                sw.Write(u._mesto_na_zhiveenje);
                 sw.Write(delimiter);
                 sw.Write(u._drzavjanstvo); // hardcoded drzavjanstvo
                 sw.Write(delimiter);
@@ -274,11 +274,16 @@ namespace Middleware
                 sw.Write(u._neopravdani);
                 sw.Write(delimiter);
 
+                //Koja e celta na ovaa godina? ne bi bilo isto so Split-ot odma pod nego?
                 sw.Write(klasen._godina);
                 sw.Write(delimiter);
                 sw.Write(klasen._paralelka.Split('-')[0]);
                 sw.Write(delimiter);
+                if(klasen._srednoIme != ""){
                 sw.Write($"{klasen._ime} {klasen._srednoIme}-{klasen._prezime}");
+                }else{
+                sw.Write($"{klasen._ime} {klasen._prezime}");
+                }
                 sw.Write(delimiter);
                 sw.Write(klasen._direktor);
                 sw.Write(delimiter);
@@ -295,9 +300,9 @@ namespace Middleware
             }
             return l;
         }
-        public static void PrintDiploma(List<Ucenik> ucenici, Klasen klasen, int printerChoice)
+        public static void PrintGkDiploma(List<Ucenik> ucenici, Klasen klasen, int printerChoice)
         {
-            List<string> data = InitDiploma(ucenici, klasen);
+            List<string> data = InitGkDiploma(ucenici, klasen);
             string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
             PrintDialog printDialog = new PrintDialog();
             PrintDocument pd = new PrintDocument();
@@ -332,7 +337,7 @@ namespace Middleware
                 pd.Print();
             }
         }
-        public static List<string> InitDiploma(List<Ucenik> ucenici, Klasen klasen)
+        public static List<string> InitGkDiploma(List<Ucenik> ucenici, Klasen klasen)
         {
             StringWriter sw = new StringWriter();
             List<string> l = new List<string>();
@@ -353,7 +358,7 @@ namespace Middleware
                 sw.Write("\"");
                 sw.Write(u._delovoden_broj);
                 sw.Write(delimiter);
-                sw.Write("reden broj"); // hardcoded
+                sw.Write(u._broj); // hardcoded
                 sw.Write(delimiter);
                 sw.Write(u._ime);
                 sw.Write(delimiter);
@@ -361,19 +366,19 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._roden);
                 sw.Write(delimiter);
-                sw.Write("mesto ragjanje"); // hardcoded
+                sw.Write(u._mesto_na_ragjanje); // hardcoded
                 sw.Write(delimiter);
-                sw.Write(u._mesto);
+                sw.Write(u._mesto_na_zhiveenje);
                 sw.Write(delimiter);
                 sw.Write(u._drzavjanstvo);
                 sw.Write(delimiter);
 
                 // Ime i prezime na staratel, ispiten rok, po koj pat polaga, kakov tip obrazovanie, koj smer, //////////, delovoden broj na prethodno sveditelstvo (?)
-                sw.Write($"{u._tatkovo} {u._prezime}");
+                sw.Write($"{u._tatko} {u._prezime}");
                 sw.Write(delimiter);
-                sw.Write("ispiten rok"); // hardcoded
+                sw.Write(u._ispiten); // hardcoded
                 sw.Write(delimiter);
-                sw.Write("pat polaganje"); // hardcoded
+                sw.Write(u._pat_polaga); // hardcoded //
                 sw.Write(delimiter);
                 sw.Write(u._tip);
                 sw.Write(delimiter);
@@ -381,15 +386,19 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write("//////////"); // hardcoded
                 sw.Write(delimiter);
-                sw.Write("delovoden prethodno sved"); // hardcoded
+                sw.Write(u._prethoden_delovoden); // hardcoded
                 sw.Write(delimiter);
 
-                // opsht uspeh, uchebna godina(nezz dali segashna ili prethodna), klasen, direktor
+                // opsht uspeh, uchebna godina(nezz dali segashna ili prethodna)(prethodna treba), klasen, direktor
                 sw.Write(string.Format("{0:N2}", u._oceni.Average())); // testing
                 sw.Write(delimiter);
-                sw.Write(klasen._godina);
+                sw.Write(klasen._prethodna_godina);
                 sw.Write(delimiter);
+                if(klasen._srednoIme != ""){
                 sw.Write($"{klasen._ime} {klasen._srednoIme}-{klasen._prezime}");
+                }else{
+                sw.Write($"{klasen._ime} {klasen._prezime}");
+                }
                 sw.Write(delimiter);
                 sw.Write(klasen._direktor);
                 sw.Write("\"");

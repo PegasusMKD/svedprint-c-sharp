@@ -10,7 +10,7 @@ namespace Middleware
         [JsonProperty(RequestParameters.ime)]
         public string _ime { get; set; }
         [JsonProperty(RequestParameters.srednoIme)]
-        public string _tatkovo { get; set; }
+        public string _srednoIme { get; set; }
         [JsonProperty(RequestParameters.prezime)]
         public string _prezime { get; set; }
         [JsonProperty(RequestParameters.oceni)]
@@ -22,7 +22,9 @@ namespace Middleware
         public int _broj { get; set; }
         [JsonProperty(RequestParameters.roden)]
         public string _roden { get; set; }
-        [JsonProperty(RequestParameters.mesto)]
+        [JsonProperty(RequestParameters.mesto_na_zhiveenje)]
+        public string _mesto { get; set; }
+        [JsonProperty(RequestParameters.mesto_na_ragjanje)]
         public string _mesto { get; set; }
         [JsonProperty(RequestParameters.povedenie)]
         public string _povedenie { get; set; }
@@ -32,10 +34,18 @@ namespace Middleware
         public int _neopravdani { get; set; }
         [JsonProperty(RequestParameters.tip)]
         public string _tip { get; set; }
-        [JsonProperty(RequestParameters.pat)]
-        public string _pat { get; set; }
-        [JsonProperty(RequestParameters.roditel)]
-        public string _roditel { get; set; }
+        [JsonProperty(RequestParameters.pat_polaga)]
+        public string _pat_polaga { get; set; }
+        [JsonProperty(RequestParameters.pat_polaga_ispit)]
+        public string _pat_polaga_ispit { get; set; }
+        [JsonProperty(RequestParameters.ispiten)]
+        public string _ispiten { get; set; }
+        [JsonProperty(RequestParameters.prethoden_delovoden)]
+        public string _prethoden_delovoden { get; set; }
+        [JsonProperty(RequestParameters.tatko)]
+        public string _tatko { get; set; }
+        [JsonProperty(RequestParameters.majka)]
+        public string _majka { get; set; }
         [JsonProperty(RequestParameters.gender)]
         public string _gender { get; set; }
         [JsonProperty(RequestParameters.maturska)]
@@ -60,29 +70,32 @@ namespace Middleware
         public string _datum_sveditelstvo { get; set; }
         [JsonProperty(RequestParameters.polozhil)]
         public string _polozhil { get; set; }
-        [JsonProperty(RequestParameters.majkino)]
-        public string _majkino { get; set; }
+        // [JsonProperty(RequestParameters.majkino)]
+        // public string _majkino { get; set; }
         [JsonProperty(RequestParameters.pedagoshki_merki)]
         public string _pedagoshki_merki { get; set; }
         [JsonProperty(RequestParameters.drzavjanstvo)]
         public string _drzavjanstvo { get; set; }
 
-        public Ucenik(string ime, string tatkovo, string prezime, List<int> oceni, string smer, int broj, string roden, string mesto, string povedenie, int opravdani, int neopravdani, string tip, string pat, string roditel, string gender, string maturska, string izborni, string proektni, string merki, string prethodna_godina, string prethoden_uspeh, string prethodno_uchilishte, string delovoden_broj, string datum_sveditelstvo, string polozhil, string majkino, string prethodna_uchebna, string pedagoshki_merki, string drzavjanstvo)
-        {
+        public Ucenik(string ime, string srednoIme, string prezime, List<int> oceni, string smer, int broj, string roden, string mesto_na_zhiveenje, string mesto_na_ragjanje, string povedenie, int opravdani, int neopravdani, string tip, string pat_polaga, string tatko, string majka, string gender, string maturska, string izborni, string proektni, string merki, string prethodna_godina, string prethoden_uspeh, string prethodno_uchilishte, string delovoden_broj, string datum_sveditelstvo, string polozhil,  string prethodna_uchebna, string pedagoshki_merki, string drzavjanstvo,string pat_polaga_ispit, string ispiten, string prethoden_delovoden)
+        { //string majkino,
             _ime = ime ?? "";
-            _tatkovo = tatkovo ?? "";
+            _srednoIme = srednoIme ?? "";
             _prezime = prezime ?? "";
             _oceni = oceni ?? new List<int>();
             _smer = smer ?? "";
+            //Pazzio: broj napravi go da se stava taka kako shto ti gi prakjam, odnosno, da go zima brojot vo dictionary-to, i toa da go koristi za broj vo dnevnik
             _broj = broj;
             _roden = roden ?? "01.01.1111";
-            _mesto = mesto ?? "";
+            _mesto_na_zhiveenje = mesto_na_zhiveenje ?? "";
+            _mesto_na_ragjanje = mesto_na_ragjanje ?? "";
             _povedenie = povedenie ?? "";
             _opravdani = opravdani;
             _neopravdani = neopravdani;
             _tip = tip ?? "";
-            _pat = pat ?? "-1";
-            _roditel = roditel ?? "";
+            _pat_polaga = pat_polaga ?? "-1";
+            _majka = majka ?? "";
+            _tatko = tatko ?? "";
             _gender = gender ?? "";
             _maturska = maturska ?? "";
             _izborni = izborni ?? "";
@@ -95,7 +108,13 @@ namespace Middleware
             _delovoden_broj = delovoden_broj ?? "";
             _datum_sveditelstvo = datum_sveditelstvo ?? "";
             _polozhil = polozhil ?? "";
-            _majkino = majkino ?? "";
+            // _majkino = majkino ?? "";
+            
+            _prethoden_delovoden = delovoden_broj ?? "";
+            _pat_polaga_ispit = pat_polaga_ispit ?? "";
+            _ispiten = ispiten ?? "";
+            
+            
             _pedagoshki_merki = pedagoshki_merki ?? "";
             _drzavjanstvo = drzavjanstvo ?? "";
 
@@ -105,7 +124,7 @@ namespace Middleware
         public Ucenik(Dictionary<string, string> valuePairs)
         {
             _ime = valuePairs["ime"] ?? "";
-            _tatkovo = valuePairs["tatkovo"] ?? "";
+            _srednoIme = valuePairs["srednoIme"] ?? "";
             _prezime = valuePairs["prezime"] ?? "";
 
             string[] s = valuePairs[RequestParameters.oceni].Split(' ');
@@ -119,13 +138,18 @@ namespace Middleware
             _s = new Smer(new List<string>(), _smer);
             _broj = int.Parse(valuePairs[RequestParameters.broj] ?? "0");
             _roden = valuePairs[RequestParameters.roden] ?? "";
-            _mesto = valuePairs[RequestParameters.mesto] ?? "";
+            _mesto_na_ragjanje = valuePairs[RequestParameters.mesto_na_ragjanje] ?? "";
+            _mesto_na_zhiveenje = valuePairs[RequestParameters.mesto_na_zhiveenje] ?? "";
             _povedenie = valuePairs[RequestParameters.povedenie] ?? "";
             _opravdani = int.Parse(valuePairs[RequestParameters.opravdani] ?? "0");
             _neopravdani = int.Parse(valuePairs[RequestParameters.neopravdani] ?? "0");
             _tip = valuePairs[RequestParameters.tip] ?? "";
-            _pat = valuePairs[RequestParameters.pat] ?? "";
-            _roditel = valuePairs[RequestParameters.roditel] ?? "";
+            _pat_polaga = valuePairs[RequestParameters.pat_polaga] ?? "";
+            _pat_polaga_ispit = valuePairs[RequestParameters.pat_polaga_ispit] ?? "";
+            _ispiten = valuePairs[RequestParameters.ispiten] ?? "";
+            _prethoden_delovoden = valuePairs[RequestParameters._prethoden_delovoden] ?? "";
+            _tatko = valuePairs[RequestParameters.tatko] ?? "";
+            _majka = valuePairs[RequestParameters.majka] ?? "";
             _gender = valuePairs[RequestParameters.gender] ?? "";
             _maturska = valuePairs[RequestParameters.maturska] ?? "";
             _izborni = valuePairs[RequestParameters.izborni] ?? "";
@@ -137,7 +161,7 @@ namespace Middleware
             _delovoden_broj = valuePairs[RequestParameters.delovoden_broj] ?? "";
             _datum_sveditelstvo = valuePairs[RequestParameters.datum_sveditelstvo] ?? "";
             _polozhil = valuePairs[RequestParameters.polozhil] ?? "";
-            _majkino = valuePairs[RequestParameters.majkino] ?? "";
+            // _majkino = valuePairs[RequestParameters.majkino] ?? "";
         }
 
         public Dictionary<string, string> ToDict()
@@ -145,7 +169,7 @@ namespace Middleware
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
                 [RequestParameters.ime] = _ime,
-                [RequestParameters.srednoIme] = _tatkovo,
+                [RequestParameters.srednoIme] = _srednoIme,
                 [RequestParameters.prezime] = _prezime,
                 [RequestParameters.oceni] = string.Join(" ", _oceni),
                 [RequestParameters.smer] = _smer,
@@ -162,11 +186,14 @@ namespace Middleware
         public List<string> _predmeti { get; set; }
         [JsonProperty(RequestParameters.smer)]
         public string _smer { get; set; }
+        [JsonProperty(RequestParameters.cel_smer)]
+        public string _smer { get; set; }
 
-        public Smer(List<string> predmeti, string smer)
+        public Smer(List<string> predmeti, string smer, string cel_smer = '')
         {
             _predmeti = predmeti ?? throw new ArgumentNullException(nameof(predmeti));
             _smer = smer ?? throw new ArgumentNullException(nameof(smer));
+            _cel_smer = cel_smer ?? throw new ArgumentNullException(nameof(cel_smer));
         }
 
         public Smer() { }
@@ -227,8 +254,8 @@ namespace Middleware
             _paralelka = paralelka;
             _p = new Paralelka(_paralelka, new List<Ucenik>(), new Dictionary<string, Smer>());
             _uchilishte = uchilishte ?? "";
-            _grad = grad ?? "";
-            _godina = godina;
+            // _grad = grad ?? "";
+            // _godina = godina;
             _smerovi = smerovi ?? "";
 
         }
