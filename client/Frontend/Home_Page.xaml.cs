@@ -71,7 +71,7 @@ namespace Frontend
             KlasenKlasa._p._smerovi = smerovi;
         }
 
-        private void MouseEnter(object sender, MouseButtonEventArgs e)
+        private void MainImgClicked(object sender, MouseButtonEventArgs e)
         {
            //Main.Content = loginPage;
            Main.Content = new Oceni(Main,this);

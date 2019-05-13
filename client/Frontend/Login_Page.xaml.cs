@@ -38,8 +38,9 @@ namespace Frontend
 
         private void login()
         {
-            Username_txt.Text = "vgZ1Cm";
-            Password_txt.Text = "1yrSdQ";
+
+            Username_txt.Text = "ralaZU";
+            Password_txt.Text = "m6Y0se";
 
             Klasen temp = Login.LoginWithCred(Username_txt.Text, Password_txt.Text);
 

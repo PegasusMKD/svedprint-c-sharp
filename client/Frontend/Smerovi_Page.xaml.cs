@@ -17,9 +17,6 @@ using static Frontend.SettingsDesign;
 
 namespace Frontend
 {
-    /// <summary>
-    /// Interaktionslogik für Smerovi_Page.xaml
-    /// </summary>
     public partial class Smerovi_Page : Page
     {
 
@@ -117,14 +114,33 @@ namespace Frontend
 
         private void NewPredmetImgClicked(object sender, MouseButtonEventArgs e , int i , int j)
         {
-            UserKlas._p._smerovi[UserKlas._smerovi.Split(',')[i]]._predmeti.Add(DodajPredmeti[j].Text);
+            string toBeChanged = UserKlas._smerovi.Split(',')[i];
+            result.ForEach(x =>
+            {
+                if (x["smer"] == toBeChanged)
+                {
+                    x["oceni"] += " 0";
+                }
+            });
+            UserKlas._p._smerovi[toBeChanged]._predmeti.Add(DodajPredmeti[j].Text);
             UpdateSmer(i);
             GetData();
         }
 
         private void RemovePredmetImgClicked(object sender, MouseButtonEventArgs e, int i , int j)
         {
-            UserKlas._p._smerovi[UserKlas._smerovi.Split(',')[i]]._predmeti.RemoveAt(j);
+            string toBeChanged = UserKlas._smerovi.Split(',')[i];
+            result.ForEach(x =>
+            {
+                if (x["smer"] == toBeChanged)
+                {
+                    var zz = x["oceni"].Split(' ').ToList();
+                    zz.RemoveAt(j);
+                    x["oceni"] = string.Join(" ", zz);
+                }
+            });
+            UserKlas._p._smerovi[toBeChanged]._predmeti.RemoveAt(j);
+            UpdateSmer(i);
             GetData();
         }
 
