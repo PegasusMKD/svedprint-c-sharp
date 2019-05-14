@@ -18,6 +18,7 @@ namespace Frontend
         Frame Main;
         Page loginPage;
         Klasen UserKlas;
+        bool CanWork = false;
 
         Dictionary<string,Smer> smerovi;
         List<Dictionary<string, string>> result;
@@ -25,13 +26,12 @@ namespace Frontend
         {
             {"ПМА",  "Природно Математико подрачје - А" },
             {"ПМБ", "Природно Математичко Подрачје - Б" },
-            {"ОxА", "Општествено Х Подрачје А" },
+            {"ОХА", "Општествено Х Подрачје А" },
             {"ОХБ", "Општествено Х Подрачје Б" },
             {"ЈУА", "Јазично Уметничко Подрачје А" },
             {"ЈУБ", "Јазично Уметничко Подрачје Б" }
 
         };
-
         Dictionary<string, string> res;
         static int brPredmeti;
         public Oceni(Frame m, Page loginpage)
@@ -50,7 +50,6 @@ namespace Frontend
             LoadOcenki(0);
 
             populateData(0);
-
 
             //Smer pmb = new Smer(Requests.GetData(new Dictionary<string, string>(){
             //        { RequestParameters.token, UserKlas._token},
@@ -138,6 +137,7 @@ namespace Frontend
 
         private void MouseUp(object sender, MouseButtonEventArgs e, int brojDn)
         {
+            CanWork = false;
 
             if (ClickedMenuItem != null)//hover
             {
@@ -158,7 +158,7 @@ namespace Frontend
 
         int GetSmerIndex(int brojDn)
         {
-            string[] MozniSmerovi = { "ПМА","ПМБ", "ОxА", "ОХБ", "ЈУА", "ЈУБ" };
+            string[] MozniSmerovi = { "ПМА","ПМБ", "ОХА", "ОХБ", "ЈУА", "ЈУБ" };
             int i = 0;
             foreach (string x in MozniSmerovi)
             {
@@ -171,20 +171,20 @@ namespace Frontend
         private void populateData(int brojDn)
         {
             Ucenik_Name.Content = result[brojDn]["ime"] + " " + result[brojDn]["prezime"];
-            Prosek_out.Content = Array.ConvertAll(result[brojDn]["oceni"].Split(' '), x => float.Parse(x)).Average().ToString("n2");
+            Prosek_out.Content = Prosek(result[brojDn]["oceni"]);
 
             BrojDn_label.Content = (brojDn + 1).ToString();
-            combobox_smer.SelectedIndex = GetSmerIndex(brojDn);//smerovi_naslov[result[brojDn]["smer"]]
-
+            combobox_smer.SelectedValue = smerovi_naslov[result[brojDn]["smer"]];
 
             string[] ocenki = result[brojDn]["oceni"].Split(' ');
             //string[] predmeti = result[brojDn]["predmeti"].Split(',');
             for (int i = 0; i < brPredmeti; i++)
             {
-                if (i < ocenki.Length) Ocenkibox[i].Text = ocenki[i];//5 5 5 5 5 5 5 5
-                else Ocenkibox[i].Text = "";
+                Ocenkibox[i].Text = ocenki[i];//5 5 5 5 5 5 5 5 (5.3)-prosek
                 Predmetibox[i].Content = smerovi[result[brojDn]["smer"]]._predmeti[i];
             }
+
+            CanWork = true;
         }
 
         List<TextBox> Ocenkibox = new List<TextBox>();
@@ -302,10 +302,43 @@ namespace Frontend
 
         private void TextBox_Text_Changed(object sender, EventArgs e)
         {
+            int n;
             TextBox tx = (TextBox)sender;
+            if (int.TryParse(tx.Text, out n) == false)
+            {
+                tx.Text = "5";
+            }
+
             int i = int.Parse(tx.Name.Substring(1, tx.Name.Length - 1));
             Ocenkibox[(i + 1) % brPredmeti].GotFocus += TextBox_GotFocus;
             Ocenkibox[(i+1) % brPredmeti].Focus();
+
+            if (CanWork == false) return;
+            string upd ="";
+            foreach(TextBox x in Ocenkibox)
+            {
+                upd += " " +  x.Text;
+            }
+
+            upd = upd.Substring(1);
+            Prosek_out.Content = Prosek(upd);
+            int br = int.Parse(BrojDn_label.Content.ToString());
+            result[br-1]["oceni"] = upd;
+            //upd += Prosek_out.Content;
+            //UpdateUcenik(i, RequestParameters.oceni, upd);
+        }
+
+        private string Prosek(string OceniSt)
+        {
+            return Array.ConvertAll(OceniSt.Split(' '), x => float.Parse(x)).Average().ToString("n2");
+        }
+
+        private void UpdateUcenik(int BrojDn, string UpdateParametar, string Value)
+        {
+            Requests.UpdateData(new Dictionary<string, string>() {
+            { RequestParameters.token , UserKlas._token} , { RequestParameters.ime , result[BrojDn]["ime"] } , {RequestParameters.prezime , result[BrojDn]["prezime"] } , { RequestParameters.broj , BrojDn.ToString() } ,  {RequestParameters.srednoIme , result[BrojDn]["tatkovo"] }  , { UpdateParametar , Value }
+            }, RequestScopes.UpdateUcenik);
+
         }
 
         private void TextBox_GotFocus(object sender, EventArgs e)
