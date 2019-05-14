@@ -1,18 +1,9 @@
 using Middleware;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using static Frontend.SettingsDesign;
 
 namespace Frontend
@@ -25,8 +16,9 @@ namespace Frontend
 
         Klasen UserKlas;
         List<Dictionary<string, string>> result;
-        int BrojDn = 1;
+        int BrojDn = 0;
         int Ucenici_Size;
+        bool Saved = false;
 
         public EditUcenici_Page()
         {
@@ -34,7 +26,6 @@ namespace Frontend
             UserKlas = Home_Page.KlasenKlasa;
             result = Home_Page.result;
 
-            Ucenici_Size = result.Count;
             GetData();
 
         }
@@ -43,9 +34,12 @@ namespace Frontend
         Dictionary<string, string> res;
         void GetData()
         {
+            Ucenici_Size = result.Count;
             Answer = new List<TextBox>();
             MainGrid.Children.Clear();
-            BrojDn--;
+            Saved = true;
+
+
             res = new Dictionary<string, string>();
             res.Add("Име", "");
             res.Add("Средно Име", "");
@@ -65,11 +59,9 @@ namespace Frontend
             res["Презиме"] = result[BrojDn]["prezime"];
             res["Смер"] = result[BrojDn]["smer"];
 
-            BrojDn++;
             MainGrid.Height = 0;
 
             int i = 0;
-            int ctr = 0;//nz zs so i ne raboti
             foreach (KeyValuePair<string, string> x in res)
             {
                 StackPanel st = new StackPanel();
@@ -97,11 +89,12 @@ namespace Frontend
 
         private void ContentTextBoxLostFocusEvent(object sender, RoutedEventArgs e, string i)
         {
-            TextBox tx = (TextBox)sender;
+            Saved = false;
+           /* TextBox tx = (TextBox)sender;
             Dictionary<string, string> RequestsString = new Dictionary<string, string>() { { "Име", RequestParameters.new_first_name }, { "Средно Име", RequestParameters.new_middle_name }, { "Презиме", RequestParameters.new_last_name }, { "Смер", RequestParameters.smer } }; ;
             Dictionary<string, string> resultDic = new Dictionary<string, string>() { { "Име" , "ime" } , { "Средно Име", "tatkovo" } , { "Презиме" , "prezime" } , { "Смер" , "smer" }  };
             UpdateUcenik(BrojDn-1, RequestsString[i], tx.Text);
-            result[BrojDn-1][resultDic[i]] = tx.Text;
+            result[BrojDn-1][resultDic[i]] = tx.Text;*/
         }
 
         private Border ContentBorder(string LabelContent)
@@ -113,29 +106,65 @@ namespace Frontend
 
         private void LeftTriangleClicked(object sender, MouseEventArgs e)
         {
-            BrojDnLabel.Text = valid(-1);
+            BrojDnLabel.Text = Valid(-1);
             GetData();
         }
 
         private void RightTriangleClicked(object sender, MouseButtonEventArgs e)
         {
-            BrojDnLabel.Text = valid(+1);
+            BrojDnLabel.Text = Valid(+1);
             GetData();
         }
 
-        String valid(int x)
+        String Valid(int x)
         {
-            BrojDn = int.Parse(BrojDnLabel.Text);
-            if (BrojDn + x >= 1 && BrojDn + x <= Ucenici_Size) BrojDn += x;
-            return BrojDn.ToString();
+            if (Saved == false) MessageBox.Show("Ги немате сочувано новите работи за ученикот");
+
+            if (BrojDn + x >= 0 && BrojDn + x < Ucenici_Size) BrojDn += x;
+            return (BrojDn +1).ToString();
         }
 
-        private void UpdateUcenik(int BrojDn,string UpdateParametar,string Value)
+        string[] Request = { RequestParameters.new_first_name, RequestParameters.new_middle_name, RequestParameters.new_last_name, RequestParameters.new_smer };
+        private void SaveBtnClicked(object sender, MouseButtonEventArgs e)
+        {
+            int i = 0;
+            foreach(TextBox tx in Answer)
+            {
+                UpdateUcenik(BrojDn, Request[i++] , tx.Text);
+                if (i == Request.Length) break;
+            }
+            Saved = true;
+        }
+
+        private void CreateUcenikImgClicked(object sender, MouseButtonEventArgs e)
+        {
+            CreateUcenik(Answer[0].Text, Answer[1].Text, Answer[2].Text, Answer[3].Text, Answer[4].Text);
+        }
+
+        private void CreateUcenik(string ime, string srednoime, string prezime, string smer, string br)
+        {
+            Requests.AddData(new Dictionary<string, string>() {
+                { RequestParameters.ime, ime} , {RequestParameters.srednoIme , srednoime} , { RequestParameters.prezime , prezime } , { RequestParameters.broj , br} , { RequestParameters.smer , smer}
+            }, RequestScopes.AddUcenici);
+
+            result = Requests.GetData(new Dictionary<string, string>() {
+                {RequestParameters.token, UserKlas._token }
+            }, RequestScopes.GetParalelka);
+            Ucenici_Size = result.Count;
+        }
+
+        private void UpdateUcenik(int BrojDn, string UpdateParametar, string Value)
         {
             Requests.UpdateData(new Dictionary<string, string>() {
             { RequestParameters.token , UserKlas._token} , { RequestParameters.ime , result[BrojDn]["ime"] } , {RequestParameters.prezime , result[BrojDn]["prezime"] } , { RequestParameters.broj , BrojDn.ToString() } ,  {RequestParameters.srednoIme , result[BrojDn]["tatkovo"] }  , { UpdateParametar , Value }
             }, RequestScopes.UpdateUcenik);
 
         }
+
+        private void DeleteUcenik()
+        {
+
+        }
+
     }
 }

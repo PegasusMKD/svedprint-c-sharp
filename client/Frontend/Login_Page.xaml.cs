@@ -40,7 +40,7 @@ namespace Frontend
         {
 
             Username_txt.Text = "ralaZU";
-            Password_txt.Text = "m6Y0se";
+            Password_txt.Text = "m6Y0se ";
 
             Klasen temp = Login.LoginWithCred(Username_txt.Text, Password_txt.Text);
 
