@@ -11,13 +11,13 @@ namespace Middleware
 {
     public class Print
     {
+        static string tmpFolder = Path.GetTempPath() + @"pics\";
         public static void PrintSveditelstva(List<Ucenik> ucenici, Klasen klasen, int printerChoice)
         {
             List<string> data = InitSveditelstvo(ucenici, klasen);
             string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
-            string tmpFolder = Path.GetTempPath()+@"pics\";
             PrintDialog printDialog = new PrintDialog();
-            PrintDocument pd = new PrintDocument();        
+            PrintDocument pd = new PrintDocument();
 
             // PrinterSettings.InstalledPrinters - lista na printeri
             pd.PrinterSettings.PrinterName = PrinterSettings.InstalledPrinters[printerChoice];
@@ -36,8 +36,6 @@ namespace Middleware
             py.StartInfo.CreateNoWindow = true;
             py.Start();
             py.WaitForExit();
-            System.Diagnostics.Debug.WriteLine(outparam);
-            System.Diagnostics.Debug.WriteLine(tmpFolder);
 
             if (pd.PrinterSettings.CanDuplex)
             {
@@ -46,7 +44,7 @@ namespace Middleware
 
             int page = 0;
 
-            for (int i = 0; i < data.Count-1; i++)
+            for (int i = 0; i < data.Count - 1; i++)
             {
                 if (pd.PrinterSettings.CanDuplex)
                 {
@@ -81,7 +79,7 @@ namespace Middleware
                         args.Graphics.DrawImage(System.Drawing.Image.FromFile(
                             $"{tmpFolder}{(page % 2 == 0 ? "front" : "back")}-{i}.jpg"),
                             args.PageBounds);
-                            
+
                         pd.DocumentName = $"{tmpFolder}{(page % 2 == 0 ? "front" : "back")}-{i}.jpg";
                         page++;
                     };
@@ -91,13 +89,14 @@ namespace Middleware
                 }
             }
 
-            //Directory.Delete(tmpFolder, true);
+            //ClearTmpFolder();
         }
 
         public static void PreviewSveditelstvo(Ucenik u, Klasen k)
         {
             List<string> data = InitSveditelstvo(new List<Ucenik>() { u }, k);
             string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
+
             data.Insert(0, "\"sveditelstvo\""); // mozno e da e "sveditelstva"
             string outparam = String.Join("?", data);
 
@@ -110,7 +109,13 @@ namespace Middleware
             py.Start();
             py.WaitForExit();
 
+            File.Move($"{tmpFolder}front-0.jpg", $"{tmpFolder}front-prev.jpg");
+            File.Move($"{tmpFolder}back-0.jpg", $"{tmpFolder}back-prev.jpg");
+        }
 
+        public static void ClearTmpFolder()
+        {
+            Directory.Delete(tmpFolder, true);
         }
 
         public static List<string> InitSveditelstvo(List<Ucenik> ucenici, Klasen klasen)
@@ -315,10 +320,13 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(klasen._paralelka.Split('-')[0]);
                 sw.Write(delimiter);
-                if(klasen._srednoIme != ""){
-                sw.Write($"{klasen._ime} {klasen._srednoIme}-{klasen._prezime}");
-                }else{
-                sw.Write($"{klasen._ime} {klasen._prezime}");
+                if (klasen._srednoIme != "")
+                {
+                    sw.Write($"{klasen._ime} {klasen._srednoIme}-{klasen._prezime}");
+                }
+                else
+                {
+                    sw.Write($"{klasen._ime} {klasen._prezime}");
                 }
                 sw.Write(delimiter);
                 sw.Write(klasen._direktor);
@@ -435,10 +443,13 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._prethodna_godina);
                 sw.Write(delimiter);
-                if(klasen._srednoIme != ""){
-                sw.Write($"{klasen._ime} {klasen._srednoIme}-{klasen._prezime}");
-                }else{
-                sw.Write($"{klasen._ime} {klasen._prezime}");
+                if (klasen._srednoIme != "")
+                {
+                    sw.Write($"{klasen._ime} {klasen._srednoIme}-{klasen._prezime}");
+                }
+                else
+                {
+                    sw.Write($"{klasen._ime} {klasen._prezime}");
                 }
                 sw.Write(delimiter);
                 sw.Write(klasen._direktor);
