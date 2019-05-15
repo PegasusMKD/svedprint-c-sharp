@@ -24,8 +24,9 @@ namespace Middleware
 
             pd.DefaultPageSettings.PaperSize = pd.PrinterSettings.PaperSizes.Cast<PaperSize>().First<PaperSize>(size => size.Kind == PaperKind.A4);
             pd.OriginAtMargins = false;
+            pd.DefaultPageSettings.Landscape = false;
 
-            data.Insert(0, "sveditelstva"); // mozno e da e "sveditelstva", "sveditelstvo"
+            data.Insert(0, "\"sveditelstva\""); // mozno e da e "sveditelstva", "sveditelstvo"
             string outparam = String.Join("?", data);
 
             string pyscript = rootFolder + @"\print.exe";
@@ -89,9 +90,8 @@ namespace Middleware
                 }
             }
 
-            //ClearTmpFolder();
+            ClearTmpFolder();
         }
-
         public static void PreviewSveditelstvo(Ucenik u, Klasen k)
         {
             List<string> data = InitSveditelstvo(new List<Ucenik>() { u }, k);
@@ -99,6 +99,8 @@ namespace Middleware
 
             data.Insert(0, "\"sveditelstvo\""); // mozno e da e "sveditelstva"
             string outparam = String.Join("?", data);
+
+            ClearTmpFolder();
 
             string pyscript = rootFolder + "\\print.exe";
             Process py = new Process();
@@ -112,7 +114,48 @@ namespace Middleware
             File.Move($"{tmpFolder}front-0.jpg", $"{tmpFolder}front-prev.jpg");
             File.Move($"{tmpFolder}back-0.jpg", $"{tmpFolder}back-prev.jpg");
         }
+        public static void PreviewGlavnaKniga(Ucenik u, Klasen k)
+        {
+            List<string> data = InitGlavnaKniga(new List<Ucenik>() { u }, k);
+            string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
 
+            data.Insert(0, "\"glavna\""); // mozno e da e "sveditelstva"
+            string outparam = String.Join("?", data);
+
+            ClearTmpFolder();
+
+            string pyscript = rootFolder + "\\print.exe";
+            Process py = new Process();
+            py.StartInfo.FileName = new Uri(pyscript).AbsolutePath;
+            py.StartInfo.UseShellExecute = false;
+            py.StartInfo.Arguments = outparam;
+            py.StartInfo.CreateNoWindow = true;
+            py.Start();
+            py.WaitForExit();
+
+            File.Move($"{tmpFolder}test-0.jpg", $"{tmpFolder}prev.jpg");
+        }
+        public static void PreviewGkDiploma(Ucenik u, Klasen k)
+        {
+            List<string> data = InitGkDiploma(new List<Ucenik>() { u }, k);
+            string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
+
+            data.Insert(0, "\"dipl\""); // mozno e da e "sveditelstva"
+            string outparam = String.Join("?", data);
+
+            ClearTmpFolder();
+
+            string pyscript = rootFolder + "\\print.exe";
+            Process py = new Process();
+            py.StartInfo.FileName = new Uri(pyscript).AbsolutePath;
+            py.StartInfo.UseShellExecute = false;
+            py.StartInfo.Arguments = outparam;
+            py.StartInfo.CreateNoWindow = true;
+            py.Start();
+            py.WaitForExit();
+
+            File.Move($"{tmpFolder}dipl-0.jpg", $"{tmpFolder}prev.jpg");
+        }
         public static void ClearTmpFolder()
         {
             Directory.Delete(tmpFolder, true);
@@ -205,7 +248,7 @@ namespace Middleware
 
             pd.DefaultPageSettings.PaperSize = pd.PrinterSettings.PaperSizes.Cast<PaperSize>().First<PaperSize>(size => size.Kind == PaperKind.A3);
             pd.OriginAtMargins = false;
-            pd.DefaultPageSettings.Landscape = false;
+            pd.DefaultPageSettings.Landscape = true;
 
             data.Insert(0, "\"glavna\""); // mozno e da e "sveditelstva"
             string outparam = String.Join("?", data);
@@ -223,11 +266,13 @@ namespace Middleware
             {
                 pd.PrintPage += (sender, args) =>
                 {
-                    args.Graphics.DrawImage(System.Drawing.Image.FromFile(String.Format(".\\test-{0}.jpg", i)), args.PageBounds);
-                    pd.DocumentName = String.Format("{0}\\test-{1}.jpg", rootFolder, i);
+                    args.Graphics.DrawImage(System.Drawing.Image.FromFile($"{tmpFolder}test-{i}.jpg"), args.PageBounds);
+                    pd.DocumentName = $"{tmpFolder}\\test-{i}.jpg";
                 };
                 pd.Print();
             }
+
+            ClearTmpFolder();
         }
         public static List<string> InitGlavnaKniga(List<Ucenik> ucenici, Klasen klasen)
         {
@@ -362,29 +407,29 @@ namespace Middleware
             pd.DefaultPageSettings.PaperSize = pd.PrinterSettings.PaperSizes.Cast<PaperSize>().First<PaperSize>(size => size.Kind == PaperKind.A3);
             pd.OriginAtMargins = false;
             pd.DefaultPageSettings.Landscape = false;
-            pd.DefaultPageSettings.Landscape = true;
 
             data.Insert(0, "\"dipl\""); // mozno e da e "sveditelstva"
             string outparam = String.Join("?", data);
-            System.Diagnostics.Debug.WriteLine(outparam);
-            string pyscript = rootFolder + "\\print.exe";
+
+            string pyscript = rootFolder + @"\print.exe";
             Process py = new Process();
             py.StartInfo.FileName = new Uri(pyscript).AbsolutePath;
             py.StartInfo.UseShellExecute = false;
-            py.StartInfo.Arguments = outparam.ToString();
-            py.StartInfo.CreateNoWindow = false;
+            py.StartInfo.Arguments = outparam;
+            py.StartInfo.CreateNoWindow = true;
             py.Start();
             py.WaitForExit();
 
             for (int i = 0; i < data.Count; i++)
             {
-                pd.PrintPage += (sender, args) =>
-                {
-                    args.Graphics.DrawImage(System.Drawing.Image.FromFile(String.Format(".\\dipl-{0}.jpg", i)), args.PageBounds);
-                    pd.DocumentName = String.Format("{0}\\dipl-{1}.jpg", rootFolder, i);
+                pd.PrintPage += (sender, args) => {
+                    args.Graphics.DrawImage(System.Drawing.Image.FromFile($"{tmpFolder}dipl-{i}.jpg"), args.PageBounds);
+                    pd.DocumentName = $"{tmpFolder}dipl-{i}.jpg";
                 };
                 pd.Print();
             }
+
+            ClearTmpFolder();
         }
         public static List<string> InitGkDiploma(List<Ucenik> ucenici, Klasen klasen)
         {
