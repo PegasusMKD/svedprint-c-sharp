@@ -76,6 +76,7 @@ namespace Middleware
                 }
                 else
                 {
+                    /*
                     pd.PrintPage += (sender, args) =>
                     {
                         args.Graphics.DrawImage(System.Drawing.Image.FromFile(
@@ -87,7 +88,7 @@ namespace Middleware
                     };
                     pd.Print();
                     MessageBox.Show("Ве молиме свртете го листот.");
-                    pd.Print();
+                    pd.Print();*/
                 }
             }
 

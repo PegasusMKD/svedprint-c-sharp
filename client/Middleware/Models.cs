@@ -124,7 +124,7 @@ namespace Middleware
         public Ucenik(Dictionary<string, string> valuePairs)
         {
             _ime = valuePairs["ime"] ?? "";
-            _srednoIme = valuePairs["srednoIme"] ?? "";
+            _srednoIme = valuePairs["srednoIme"] ?? " ";
             _prezime = valuePairs["prezime"] ?? "";
 
             string[] s = valuePairs[RequestParameters.oceni].Split(' ');
@@ -138,7 +138,7 @@ namespace Middleware
             _s = new Smer(new List<string>(), _smer);
             _broj = int.Parse(valuePairs[RequestParameters.broj] ?? "0");
             _roden = valuePairs[RequestParameters.roden] ?? "";
-            _mesto_na_ragjanje = valuePairs[RequestParameters.mesto_na_ragjanje] ?? "";
+            /*_mesto_na_ragjanje = valuePairs[RequestParameters.mesto_na_ragjanje] ?? "";
             _mesto_na_zhiveenje = valuePairs[RequestParameters.mesto_na_zhiveenje] ?? "";
             _povedenie = valuePairs[RequestParameters.povedenie] ?? "";
             _opravdani = int.Parse(valuePairs[RequestParameters.opravdani] ?? "0");
@@ -160,7 +160,7 @@ namespace Middleware
             _prethodno_uchilishte = valuePairs[RequestParameters.prethodno_uchilishte] ?? "";
             _delovoden_broj = valuePairs[RequestParameters.delovoden_broj] ?? "";
             _datum_sveditelstvo = valuePairs[RequestParameters.datum_sveditelstvo] ?? "";
-            _polozhil = valuePairs[RequestParameters.polozhil] ?? "";
+            _polozhil = valuePairs[RequestParameters.polozhil] ?? "";*/
             // _majkino = valuePairs[RequestParameters.majkino] ?? "";
         }
 
@@ -177,6 +177,26 @@ namespace Middleware
             };
 
             return dictionary;
+        }
+
+        public string OceniToString()
+        {
+            string OcenkiString = "";
+            foreach (int x in _oceni) OcenkiString += " " + x.ToString();
+            OcenkiString = OcenkiString.Substring(1);
+            return OcenkiString;
+        }
+
+        public string prosek()
+        {
+            return Array.ConvertAll(_oceni.ToArray(), x => (float)x).Average().ToString("n2");
+        }
+
+        public void UpdateUcenikOceni(String Token , int br)
+        {
+            Requests.UpdateData(new Dictionary<string, string>() {
+            { RequestParameters.token , Token} , { RequestParameters.ime , _ime } , {RequestParameters.prezime , _prezime } , { RequestParameters.broj , br.ToString() } ,  {RequestParameters.srednoIme , _srednoIme}  , { RequestParameters.oceni , OceniToString() }
+            }, RequestScopes.UpdateUcenik);
         }
     }
 

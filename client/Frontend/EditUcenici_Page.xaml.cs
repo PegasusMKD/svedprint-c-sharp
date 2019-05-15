@@ -55,7 +55,7 @@ namespace Frontend
             res.Add("нахнадно", "1");
 
             res["Име"] = result[BrojDn]["ime"];
-            res["Средно Име"] = result[BrojDn]["tatkovo"];
+            res["Средно Име"] = result[BrojDn]["srednoIme"];
             res["Презиме"] = result[BrojDn]["prezime"];
             res["Смер"] = result[BrojDn]["smer"];
 

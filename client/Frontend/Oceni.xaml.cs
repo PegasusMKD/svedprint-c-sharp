@@ -22,7 +22,7 @@ namespace Frontend
 
         Dictionary<string,Smer> smerovi;
         List<Dictionary<string, string>> result;
-        private static Dictionary<string, string> smerovi_naslov = new Dictionary<string, string>()
+        private static Dictionary<string, string> smerovi_naslov = new Dictionary<string, string>() //treba da vlece od server
         {
             {"ПМА",  "Природно Математико подрачје - А" },
             {"ПМБ", "Природно Математичко Подрачје - Б" },
@@ -32,46 +32,24 @@ namespace Frontend
             {"ЈУБ", "Јазично Уметничко Подрачје Б" }
 
         };
-        Dictionary<string, string> res;
+
+        List<Ucenik> Ucenici;
         static int brPredmeti;
         public Oceni(Frame m, Page loginpage)
         {
             InitializeComponent();
             Main = m;
             loginPage = loginpage;
+
             UserKlas = Home_Page.KlasenKlasa;
-
             result = Home_Page.result;
-
             smerovi = Home_Page.smerovi;
+            Ucenici = Home_Page.result.ConvertAll(x => new Ucenik(x));
 
-            LoadListView(result);
+            LoadListView();
 
-            LoadOcenki(0);
-
-            populateData(0);
-
-            //Smer pmb = new Smer(Requests.GetData(new Dictionary<string, string>(){
-            //        { RequestParameters.token, UserKlas._token},
-            //        { RequestParameters.smer, "PMB"}
-            //    }, RequestScopes.GetPredmetiSmer)[0]["predmeti"].Split(',').ToList(), "PMA");
-            //Smer oha = new Smer(Requests.GetData(new Dictionary<string, string>(){
-            //        { RequestParameters.token, UserKlas._token},
-            //        { RequestParameters.smer, "OHA"}
-            //    }, RequestScopes.GetPredmetiSmer)[0]["predmeti"].Split(',').ToList(), "PMA");
-            //Smer ohb = new Smer(Requests.GetData(new Dictionary<string, string>(){
-            //        { RequestParameters.token, UserKlas._token},
-            //        { RequestParameters.smer, "OHB"}
-            //    }, RequestScopes.GetPredmetiSmer)[0]["predmeti"].Split(',').ToList(), "PMA");
-            //Smer jua = new Smer(Requests.GetData(new Dictionary<string, string>(){
-            //        { RequestParameters.token, UserKlas._token},
-            //        { RequestParameters.smer, "JUA"}
-            //    }, RequestScopes.GetPredmetiSmer)[0]["predmeti"].Split(',').ToList(), "PMA");
-            //Smer jub = new Smer(Requests.GetData(new Dictionary<string, string>(){
-            //        { RequestParameters.token, UserKlas._token},
-            //        { RequestParameters.smer, "JUB"}
-            //   }, RequestScopes.GetPredmetiSmer)[0]["predmeti"].Split(',').ToList(), "PMA");
-
+            LoadOcenkiView(0);
+            FillOcenki(0);
 
             home_img.MouseLeftButtonDown += new MouseButtonEventHandler(Back_Home);
             print_img.MouseLeftButtonDown += new MouseButtonEventHandler(Back_Print);
@@ -80,15 +58,13 @@ namespace Frontend
 
         }
 
-        void LoadListView(List<Dictionary<string, string>> result)
+        private void LoadListView()
         {
 
             int i = 0;
-            foreach (var x in result)
+            foreach (var x in Ucenici)
             {
-                // Ucenik ucenik = new Ucenik(x);
-                Menu.Items.Add(MenuDP(x["ime"], x["prezime"], i++));
-
+                Menu.Items.Add(MenuDP(x._ime, x._prezime, i++));
             }
             
             foreach(string val in smerovi_naslov.Values)
@@ -115,83 +91,18 @@ namespace Frontend
             tx.Foreground = System.Windows.Media.Brushes.White;
             tx.VerticalAlignment = VerticalAlignment.Center;
 
-            st.MouseUp += new MouseButtonEventHandler((sender, e) => MouseUp(sender, e, brojDn));
-            st.MouseEnter += new MouseEventHandler(MouseEnter);
-            st.MouseLeave += new MouseEventHandler(MouseLeave); 
+            st.MouseUp += new MouseButtonEventHandler((sender, e) => MenuItemClicked(sender, e, brojDn));
+            st.MouseEnter += new MouseEventHandler(MenuItemMouseEnter);
+            st.MouseLeave += new MouseEventHandler(MenuItemMouseLeave); 
 
             return st;
         }
 
-        object ClickedMenuItem;
-        private void MenuItemMouseEnter(object sender, MouseEventArgs e)
-        {
-            DockPanel st = (DockPanel)sender;
-            st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(237, 106, 61));
-        }
-
-        private void MenuItemMouseLeave(object sender, MouseEventArgs e)
-        {
-            DockPanel st = (DockPanel)sender;
-            if (ClickedMenuItem != sender) st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(165, 166, 140));
-        }
-
-        private void MouseUp(object sender, MouseButtonEventArgs e, int brojDn)
-        {
-            CanWork = false;
-
-            if (ClickedMenuItem != null)//hover
-            {
-                DockPanel st2 = (DockPanel)ClickedMenuItem;
-                st2.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(165, 166, 140));
-            }
-            DockPanel st = (DockPanel)sender;
-            st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(237, 106, 61));
-            ClickedMenuItem = sender;
-
-            if (combobox_smer.SelectedIndex != GetSmerIndex(brojDn))
-            {
-                OcenkiGrid.Children.Clear();
-                LoadOcenki(brojDn);
-            }
-            populateData(brojDn);
-        }
-
-        int GetSmerIndex(int brojDn)
-        {
-            string[] MozniSmerovi = { "ПМА","ПМБ", "ОХА", "ОХБ", "ЈУА", "ЈУБ" };
-            int i = 0;
-            foreach (string x in MozniSmerovi)
-            {
-                if (smerovi[result[brojDn]["smer"]]._smer == x) return i;
-                i++;
-            }
-            return 0;
-        }
-
-        private void populateData(int brojDn)
-        {
-            Ucenik_Name.Content = result[brojDn]["ime"] + " " + result[brojDn]["prezime"];
-            Prosek_out.Content = Prosek(result[brojDn]["oceni"]);
-
-            BrojDn_label.Content = (brojDn + 1).ToString();
-            combobox_smer.SelectedValue = smerovi_naslov[result[brojDn]["smer"]];
-
-            string[] ocenki = result[brojDn]["oceni"].Split(' ');
-            //string[] predmeti = result[brojDn]["predmeti"].Split(',');
-            for (int i = 0; i < brPredmeti; i++)
-            {
-                Ocenkibox[i].Text = ocenki[i];//5 5 5 5 5 5 5 5 (5.3)-prosek
-                Predmetibox[i].Content = smerovi[result[brojDn]["smer"]]._predmeti[i];
-            }
-
-            CanWork = true;
-        }
-
         List<TextBox> Ocenkibox = new List<TextBox>();
         List<Label> Predmetibox = new List<Label>();
-        private void LoadOcenki(int broj_dn)
+        private void LoadOcenkiView(int BrojDn)
         {
-            List<string> predmeti = UserKlas._p._smerovi[result[broj_dn]["smer"]]._predmeti;
+            List<string> predmeti = UserKlas._p._smerovi[result[BrojDn]["smer"]]._predmeti;
             int Size = predmeti.Count;
             brPredmeti = Size;
             int ctr = 0;
@@ -253,7 +164,7 @@ namespace Frontend
                     tx.CaretBrush = System.Windows.Media.Brushes.White;
                     tx.SelectionBrush = System.Windows.Media.Brushes.Coral;
                     tx.Background = System.Windows.Media.Brushes.Transparent;
-                    tx.TextChanged += TextBox_Text_Changed;
+                    tx.TextChanged += OcenkiBox_Text_Changed;
                     tx.Name = "t" + (Ocenkibox.Count).ToString();
                     Ocenkibox.Add(tx);
 
@@ -300,52 +211,103 @@ namespace Frontend
             }
         }
 
-        private void TextBox_Text_Changed(object sender, EventArgs e)
+        private void FillOcenki(int brojDn)
         {
-            int n;
+            Ucenik SelectedUcenik = Ucenici[brojDn];
+
+            //fill Menu
+            Ucenik_Name.Content = SelectedUcenik._ime + " " + SelectedUcenik._prezime;
+            Prosek_out.Content = SelectedUcenik.prosek();
+            BrojDn_label.Content = (brojDn + 1).ToString();
+            combobox_smer.SelectedValue = smerovi_naslov[SelectedUcenik._smer];
+
+            //fill OcenkiView
+            for (int i = 0; i < smerovi[SelectedUcenik._smer]._predmeti.Count; i++)
+            {
+                if (i < SelectedUcenik._oceni.Count) Ocenkibox[i].Text = SelectedUcenik._oceni[i].ToString();//5 5 5 5 5 5 5 5
+                else Ocenkibox[i].Text = "5";
+                Predmetibox[i].Content = smerovi[SelectedUcenik._smer]._predmeti[i];
+            }
+
+            CanWork = true;
+        }
+
+        private void OcenkiBox_Text_Changed(object sender, EventArgs e)
+        {
             TextBox tx = (TextBox)sender;
-            if (int.TryParse(tx.Text, out n) == false)
+
+            if (int.TryParse(tx.Text, out int n) == false || tx.Text.Length > 1)
             {
                 tx.Text = "5";
             }
 
-            int i = int.Parse(tx.Name.Substring(1, tx.Name.Length - 1));
-            Ocenkibox[(i + 1) % brPredmeti].GotFocus += TextBox_GotFocus;
-            Ocenkibox[(i+1) % brPredmeti].Focus();
-
             if (CanWork == false) return;
-            string upd ="";
-            foreach(TextBox x in Ocenkibox)
-            {
-                upd += " " +  x.Text;
-            }
 
-            upd = upd.Substring(1);
-            Prosek_out.Content = Prosek(upd);
+            //sledna OcenkaTx Focus da dobie
+            int TextBoxBr = int.Parse(tx.Name.Substring(1, tx.Name.Length - 1));
+            Ocenkibox[(TextBoxBr + 1) % brPredmeti].GotFocus += OcenkiBox_GetFocus;
+            Ocenkibox[(TextBoxBr + 1) % brPredmeti].Focus();
+
+            //update
             int br = int.Parse(BrojDn_label.Content.ToString());
-            result[br-1]["oceni"] = upd;
-            //upd += Prosek_out.Content;
-            //UpdateUcenik(i, RequestParameters.oceni, upd);
+            Ucenici[br-1]._oceni = Array.ConvertAll(Ocenkibox.ToArray(), x => int.Parse(x.Text)).ToList();
+            //Ucenici[br - 1].UpdateUcenikOceni(UserKlas._token , br-1);
+
+            //Menu
+            Prosek_out.Content = Ucenici[br - 1].prosek();
         }
 
-        private string Prosek(string OceniSt)
-        {
-            return Array.ConvertAll(OceniSt.Split(' '), x => float.Parse(x)).Average().ToString("n2");
-        }
-
-        private void UpdateUcenik(int BrojDn, string UpdateParametar, string Value)
-        {
-            Requests.UpdateData(new Dictionary<string, string>() {
-            { RequestParameters.token , UserKlas._token} , { RequestParameters.ime , result[BrojDn]["ime"] } , {RequestParameters.prezime , result[BrojDn]["prezime"] } , { RequestParameters.broj , BrojDn.ToString() } ,  {RequestParameters.srednoIme , result[BrojDn]["tatkovo"] }  , { UpdateParametar , Value }
-            }, RequestScopes.UpdateUcenik);
-
-        }
-
-        private void TextBox_GotFocus(object sender, EventArgs e)
+        private void OcenkiBox_GetFocus(object sender, EventArgs e)
         {
             TextBox tx = (TextBox)sender;
             int i = int.Parse(tx.Name.Substring(1, tx.Name.Length - 1));
             Ocenkibox[i].SelectAll();
+        }
+
+        int GetSmerIndex(int brojDn)
+        {
+            string[] MozniSmerovi = { "ПМА", "ПМБ", "ОХА", "ОХБ", "ЈУА", "ЈУБ" };
+            int i = 0;
+            foreach (string x in MozniSmerovi)
+            {
+                if (smerovi[result[brojDn]["smer"]]._smer == x) return i;
+                i++;
+            }
+            return 0;
+        }
+
+        object ClickedMenuItem;
+        private void MenuItemMouseEnter(object sender, MouseEventArgs e)
+        {
+            DockPanel st = (DockPanel)sender;
+            st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(237, 106, 61));
+        }
+
+        private void MenuItemMouseLeave(object sender, MouseEventArgs e)
+        {
+            DockPanel st = (DockPanel)sender;
+            if (ClickedMenuItem != sender) st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(165, 166, 140));
+        }
+
+        private void MenuItemClicked(object sender, MouseButtonEventArgs e, int brojDn)
+        {
+            CanWork = false;
+
+            if (ClickedMenuItem != null)//hover
+            {
+                DockPanel st2 = (DockPanel)ClickedMenuItem;
+                st2.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(165, 166, 140));
+            }
+            DockPanel st = (DockPanel)sender;
+            st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(237, 106, 61));
+            ClickedMenuItem = sender;
+
+            if (combobox_smer.SelectedIndex != GetSmerIndex(brojDn))
+            {
+                OcenkiGrid.Children.Clear();
+                LoadOcenkiView(brojDn);
+            }
+            FillOcenki(brojDn);
         }
 
         private void Menu_hide(object sender, MouseButtonEventArgs e)
@@ -386,21 +348,5 @@ namespace Frontend
             Main.Content = new Settings(Main,loginPage);
         }
 
-        private void Menu_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void MouseEnter(object sender, MouseEventArgs e)
-        {
-            DockPanel st = (DockPanel)sender;
-            st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(237, 106, 61));
-        }
-
-        private void MouseLeave(object sender, MouseEventArgs e)
-        {
-            DockPanel st = (DockPanel)sender;
-            if (ClickedMenuItem != sender) st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(165, 166, 140));
-        }
     }
 }

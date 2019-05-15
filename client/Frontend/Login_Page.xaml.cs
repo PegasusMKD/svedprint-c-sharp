@@ -13,7 +13,6 @@ namespace Frontend
         Data data;
         System.Windows.Threading.DispatcherTimer AlertTimer;
 
-
         public Login_Page(Frame m)
         {
             InitializeComponent();
@@ -22,25 +21,19 @@ namespace Frontend
             AlertTimer = new System.Windows.Threading.DispatcherTimer();
             AlertTimer.Tick += new EventHandler(AlertTimer_Tick);
             AlertTimer.Interval = new TimeSpan(0, 0, 5);
-
-            
         }
         
-
         private void Login_Btn_Click(object sender, RoutedEventArgs e)
         {
             Gif.Visibility = Visibility.Visible;
             login();
-
         }
-
-
 
         private void login()
         {
 
             Username_txt.Text = "ralaZU";
-            Password_txt.Text = "m6Y0se ";
+            Password_txt.Text = "m6Y0se";
 
             Klasen temp = Login.LoginWithCred(Username_txt.Text, Password_txt.Text);
 
@@ -80,9 +73,9 @@ namespace Frontend
 
         private void AddText(object sender, string v)
         {
-            if (string.IsNullOrWhiteSpace(((System.Windows.Controls.TextBox)sender).Text))
+            if (string.IsNullOrWhiteSpace(((TextBox)sender).Text))
             {
-                ((System.Windows.Controls.TextBox)sender).Text = v;
+                ((TextBox)sender).Text = v;
             }
         }
 
@@ -93,7 +86,7 @@ namespace Frontend
 
         private void RemoveText(object sender)
         {
-            ((System.Windows.Controls.TextBox)sender).Text = "";
+            ((TextBox)sender).Text = "";
         }
 
         private void Password_txt_LostFocus(object sender, RoutedEventArgs e)
