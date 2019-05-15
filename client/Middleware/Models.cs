@@ -77,6 +77,47 @@ namespace Middleware
         [JsonProperty(RequestParameters.drzavjanstvo)]
         public string _drzavjanstvo { get; set; }
 
+        /* vaka nekako treba da lici release verzija na constructor
+         * treba da frla exception ako fali nekoj podatok vo baza
+        
+        public Ucenik(string ime, string srednoIme, string prezime, List<int> oceni, string smer, Smer s, int broj, string roden, string mesto_na_zhiveenje, string mesto_na_ragjanje, string povedenie, int opravdani, int neopravdani, string tip, string pat_polaga, string pat_polaga_ispit, string ispiten, string prethoden_delovoden, string tatko, string majka, string gender, string maturska, string izborni, string proektni, string merki, string prethodna_godina, string prethoden_uspeh, string prethodno_uchilishte, string prethodna_uchebna, string delovoden_broj, string datum_sveditelstvo, string polozhil, string pedagoshki_merki, string drzavjanstvo)
+        {
+            _ime = ime ?? throw new ArgumentNullException(nameof(ime));
+            _srednoIme = srednoIme ?? throw new ArgumentNullException(nameof(srednoIme));
+            _prezime = prezime ?? throw new ArgumentNullException(nameof(prezime));
+            _oceni = oceni ?? throw new ArgumentNullException(nameof(oceni));
+            _smer = smer ?? throw new ArgumentNullException(nameof(smer));
+            _s = s ?? throw new ArgumentNullException(nameof(s));
+            _broj = broj;
+            _roden = roden ?? throw new ArgumentNullException(nameof(roden));
+            _mesto_na_zhiveenje = mesto_na_zhiveenje ?? throw new ArgumentNullException(nameof(mesto_na_zhiveenje));
+            _mesto_na_ragjanje = mesto_na_ragjanje ?? throw new ArgumentNullException(nameof(mesto_na_ragjanje));
+            _povedenie = povedenie ?? throw new ArgumentNullException(nameof(povedenie));
+            _opravdani = opravdani;
+            _neopravdani = neopravdani;
+            _tip = tip ?? throw new ArgumentNullException(nameof(tip));
+            _pat_polaga = pat_polaga ?? throw new ArgumentNullException(nameof(pat_polaga));
+            _pat_polaga_ispit = pat_polaga_ispit ?? throw new ArgumentNullException(nameof(pat_polaga_ispit));
+            _ispiten = ispiten ?? throw new ArgumentNullException(nameof(ispiten));
+            _prethoden_delovoden = prethoden_delovoden ?? throw new ArgumentNullException(nameof(prethoden_delovoden));
+            _tatko = tatko ?? throw new ArgumentNullException(nameof(tatko));
+            _majka = majka ?? throw new ArgumentNullException(nameof(majka));
+            _gender = gender ?? throw new ArgumentNullException(nameof(gender));
+            _maturska = maturska ?? throw new ArgumentNullException(nameof(maturska));
+            _izborni = izborni ?? throw new ArgumentNullException(nameof(izborni));
+            _proektni = proektni ?? throw new ArgumentNullException(nameof(proektni));
+            _merki = merki ?? throw new ArgumentNullException(nameof(merki));
+            _prethodna_godina = prethodna_godina ?? throw new ArgumentNullException(nameof(prethodna_godina));
+            _prethoden_uspeh = prethoden_uspeh ?? throw new ArgumentNullException(nameof(prethoden_uspeh));
+            _prethodno_uchilishte = prethodno_uchilishte ?? throw new ArgumentNullException(nameof(prethodno_uchilishte));
+            _prethodna_uchebna = prethodna_uchebna ?? throw new ArgumentNullException(nameof(prethodna_uchebna));
+            _delovoden_broj = delovoden_broj ?? throw new ArgumentNullException(nameof(delovoden_broj));
+            _datum_sveditelstvo = datum_sveditelstvo ?? throw new ArgumentNullException(nameof(datum_sveditelstvo));
+            _polozhil = polozhil ?? throw new ArgumentNullException(nameof(polozhil));
+            _pedagoshki_merki = pedagoshki_merki ?? throw new ArgumentNullException(nameof(pedagoshki_merki));
+            _drzavjanstvo = drzavjanstvo ?? throw new ArgumentNullException(nameof(drzavjanstvo));
+        } */
+
         public Ucenik(string ime, string srednoIme, string prezime, List<int> oceni, string smer, int broj, string roden, string mesto_na_zhiveenje, string mesto_na_ragjanje, string povedenie, int opravdani, int neopravdani, string tip, string pat_polaga, string tatko, string majka, string gender, string maturska, string izborni, string proektni, string merki, string prethodna_godina, string prethoden_uspeh, string prethodno_uchilishte, string delovoden_broj, string datum_sveditelstvo, string polozhil,  string prethodna_uchebna, string pedagoshki_merki, string drzavjanstvo,string pat_polaga_ispit, string ispiten, string prethoden_delovoden)
         { //string majkino,
             _ime = ime ?? "";
@@ -162,21 +203,6 @@ namespace Middleware
             _datum_sveditelstvo = valuePairs[RequestParameters.datum_sveditelstvo] ?? "";
             _polozhil = valuePairs[RequestParameters.polozhil] ?? "";
             // _majkino = valuePairs[RequestParameters.majkino] ?? "";
-        }
-
-        public Dictionary<string, string> ToDict()
-        {
-            Dictionary<string, string> dictionary = new Dictionary<string, string>
-            {
-                [RequestParameters.ime] = _ime,
-                [RequestParameters.srednoIme] = _srednoIme,
-                [RequestParameters.prezime] = _prezime,
-                [RequestParameters.oceni] = string.Join(" ", _oceni),
-                [RequestParameters.smer] = _smer,
-                [RequestParameters.broj] = _broj.ToString()
-            };
-
-            return dictionary;
         }
     }
 
