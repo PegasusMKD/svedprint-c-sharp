@@ -11,13 +11,13 @@ namespace Middleware
 {
     public class Print
     {
-        public static void PrintSveditelstvo(List<Ucenik> ucenici, Klasen klasen, int printerChoice)
+        public static void PrintSveditelstva(List<Ucenik> ucenici, Klasen klasen, int printerChoice)
         {
             List<string> data = InitSveditelstvo(ucenici, klasen);
             string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
             string tmpFolder = Path.GetTempPath()+@"pics\";
             PrintDialog printDialog = new PrintDialog();
-            PrintDocument pd = new PrintDocument();
+            PrintDocument pd = new PrintDocument();        
 
             // PrinterSettings.InstalledPrinters - lista na printeri
             pd.PrinterSettings.PrinterName = PrinterSettings.InstalledPrinters[printerChoice];
@@ -79,10 +79,10 @@ namespace Middleware
                     pd.PrintPage += (sender, args) =>
                     {
                         args.Graphics.DrawImage(System.Drawing.Image.FromFile(
-                            $"{tmpFolder}{page % 2 == 0 ? "front" : "back"}-{i}.jpg"),
+                            $"{tmpFolder}{(page % 2 == 0 ? "front" : "back")}-{i}.jpg"),
                             args.PageBounds);
                             
-                        pd.DocumentName = $"{tmpFolder}{page % 2 == 0 ? "front" : "back"}-{i}.jpg";
+                        pd.DocumentName = $"{tmpFolder}{(page % 2 == 0 ? "front" : "back")}-{i}.jpg";
                         page++;
                     };
                     pd.Print();
@@ -94,78 +94,24 @@ namespace Middleware
             //Directory.Delete(tmpFolder, true);
         }
 
-        //public static string InitSveditelstvoPreview(Ucenik u, Klasen klasen)
-        //{
-        //    StringWriter sw = new StringWriter();
-        //    List<string> l = new List<string>();
-        //    string delimiter = ",";
-        //    sw.GetStringBuilder().Clear();
+        public static void PreviewSveditelstvo(Ucenik u, Klasen k)
+        {
+            List<string> data = InitSveditelstvo(new List<Ucenik>() { u }, k);
+            string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
+            data.Insert(0, "\"sveditelstvo\""); // mozno e da e "sveditelstva"
+            string outparam = String.Join("?", data);
 
-        //        // predmeti
-        //        sw.Write("\"" + String.Join("/", u._s._predmeti) + "\"");
-        //        sw.Write(";");
+            string pyscript = rootFolder + "\\print.exe";
+            Process py = new Process();
+            py.StartInfo.FileName = new Uri(pyscript).AbsolutePath;
+            py.StartInfo.UseShellExecute = false;
+            py.StartInfo.Arguments = outparam;
+            py.StartInfo.CreateNoWindow = true;
+            py.Start();
+            py.WaitForExit();
 
-        //        // oceni
-        //        sw.Write("\"" + String.Join(" ", u._oceni) + "\"");
-        //        sw.Write(";");
 
-        //        // uchilishte, grad, broj glavna kniga, godina (klas)
-        //        sw.Write("\"");
-        //        sw.Write(klasen._uchilishte);
-        //        sw.Write(delimiter);
-        //        sw.Write(klasen._grad);
-        //        sw.Write(delimiter);
-        //        sw.Write(delimiter); // broj glavna kniga
-        //        sw.Write(klasen._paralelka.Split('-').FirstOrDefault());
-        //        sw.Write(delimiter);
-
-        //        // ime prezime na ucenik, ime prezime na roditel, DOB, naselba, opshtina, drzhava, drzhavjanstvo (hardcode)
-        //        sw.Write(u._ime + " " + u._prezime);
-        //        sw.Write(delimiter);
-        //        sw.Write(u._tatkovo + " " + u._prezime);
-        //        sw.Write(delimiter);
-        //        sw.Write(u._roden);
-        //        sw.Write(delimiter);
-        //        sw.Write(u._mesto);
-        //        sw.Write(delimiter);
-        //        sw.Write("Македонец"); // hardcoded drzavjanstvo
-        //        sw.Write(delimiter);
-
-        //        // momentalna i sledna ucebna godina, po koj pat ja uci godinata
-        //        sw.Write(klasen._godina.ToString());
-        //        sw.Write(delimiter);
-        //        sw.Write((klasen._godina + 1).ToString());
-        //        sw.Write(delimiter);
-        //        sw.Write(u._pat.ToString());
-        //        sw.Write(delimiter);
-
-        //        // paralelka, povedenie, opravdani, neopravdani, tip, smer
-        //        sw.Write(klasen._paralelka);
-        //        sw.Write(delimiter);
-        //        sw.Write(u._povedenie);
-        //        sw.Write(delimiter);
-        //        sw.Write(u._opravdani.ToString());
-        //        sw.Write(delimiter);
-        //        sw.Write(u._neopravdani.ToString());
-        //        sw.Write(delimiter);
-        //        sw.Write(u._tip);
-        //        sw.Write(delimiter);
-        //        //sw.Write(nekoja vrednost);
-        //        sw.Write(delimiter);
-        //        //sw.Write(nekoja vrednost);
-        //        sw.Write(delimiter);
-        //        sw.Write(u._smer);
-        //        sw.Write(delimiter);
-
-        //        // XX, YY
-        //        sw.Write(delimiter); // XX
-        //        sw.Write(""); // YY
-
-        //        sw.Write("\"");
-
-        //        l.Add(sw.ToString());
-        //        return "l";
-        //}
+        }
 
         public static List<string> InitSveditelstvo(List<Ucenik> ucenici, Klasen klasen)
         {

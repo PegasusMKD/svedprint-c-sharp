@@ -163,12 +163,12 @@ namespace Frontend
             List<Ucenik> uceniks = Home_Page.ucenici.Where(x => toPrint.Contains(Home_Page.ucenici.IndexOf(x)+1)).ToList();
             // posle fix za razlicni broevi
             //List<Ucenik> uceniks = Home_Page.ucenici.Where(x => toPrint.Contains(x._broj)).ToList();
-            Middleware.Print.PrintSveditelstvo(uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex);
+            Middleware.Print.PrintSveditelstva(uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex);
         }
 
         private void Btn_celprint_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            Middleware.Print.PrintSveditelstvo(Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex);
+            Middleware.Print.PrintSveditelstva(Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex);
         }
     }
 }
