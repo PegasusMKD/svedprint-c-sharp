@@ -8,5 +8,8 @@
     <Setting Name="DB_PORT" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="DB_BRANCH" Type="System.String" Scope="User">
+      <Value Profile="(Default)">main</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

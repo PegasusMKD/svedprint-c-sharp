@@ -54,10 +54,10 @@ namespace Frontend
             res.Add("пол", "");
             res.Add("нахнадно", "1");
 
-            res["Име"] = result[BrojDn]["ime"];
-            res["Средно Име"] = result[BrojDn]["tatkovo"];
-            res["Презиме"] = result[BrojDn]["prezime"];
-            res["Смер"] = result[BrojDn]["smer"];
+            res["Име"] = result[BrojDn][RequestParameters.ime];
+            res["Средно Име"] = result[BrojDn][RequestParameters.srednoIme];
+            res["Презиме"] = result[BrojDn][RequestParameters.prezime];
+            res["Смер"] = result[BrojDn][RequestParameters.smer];
 
             MainGrid.Height = 0;
 
@@ -90,16 +90,16 @@ namespace Frontend
         private void ContentTextBoxLostFocusEvent(object sender, RoutedEventArgs e, string i)
         {
             Saved = false;
-           /* TextBox tx = (TextBox)sender;
-            Dictionary<string, string> RequestsString = new Dictionary<string, string>() { { "Име", RequestParameters.new_first_name }, { "Средно Име", RequestParameters.new_middle_name }, { "Презиме", RequestParameters.new_last_name }, { "Смер", RequestParameters.smer } }; ;
-            Dictionary<string, string> resultDic = new Dictionary<string, string>() { { "Име" , "ime" } , { "Средно Име", "tatkovo" } , { "Презиме" , "prezime" } , { "Смер" , "smer" }  };
-            UpdateUcenik(BrojDn-1, RequestsString[i], tx.Text);
-            result[BrojDn-1][resultDic[i]] = tx.Text;*/
+            /* TextBox tx = (TextBox)sender;
+             Dictionary<string, string> RequestsString = new Dictionary<string, string>() { { "Име", RequestParameters.new_first_name }, { "Средно Име", RequestParameters.new_middle_name }, { "Презиме", RequestParameters.new_last_name }, { "Смер", RequestParameters.smer } }; ;
+             Dictionary<string, string> resultDic = new Dictionary<string, string>() { { "Име" , "ime" } , { "Средно Име", "tatkovo" } , { "Презиме" , "prezime" } , { "Смер" , "smer" }  };
+             UpdateUcenik(BrojDn-1, RequestsString[i], tx.Text);
+             result[BrojDn-1][resultDic[i]] = tx.Text;*/
         }
 
         private Border ContentBorder(string LabelContent)
         {
-            Border bd = CreateBorder(40, 5 , 20,10, "#FFED6A3E");
+            Border bd = CreateBorder(40, 5, 20, 10, "#FFED6A3E");
             bd.Child = CreateLabel(LabelContent, 20, "Arial");
             return bd;
         }
@@ -118,20 +118,30 @@ namespace Frontend
 
         String Valid(int x)
         {
-            if (Saved == false) MessageBox.Show("Ги немате сочувано новите работи за ученикот");
+            if (Saved == false)
+            {
+                MessageBox.Show("Ги немате сочувано новите работи за ученикот");
+            }
 
-            if (BrojDn + x >= 0 && BrojDn + x < Ucenici_Size) BrojDn += x;
-            return (BrojDn +1).ToString();
+            if (BrojDn + x >= 0 && BrojDn + x < Ucenici_Size)
+            {
+                BrojDn += x;
+            }
+
+            return (BrojDn + 1).ToString();
         }
 
         string[] Request = { RequestParameters.new_first_name, RequestParameters.new_middle_name, RequestParameters.new_last_name, RequestParameters.new_smer };
         private void SaveBtnClicked(object sender, MouseButtonEventArgs e)
         {
             int i = 0;
-            foreach(TextBox tx in Answer)
+            foreach (TextBox tx in Answer)
             {
-                UpdateUcenik(BrojDn, Request[i++] , tx.Text);
-                if (i == Request.Length) break;
+                UpdateUcenik(BrojDn, Request[i++], tx.Text);
+                if (i == Request.Length)
+                {
+                    break;
+                }
             }
             Saved = true;
         }
@@ -156,7 +166,7 @@ namespace Frontend
         private void UpdateUcenik(int BrojDn, string UpdateParametar, string Value)
         {
             Requests.UpdateData(new Dictionary<string, string>() {
-            { RequestParameters.token , UserKlas._token} , { RequestParameters.ime , result[BrojDn]["ime"] } , {RequestParameters.prezime , result[BrojDn]["prezime"] } , { RequestParameters.broj , BrojDn.ToString() } ,  {RequestParameters.srednoIme , result[BrojDn]["tatkovo"] }  , { UpdateParametar , Value }
+            { RequestParameters.token , UserKlas._token} , { RequestParameters.ime , result[BrojDn][RequestParameters.ime] } , {RequestParameters.prezime , result[BrojDn][RequestParameters.prezime] } , { RequestParameters.broj , BrojDn.ToString() } ,  {RequestParameters.srednoIme , result[BrojDn][RequestParameters.srednoIme ] }  , { UpdateParametar , Value }
             }, RequestScopes.UpdateUcenik);
 
         }

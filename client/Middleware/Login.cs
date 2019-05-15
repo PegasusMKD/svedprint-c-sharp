@@ -13,7 +13,8 @@ namespace Middleware
         private static readonly HttpClient http = new HttpClient();
         public static Klasen LoginWithCred(string username, string password)
         {
-            string uri = string.Format(@"https://{0}{1}/main/login/", settings.Default.DB_HOST, settings.Default.DB_PORT);
+            string uri = $"https://{settings.Default.DB_HOST}{settings.Default.DB_PORT}/{settings.Default.DB_BRANCH}/login/";
+            //string uri = string.Format(@"https://{0}{1}/stable/login/", settings.Default.DB_HOST, settings.Default.DB_PORT);
             string loginJson = JsonConvert.SerializeObject(new Dictionary<string, string>()
             {
                 {"user", username},
