@@ -1,6 +1,7 @@
 ﻿using MainWindows;
 using Middleware;
 using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -29,18 +30,14 @@ namespace Frontend
 
         private void Login_Btn_Click(object sender, RoutedEventArgs e)
         {
-            Gif.Visibility = Visibility.Visible;
             login();
-
         }
 
 
 
         private void login()
         {
-
-            Username_txt.Text = "ralaZU";
-            Password_txt.Text = "m6Y0se";
+            hardcode_userdata();
 
             Klasen temp = Login.LoginWithCred(Username_txt.Text, Password_txt.Text);
 
@@ -54,6 +51,13 @@ namespace Frontend
                 ShowAlertBox("Неуспешно логирање");
             }
 
+        }
+
+        [Conditional("DEBUG")]
+        private void hardcode_userdata()
+        {
+            Username_txt.Text = "uT3mx1";
+            Password_txt.Text = "NEPQkI";
         }
 
         private void ShowAlertBox(string Alert)

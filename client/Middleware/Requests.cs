@@ -18,7 +18,7 @@ namespace Middleware
             Request request = new Request(type: RequestTypes.GET, scope: scope, queryParams: queryParams);
 
             string json = JsonConvert.SerializeObject(request, new RequestConverter());
-            string uri = string.Format(@"https://{0}{1}/main/return/", settings.Default.DB_HOST, settings.Default.DB_PORT);
+            string uri = $"https://{settings.Default.DB_HOST}{settings.Default.DB_PORT}/{settings.Default.DB_BRANCH}/return/";
             var httpRequest = (HttpWebRequest)WebRequest.Create(uri);
             httpRequest.Method = @"POST";
             httpRequest.ContentType = @"application/json";
@@ -54,7 +54,7 @@ namespace Middleware
             Request request = new Request(type: RequestTypes.ADD, scope: scope, queryParams: queryParams);
 
             string json = JsonConvert.SerializeObject(request, new RequestConverter());
-            string uri = string.Format(@"https://{0}{1}/main/setup/", settings.Default.DB_HOST, settings.Default.DB_PORT);
+            string uri = $"https://{settings.Default.DB_HOST}{settings.Default.DB_PORT}/{settings.Default.DB_BRANCH}/setup/";
             var httpRequest = (HttpWebRequest)WebRequest.Create(uri);
             httpRequest.Method = @"POST";
             httpRequest.ContentType = @"application/json";
@@ -72,7 +72,7 @@ namespace Middleware
             Request request = new Request(type: RequestTypes.UPDATE, scope: scope, queryParams: queryParams);
 
             string json = JsonConvert.SerializeObject(request, new RequestConverter());
-            string uri = string.Format(@"https://{0}{1}/main/update/", settings.Default.DB_HOST, settings.Default.DB_PORT);
+            string uri = $"https://{settings.Default.DB_HOST}{settings.Default.DB_PORT}/{settings.Default.DB_BRANCH}/update/";
             var httpRequest = (HttpWebRequest)WebRequest.Create(uri);
             httpRequest.Method = @"POST";
             httpRequest.ContentType = @"application/json";
@@ -104,9 +104,9 @@ namespace Middleware
     
     public class RequestParameters
     {
-        public const string ime = "first_name";
-        public const string srednoIme = "middle_name";
-        public const string prezime = "last_name";
+        public const string ime = "ime";
+        public const string srednoIme = "srednoIme";
+        public const string prezime = "prezime";
         public const string paralelka = "paralelka";
         public const string token = "token";
         public const string smer = "smer";
@@ -131,14 +131,14 @@ namespace Middleware
         public const string opravdani = "opravdani";
         public const string neopravdani = "neopravdani";
         //Dodatoci od Pazzio
-        public const string mesto_na_zhiveenje = "mesto na zhiveenje";
-        public const string mesto_na_ragjanje = "mesto na ragjanje";
+        public const string mesto_na_zhiveenje = "mesto_na_zhiveenje";
+        public const string mesto_na_ragjanje = "mesto_na_ragjanje";
         public const string tatko = "tatko";
         public const string majka = "majka";
-        public const string prethoden_delovoden = "prethoden delovoden broj";
+        public const string prethoden_delovoden = "prethoden_delovoden_broj";
         public const string pat_polaga_ispit = "pat_polaga_ispit";
-        public const string ispiten = "ispiten rok";
-        public const string pat_polaga = "pat_polaga";
+        public const string ispiten = "ispiten_rok";
+        public const string pat_polaga = "pat";
         public const string cel_smer = "cel_smer";
         //
         public const string tip = "tip_ucenik";
@@ -149,13 +149,12 @@ namespace Middleware
         public const string izborni = "izborni";
         public const string proektni = "proektni";
         public const string merki = "merki";
-        public const string prethodna_godina = "prethodna godina";
-        public const string prethoden_uspeh = "prethoden uspeh";
-        public const string prethodno_uchilishte = "prethodno uchilishte";
-        public const string delovoden_broj = "delovoden broj";
-        public const string datum_sveditelstvo = "datum na sveditelstvo";
+        public const string prethodna_godina = "prethodna_godina";
+        public const string prethoden_uspeh = "prethoden_uspeh";
+        public const string prethodno_uchilishte = "prethodno_uchilishte";
+        public const string delovoden_broj = "delovoden_broj";
+        public const string datum_sveditelstvo = "datum_na_sveditelstvo";
         public const string polozhil = "polozhil";
-        public const string majkino = "majkino";
         public const string prethodna_uchebna = "prethodna_uchebna";
         public const string pedagoshki_merki = "pedagoshki_merki";
         public const string direktor = "direktor";

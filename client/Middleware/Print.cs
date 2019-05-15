@@ -90,7 +90,7 @@ namespace Middleware
                 }
             }
 
-            ClearTmpFolder();
+           // ClearTmpFolder();
         }
         public static void PreviewSveditelstvo(Ucenik u, Klasen k)
         {

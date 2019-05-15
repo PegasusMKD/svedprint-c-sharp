@@ -164,9 +164,9 @@ namespace Middleware
         public Ucenik() { }
         public Ucenik(Dictionary<string, string> valuePairs)
         {
-            _ime = valuePairs["ime"] ?? "";
-            _srednoIme = valuePairs["srednoIme"] ?? "";
-            _prezime = valuePairs["prezime"] ?? "";
+            _ime = valuePairs[RequestParameters.ime] ?? "";
+            _srednoIme = valuePairs[RequestParameters.srednoIme] ?? ""; // "srednoIme"
+            _prezime = valuePairs[RequestParameters.prezime] ?? "";
 
             string[] s = valuePairs[RequestParameters.oceni].Split(' ');
             _oceni = new List<int>();
