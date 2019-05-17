@@ -2,17 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using static Frontend.SettingsDesign;
 
 namespace Frontend
@@ -23,6 +16,7 @@ namespace Frontend
         Klasen UserKlas;
         Dictionary<string, Smer> smerovi;
         List<Dictionary<string, string>> result;
+        List<Ucenik> Ucenici;
 
 
         public Smerovi_Page()
@@ -32,6 +26,7 @@ namespace Frontend
             UserKlas = Home_Page.KlasenKlasa;
             smerovi = Home_Page.smerovi;
             result = Home_Page.result;
+            Ucenici = Home_Page.ucenici;
 
             GetData();
         }
@@ -46,8 +41,7 @@ namespace Frontend
             st2.Children.Clear();
             int SmerCtr = 0;
 
-            String[] smer = UserKlas._smerovi.Split(',');
-            foreach (string x in smer)
+            foreach (string x in UserKlas._smerovi.Split(','))
             {
                 List<String> Predmeti = UserKlas._p._smerovi[x]._predmeti;
 
@@ -75,12 +69,38 @@ namespace Frontend
 
                 SmerCtr++;
             }
+
+            Border NewSmerCB = ContentBorder("Додај Смер");
+            NewSmerCB.MouseLeftButtonDown += NewSmerCBClicked;
+            if (SmerCtr % 2 == 0)
+            {
+                st1.Children.Add(ContentBorder("Додај Смер"));
+            }
+            else
+            {
+                st2.Children.Add(ContentBorder("Додај Смер"));
+            }
+        }
+
+        private void NewSmerCBClicked(object sender, MouseButtonEventArgs e)
+        {
+            TextBox tx = (TextBox)((Border)sender).Child;
+            UserKlas._p.AddSmer(tx.Text);
+            UpdateVar();
+            GetData();
         }
 
         private Border ContentBorder(string LabelContent)
         {
             Border bd = CreateBorder(50, 5, 20, 10, "#FFED6A3E");
-            bd.Child = CreateLabel(LabelContent, 30, "Arial");
+            if (LabelContent == "Додај Смер")
+            {
+                TextBox tx = CreateTextBox(30);
+                tx.Name = LabelContent;
+                tx.FontFamily = new System.Windows.Media.FontFamily("Arial");
+                bd.Child = tx;
+            }
+            else bd.Child = CreateLabel(LabelContent, 30, "Arial");
             return bd;
         }
 
@@ -115,32 +135,37 @@ namespace Frontend
         private void NewPredmetImgClicked(object sender, MouseButtonEventArgs e , int i , int j)
         {
             string toBeChanged = UserKlas._smerovi.Split(',')[i];
-            result.ForEach(x =>
+            int ctr = 0;
+            foreach(Ucenik Ucenik in Ucenici)
             {
-                if (x["smer"] == toBeChanged)
+                if(Ucenik._smer == toBeChanged)
                 {
-                    x["oceni"] += " 0";
+                    Ucenik._oceni.Add(0);
+                    Ucenik.UpdateUcenikOceni(UserKlas._token,ctr);
                 }
-            });
-            UserKlas._p._smerovi[toBeChanged]._predmeti.Add(DodajPredmeti[j].Text);
-            UpdateSmer(i);
+                ctr++;
+            }
+            UserKlas._p._smerovi[toBeChanged].AddPredmet(DodajPredmeti[j].Text,UserKlas._token);
+            UpdateVar();
             GetData();
         }
 
         private void RemovePredmetImgClicked(object sender, MouseButtonEventArgs e, int i , int j)
         {
             string toBeChanged = UserKlas._smerovi.Split(',')[i];
-            result.ForEach(x =>
+
+            int ctr = 0;
+            foreach (Ucenik Ucenik in Ucenici)
             {
-                if (x["smer"] == toBeChanged)
+                if (Ucenik._smer == toBeChanged)
                 {
-                    var zz = x["oceni"].Split(' ').ToList();
-                    zz.RemoveAt(j);
-                    x["oceni"] = string.Join(" ", zz);
+                    Ucenik._oceni.RemoveAt(j);
+                    Ucenik.UpdateUcenikOceni(UserKlas._token, ctr);
                 }
-            });
-            UserKlas._p._smerovi[toBeChanged]._predmeti.RemoveAt(j);
-            UpdateSmer(i);
+                ctr++;
+            }
+            UserKlas._p._smerovi[toBeChanged].RemovePredmet(j, UserKlas._token);
+            UpdateVar();
             GetData();
         }
 
@@ -164,20 +189,11 @@ namespace Frontend
             tx.Text = Text;
             return tx;
         }
-
-        private void UpdateSmer(int SmerCtr)
+        
+        private void UpdateVar()
         {
-            string Smer = UserKlas._smerovi.Split(',')[SmerCtr];
-            string res = "";
-            foreach (string s in UserKlas._p._smerovi[Smer]._predmeti)
-            {
-                res += s + ",";
-            }
-            res = res.Substring(0, res.Length - 1);
-            Requests.UpdateData(new Dictionary<string, string>() {
-            { RequestParameters.smer , Smer}, { RequestParameters.token , UserKlas._token } , { RequestParameters.predmeti, res} 
-            }, RequestParameters.smer);
-
+            Home_Page.KlasenKlasa = UserKlas;
+            Home_Page.ucenici = Ucenici;
         }
 
     }

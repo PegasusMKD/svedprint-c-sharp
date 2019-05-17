@@ -35,30 +35,12 @@ namespace Frontend
 
             ucenici = result.ConvertAll(x => new Ucenik(x));
             KlasenKlasa.PopulateSmeroviFromUcenici(ucenici);
-
-            getPredmeti();
             
         }
 
         private void SettingsImg_Clicked(object sender, MouseButtonEventArgs e)
         {
             Main.Content = new Settings(Main, this);
-        }
-
-        private void getPredmeti()
-        {
-            smerovi = new Dictionary<string, Smer>();
-
-            foreach (var x in KlasenKlasa.GetSmerovi())
-            {
-                smerovi.Add(x, new Smer(Requests.GetData(new Dictionary<string, string>(){
-                    { RequestParameters.token, KlasenKlasa._token},
-                    { RequestParameters.smer, x } ,
-                    { RequestParameters.paralelka, KlasenKlasa._paralelka}
-                }, RequestScopes.GetPredmetiSmer)[0]["predmeti"].Split(',').ToList(), x));
-            }
-
-            KlasenKlasa._p._smerovi = smerovi;
         }
 
         private void MainImgClicked(object sender, MouseButtonEventArgs e)

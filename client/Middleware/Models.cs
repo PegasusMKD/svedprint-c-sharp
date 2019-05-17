@@ -217,6 +217,32 @@ namespace Middleware
         }
 
         public Smer() { }
+
+        public void AddPredmet(string NovPredmet , String token)
+        { 
+            _predmeti.Add(NovPredmet);
+            UpdateSmer(token);
+        }
+
+        public void RemovePredmet(int i , String token)
+        {
+            _predmeti.RemoveAt(i);
+            UpdateSmer(token);
+        }
+
+        private void UpdateSmer(string token)
+        {
+            string res = "";
+            foreach (string s in _predmeti)
+            {
+                res += s + ",";
+            }
+            res = res.Substring(0, res.Length - 1);
+            Requests.UpdateData(new Dictionary<string, string>() {
+            { RequestParameters.smer , _smer}, { RequestParameters.token , token } , { RequestParameters.predmeti, res}
+            }, RequestParameters.smer);
+
+        }
     }
 
     public class Paralelka
@@ -226,7 +252,7 @@ namespace Middleware
         [JsonProperty(RequestParameters.ucenici)]
         public List<Ucenik> _ucenici { get; set; }
         public Dictionary<string,Smer> _smerovi;
-
+        public Dictionary<string, Smer> _predmeti;
 
 
         public Paralelka(string paralelka, List<Ucenik> ucenici, Dictionary<string,Smer> smerovi)
@@ -237,6 +263,23 @@ namespace Middleware
         }
 
         public Paralelka() { }
+
+        public void AddSmer(string SmerIme)
+        {
+            _smerovi.Add(SmerIme, new Smer(new List<string>(), SmerIme));
+            UpdateSmerovi();
+        }
+
+        public void RemoveSmer(string SmerIme)
+        {
+            _smerovi.Remove(SmerIme);
+            UpdateSmerovi();
+        }
+
+        private void UpdateSmerovi()
+        {
+
+        }
     }
 
     public class Klasen
@@ -277,7 +320,6 @@ namespace Middleware
             // _grad = grad ?? "";
             // _godina = godina;
             _smerovi = smerovi ?? "";
-
         }
 
         public Klasen() { }
@@ -286,11 +328,26 @@ namespace Middleware
             char delimiter = ',';
             return _smerovi.Split(delimiter);
         }
+        private void GetSmerPredmeti()
+        {
+            _p._smerovi.Clear();
+
+            foreach (var x in GetSmerovi())
+            {
+                _p._smerovi.Add(x, new Smer(Requests.GetData(new Dictionary<string, string>(){
+                    { RequestParameters.token, _token},
+                    { RequestParameters.smer, x } ,
+                    { RequestParameters.paralelka, _paralelka}
+                }, RequestScopes.GetPredmetiSmer)[0]["predmeti"].Split(',').ToList(), x));
+            }
+
+        }
         public void PopulateSmeroviFromUcenici(List<Ucenik> ucenici)
         {
             if (_p == null) _p = new Paralelka(_paralelka, ucenici, new Dictionary<string, Smer>());
             _p._ucenici = new List<Ucenik>(ucenici);
             _smerovi = string.Join(",", ucenici.ConvertAll(x => x._smer).Distinct());
+            GetSmerPredmeti();
         }
     }
 

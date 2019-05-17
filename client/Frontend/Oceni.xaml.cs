@@ -44,7 +44,7 @@ namespace Frontend
             UserKlas = Home_Page.KlasenKlasa;
             result = Home_Page.result;
             smerovi = Home_Page.smerovi;
-            Ucenici = Home_Page.result.ConvertAll(x => new Ucenik(x));
+            Ucenici = Home_Page.ucenici;
 
             LoadListView();
 
@@ -222,11 +222,11 @@ namespace Frontend
             combobox_smer.SelectedValue = smerovi_naslov[SelectedUcenik._smer];
 
             //fill OcenkiView
-            for (int i = 0; i < smerovi[SelectedUcenik._smer]._predmeti.Count; i++)
+            for (int i = 0; i < UserKlas._p._smerovi[SelectedUcenik._smer]._predmeti.Count; i++)
             {
                 if (i < SelectedUcenik._oceni.Count) Ocenkibox[i].Text = SelectedUcenik._oceni[i].ToString();//5 5 5 5 5 5 5 5
-                else Ocenkibox[i].Text = "5";
-                Predmetibox[i].Content = smerovi[SelectedUcenik._smer]._predmeti[i];
+                else Ocenkibox[i].Text = "0";
+                Predmetibox[i].Content = UserKlas._p._smerovi[SelectedUcenik._smer]._predmeti[i];
             }
 
             CanWork = true;
