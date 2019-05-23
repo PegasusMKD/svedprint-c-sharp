@@ -1,6 +1,7 @@
 ﻿using MainWindows;
 using Middleware;
 using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -13,6 +14,7 @@ namespace Frontend
         Data data;
         System.Windows.Threading.DispatcherTimer AlertTimer;
 
+
         public Login_Page(Frame m)
         {
             InitializeComponent();
@@ -21,19 +23,21 @@ namespace Frontend
             AlertTimer = new System.Windows.Threading.DispatcherTimer();
             AlertTimer.Tick += new EventHandler(AlertTimer_Tick);
             AlertTimer.Interval = new TimeSpan(0, 0, 5);
+
+            
         }
         
+
         private void Login_Btn_Click(object sender, RoutedEventArgs e)
         {
-            Gif.Visibility = Visibility.Visible;
             login();
         }
 
+
+
         private void login()
         {
-
-            Username_txt.Text = "qcHI40";
-            Password_txt.Text = "is3Fom";
+            hardcode_userdata();
 
             Klasen temp = Login.LoginWithCred(Username_txt.Text, Password_txt.Text);
 
@@ -47,6 +51,13 @@ namespace Frontend
                 ShowAlertBox("Неуспешно логирање");
             }
 
+        }
+
+        [Conditional("DEBUG")]
+        private void hardcode_userdata()
+        {
+            Username_txt.Text = "uT3mx1";
+            Password_txt.Text = "NEPQkI";
         }
 
         private void ShowAlertBox(string Alert)
@@ -73,9 +84,9 @@ namespace Frontend
 
         private void AddText(object sender, string v)
         {
-            if (string.IsNullOrWhiteSpace(((TextBox)sender).Text))
+            if (string.IsNullOrWhiteSpace(((System.Windows.Controls.TextBox)sender).Text))
             {
-                ((TextBox)sender).Text = v;
+                ((System.Windows.Controls.TextBox)sender).Text = v;
             }
         }
 
@@ -86,7 +97,7 @@ namespace Frontend
 
         private void RemoveText(object sender)
         {
-            ((TextBox)sender).Text = "";
+            ((System.Windows.Controls.TextBox)sender).Text = "";
         }
 
         private void Password_txt_LostFocus(object sender, RoutedEventArgs e)

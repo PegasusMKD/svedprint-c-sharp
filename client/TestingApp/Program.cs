@@ -72,7 +72,7 @@ namespace TestingApp
             }
             int choice = int.Parse(Console.ReadLine());
 
-            Print.PrintSveditelstvo(new List<Ucenik>(), new Klasen(), choice);
+            Print.PrintSveditelstva(new List<Ucenik>(), new Klasen(), choice);
         }
     }
 }

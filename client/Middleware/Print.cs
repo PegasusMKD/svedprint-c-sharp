@@ -11,11 +11,11 @@ namespace Middleware
 {
     public class Print
     {
-        public static void PrintSveditelstvo(List<Ucenik> ucenici, Klasen klasen, int printerChoice)
+        static string tmpFolder = Path.GetTempPath() + @"pics\";
+        public static void PrintSveditelstva(List<Ucenik> ucenici, Klasen klasen, int printerChoice)
         {
             List<string> data = InitSveditelstvo(ucenici, klasen);
             string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
-            string tmpFolder = Path.GetTempPath()+@"pics\";
             PrintDialog printDialog = new PrintDialog();
             PrintDocument pd = new PrintDocument();
 
@@ -24,8 +24,9 @@ namespace Middleware
 
             pd.DefaultPageSettings.PaperSize = pd.PrinterSettings.PaperSizes.Cast<PaperSize>().First<PaperSize>(size => size.Kind == PaperKind.A4);
             pd.OriginAtMargins = false;
+            pd.DefaultPageSettings.Landscape = false;
 
-            data.Insert(0, "sveditelstva"); // mozno e da e "sveditelstva", "sveditelstvo"
+            data.Insert(0, "\"sveditelstva\""); // mozno e da e "sveditelstva", "sveditelstvo"
             string outparam = String.Join("?", data);
 
             string pyscript = rootFolder + @"\print.exe";
@@ -36,8 +37,6 @@ namespace Middleware
             py.StartInfo.CreateNoWindow = true;
             py.Start();
             py.WaitForExit();
-            System.Diagnostics.Debug.WriteLine(outparam);
-            System.Diagnostics.Debug.WriteLine(tmpFolder);
 
             if (pd.PrinterSettings.CanDuplex)
             {
@@ -46,7 +45,7 @@ namespace Middleware
 
             int page = 0;
 
-            for (int i = 0; i < data.Count-1; i++)
+            for (int i = 0; i < data.Count - 1; i++)
             {
                 if (pd.PrinterSettings.CanDuplex)
                 {
@@ -80,10 +79,10 @@ namespace Middleware
                     pd.PrintPage += (sender, args) =>
                     {
                         args.Graphics.DrawImage(System.Drawing.Image.FromFile(
-                            $"{tmpFolder}{page % 2 == 0 ? "front" : "back"}-{i}.jpg"),
+                            $"{tmpFolder}{(page % 2 == 0 ? "front" : "back")}-{i}.jpg"),
                             args.PageBounds);
-                            
-                        pd.DocumentName = $"{tmpFolder}{page % 2 == 0 ? "front" : "back"}-{i}.jpg";
+
+                        pd.DocumentName = $"{tmpFolder}{(page % 2 == 0 ? "front" : "back")}-{i}.jpg";
                         page++;
                     };
                     pd.Print();
@@ -92,81 +91,76 @@ namespace Middleware
                 }
             }
 
-            //Directory.Delete(tmpFolder, true);
+           // ClearTmpFolder();
         }
+        public static void PreviewSveditelstvo(Ucenik u, Klasen k)
+        {
+            List<string> data = InitSveditelstvo(new List<Ucenik>() { u }, k);
+            string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
 
-        //public static string InitSveditelstvoPreview(Ucenik u, Klasen klasen)
-        //{
-        //    StringWriter sw = new StringWriter();
-        //    List<string> l = new List<string>();
-        //    string delimiter = ",";
-        //    sw.GetStringBuilder().Clear();
+            data.Insert(0, "\"sveditelstvo\""); // mozno e da e "sveditelstva"
+            string outparam = String.Join("?", data);
 
-        //        // predmeti
-        //        sw.Write("\"" + String.Join("/", u._s._predmeti) + "\"");
-        //        sw.Write(";");
+            ClearTmpFolder();
 
-        //        // oceni
-        //        sw.Write("\"" + String.Join(" ", u._oceni) + "\"");
-        //        sw.Write(";");
+            string pyscript = rootFolder + "\\print.exe";
+            Process py = new Process();
+            py.StartInfo.FileName = new Uri(pyscript).AbsolutePath;
+            py.StartInfo.UseShellExecute = false;
+            py.StartInfo.Arguments = outparam;
+            py.StartInfo.CreateNoWindow = true;
+            py.Start();
+            py.WaitForExit();
 
-        //        // uchilishte, grad, broj glavna kniga, godina (klas)
-        //        sw.Write("\"");
-        //        sw.Write(klasen._uchilishte);
-        //        sw.Write(delimiter);
-        //        sw.Write(klasen._grad);
-        //        sw.Write(delimiter);
-        //        sw.Write(delimiter); // broj glavna kniga
-        //        sw.Write(klasen._paralelka.Split('-').FirstOrDefault());
-        //        sw.Write(delimiter);
+            File.Move($"{tmpFolder}front-0.jpg", $"{tmpFolder}front-prev.jpg");
+            File.Move($"{tmpFolder}back-0.jpg", $"{tmpFolder}back-prev.jpg");
+        }
+        public static void PreviewGlavnaKniga(Ucenik u, Klasen k)
+        {
+            List<string> data = InitGlavnaKniga(new List<Ucenik>() { u }, k);
+            string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
 
-        //        // ime prezime na ucenik, ime prezime na roditel, DOB, naselba, opshtina, drzhava, drzhavjanstvo (hardcode)
-        //        sw.Write(u._ime + " " + u._prezime);
-        //        sw.Write(delimiter);
-        //        sw.Write(u._tatkovo + " " + u._prezime);
-        //        sw.Write(delimiter);
-        //        sw.Write(u._roden);
-        //        sw.Write(delimiter);
-        //        sw.Write(u._mesto);
-        //        sw.Write(delimiter);
-        //        sw.Write("Македонец"); // hardcoded drzavjanstvo
-        //        sw.Write(delimiter);
+            data.Insert(0, "\"glavna\""); // mozno e da e "sveditelstva"
+            string outparam = String.Join("?", data);
 
-        //        // momentalna i sledna ucebna godina, po koj pat ja uci godinata
-        //        sw.Write(klasen._godina.ToString());
-        //        sw.Write(delimiter);
-        //        sw.Write((klasen._godina + 1).ToString());
-        //        sw.Write(delimiter);
-        //        sw.Write(u._pat.ToString());
-        //        sw.Write(delimiter);
+            ClearTmpFolder();
 
-        //        // paralelka, povedenie, opravdani, neopravdani, tip, smer
-        //        sw.Write(klasen._paralelka);
-        //        sw.Write(delimiter);
-        //        sw.Write(u._povedenie);
-        //        sw.Write(delimiter);
-        //        sw.Write(u._opravdani.ToString());
-        //        sw.Write(delimiter);
-        //        sw.Write(u._neopravdani.ToString());
-        //        sw.Write(delimiter);
-        //        sw.Write(u._tip);
-        //        sw.Write(delimiter);
-        //        //sw.Write(nekoja vrednost);
-        //        sw.Write(delimiter);
-        //        //sw.Write(nekoja vrednost);
-        //        sw.Write(delimiter);
-        //        sw.Write(u._smer);
-        //        sw.Write(delimiter);
+            string pyscript = rootFolder + "\\print.exe";
+            Process py = new Process();
+            py.StartInfo.FileName = new Uri(pyscript).AbsolutePath;
+            py.StartInfo.UseShellExecute = false;
+            py.StartInfo.Arguments = outparam;
+            py.StartInfo.CreateNoWindow = true;
+            py.Start();
+            py.WaitForExit();
 
-        //        // XX, YY
-        //        sw.Write(delimiter); // XX
-        //        sw.Write(""); // YY
+            File.Move($"{tmpFolder}test-0.jpg", $"{tmpFolder}prev.jpg");
+        }
+        public static void PreviewGkDiploma(Ucenik u, Klasen k)
+        {
+            List<string> data = InitGkDiploma(new List<Ucenik>() { u }, k);
+            string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
 
-        //        sw.Write("\"");
+            data.Insert(0, "\"dipl\""); // mozno e da e "sveditelstva"
+            string outparam = String.Join("?", data);
 
-        //        l.Add(sw.ToString());
-        //        return "l";
-        //}
+            ClearTmpFolder();
+
+            string pyscript = rootFolder + "\\print.exe";
+            Process py = new Process();
+            py.StartInfo.FileName = new Uri(pyscript).AbsolutePath;
+            py.StartInfo.UseShellExecute = false;
+            py.StartInfo.Arguments = outparam;
+            py.StartInfo.CreateNoWindow = true;
+            py.Start();
+            py.WaitForExit();
+
+            File.Move($"{tmpFolder}dipl-0.jpg", $"{tmpFolder}prev.jpg");
+        }
+        public static void ClearTmpFolder()
+        {
+            Directory.Delete(tmpFolder, true);
+        }
 
         public static List<string> InitSveditelstvo(List<Ucenik> ucenici, Klasen klasen)
         {
@@ -255,7 +249,7 @@ namespace Middleware
 
             pd.DefaultPageSettings.PaperSize = pd.PrinterSettings.PaperSizes.Cast<PaperSize>().First<PaperSize>(size => size.Kind == PaperKind.A3);
             pd.OriginAtMargins = false;
-            pd.DefaultPageSettings.Landscape = false;
+            pd.DefaultPageSettings.Landscape = true;
 
             data.Insert(0, "\"glavna\""); // mozno e da e "sveditelstva"
             string outparam = String.Join("?", data);
@@ -273,11 +267,13 @@ namespace Middleware
             {
                 pd.PrintPage += (sender, args) =>
                 {
-                    args.Graphics.DrawImage(System.Drawing.Image.FromFile(String.Format(".\\test-{0}.jpg", i)), args.PageBounds);
-                    pd.DocumentName = String.Format("{0}\\test-{1}.jpg", rootFolder, i);
+                    args.Graphics.DrawImage(System.Drawing.Image.FromFile($"{tmpFolder}test-{i}.jpg"), args.PageBounds);
+                    pd.DocumentName = $"{tmpFolder}\\test-{i}.jpg";
                 };
                 pd.Print();
             }
+
+            ClearTmpFolder();
         }
         public static List<string> InitGlavnaKniga(List<Ucenik> ucenici, Klasen klasen)
         {
@@ -370,10 +366,13 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(klasen._paralelka.Split('-')[0]);
                 sw.Write(delimiter);
-                if(klasen._srednoIme != ""){
-                sw.Write($"{klasen._ime} {klasen._srednoIme}-{klasen._prezime}");
-                }else{
-                sw.Write($"{klasen._ime} {klasen._prezime}");
+                if (klasen._srednoIme != "")
+                {
+                    sw.Write($"{klasen._ime} {klasen._srednoIme}-{klasen._prezime}");
+                }
+                else
+                {
+                    sw.Write($"{klasen._ime} {klasen._prezime}");
                 }
                 sw.Write(delimiter);
                 sw.Write(klasen._direktor);
@@ -409,29 +408,29 @@ namespace Middleware
             pd.DefaultPageSettings.PaperSize = pd.PrinterSettings.PaperSizes.Cast<PaperSize>().First<PaperSize>(size => size.Kind == PaperKind.A3);
             pd.OriginAtMargins = false;
             pd.DefaultPageSettings.Landscape = false;
-            pd.DefaultPageSettings.Landscape = true;
 
             data.Insert(0, "\"dipl\""); // mozno e da e "sveditelstva"
             string outparam = String.Join("?", data);
-            System.Diagnostics.Debug.WriteLine(outparam);
-            string pyscript = rootFolder + "\\print.exe";
+
+            string pyscript = rootFolder + @"\print.exe";
             Process py = new Process();
             py.StartInfo.FileName = new Uri(pyscript).AbsolutePath;
             py.StartInfo.UseShellExecute = false;
-            py.StartInfo.Arguments = outparam.ToString();
-            py.StartInfo.CreateNoWindow = false;
+            py.StartInfo.Arguments = outparam;
+            py.StartInfo.CreateNoWindow = true;
             py.Start();
             py.WaitForExit();
 
             for (int i = 0; i < data.Count; i++)
             {
-                pd.PrintPage += (sender, args) =>
-                {
-                    args.Graphics.DrawImage(System.Drawing.Image.FromFile(String.Format(".\\dipl-{0}.jpg", i)), args.PageBounds);
-                    pd.DocumentName = String.Format("{0}\\dipl-{1}.jpg", rootFolder, i);
+                pd.PrintPage += (sender, args) => {
+                    args.Graphics.DrawImage(System.Drawing.Image.FromFile($"{tmpFolder}dipl-{i}.jpg"), args.PageBounds);
+                    pd.DocumentName = $"{tmpFolder}dipl-{i}.jpg";
                 };
                 pd.Print();
             }
+
+            ClearTmpFolder();
         }
         public static List<string> InitGkDiploma(List<Ucenik> ucenici, Klasen klasen)
         {
@@ -490,10 +489,13 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._prethodna_godina);
                 sw.Write(delimiter);
-                if(klasen._srednoIme != ""){
-                sw.Write($"{klasen._ime} {klasen._srednoIme}-{klasen._prezime}");
-                }else{
-                sw.Write($"{klasen._ime} {klasen._prezime}");
+                if (klasen._srednoIme != "")
+                {
+                    sw.Write($"{klasen._ime} {klasen._srednoIme}-{klasen._prezime}");
+                }
+                else
+                {
+                    sw.Write($"{klasen._ime} {klasen._prezime}");
                 }
                 sw.Write(delimiter);
                 sw.Write(klasen._direktor);
