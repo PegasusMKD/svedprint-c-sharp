@@ -208,6 +208,18 @@ namespace Middleware
             { RequestParameters.token , Token} , { RequestParameters.ime , _ime } , {RequestParameters.prezime , _prezime } , { RequestParameters.broj , br.ToString() } ,  {RequestParameters.srednoIme , _srednoIme}  , { UpdateParametar, value }
             }, RequestScopes.UpdateUcenik);
         }
+
+        public void ChangeSmer(Smer NovSmer, int br, string token)
+        {
+            _smer = NovSmer._smer;
+            _oceni.Clear();
+            foreach (string predmet in NovSmer._predmeti)
+            {
+                _oceni.Add(0);
+            }
+
+           // UpdateUcenik(br, RequestParameters.smer, NovSmer._smer, token);
+        }
     }
 
     public class Smer
@@ -274,21 +286,24 @@ namespace Middleware
 
         public Paralelka() { }
 
-        public void AddSmer(string SmerIme)
+        public void AddSmer(Smer NovSmer,string token)
         {
-            _smerovi.Add(SmerIme, new Smer(new List<string>(), SmerIme));
-            UpdateSmerovi();
+            _smerovi.Add(NovSmer._smer, new Smer(new List<string>(), NovSmer._cel_smer));
+            AddtoServerSmer(NovSmer, token);
+            //UpdateSmerovi();
         }
 
         public void RemoveSmer(string SmerIme)
         {
             _smerovi.Remove(SmerIme);
-            UpdateSmerovi();
+            //UpdateSmerovi();
         }
 
-        private void UpdateSmerovi()
+        private void AddtoServerSmer(Smer NovSmer,string token)
         {
-
+            Requests.AddData(new Dictionary<string, string>() {
+            { RequestParameters.token , token} , { RequestParameters.smer_add , NovSmer._smer } , {RequestParameters.cel_smer , NovSmer._cel_smer } , { RequestParameters.predmeti , string.Join(",",NovSmer._predmeti)} 
+            }, RequestScopes.UpdateSmer);
         }
     }
 

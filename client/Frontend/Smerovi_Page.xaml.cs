@@ -41,7 +41,7 @@ namespace Frontend
             st2.Children.Clear();
             int SmerCtr = 0;
 
-            foreach (string x in UserKlas._smerovi.Split(','))
+            foreach (string x in UserKlas._p._smerovi.Keys)
             {
                 List<String> Predmeti = UserKlas._p._smerovi[x]._predmeti;
 
@@ -71,18 +71,18 @@ namespace Frontend
             }
 
             Border NewSmerCB = ContentBorder("Додај Смер");
-            NewSmerCB.MouseLeftButtonDown += NewSmerCBClicked;
+            NewSmerCB.MouseLeave += NewSmerCBClicked;
             if (SmerCtr % 2 == 0)
             {
-                st1.Children.Add(ContentBorder("Додај Смер"));
+                st1.Children.Add(NewSmerCB);
             }
             else
             {
-                st2.Children.Add(ContentBorder("Додај Смер"));
+                st2.Children.Add(NewSmerCB);
             }
         }
 
-        private void NewSmerCBClicked(object sender, MouseButtonEventArgs e)
+        private void NewSmerCBClicked(object sender, MouseEventArgs e)
         {
             TextBox tx = (TextBox)((Border)sender).Child;
             UserKlas._p.AddSmer(tx.Text);
@@ -96,7 +96,7 @@ namespace Frontend
             if (LabelContent == "Додај Смер")
             {
                 TextBox tx = CreateTextBox(30);
-                tx.Name = LabelContent;
+                tx.Text = LabelContent;
                 tx.FontFamily = new System.Windows.Media.FontFamily("Arial");
                 bd.Child = tx;
             }
@@ -134,13 +134,13 @@ namespace Frontend
 
         private void NewPredmetImgClicked(object sender, MouseButtonEventArgs e , int i , int j)
         {
-            string toBeChanged = UserKlas._smerovi.Split(',')[i];
+            string toBeChanged = UserKlas._p._smerovi.Keys.ElementAt(i);
             int ctr = 0;
             foreach(Ucenik Ucenik in Ucenici)
             {
                 if(Ucenik._smer == toBeChanged)
                 {
-                    Ucenik._oceni.Add(0);
+                    Ucenik._oceni.Add(1);
                     Ucenik.UpdateUcenikOceni(ctr , UserKlas._token);
                 }
                 ctr++;
@@ -152,7 +152,7 @@ namespace Frontend
 
         private void RemovePredmetImgClicked(object sender, MouseButtonEventArgs e, int i , int j)
         {
-            string toBeChanged = UserKlas._smerovi.Split(',')[i];
+            string toBeChanged = UserKlas._p._smerovi.Keys.ElementAt(i);
             if (i == 0) i = 1;
 
             int ctr = 0;

@@ -28,7 +28,6 @@ namespace Frontend
             result = Home_Page.result;
             Ucenici = Home_Page.ucenici;
             GetData();
-
         }
 
         List<TextBox> Answer;

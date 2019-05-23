@@ -1,17 +1,9 @@
-﻿using System;
+﻿using Middleware;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using static Frontend.SettingsDesign;
 
 namespace Frontend
@@ -21,9 +13,15 @@ namespace Frontend
     /// </summary>
     public partial class Prosek_Frame : Page
     {
+
+        Klasen UserKlas;
+        List<Ucenik> Ucenici;
+
         public Prosek_Frame()
         {
             InitializeComponent();
+            UserKlas = Home_Page.KlasenKlasa;
+            Ucenici = Home_Page.ucenici;
 
             Dictionary<String, String> dic = new Dictionary<string, string>();
             dic.Add("Македонски", "5.0");
@@ -34,7 +32,9 @@ namespace Frontend
             dic.Add("Филозофија", "1.9");
             dic.Add("Француски", "2.7");
             dic.Add("Музичко", "4.9");
-            GetData(dic);
+
+            Calc();
+            GetData(PredmetiProsek);
 
         }
 
@@ -85,7 +85,35 @@ namespace Frontend
             gd.Children.Add(Circle);
 
             return gd;
-        }     
+        }
+
+        Dictionary<string, string> PredmetiProsek = new Dictionary<string, string>();
+        private void Calc()
+        {
+            foreach(Ucenik ucenik in Ucenici)
+            {
+                List<string> PredmetiOdSmer = UserKlas._p._smerovi[ucenik._smer]._predmeti;
+
+                for (int i = 0; i <PredmetiOdSmer.Count; i++)
+                {
+                    if (PredmetiProsek.ContainsKey(PredmetiOdSmer[i]))
+                    {
+                        PredmetiProsek[PredmetiOdSmer[i]] = PredmetiProsek[PredmetiOdSmer[i]] + " " + ucenik._oceni[i].ToString();
+                    }
+                    else
+                    {
+                        PredmetiProsek[PredmetiOdSmer[i]] = ucenik._oceni[i].ToString();
+                    }
+                }
+
+            }
+
+            Dictionary<string, string> t = PredmetiProsek;
+            foreach(var predmet in  t.ToArray())
+            {
+                PredmetiProsek[predmet.Key] = Array.ConvertAll(predmet.Value.Split(' '), x => float.Parse(x)).Average().ToString("n2");
+            }
+        }
 
     }
 }
