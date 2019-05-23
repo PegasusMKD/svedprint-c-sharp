@@ -15,6 +15,7 @@ namespace Frontend
     {
 
         Klasen UserKlas;
+        List<Ucenik> Ucenici;
         List<Dictionary<string, string>> result;
         int BrojDn = 0;
         int Ucenici_Size;
@@ -25,7 +26,7 @@ namespace Frontend
             InitializeComponent();
             UserKlas = Home_Page.KlasenKlasa;
             result = Home_Page.result;
-
+            Ucenici = Home_Page.ucenici;
             GetData();
 
         }
@@ -54,10 +55,10 @@ namespace Frontend
             res.Add("пол", "");
             res.Add("нахнадно", "1");
 
-            res["Име"] = result[BrojDn]["ime"];
-            res["Средно Име"] = result[BrojDn]["srednoIme"];
-            res["Презиме"] = result[BrojDn]["prezime"];
-            res["Смер"] = result[BrojDn]["smer"];
+            res["Име"] = Ucenici[BrojDn]._ime;
+            res["Средно Име"] = Ucenici[BrojDn]._srednoIme;
+            res["Презиме"] = Ucenici[BrojDn]._prezime;
+            res["Смер"] = Ucenici[BrojDn]._smer;
 
             MainGrid.Height = 0;
 

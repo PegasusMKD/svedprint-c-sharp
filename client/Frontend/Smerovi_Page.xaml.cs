@@ -141,7 +141,7 @@ namespace Frontend
                 if(Ucenik._smer == toBeChanged)
                 {
                     Ucenik._oceni.Add(0);
-                    Ucenik.UpdateUcenikOceni(UserKlas._token,ctr);
+                    Ucenik.UpdateUcenikOceni(ctr , UserKlas._token);
                 }
                 ctr++;
             }
@@ -153,6 +153,7 @@ namespace Frontend
         private void RemovePredmetImgClicked(object sender, MouseButtonEventArgs e, int i , int j)
         {
             string toBeChanged = UserKlas._smerovi.Split(',')[i];
+            if (i == 0) i = 1;
 
             int ctr = 0;
             foreach (Ucenik Ucenik in Ucenici)
@@ -160,7 +161,9 @@ namespace Frontend
                 if (Ucenik._smer == toBeChanged)
                 {
                     Ucenik._oceni.RemoveAt(j);
-                    Ucenik.UpdateUcenikOceni(UserKlas._token, ctr);
+                    Ucenik._smer = UserKlas.GetSmerovi()[i];
+                    Ucenik.UpdateUcenikOceni(ctr , UserKlas._token);
+                    Ucenik.UpdateUcenikSmer(ctr, UserKlas._token);
                 }
                 ctr++;
             }

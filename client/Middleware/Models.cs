@@ -192,10 +192,20 @@ namespace Middleware
             return Array.ConvertAll(_oceni.ToArray(), x => (float)x).Average().ToString("n2");
         }
 
-        public void UpdateUcenikOceni(String Token , int br)
+        public void UpdateUcenikOceni(int br , string Token)
+        {
+            UpdateUcenik(br, RequestParameters.oceni, OceniToString(), Token);
+        }
+
+        public void UpdateUcenikSmer(int br , string Token)
+        {
+            UpdateUcenik(br, RequestParameters.smer, _smer, Token);
+        }
+
+        public void UpdateUcenik(int br, string UpdateParametar, string value, string Token)
         {
             Requests.UpdateData(new Dictionary<string, string>() {
-            { RequestParameters.token , Token} , { RequestParameters.ime , _ime } , {RequestParameters.prezime , _prezime } , { RequestParameters.broj , br.ToString() } ,  {RequestParameters.srednoIme , _srednoIme}  , { RequestParameters.oceni , OceniToString() }
+            { RequestParameters.token , Token} , { RequestParameters.ime , _ime } , {RequestParameters.prezime , _prezime } , { RequestParameters.broj , br.ToString() } ,  {RequestParameters.srednoIme , _srednoIme}  , { UpdateParametar, value }
             }, RequestScopes.UpdateUcenik);
         }
     }
