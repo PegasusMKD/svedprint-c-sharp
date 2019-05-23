@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
@@ -9,9 +10,15 @@ using System.Windows.Controls;
 
 namespace Middleware
 {
+    class PrintQueueItem
+    {
+        public System.Drawing.Image[] sides;
+    }
     public class Print
     {
         static string tmpFolder = Path.GetTempPath() + @"pics\";
+        static List<PrintQueueItem> printQueue;
+        static int currentPage;
         public static void PrintSveditelstva(List<Ucenik> ucenici, Klasen klasen, int printerChoice)
         {
             List<string> data = InitSveditelstvo(ucenici, klasen);
@@ -38,60 +45,49 @@ namespace Middleware
             py.Start();
             py.WaitForExit();
 
+            printQueue = new List<PrintQueueItem>();
+            
+            for (int i = 0; i < data.Count-1; i++)
+            {
+                PrintQueueItem x = new PrintQueueItem();
+                x.sides = new System.Drawing.Image[2];
+                x.sides[0] = System.Drawing.Image.FromFile(new Uri($"{tmpFolder}front-{i}.jpg").AbsolutePath);
+                x.sides[1] = System.Drawing.Image.FromFile(new Uri($"{tmpFolder}back-{i}.jpg").AbsolutePath);
+
+                printQueue.Add(x);
+            }
+
             if (pd.PrinterSettings.CanDuplex)
             {
                 pd.PrinterSettings.Duplex = Duplex.Vertical;
             }
 
-            int page = 0;
+            currentPage = 0;
+            maxSides = 2;
+            pd.PrintPage += new PrintPageEventHandler(onPrintPage);
 
-            for (int i = 0; i < data.Count - 1; i++)
+            for (currentPage = 0; currentPage < data.Count - 1; currentPage++)
             {
-                if (pd.PrinterSettings.CanDuplex)
-                {
-                    pd.PrintPage += (sender, args) =>
-                    {
-                        if (page % 2 == 0)
-                        {
-                            args.Graphics.DrawImage(
-                                System.Drawing.Image.FromFile($"{tmpFolder}front-{i}.jpg"),
-                                args.PageBounds);
-                            pd.DocumentName = $"{tmpFolder}front-{i}.jpg";
-                            System.Diagnostics.Debug.WriteLine(pd.DocumentName);
-                            args.HasMorePages = true;
-                        }
-                        else
-                        {
-                            args.HasMorePages = false;
-                            args.Graphics.DrawImage(
-                                System.Drawing.Image.FromFile($"{tmpFolder}back-{i}.jpg"),
-                                args.PageBounds);
-                            pd.DocumentName = $"{tmpFolder}back-{i}.jpg";
-                            System.Diagnostics.Debug.WriteLine(pd.DocumentName);
-                        }
-                        page++;
-                    };
-                    pd.Print();
-                }
-                else
-                {
-                    pd.PrintPage += (sender, args) =>
-                    {
-                        args.Graphics.DrawImage(System.Drawing.Image.FromFile(
-                            $"{tmpFolder}{(page % 2 == 0 ? "front" : "back")}-{i}.jpg"),
-                            args.PageBounds);
-
-                        pd.DocumentName = $"{tmpFolder}{(page % 2 == 0 ? "front" : "back")}-{i}.jpg";
-                        page++;
-                    };
-                    pd.Print();
-                    MessageBox.Show("Ве молиме свртете го листот.");
-                    pd.Print();
-                }
+                currentSide = 0;
+                pd.Print();
+                
             }
 
            // ClearTmpFolder();
         }
+
+        static int currentSide;
+        static int maxSides;
+
+        private static void onPrintPage(object sender, PrintPageEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            g.DrawImage(printQueue[currentPage].sides[currentSide], e.PageBounds);
+            currentSide++;
+            e.HasMorePages = (currentSide % maxSides != 0);
+            g.Dispose();
+        }
+
         public static void PreviewSveditelstvo(Ucenik u, Klasen k)
         {
             List<string> data = InitSveditelstvo(new List<Ucenik>() { u }, k);
@@ -261,18 +257,27 @@ namespace Middleware
             py.StartInfo.CreateNoWindow = true;
             py.Start();
             py.WaitForExit();
+            printQueue = new List<PrintQueueItem>();
 
-            for (int i = 0; i < data.Count; i++)
+            for (int i = 0; i < data.Count - 1; i++)
             {
-                pd.PrintPage += (sender, args) =>
-                {
-                    args.Graphics.DrawImage(System.Drawing.Image.FromFile($"{tmpFolder}test-{i}.jpg"), args.PageBounds);
-                    pd.DocumentName = $"{tmpFolder}\\test-{i}.jpg";
-                };
-                pd.Print();
-            }
+                PrintQueueItem x = new PrintQueueItem();
+                x.sides = new System.Drawing.Image[1];
+                x.sides[0] = System.Drawing.Image.FromFile(new Uri($"{tmpFolder}test-{i}.jpg").AbsolutePath);
 
-            ClearTmpFolder();
+                printQueue.Add(x);
+            }
+            
+            currentPage = 0;
+            maxSides = 1;
+            pd.PrintPage += new PrintPageEventHandler(onPrintPage);
+
+            for (currentPage = 0; currentPage < data.Count - 1; currentPage++)
+            {
+                currentSide = 0;
+                pd.Print();
+
+            }
         }
         public static List<string> InitGlavnaKniga(List<Ucenik> ucenici, Klasen klasen)
         {
@@ -376,7 +381,13 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(klasen._direktor);
                 sw.Write(delimiter);
-                sw.Write(u._pedagoshki_merki.Split(','));
+                try
+                {
+                    sw.Write(u._pedagoshki_merki.Split(','));
+                } catch(Exception ex)
+                {
+                    sw.Write("dobro dete");
+                }
                 sw.Write(delimiter);
                 sw.Write(u._delovoden_broj);
                 //sw.Write(nekoja vrednost);
