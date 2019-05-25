@@ -17,7 +17,6 @@ namespace Middleware
         public List<int> _oceni { get; set; }
         [JsonProperty(RequestParameters.smer)]
         public string _smer { get; set; }
-        public Smer _s { get; set; }
         [JsonProperty(RequestParameters.broj)]
         public int _broj { get; set; }
         [JsonProperty(RequestParameters.roden)]
@@ -72,10 +71,10 @@ namespace Middleware
         public string _polozhil { get; set; }
         // [JsonProperty(RequestParameters.majkino)]
         // public string _majkino { get; set; }
-        [JsonProperty(RequestParameters.pedagoshki_merki)]
-        public string _pedagoshki_merki { get; set; }
         [JsonProperty(RequestParameters.drzavjanstvo)]
         public string _drzavjanstvo { get; set; }
+        [JsonProperty(RequestParameters.cel_smer)]
+        public string _cel_smer { get; set; }
 
         /* vaka nekako treba da lici release verzija na constructor
          * treba da frla exception ako fali nekoj podatok vo baza
@@ -154,12 +153,8 @@ namespace Middleware
             _prethoden_delovoden = delovoden_broj ?? "";
             _pat_polaga_ispit = pat_polaga_ispit ?? "";
             _ispiten = ispiten ?? "";
-            
-            
-            _pedagoshki_merki = pedagoshki_merki ?? "";
-            _drzavjanstvo = drzavjanstvo ?? "";
 
-            _s = new Smer(new List<string>(), _smer);
+            _drzavjanstvo = drzavjanstvo ?? "";
         }
         public Ucenik() { }
         public Ucenik(Dictionary<string, string> valuePairs)
@@ -176,7 +171,6 @@ namespace Middleware
             }
 
             _smer = valuePairs[RequestParameters.smer] ?? "";
-            _s = new Smer(new List<string>(), _smer);
             _broj = int.Parse(valuePairs[RequestParameters.broj] ?? "0");
             _roden = valuePairs[RequestParameters.roden] ?? "";
             _mesto_na_ragjanje = valuePairs[RequestParameters.mesto_na_ragjanje] ?? "";
@@ -258,8 +252,8 @@ namespace Middleware
         public Paralelka _p { get; set; }
         [JsonProperty(RequestParameters.token)]
         public string _token { get; set; }
-        [JsonProperty(RequestParameters.uchilishte)]
-        public string _uchilishte { get; set; }
+        [JsonProperty(RequestParameters.ucilishte)]
+        public string _ucilishte { get; set; }
         [JsonProperty(RequestParameters.grad)]
         public string _grad { get; set; }
         [JsonProperty(RequestParameters.godina)]
@@ -270,8 +264,13 @@ namespace Middleware
         public string _direktor { get; set; }
         [JsonProperty(RequestParameters.delovoden_broj)]
         public string _delovoden_broj { get; set; }
+        [JsonProperty(RequestParameters.akt_godina)]
+        public string _akt_godina { get; set; }
+        [JsonProperty(RequestParameters.akt)]
+        public string _akt { get; set; }
 
-        public Klasen(string ime, string srednoIme, string prezime, string token, string paralelka, string uchilishte, string grad, int godina, string smerovi)
+
+        public Klasen(string ime, string srednoIme, string prezime, string token, string paralelka, string ucilishte, string grad, int godina, string smerovi, string akt_godina, string akt)
         {
             _ime = ime ?? "";
             _srednoIme = srednoIme ?? "";
@@ -279,11 +278,12 @@ namespace Middleware
             _token = token ?? "";
             _paralelka = paralelka;
             _p = new Paralelka(_paralelka, new List<Ucenik>(), new Dictionary<string, Smer>());
-            _uchilishte = uchilishte ?? "";
+            _ucilishte = ucilishte ?? "";
             // _grad = grad ?? "";
             // _godina = godina;
             _smerovi = smerovi ?? "";
-
+            _akt_godina = akt_godina ?? "";
+            _akt = _akt ?? "";
         }
 
         public Klasen() { }

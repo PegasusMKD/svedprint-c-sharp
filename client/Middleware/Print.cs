@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using Excel=Microsoft.Office.Interop.Excel;
@@ -168,7 +169,7 @@ namespace Middleware
                 sw.GetStringBuilder().Clear();
 
                 // predmeti
-                sw.Write("\"" + String.Join("/", u._s._predmeti) + "\"");
+                sw.Write("\"" + String.Join("/", klasen._p._smerovi[u._smer]._predmeti) + "\"");
                 sw.Write(";");
 
                 // oceni
@@ -177,7 +178,7 @@ namespace Middleware
 
                 // uchilishte, grad, broj glavna kniga, godina (klas)
                 sw.Write("\"");
-                sw.Write(klasen._uchilishte);
+                sw.Write(klasen._ucilishte);
                 sw.Write(delimiter);
                 sw.Write(klasen._grad);
                 sw.Write(delimiter);
@@ -282,6 +283,7 @@ namespace Middleware
         }
         public static List<string> InitGlavnaKniga(List<Ucenik> ucenici, Klasen klasen)
         {
+            // https://raw.githubusercontent.com/darijan2002/ps/ps/gk/sample_params.txt?token=ADAAZQMNTPXEEBZ7LCUYXD245FMAC
             StringWriter sw = new StringWriter();
             List<string> l = new List<string>();
             string delimiter = ",";
@@ -292,12 +294,12 @@ namespace Middleware
 
                 // predmeti
                 tmparr.Clear();
-                tmparr.AddRange(u._s._predmeti);
+                tmparr.AddRange(klasen._p._smerovi[u._smer]._predmeti);
                 while (tmparr.Count < 17)
                 {
                     tmparr.Add("NaN");
                 }
-                tmparr.AddRange(u._proektni.Split(' '));
+                tmparr.AddRange(u._proektni.Split(' '));              
                 while (tmparr.Count < 22)
                 {
                     tmparr.Add("NaN");
@@ -312,7 +314,19 @@ namespace Middleware
                 {
                     tmparr.Add("NaN");
                 }
-                tmparr.AddRange(u._polozhil.Split(' '));
+                var tmppoloz = u._polozhil.Split(' ').ToList();
+                tmppoloz = tmppoloz.ConvertAll(x =>
+                {
+                    if (x == "положено")
+                    {
+                        return "1";
+                    }
+                    else
+                    {
+                        return "0";
+                    }
+                });
+                tmparr.AddRange(tmppoloz);
                 while (tmparr.Count < 22)
                 {
                     tmparr.Add("NaN");
@@ -322,23 +336,30 @@ namespace Middleware
 
                 // delovoden broj, godina (klas), paralelka, broj vo dnevnik
                 sw.Write("\"");
+                sw.Write(u._delovoden_broj);
+                sw.Write(delimiter);
                 sw.Write(klasen._paralelka.Replace('-', delimiter[0]));
                 sw.Write(delimiter);
                 sw.Write(u._broj);
                 sw.Write(delimiter);
 
                 // ime prezime na ucenik, ime na tatko, ime na majka, DOB, mesto na raganje, naselba, opshtina, drzhava, drzhavjanstvo (hardcode)
-                sw.Write(u._ime + " " + u._prezime);
+                sw.Write(u._ime);
+                sw.Write(delimiter);
+                sw.Write(u._prezime);
                 sw.Write(delimiter);
                 sw.Write(u._tatko);
                 sw.Write(delimiter);
                 sw.Write(u._majka);
                 sw.Write(delimiter);
-                sw.Write(u._roden);
+                //sw.Write(u._roden); // <------
+                sw.Write("14.06.2019");
                 sw.Write(delimiter);
                 sw.Write(u._mesto_na_ragjanje); // mesto na ragjanje
                 sw.Write(delimiter);
                 sw.Write(u._mesto_na_zhiveenje);
+                sw.Write(delimiter);
+                sw.Write("drzava"); // <------
                 sw.Write(delimiter);
                 sw.Write(u._drzavjanstvo); // hardcoded drzavjanstvo
                 sw.Write(delimiter);
@@ -355,7 +376,7 @@ namespace Middleware
                 sw.Write(u._pat_polaga);
                 sw.Write(delimiter);
 
-                sw.Write(u._tip);
+                sw.Write(u._tip); // <------
                 sw.Write(delimiter);
                 sw.Write(u._smer);
                 sw.Write(delimiter);
@@ -367,9 +388,14 @@ namespace Middleware
                 sw.Write(delimiter);
 
                 //Koja e celta na ovaa godina? ne bi bilo isto so Split-ot odma pod nego?
-                sw.Write(klasen._godina);
+                //sw.Write(klasen._godina); // ucebna godina. bara kalendarska godina. nesto kako prethodna_uchebna ama ne prethodna tuku segasna
+                // workaround
+                if (u._prethodna_godina != "")
+                    sw.Write(string.Join("/", u._prethodna_godina.Split('/').ToList().ConvertAll(x => int.Parse(x) + 1)));
+                else
+                    sw.Write("1990/1991");
                 sw.Write(delimiter);
-                sw.Write(klasen._paralelka.Split('-')[0]);
+                sw.Write("IV - четврта");// <------
                 sw.Write(delimiter);
                 if (klasen._srednoIme != "")
                 {
@@ -382,22 +408,13 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(klasen._direktor);
                 sw.Write(delimiter);
-                try
-                {
-                    sw.Write(u._pedagoshki_merki.Split(','));
-                } catch(Exception ex)
-                {
-                    sw.Write("dobro dete");
-                }
+                sw.Write(u._merki);
                 sw.Write(delimiter);
-                sw.Write(u._delovoden_broj);
-                //sw.Write(nekoja vrednost);
-                //sw.Write(delimiter);
-                //sw.Write(nekoja vrednost);
-                //sw.Write(delimiter);
-                sw.Write(u._smer); // zoso smer?
+                //sw.Write(u._delovoden_broj);
+                sw.Write("08-7/16/2"); // <-----
                 sw.Write(delimiter);
-                sw.Write(u._datum_sveditelstvo);
+                //sw.Write(u._datum_sveditelstvo);
+                sw.Write("14.06.2019"); // <------
 
 
                 sw.Write("\"");
