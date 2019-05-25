@@ -87,7 +87,9 @@ namespace Middleware
 
         public static void GetCarsav()
         {
-
+            // 1. Request do serverot da mi vrati najrecent excel
+            // 2. Da se zapise requestot vo file
+            // https://stackoverflow.com/questions/2934295/c-sharp-save-a-file-from-a-http-request
         }
     }
 
