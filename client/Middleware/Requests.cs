@@ -85,6 +85,10 @@ namespace Middleware
             var responseJson = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
         }
 
+        public static void GetCarsav()
+        {
+
+        }
     }
 
     public class RequestScopes

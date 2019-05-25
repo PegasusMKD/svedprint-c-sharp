@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using Excel=Microsoft.Office.Interop.Excel;
 
 namespace Middleware
 {
@@ -527,7 +528,23 @@ namespace Middleware
             }
             return l;
         }
+        public static void PrintCarsav(int printerChoice) // TODO: testing
+        {
+            Requests.GetCarsav();
+
+            Excel.Application excelApp = new Excel.Application();
+            string filepath = Path.Combine(tmpFolder, "excel.xlsx");
+            Excel.Workbook file = excelApp.Workbooks.Open(filepath);
+            Excel.Worksheet sheet = file.Worksheets[1]; // base 1
+            sheet.PageSetup.PaperSize = Excel.XlPaperSize.xlPaperA4;
+            sheet.PageSetup.Orientation = Excel.XlPageOrientation.xlLandscape;
+            sheet.PrintOutEx(Preview: true, ActivePrinter: PrinterSettings.InstalledPrinters[printerChoice]);
+
+            file.Close();
+            excelApp.Quit();
+        }
     }
+
 }
 
 /*
