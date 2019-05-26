@@ -46,7 +46,7 @@ namespace Middleware {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("main")]
+        [global::System.Configuration.DefaultSettingValueAttribute("stable")]
         public string DB_BRANCH {
             get {
                 return ((string)(this["DB_BRANCH"]));
