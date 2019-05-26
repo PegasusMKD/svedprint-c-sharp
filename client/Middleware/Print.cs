@@ -248,7 +248,7 @@ namespace Middleware
             pd.OriginAtMargins = false;
             pd.DefaultPageSettings.Landscape = true;
 
-            data.Insert(0, "\"glavna\""); // mozno e da e "sveditelstva"
+            data.Insert(0, "glavna"); // mozno e da e "sveditelstva"
             string outparam = String.Join("?", data);
 
             string pyscript = rootFolder + "\\print.exe";
