@@ -37,7 +37,7 @@ namespace Frontend
 
         private void login()
         {
-            hardcode_userdata();
+           // hardcode_userdata();
 
             Klasen temp = Login.LoginWithCred(Username_txt.Text, Password_txt.Text);
 
