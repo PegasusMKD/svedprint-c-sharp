@@ -85,6 +85,12 @@ namespace Middleware
             var responseJson = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
         }
 
+        public static void GetCarsav()
+        {
+            // 1. Request do serverot da mi vrati najrecent excel
+            // 2. Da se zapise requestot vo file
+            // https://stackoverflow.com/questions/2934295/c-sharp-save-a-file-from-a-http-request
+        }
     }
 
     public class RequestScopes
@@ -115,7 +121,7 @@ namespace Middleware
         public const string predmeti = "predmeti";
         public const string ucenici = "ucenici";
         public const string klasen = "klasen";
-        public const string uchilishte = "uchilishte";
+        public const string ucilishte = "ucilishte";
         public const string grad = "grad";
         public const string new_school = "new_school";
         public const string new_password = "new_password";
@@ -159,6 +165,8 @@ namespace Middleware
         public const string pedagoshki_merki = "pedagoshki_merki";
         public const string direktor = "direktor";
         public const string drzavjanstvo = "drzavjanstvo";
+        public const string akt_godina = "akt_godina";
+        public const string akt = "akt";
     }
 
     class RequestConverter : JsonConverter<Request>

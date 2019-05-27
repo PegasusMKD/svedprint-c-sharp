@@ -1,17 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using Excel=Microsoft.Office.Interop.Excel;
 
 namespace Middleware
 {
+    class PrintQueueItem
+    {
+        public System.Drawing.Image[] sides;
+    }
     public class Print
     {
         static string tmpFolder = Path.GetTempPath() + @"pics\";
+        static List<PrintQueueItem> printQueue;
+        static int currentPage;
         public static void PrintSveditelstva(List<Ucenik> ucenici, Klasen klasen, int printerChoice)
         {
             List<string> data = InitSveditelstvo(ucenici, klasen);
@@ -38,61 +47,49 @@ namespace Middleware
             py.Start();
             py.WaitForExit();
 
+            printQueue = new List<PrintQueueItem>();
+            
+            for (int i = 0; i < data.Count-1; i++)
+            {
+                PrintQueueItem x = new PrintQueueItem();
+                x.sides = new System.Drawing.Image[2];
+                x.sides[0] = System.Drawing.Image.FromFile(new Uri($"{tmpFolder}front-{i}.jpg").AbsolutePath);
+                x.sides[1] = System.Drawing.Image.FromFile(new Uri($"{tmpFolder}back-{i}.jpg").AbsolutePath);
+
+                printQueue.Add(x);
+            }
+
             if (pd.PrinterSettings.CanDuplex)
             {
                 pd.PrinterSettings.Duplex = Duplex.Vertical;
             }
 
-            int page = 0;
+            currentPage = 0;
+            maxSides = 2;
+            pd.PrintPage += new PrintPageEventHandler(onPrintPage);
 
-            for (int i = 0; i < data.Count - 1; i++)
+            for (currentPage = 0; currentPage < data.Count - 1; currentPage++)
             {
-                if (pd.PrinterSettings.CanDuplex)
-                {
-                    pd.PrintPage += (sender, args) =>
-                    {
-                        if (page % 2 == 0)
-                        {
-                            args.Graphics.DrawImage(
-                                System.Drawing.Image.FromFile($"{tmpFolder}front-{i}.jpg"),
-                                args.PageBounds);
-                            pd.DocumentName = $"{tmpFolder}front-{i}.jpg";
-                            System.Diagnostics.Debug.WriteLine(pd.DocumentName);
-                            args.HasMorePages = true;
-                        }
-                        else
-                        {
-                            args.HasMorePages = false;
-                            args.Graphics.DrawImage(
-                                System.Drawing.Image.FromFile($"{tmpFolder}back-{i}.jpg"),
-                                args.PageBounds);
-                            pd.DocumentName = $"{tmpFolder}back-{i}.jpg";
-                            System.Diagnostics.Debug.WriteLine(pd.DocumentName);
-                        }
-                        page++;
-                    };
-                    pd.Print();
-                }
-                else
-                {
-                    /*
-                    pd.PrintPage += (sender, args) =>
-                    {
-                        args.Graphics.DrawImage(System.Drawing.Image.FromFile(
-                            $"{tmpFolder}{(page % 2 == 0 ? "front" : "back")}-{i}.jpg"),
-                            args.PageBounds);
-
-                        pd.DocumentName = $"{tmpFolder}{(page % 2 == 0 ? "front" : "back")}-{i}.jpg";
-                        page++;
-                    };
-                    pd.Print();
-                    MessageBox.Show("Ве молиме свртете го листот.");
-                    pd.Print();*/
-                }
+                currentSide = 0;
+                pd.Print();
+                
             }
 
            // ClearTmpFolder();
         }
+
+        static int currentSide;
+        static int maxSides;
+
+        private static void onPrintPage(object sender, PrintPageEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            g.DrawImage(printQueue[currentPage].sides[currentSide], e.PageBounds);
+            currentSide++;
+            e.HasMorePages = (currentSide % maxSides != 0);
+            g.Dispose();
+        }
+
         public static void PreviewSveditelstvo(Ucenik u, Klasen k)
         {
             List<string> data = InitSveditelstvo(new List<Ucenik>() { u }, k);
@@ -172,7 +169,7 @@ namespace Middleware
                 sw.GetStringBuilder().Clear();
 
                 // predmeti
-                sw.Write("\"" + String.Join("/", u._s._predmeti) + "\"");
+                sw.Write("\"" + String.Join("/", klasen._p._smerovi[u._smer]._predmeti) + "\"");
                 sw.Write(";");
 
                 // oceni
@@ -181,7 +178,7 @@ namespace Middleware
 
                 // uchilishte, grad, broj glavna kniga, godina (klas)
                 sw.Write("\"");
-                sw.Write(klasen._uchilishte);
+                sw.Write(klasen._ucilishte);
                 sw.Write(delimiter);
                 sw.Write(klasen._grad);
                 sw.Write(delimiter);
@@ -251,7 +248,7 @@ namespace Middleware
             pd.OriginAtMargins = false;
             pd.DefaultPageSettings.Landscape = true;
 
-            data.Insert(0, "\"glavna\""); // mozno e da e "sveditelstva"
+            data.Insert(0, "glavna"); // mozno e da e "sveditelstva"
             string outparam = String.Join("?", data);
 
             string pyscript = rootFolder + "\\print.exe";
@@ -262,21 +259,31 @@ namespace Middleware
             py.StartInfo.CreateNoWindow = true;
             py.Start();
             py.WaitForExit();
+            printQueue = new List<PrintQueueItem>();
 
-            for (int i = 0; i < data.Count; i++)
+            for (int i = 0; i < data.Count - 1; i++)
             {
-                pd.PrintPage += (sender, args) =>
-                {
-                    args.Graphics.DrawImage(System.Drawing.Image.FromFile($"{tmpFolder}test-{i}.jpg"), args.PageBounds);
-                    pd.DocumentName = $"{tmpFolder}\\test-{i}.jpg";
-                };
-                pd.Print();
-            }
+                PrintQueueItem x = new PrintQueueItem();
+                x.sides = new System.Drawing.Image[1];
+                x.sides[0] = System.Drawing.Image.FromFile(new Uri($"{tmpFolder}test-{i}.jpg").AbsolutePath);
 
-            ClearTmpFolder();
+                printQueue.Add(x);
+            }
+            
+            currentPage = 0;
+            maxSides = 1;
+            pd.PrintPage += new PrintPageEventHandler(onPrintPage);
+
+            for (currentPage = 0; currentPage < data.Count - 1; currentPage++)
+            {
+                currentSide = 0;
+                pd.Print();
+
+            }
         }
         public static List<string> InitGlavnaKniga(List<Ucenik> ucenici, Klasen klasen)
         {
+            // https://raw.githubusercontent.com/darijan2002/ps/ps/gk/sample_params.txt?token=ADAAZQMNTPXEEBZ7LCUYXD245FMAC
             StringWriter sw = new StringWriter();
             List<string> l = new List<string>();
             string delimiter = ",";
@@ -287,12 +294,12 @@ namespace Middleware
 
                 // predmeti
                 tmparr.Clear();
-                tmparr.AddRange(u._s._predmeti);
+                tmparr.AddRange(klasen._p._smerovi[u._smer]._predmeti);
                 while (tmparr.Count < 17)
                 {
                     tmparr.Add("NaN");
                 }
-                tmparr.AddRange(u._proektni.Split(' '));
+                tmparr.AddRange(u._proektni.Split(' '));              
                 while (tmparr.Count < 22)
                 {
                     tmparr.Add("NaN");
@@ -307,7 +314,19 @@ namespace Middleware
                 {
                     tmparr.Add("NaN");
                 }
-                tmparr.AddRange(u._polozhil.Split(' '));
+                var tmppoloz = u._polozhil.Split(' ').ToList();
+                tmppoloz = tmppoloz.ConvertAll(x =>
+                {
+                    if (x == "положено")
+                    {
+                        return "1";
+                    }
+                    else
+                    {
+                        return "0";
+                    }
+                });
+                tmparr.AddRange(tmppoloz);
                 while (tmparr.Count < 22)
                 {
                     tmparr.Add("NaN");
@@ -317,23 +336,30 @@ namespace Middleware
 
                 // delovoden broj, godina (klas), paralelka, broj vo dnevnik
                 sw.Write("\"");
+                sw.Write(u._delovoden_broj);
+                sw.Write(delimiter);
                 sw.Write(klasen._paralelka.Replace('-', delimiter[0]));
                 sw.Write(delimiter);
                 sw.Write(u._broj);
                 sw.Write(delimiter);
 
                 // ime prezime na ucenik, ime na tatko, ime na majka, DOB, mesto na raganje, naselba, opshtina, drzhava, drzhavjanstvo (hardcode)
-                sw.Write(u._ime + " " + u._prezime);
+                sw.Write(u._ime);
+                sw.Write(delimiter);
+                sw.Write(u._prezime);
                 sw.Write(delimiter);
                 sw.Write(u._tatko);
                 sw.Write(delimiter);
                 sw.Write(u._majka);
                 sw.Write(delimiter);
-                sw.Write(u._roden);
+                //sw.Write(u._roden); // <------
+                sw.Write("14.06.2019");
                 sw.Write(delimiter);
                 sw.Write(u._mesto_na_ragjanje); // mesto na ragjanje
                 sw.Write(delimiter);
                 sw.Write(u._mesto_na_zhiveenje);
+                sw.Write(delimiter);
+                sw.Write("drzava"); // <------
                 sw.Write(delimiter);
                 sw.Write(u._drzavjanstvo); // hardcoded drzavjanstvo
                 sw.Write(delimiter);
@@ -350,7 +376,7 @@ namespace Middleware
                 sw.Write(u._pat_polaga);
                 sw.Write(delimiter);
 
-                sw.Write(u._tip);
+                sw.Write(u._tip); // <------
                 sw.Write(delimiter);
                 sw.Write(u._smer);
                 sw.Write(delimiter);
@@ -362,9 +388,14 @@ namespace Middleware
                 sw.Write(delimiter);
 
                 //Koja e celta na ovaa godina? ne bi bilo isto so Split-ot odma pod nego?
-                sw.Write(klasen._godina);
+                //sw.Write(klasen._godina); // ucebna godina. bara kalendarska godina. nesto kako prethodna_uchebna ama ne prethodna tuku segasna
+                // workaround
+                if (u._prethodna_godina != "")
+                    sw.Write(string.Join("/", u._prethodna_godina.Split('/').ToList().ConvertAll(x => int.Parse(x) + 1)));
+                else
+                    sw.Write("1990/1991");
                 sw.Write(delimiter);
-                sw.Write(klasen._paralelka.Split('-')[0]);
+                sw.Write("IV - четврта");// <------
                 sw.Write(delimiter);
                 if (klasen._srednoIme != "")
                 {
@@ -377,16 +408,13 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(klasen._direktor);
                 sw.Write(delimiter);
-                sw.Write(u._pedagoshki_merki.Split(','));
+                sw.Write(u._merki);
                 sw.Write(delimiter);
-                sw.Write(u._delovoden_broj);
-                //sw.Write(nekoja vrednost);
-                //sw.Write(delimiter);
-                //sw.Write(nekoja vrednost);
-                //sw.Write(delimiter);
-                sw.Write(u._smer); // zoso smer?
+                //sw.Write(u._delovoden_broj);
+                sw.Write("08-7/16/2"); // <-----
                 sw.Write(delimiter);
-                sw.Write(u._datum_sveditelstvo);
+                //sw.Write(u._datum_sveditelstvo);
+                sw.Write("14.06.2019"); // <------
 
 
                 sw.Write("\"");
@@ -517,7 +545,23 @@ namespace Middleware
             }
             return l;
         }
+        public static void PrintCarsav(int printerChoice) // TODO: testing
+        {
+            Requests.GetCarsav();
+
+            Excel.Application excelApp = new Excel.Application();
+            string filepath = Path.Combine(tmpFolder, "excel.xlsx");
+            Excel.Workbook file = excelApp.Workbooks.Open(filepath);
+            Excel.Worksheet sheet = file.Worksheets[1]; // base 1
+            sheet.PageSetup.PaperSize = Excel.XlPaperSize.xlPaperA4;
+            sheet.PageSetup.Orientation = Excel.XlPageOrientation.xlLandscape;
+            sheet.PrintOutEx(Preview: true, ActivePrinter: PrinterSettings.InstalledPrinters[printerChoice]);
+
+            file.Close();
+            excelApp.Quit();
+        }
     }
+
 }
 
 /*
