@@ -1,6 +1,7 @@
 using Middleware;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -16,48 +17,46 @@ namespace Frontend
 
         Klasen UserKlas;
         List<Ucenik> Ucenici;
-        List<Dictionary<string, string>> result;
         int BrojDn = 0;
-        int Ucenici_Size;
-        bool Saved = false;
+        bool Saved = true;
 
         public EditUcenici_Page()
         {
             InitializeComponent();
             UserKlas = Home_Page.KlasenKlasa;
-            result = Home_Page.result;
             Ucenici = Home_Page.ucenici;
             GetData();
         }
 
         List<TextBox> Answer;
-        Dictionary<string, string> res;
         void GetData()
         {
-            Ucenici_Size = result.Count;
             Answer = new List<TextBox>();
             MainGrid.Children.Clear();
             Saved = true;
 
+            Dictionary<string, string> res= new Dictionary<string, string>();
+            res.Add("Име", "Име");
+            res.Add("Средно Име", "Средно Име");
+            res.Add("Презиме", "Презиме");
+            res.Add("Смер", "Смер");
+            res.Add("број во дневник", "00");
+            res.Add("родител(Татко)", "Име Презиме");
+            res.Add("родител(Мајка)", "Име Презиме");
+            res.Add("ден на раѓање", "00.00.0000");
+            res.Add("место на раѓање", "Скопје");
+            //res.Add("пол", "");
 
-            res = new Dictionary<string, string>();
-            res.Add("Име", "");
-            res.Add("Средно Име", "");
-            res.Add("Презиме", "");
-            res.Add("Смер", "");
-            res.Add("број во дневник", "");
-            res.Add("родител(Татко)", "");
-            res.Add("роден", "");
-            res.Add("место на раѓање", "");
-            res.Add("пат на запишување", "прв");
-            res.Add("вид на образование", "");
-            res.Add("пол", "");
-            res.Add("нахнадно", "1");
-
-            res["Име"] = Ucenici[BrojDn]._ime;
+            res["Име"] = Ucenici[BrojDn]._ime; 
             res["Средно Име"] = Ucenici[BrojDn]._srednoIme;
             res["Презиме"] = Ucenici[BrojDn]._prezime;
             res["Смер"] = Ucenici[BrojDn]._smer;
+            Ucenici[BrojDn]._broj = BrojDn;
+            res["број во дневник"] = (Ucenici[BrojDn]._broj+1).ToString();
+            res["родител(Татко)"] = Ucenici[BrojDn]._tatko;
+            res["родител(Мајка)"] = Ucenici[BrojDn]._majka;
+            res["ден на раѓање"] = Ucenici[BrojDn]._roden;
+            res["место на раѓање"] = Ucenici[BrojDn]._mesto_na_ragjanje;
 
             MainGrid.Height = 0;
 
@@ -89,7 +88,7 @@ namespace Frontend
 
         private void ContentTextBoxLostFocusEvent(object sender, RoutedEventArgs e, string i)
         {
-            Saved = false;
+            Saved = true;
            /* TextBox tx = (TextBox)sender;
             Dictionary<string, string> RequestsString = new Dictionary<string, string>() { { "Име", RequestParameters.new_first_name }, { "Средно Име", RequestParameters.new_middle_name }, { "Презиме", RequestParameters.new_last_name }, { "Смер", RequestParameters.smer } }; ;
             Dictionary<string, string> resultDic = new Dictionary<string, string>() { { "Име" , "ime" } , { "Средно Име", "tatkovo" } , { "Презиме" , "prezime" } , { "Смер" , "smer" }  };
@@ -107,32 +106,35 @@ namespace Frontend
         private void LeftTriangleClicked(object sender, MouseEventArgs e)
         {
             BrojDnLabel.Text = Valid(-1);
-            GetData();
+            if(Saved == true) GetData();
         }
 
         private void RightTriangleClicked(object sender, MouseButtonEventArgs e)
         {
             BrojDnLabel.Text = Valid(+1);
-            GetData();
+            if (Saved == true) GetData();
         }
 
         String Valid(int x)
         {
-            if (Saved == false) MessageBox.Show("Ги немате сочувано новите работи за ученикот");
+            //if (Saved == false) { MessageBox.Show("Ги немате сочувано новите работи за ученикот"); return (BrojDn+1).ToString(); }
 
-            if (BrojDn + x >= 0 && BrojDn + x < Ucenici_Size) BrojDn += x;
+            if (BrojDn + x >= 0 && BrojDn + x < Ucenici.Count) BrojDn += x;
             return (BrojDn +1).ToString();
         }
 
-        string[] Request = { RequestParameters.new_first_name, RequestParameters.new_middle_name, RequestParameters.new_last_name, RequestParameters.new_smer };
+        string[] Request = { RequestParameters.new_first_name, RequestParameters.new_middle_name, RequestParameters.new_last_name, RequestParameters.new_smer , RequestParameters.new_broj_vo_dnevnik, RequestParameters.tatko,RequestParameters.majka,RequestParameters.roden,RequestParameters.mesto_na_ragjanje };
         private void SaveBtnClicked(object sender, MouseButtonEventArgs e)
         {
+            /*
             int i = 0;
             foreach(TextBox tx in Answer)
             {
                 UpdateUcenik(BrojDn, Request[i++] , tx.Text);
                 if (i == Request.Length) break;
-            }
+            }*/
+            List<string> tx = Answer.ConvertAll(x => x.Text);
+            Ucenici[BrojDn].UpdateUcenikData(tx, UserKlas._token);
             Saved = true;
         }
 
@@ -143,23 +145,15 @@ namespace Frontend
 
         private void CreateUcenik(string ime, string srednoime, string prezime, string smer, string br)
         {
-            Requests.AddData(new Dictionary<string, string>() {
-                { RequestParameters.ime, ime} , {RequestParameters.srednoIme , srednoime} , { RequestParameters.prezime , prezime } , { RequestParameters.broj , br} , { RequestParameters.smer , smer}
-            }, RequestScopes.AddUcenici);
+            Ucenici.Add(new Ucenik(ime, srednoime, prezime, smer, br));
 
-            result = Requests.GetData(new Dictionary<string, string>() {
-                {RequestParameters.token, UserKlas._token }
-            }, RequestScopes.GetParalelka);
-            Ucenici_Size = result.Count;
+            MessageBox.Show("успешно креирање на нов ученик");
+            var ordered = Ucenici.OrderBy(x => x._prezime);
+            Ucenici = ordered.ToList();
+            Home_Page.ucenici = Ucenici;
+            GetData();
         }
 
-        private void UpdateUcenik(int BrojDn, string UpdateParametar, string Value)
-        {
-            Requests.UpdateData(new Dictionary<string, string>() {
-            { RequestParameters.token , UserKlas._token} , { RequestParameters.ime , result[BrojDn]["ime"] } , {RequestParameters.prezime , result[BrojDn]["prezime"] } , { RequestParameters.broj , BrojDn.ToString() } ,  {RequestParameters.srednoIme , result[BrojDn]["tatkovo"] }  , { UpdateParametar , Value }
-            }, RequestScopes.UpdateUcenik);
-
-        }
 
         private void DeleteUcenik()
         {

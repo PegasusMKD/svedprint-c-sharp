@@ -1,7 +1,6 @@
 using Middleware;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -108,8 +107,14 @@ namespace Frontend
         List<Label> Predmetibox = new List<Label>();
         private void LoadOcenkiView(int BrojDn)
         {
-            List<string> predmeti = UserKlas._p._smerovi[result[BrojDn]["smer"]]._predmeti;
             OcenkiGrid.Children.Clear();
+            if (Ucenici[BrojDn]._smer == "")
+            {
+                MessageBox.Show("ученикот нема одберено смер");
+                CanWork = true;
+                return;
+            }
+            List<string> predmeti = UserKlas._p._smerovi[Ucenici[BrojDn]._smer]._predmeti;
             //combobox_smer.SelectedIndex = 0;
             int Size = predmeti.Count;
             brPredmeti = Size;
@@ -298,12 +303,17 @@ namespace Frontend
             st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(237, 106, 61));
             ClickedMenuItem = sender;
 
-            if (true)//combobox_smer.SelectedIndex != GetSmerIndex(brojDn)
+            OcenkiGrid.Children.Clear();
+            if (Ucenici[brojDn]._smer != "")
             {
-                OcenkiGrid.Children.Clear();
                 LoadOcenkiView(brojDn);
+                FillOcenki(brojDn);
             }
-            FillOcenki(brojDn);
+            else
+            {
+                MessageBox.Show("ученикот нема одберено смер");
+                CanWork = true;
+            }
         }
 
         private void Combobox_Smer_SelectionChanged(object sender,SelectionChangedEventArgs e)

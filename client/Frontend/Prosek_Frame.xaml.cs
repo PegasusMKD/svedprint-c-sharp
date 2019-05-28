@@ -23,19 +23,7 @@ namespace Frontend
             UserKlas = Home_Page.KlasenKlasa;
             Ucenici = Home_Page.ucenici;
 
-            Dictionary<String, String> dic = new Dictionary<string, string>();
-            dic.Add("Македонски", "5.0");
-            dic.Add("Математика", "4.2");
-            dic.Add("Физика", "2.7");
-            dic.Add("Географија", "4.2");
-            dic.Add("Историја", "5.0");
-            dic.Add("Филозофија", "1.9");
-            dic.Add("Француски", "2.7");
-            dic.Add("Музичко", "4.9");
-
-            Calc();
-            GetData(PredmetiProsek);
-
+            GetData(PredmetiProsekCalc());
         }
 
         private void GetData(Dictionary<String, String> res)
@@ -44,8 +32,9 @@ namespace Frontend
             int ctr = 0;
             foreach (KeyValuePair<string, string> entry in res)
             {
+            
                 StackPanel st = new StackPanel();
-                st.Children.Add(ContentTextBox(entry.Key));
+                st.Children.Add(ContentLabel(entry.Key));
                 st.Children.Add(TextBorderGrid(entry.Value));
 
                 if (ctr % 2 == 0)
@@ -66,16 +55,15 @@ namespace Frontend
             gd.Margin = new Thickness(0, 0, 0, 10);
 
             Border border = CreateBorder(10, 0, 0, 5, "#FF3D84C6");
-            border.Margin = new Thickness(25, 0, 20, 0);
+            border.Margin = new Thickness(25, 0, 20, 0);         
 
-            Border Circle = CreateBorder(50, 0, 0, 20, "#FF3D84C6");
+            Border Circle = CreateBorder(60, 0, 0, 30, "#FF3D84C6");
             Circle.Margin = new Thickness(0, -35, 5, -10);
             Circle.VerticalAlignment = VerticalAlignment.Top;
             Circle.HorizontalAlignment = HorizontalAlignment.Right;
-            Circle.Width = 50;
+            Circle.Width = 60;
 
-            TextBox tx = ContentTextBox(TextBoxText);
-            tx.FontSize = 25;
+            Label tx = CreateLabel(TextBoxText, 23, "Arial");
             tx.Margin = new Thickness(0);
             tx.HorizontalAlignment = HorizontalAlignment.Center;
             tx.VerticalAlignment = VerticalAlignment.Center;
@@ -87,11 +75,20 @@ namespace Frontend
             return gd;
         }
 
-        Dictionary<string, string> PredmetiProsek = new Dictionary<string, string>();
-        private void Calc()
+        private Label ContentLabel(string Text)
         {
+            Label label = CreateLabel(Text, 24, "arial");
+            label.HorizontalAlignment = HorizontalAlignment.Left;
+            label.Margin = new Thickness(30, 0, 0, 0);
+            return label;
+        }
+
+        private Dictionary<string, string> PredmetiProsekCalc()
+        {
+            Dictionary<string, string> PredmetiProsek = new Dictionary<string, string>();
             foreach(Ucenik ucenik in Ucenici)
             {
+                if (ucenik._smer == "") continue;
                 List<string> PredmetiOdSmer = UserKlas._p._smerovi[ucenik._smer]._predmeti;
 
                 for (int i = 0; i <PredmetiOdSmer.Count; i++)
@@ -113,6 +110,8 @@ namespace Frontend
             {
                 PredmetiProsek[predmet.Key] = Array.ConvertAll(predmet.Value.Split(' '), x => float.Parse(x)).Average().ToString("n2");
             }
+
+            return PredmetiProsek;
         }
 
     }

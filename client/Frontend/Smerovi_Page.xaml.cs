@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using static Frontend.SettingsDesign;
 
@@ -15,7 +16,6 @@ namespace Frontend
 
         Klasen UserKlas;
         Dictionary<string, Smer> smerovi;
-        List<Dictionary<string, string>> result;
         List<Ucenik> Ucenici;
 
 
@@ -25,14 +25,13 @@ namespace Frontend
 
             UserKlas = Home_Page.KlasenKlasa;
             smerovi = Home_Page.smerovi;
-            result = Home_Page.result;
             Ucenici = Home_Page.ucenici;
 
             GetData();
         }
 
         List<TextBox> DodajPredmeti = new List<TextBox>();
-
+        bool ContentTextChanged = false;
         private void GetData()
         {
 
@@ -49,7 +48,12 @@ namespace Frontend
                 int PredmetCtr = 0;
                 foreach (string s in Predmeti)
                 {
-                    st.Children.Add(ContentTextBox(s));
+
+                    TextBox ctx = new TextBox();
+                    ctx = ContentTextBox(s);
+                    ctx.TextChanged += Ctx_TextChanged;
+                    ctx.Name = "n" + SmerCtr.ToString() + "s" + PredmetCtr.ToString();
+                    st.Children.Add(ctx);
                     st.Children.Add(TextBorderGrid(true ,SmerCtr, PredmetCtr++));
                 }
 
@@ -63,6 +67,9 @@ namespace Frontend
                     st2.Children.Add(ContentBorder(x));
                     st2.Children.Add(st);
                 }
+                st.MouseLeave += St_MouseLeave;
+
+
                 DodajPredmeti.Add(ContentTextBox("Додавај Предмет"));
                 st.Children.Add(DodajPredmeti[DodajPredmeti.Count-1]);
                 st.Children.Add(TextBorderGrid(false , SmerCtr , DodajPredmeti.Count - 1));
@@ -70,37 +77,54 @@ namespace Frontend
                 SmerCtr++;
             }
 
+            StackPanel NewSmerST = new StackPanel();
             Border NewSmerCB = ContentBorder("Додај Смер");
-            NewSmerCB.MouseLeave += NewSmerCBClicked;
+            NewSmerST.Children.Add(NewSmerCB);
+
+            DodajPredmeti.Add(ContentTextBox("кратенка"));
+            NewSmerST.Children.Add(DodajPredmeti[DodajPredmeti.Count - 1]);
+            NewSmerST.Children.Add(UnderTextBorder());
+
+            DodajPredmeti.Add(ContentTextBox("цел смер"));
+            NewSmerST.Children.Add(DodajPredmeti[DodajPredmeti.Count - 1]);
+            NewSmerST.Children.Add(UnderTextBorder());
+
+            NewSmerST.Children.Add(NewSmerSaveLabel());
+
             if (SmerCtr % 2 == 0)
             {
-                st1.Children.Add(NewSmerCB);
+                st1.Children.Add(NewSmerST);
             }
             else
             {
-                st2.Children.Add(NewSmerCB);
+                st2.Children.Add(NewSmerST);
             }
         }
 
-        private void NewSmerCBClicked(object sender, MouseEventArgs e)
+        private void St_MouseLeave(object sender, MouseEventArgs e)
         {
-            TextBox tx = (TextBox)((Border)sender).Child;
-            UserKlas._p.AddSmer(tx.Text);
+            ContentTextChanged = false;
+        }
+
+        private void Ctx_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ContentTextChanged = true;
+            TextBox tx = (TextBox)sender;
+            int SmerCtr = int.Parse(tx.Name.Substring(1).Split('s')[0]);
+            int PredmetCtr = int.Parse(tx.Name.Substring(1).Split('s')[1]);
+            UserKlas._p._smerovi[UserKlas._p._smerovi.Keys.ElementAt(SmerCtr)].UpdatePredmet(PredmetCtr, tx.Text, UserKlas._token);
             UpdateVar();
-            GetData();
         }
 
         private Border ContentBorder(string LabelContent)
         {
             Border bd = CreateBorder(50, 5, 20, 10, "#FFED6A3E");
-            if (LabelContent == "Додај Смер")
-            {
-                TextBox tx = CreateTextBox(30);
-                tx.Text = LabelContent;
-                tx.FontFamily = new System.Windows.Media.FontFamily("Arial");
-                bd.Child = tx;
-            }
-            else bd.Child = CreateLabel(LabelContent, 30, "Arial");
+            DockPanel DP = new DockPanel();
+            DP.HorizontalAlignment = HorizontalAlignment.Center;
+            DP.VerticalAlignment = VerticalAlignment.Center;
+            DP.Children.Add(CreateLabel(LabelContent, 30, "Arial"));
+            if (LabelContent != "Додај Смер" && LabelContent != "зачувај") DP.Children.Add(CreateTrashIcon());
+            bd.Child = DP;
             return bd;
         }
 
@@ -132,6 +156,21 @@ namespace Frontend
             return gd;
         }
 
+        private Border NewSmerSaveLabel()
+        {
+            Border bd = ContentBorder("зачувај");
+            bd.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FF3D84C6"));
+            bd.MouseLeftButtonDown += NewSmerSaveClicked;
+            return bd;
+        }
+
+        private void NewSmerSaveClicked(object sender, MouseButtonEventArgs e)
+        {
+            UserKlas._p.AddSmer(new Smer(DodajPredmeti[DodajPredmeti.Count()-2].Text,DodajPredmeti[DodajPredmeti.Count-1].Text), UserKlas._token);
+            UpdateVar();
+            GetData();
+        }
+
         private void NewPredmetImgClicked(object sender, MouseButtonEventArgs e , int i , int j)
         {
             string toBeChanged = UserKlas._p._smerovi.Keys.ElementAt(i);
@@ -152,6 +191,11 @@ namespace Frontend
 
         private void RemovePredmetImgClicked(object sender, MouseButtonEventArgs e, int i , int j)
         {
+            if(ContentTextChanged)
+            {
+                return;
+            }
+
             string toBeChanged = UserKlas._p._smerovi.Keys.ElementAt(i);
             if (i == 0) i = 1;
 
@@ -161,9 +205,7 @@ namespace Frontend
                 if (Ucenik._smer == toBeChanged)
                 {
                     Ucenik._oceni.RemoveAt(j);
-                    Ucenik._smer = UserKlas.GetSmerovi()[i];
                     Ucenik.UpdateUcenikOceni(ctr , UserKlas._token);
-                    Ucenik.UpdateUcenikSmer(ctr, UserKlas._token);
                 }
                 ctr++;
             }
@@ -174,6 +216,7 @@ namespace Frontend
 
         private void RemovePredmedimgMouseEnter(object sender, MouseEventArgs e)
         {
+            if (ContentTextChanged == true) return;
             Image img = (Image)sender;
             img.Source = new BitmapImage(new Uri("x_2.png", UriKind.Relative));
         }
@@ -191,6 +234,15 @@ namespace Frontend
             tx.Margin = new Thickness(30, 0, 70, 0);
             tx.Text = Text;
             return tx;
+        }
+
+        private Image CreateTrashIcon()
+        {
+            Image img = new Image();
+            img.Source = new BitmapImage( new Uri("trash_icon.png", UriKind.Relative));
+            img.HorizontalAlignment = HorizontalAlignment.Right;
+            img.Margin = new Thickness(10, 5, 10, 5);
+            return img;
         }
         
         private void UpdateVar()

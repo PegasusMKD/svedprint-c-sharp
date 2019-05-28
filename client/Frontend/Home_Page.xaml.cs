@@ -34,6 +34,7 @@ namespace Frontend
             }, RequestScopes.GetParalelka);
 
             ucenici = result.ConvertAll(x => new Ucenik(x));
+            ucenici.OrderBy(x => x._prezime);
             KlasenKlasa.PopulateSmeroviFromUcenici(ucenici);
             
         }
@@ -46,12 +47,12 @@ namespace Frontend
         private void MainImgClicked(object sender, MouseButtonEventArgs e)
         {
            //Main.Content = loginPage;
-           Main.Content = new Oceni(Main,this);
+           //Main.Content = new Oceni(Main,this);
         }
 
         private void PrintImgClicked(object sender, MouseButtonEventArgs e)
         {
-            Main.Content = new PrintFrame(Main, this);
+            //Main.Content = new PrintFrame(Main, this);
         }
     }
 }

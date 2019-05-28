@@ -157,6 +157,21 @@ namespace Middleware
             _drzavjanstvo = drzavjanstvo ?? "";
         }
         public Ucenik() { }
+
+        public Ucenik(string ime, string srednoime, string prezime, string smer, string br)
+        {
+            _ime = ime;
+            _prezime = prezime;
+            _srednoIme = srednoime;
+            _smer = "";
+            _broj = int.Parse(br);
+            _tatko = " ";
+            _majka = " ";
+            _roden = " ";
+            _mesto_na_ragjanje = " ";
+            _oceni = new List<int>();
+        }
+
         public Ucenik(Dictionary<string, string> valuePairs)
         {
             _ime = valuePairs[RequestParameters.ime] ?? "";
@@ -198,7 +213,69 @@ namespace Middleware
             _polozhil = valuePairs[RequestParameters.polozhil] ?? "";
             // _majkino = valuePairs[RequestParameters.majkino] ?? "";
         }
-    }
+
+        public void UpdateUcenikData(List<string> UpdatedData , string token)
+        {
+            int i = 0;
+            foreach(string x in UpdatedData)
+            {
+                UpdateUcenik(int.Parse(UpdatedData[4]), Request[i++], x , token);
+            }
+            _ime = UpdatedData[0];
+            _srednoIme = UpdatedData[1];
+            _prezime = UpdatedData[2];
+            _smer = UpdatedData[3];
+            _broj = int.Parse(UpdatedData[4]);
+            _tatko = UpdatedData[5];
+            _majka = UpdatedData[6];
+            _roden = UpdatedData[7];
+            _mesto_na_ragjanje = UpdatedData[8];
+        }
+        string[] Request = { RequestParameters.new_first_name, RequestParameters.new_middle_name, RequestParameters.new_last_name, RequestParameters.new_smer, RequestParameters.new_broj_vo_dnevnik, RequestParameters.tatko, RequestParameters.majka, RequestParameters.roden, RequestParameters.mesto_na_ragjanje };
+
+        public string OceniToString()
+        {
+            string OcenkiString = "";
+            foreach (int x in _oceni) OcenkiString += " " + x.ToString();
+            OcenkiString = OcenkiString.Substring(1);
+            return OcenkiString;
+        }
+
+        public string prosek()
+        {
+            if (_oceni.Count == 0) return "0.00";
+            return Array.ConvertAll(_oceni.ToArray(), x => (float)x).Average().ToString("n2");
+        }
+
+        public void UpdateUcenikOceni(int br, string Token)
+        {
+            //UpdateUcenik(br, RequestParameters.oceni, OceniToString(), Token);
+        }
+
+        public void UpdateUcenikSmer(int br, string Token)
+        {
+            //UpdateUcenik(br, RequestParameters.smer, _smer, Token);
+        }
+
+        public void UpdateUcenik(int br, string UpdateParametar, string value, string Token)
+        {
+            Requests.UpdateData(new Dictionary<string, string>() {
+            { RequestParameters.token , Token} , { RequestParameters.ime , _ime } , {RequestParameters.prezime , _prezime } , { RequestParameters.broj , br.ToString() } ,  {RequestParameters.srednoIme , _srednoIme}  , { UpdateParametar, value }
+            }, RequestScopes.UpdateUcenik);
+        }
+
+        public void ChangeSmer(Smer NovSmer, int br, string token)
+        {
+            _smer = NovSmer._smer;
+            _oceni.Clear();
+            foreach (string predmet in NovSmer._predmeti)
+            {
+                _oceni.Add(0);
+            }
+
+             UpdateUcenik(br, RequestParameters.smer, NovSmer._smer, token);
+        }
+}
 
     public class Smer
     {
@@ -216,7 +293,46 @@ namespace Middleware
             _cel_smer = cel_smer ?? throw new ArgumentNullException(nameof(cel_smer));
         }
 
+        public Smer(string smer, string cel_smer = "")
+        {
+            _predmeti = new List<string>();
+            _smer = smer ?? throw new ArgumentNullException(nameof(smer));
+            _cel_smer = cel_smer ?? throw new ArgumentNullException(nameof(cel_smer));
+        }
+
         public Smer() { }
+
+        public void AddPredmet(string NovPredmet, String token)
+        {
+            _predmeti.Add(NovPredmet);
+            UpdateSmer(token);
+        }
+
+        public void UpdatePredmet(int ctr , string UpdatePredmet , string token)
+        {
+            _predmeti[ctr] = UpdatePredmet;
+            UpdateSmer(token);
+        }
+
+        public void RemovePredmet(int i, String token)
+        {
+            _predmeti.RemoveAt(i);
+            UpdateSmer(token);
+        }
+
+        private void UpdateSmer(string token)
+        {
+            string res = "";
+            foreach (string s in _predmeti)
+            {
+                res += s + ",";
+            }
+            if(res.Length > 0)res = res.Substring(0, res.Length - 1);
+            Requests.UpdateData(new Dictionary<string, string>() {
+            { RequestParameters.smer , _smer}, { RequestParameters.token , token } , { RequestParameters.predmeti, res}
+            }, RequestParameters.smer);
+
+        }
     }
 
     public class Paralelka
@@ -226,7 +342,7 @@ namespace Middleware
         [JsonProperty(RequestParameters.ucenici)]
         public List<Ucenik> _ucenici { get; set; }
         public Dictionary<string,Smer> _smerovi;
-
+        public Dictionary<string, Smer> _predmeti;
 
 
         public Paralelka(string paralelka, List<Ucenik> ucenici, Dictionary<string,Smer> smerovi)
@@ -237,6 +353,25 @@ namespace Middleware
         }
 
         public Paralelka() { }
+
+        public void AddSmer(Smer NovSmer, string token)
+        {
+            _smerovi.Add(NovSmer._smer, new Smer(NovSmer._smer,NovSmer._cel_smer));
+            AddtoServerSmer(NovSmer, token);
+        }
+
+        public void RemoveSmer(string SmerIme)
+        {
+            _smerovi.Remove(SmerIme);
+            //UpdateSmerovi();
+        }
+
+        private void AddtoServerSmer(Smer NovSmer, string token)
+        {
+            Requests.AddData(new Dictionary<string, string>() {
+            { RequestParameters.token , token} , { RequestParameters.smer_add , NovSmer._smer } , {RequestParameters.cel_smer , NovSmer._cel_smer } , { RequestParameters.predmeti , string.Join(",",NovSmer._predmeti)}
+            }, RequestScopes.UpdateSmer);
+        }
     }
 
     public class Klasen
@@ -297,6 +432,22 @@ namespace Middleware
             if (_p == null) _p = new Paralelka(_paralelka, ucenici, new Dictionary<string, Smer>());
             _p._ucenici = new List<Ucenik>(ucenici);
             _smerovi = string.Join(",", ucenici.ConvertAll(x => x._smer).Distinct());
+            GetSmerPredmeti();
+        }
+
+        private void GetSmerPredmeti()
+        {
+            _p._smerovi.Clear();
+
+            foreach (var x in GetSmerovi())
+            {
+                _p._smerovi.Add(x, new Smer(Requests.GetData(new Dictionary<string, string>(){
+                    { RequestParameters.token, _token},
+                    { RequestParameters.smer, x } ,
+                    { RequestParameters.paralelka, _paralelka}
+                }, RequestScopes.GetPredmetiSmer)[0]["predmeti"].Split(',').ToList(), x));
+            }
+
         }
     }
 
