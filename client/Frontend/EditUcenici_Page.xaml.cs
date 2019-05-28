@@ -45,6 +45,7 @@ namespace Frontend
             res.Add("родител(Мајка)", "Име Презиме");
             res.Add("ден на раѓање", "00.00.0000");
             res.Add("место на раѓање", "Скопје");
+            res.Add("Државјанство", "РСМ");
             //res.Add("пол", "");
 
             if (Ucenici.Count > BrojDn)
@@ -59,6 +60,7 @@ namespace Frontend
                 res["родител(Мајка)"] = Ucenici[BrojDn]._majka;
                 res["ден на раѓање"] = Ucenici[BrojDn]._roden;
                 res["место на раѓање"] = Ucenici[BrojDn]._mesto_na_ragjanje;
+                res["Државјанство"] = Ucenici[BrojDn]._drzavjanstvo;
             }
             MainGrid.Height = 0;
 
@@ -119,7 +121,6 @@ namespace Frontend
             return (BrojDn +1).ToString();
         }
 
-        string[] Request = { RequestParameters.new_first_name, RequestParameters.new_middle_name, RequestParameters.new_last_name, RequestParameters.new_smer , RequestParameters.new_broj_vo_dnevnik, RequestParameters.tatko,RequestParameters.majka,RequestParameters.roden,RequestParameters.mesto_na_ragjanje };
         private void SaveBtnClicked(object sender, MouseButtonEventArgs e)
         {
             List<string> tx = Answer.ConvertAll(x => x.Text);
@@ -130,14 +131,21 @@ namespace Frontend
         private void CreateUcenikImgClicked(object sender, MouseButtonEventArgs e)
         {
             CreateUcenik(Answer[0].Text, Answer[1].Text, Answer[2].Text, Answer[3].Text, Answer[4].Text);
+            List<string> tx = Answer.ConvertAll(x => x.Text);
+            Ucenici[BrojDn].UpdateUcenikData(tx, UserKlas._token);
+            SortUcenici();
         }
 
         private void CreateUcenik(string ime, string srednoime, string prezime, string smer, string br)
         {
-         
-            Ucenici.Add(new Ucenik(ime, srednoime, prezime, smer, br));
+            if(UserKlas._p._smerovi.ContainsKey(smer) == false)
+            {
+                MessageBox.Show("Смерот не се совпаѓа");
+                return;
+            }
+            Ucenici.Add(new Ucenik(ime, srednoime, prezime, UserKlas._p._smerovi[smer], br));
+            Ucenici.Last().CreateServerUcenik(UserKlas._token);
             MessageBox.Show("успешно креирање на нов ученик");
-            SortUcenici();
         }
 
         private void SortUcenici()
@@ -145,12 +153,16 @@ namespace Frontend
             var ordered = Ucenici.OrderBy(x => x._prezime).ThenBy(x => x._ime);
             Ucenici = ordered.ToList();
             Home_Page.ucenici = Ucenici;
+            //updateBrojDn
             GetData();
         }
 
-        private void DeleteUcenik()
+        private void DeleteUcenikImgClicked(object sender , MouseButtonEventArgs e)
         {
-
+            Ucenici[BrojDn].DeleteUcenik(UserKlas._token);
+            Ucenici.RemoveAt(BrojDn);
+            SortUcenici();
+            GetData();
         }
 
     }

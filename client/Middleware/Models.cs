@@ -169,6 +169,7 @@ namespace Middleware
             _majka = " ";
             _roden = " ";
             _mesto_na_ragjanje = " ";
+            _oceni = new List<int>();
             foreach (string predmet in smer._predmeti)
             {
                 _oceni.Add(0);
@@ -178,8 +179,16 @@ namespace Middleware
         public void CreateServerUcenik(string token)
         {
             Requests.AddData(new Dictionary<string, string>() {
-            { RequestParameters.token , token} , { RequestParameters.ime , _ime } , {RequestParameters.prezime , _prezime } , { RequestParameters.broj , br.ToString() } ,  {RequestParameters.srednoIme , _srednoIme}  , { RequestParameters.smer, _smer }
+            { RequestParameters.token , token} , { RequestParameters.ime , _ime } , {RequestParameters.prezime , _prezime } , { RequestParameters.broj , _broj.ToString() } ,  {RequestParameters.srednoIme , _srednoIme}  , { RequestParameters.smer, _smer }
             }, RequestScopes.AddUcenici);
+        }
+
+        public void DeleteUcenik(string token)
+        {
+            Requests.UpdateData(new Dictionary<string, string>()
+            {
+                { RequestParameters.token , token} , { RequestParameters.action , RequestParameters.delete } , { RequestParameters.ime , _ime } , {RequestParameters.prezime , _prezime } ,  {RequestParameters.srednoIme , _srednoIme}  
+            } , RequestScopes.UpdateUcenik);
         }
 
         public Ucenik(Dictionary<string, string> valuePairs)
@@ -240,8 +249,21 @@ namespace Middleware
             _majka = UpdatedData[6];
             _roden = UpdatedData[7];
             _mesto_na_ragjanje = UpdatedData[8];
+            _drzavjanstvo = UpdatedData[9];
         }
-        string[] Request = { RequestParameters.new_first_name, RequestParameters.new_middle_name, RequestParameters.new_last_name, RequestParameters.new_smer, RequestParameters.new_broj_vo_dnevnik, RequestParameters.tatko, RequestParameters.majka, RequestParameters.roden, RequestParameters.mesto_na_ragjanje };
+        string[] Request = {
+            RequestParameters.new_first_name,
+            RequestParameters.new_middle_name,
+            RequestParameters.new_last_name,
+            RequestParameters.new_smer,
+            RequestParameters.new_broj_vo_dnevnik,
+            RequestParameters.tatko,
+            RequestParameters.majka,
+            RequestParameters.roden,
+            RequestParameters.mesto_na_ragjanje,
+            RequestParameters.drzavjanstvo
+            //RequestParameters
+        };
 
         public string OceniToString()
         {
@@ -283,7 +305,7 @@ namespace Middleware
                 _oceni.Add(0);
             }
 
-             UpdateUcenik(br, RequestParameters.smer, NovSmer._smer, token);
+             UpdateUcenik(br, RequestParameters.new_smer, NovSmer._smer, token);
         }
 }
 
@@ -343,6 +365,14 @@ namespace Middleware
             }, RequestParameters.smer);
 
         }
+
+        public void RemoveSmer(string token)
+        {
+            Requests.UpdateData(new Dictionary<string, string>()
+            {
+                { RequestParameters.token , token} , { RequestParameters.action , RequestParameters.delete } , { RequestParameters.smer , _smer } 
+            }, RequestScopes.UpdateSmer);
+        }
     }
 
     public class Paralelka
@@ -383,10 +413,6 @@ namespace Middleware
             }, RequestScopes.UpdateSmer);
         }
 
-        public Ucenik AddUcenik(string ime , string srednoime , string prezime , int brojdn , string smer)
-        {
-            Ucenik ucenik = new Ucenik(;
-        }
     }
 
     public class Klasen

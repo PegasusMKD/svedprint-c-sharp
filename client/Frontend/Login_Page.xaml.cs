@@ -37,7 +37,6 @@ namespace Frontend
 
         private void login()
         {
-            hardcode_userdata();
 
             Klasen temp = Login.LoginWithCred(Username_txt.Text, Password_txt.Text);
 
@@ -56,8 +55,7 @@ namespace Frontend
         [Conditional("DEBUG")]
         private void hardcode_userdata()
         {
-            Username_txt.Text = "Гоце_Ангеловски";
-            Password_txt.Text = "G0c3T@";
+          
         }
 
         private void ShowAlertBox(string Alert)

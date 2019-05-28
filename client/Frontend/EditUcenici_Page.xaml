@@ -27,7 +27,7 @@
         </Grid>
         <DockPanel HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,5,20,5">
             <Image Source="plus.png" MouseLeftButtonDown="CreateUcenikImgClicked" />
-            <Image Source="trash_icon.png" Margin="10,0,0,0"></Image>
+            <Image Source="trash_icon.png" MouseLeftButtonDown ="DeleteUcenikImgClicked" Margin="10,0,0,0"></Image>
         </DockPanel>
 
 

@@ -36,11 +36,11 @@ namespace Frontend
 
             ucenici = result.ConvertAll(x => new Ucenik(x));
             ucenici.OrderBy(x => x._prezime).ThenBy( x=> x._ime);
-            KlasenKlasa.PopulateSmeroviFromUcenici(ucenici);
-            if(ucenici.Count == 0 && KlasenKlasa._smerovi != "")
+            if(KlasenKlasa._smerovi != "")
             {
                 KlasenKlasa.PopulateSmerovi(ucenici);
             }
+            else KlasenKlasa.PopulateSmeroviFromUcenici(ucenici);
             
         }
 

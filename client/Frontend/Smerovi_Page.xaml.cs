@@ -123,7 +123,7 @@ namespace Frontend
             DP.HorizontalAlignment = HorizontalAlignment.Center;
             DP.VerticalAlignment = VerticalAlignment.Center;
             DP.Children.Add(CreateLabel(LabelContent, 30, "Arial"));
-            if (LabelContent != "Додај Смер" && LabelContent != "зачувај") DP.Children.Add(CreateTrashIcon());
+            if (LabelContent != "Додај Смер" && LabelContent != "зачувај") DP.Children.Add(CreateTrashIcon(LabelContent));
             bd.Child = DP;
             return bd;
         }
@@ -236,15 +236,47 @@ namespace Frontend
             return tx;
         }
 
-        private Image CreateTrashIcon()
+        private Image CreateTrashIcon(string smer)
         {
             Image img = new Image();
+            img.Name = smer;
             img.Source = new BitmapImage( new Uri("trash_icon.png", UriKind.Relative));
             img.HorizontalAlignment = HorizontalAlignment.Right;
             img.Margin = new Thickness(10, 5, 10, 5);
+            img.MouseLeftButtonDown += Img_MouseLeftButtonDown;
             return img;
         }
-        
+
+        private void Img_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if(UserKlas._p._smerovi.Count < 2)
+            {
+                MessageBox.Show("неможе сите смерови да се избришат");
+                return;
+            }
+            Image img = (Image)sender;
+            String smer = img.Name;
+            Smer NovSmer;
+            if (UserKlas._p._smerovi.Keys.ElementAt(0) != smer)
+            {
+                NovSmer = UserKlas._p._smerovi.Values.ElementAt(0);
+            }
+            else NovSmer = UserKlas._p._smerovi.Values.ElementAt(1);
+            int ctr = 0;
+            foreach(Ucenik ucenik in Ucenici)
+            {
+                if(ucenik._smer == smer)
+                {
+                    ucenik.ChangeSmer(NovSmer, ctr, UserKlas._token);
+                }
+                ctr++;
+            }
+            UserKlas._p._smerovi[smer].RemoveSmer(UserKlas._token);
+            UserKlas._p._smerovi.Remove(smer);
+            UpdateVar();
+            GetData();
+        }
+
         private void UpdateVar()
         {
             Home_Page.KlasenKlasa = UserKlas;
