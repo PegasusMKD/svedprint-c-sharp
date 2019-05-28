@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Middleware;
@@ -34,8 +35,12 @@ namespace Frontend
             }, RequestScopes.GetParalelka);
 
             ucenici = result.ConvertAll(x => new Ucenik(x));
-            ucenici.OrderBy(x => x._prezime);
+            ucenici.OrderBy(x => x._prezime).ThenBy( x=> x._ime);
             KlasenKlasa.PopulateSmeroviFromUcenici(ucenici);
+            if(ucenici.Count == 0 && KlasenKlasa._smerovi != "")
+            {
+                KlasenKlasa.PopulateSmerovi(ucenici);
+            }
             
         }
 
@@ -46,8 +51,9 @@ namespace Frontend
 
         private void MainImgClicked(object sender, MouseButtonEventArgs e)
         {
-           //Main.Content = loginPage;
-           //Main.Content = new Oceni(Main,this);
+            //Main.Content = loginPage;
+            if (ucenici.Count > 0) Main.Content = new Oceni(Main, this);
+            else MessageBox.Show("немате стаено ученици");
         }
 
         private void PrintImgClicked(object sender, MouseButtonEventArgs e)

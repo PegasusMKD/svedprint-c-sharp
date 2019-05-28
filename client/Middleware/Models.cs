@@ -158,18 +158,28 @@ namespace Middleware
         }
         public Ucenik() { }
 
-        public Ucenik(string ime, string srednoime, string prezime, string smer, string br)
+        public Ucenik(string ime, string srednoime, string prezime, Smer smer, string br)
         {
             _ime = ime;
             _prezime = prezime;
             _srednoIme = srednoime;
-            _smer = "";
+            _smer = smer._smer;
             _broj = int.Parse(br);
             _tatko = " ";
             _majka = " ";
             _roden = " ";
             _mesto_na_ragjanje = " ";
-            _oceni = new List<int>();
+            foreach (string predmet in smer._predmeti)
+            {
+                _oceni.Add(0);
+            }
+        }
+
+        public void CreateServerUcenik(string token)
+        {
+            Requests.AddData(new Dictionary<string, string>() {
+            { RequestParameters.token , token} , { RequestParameters.ime , _ime } , {RequestParameters.prezime , _prezime } , { RequestParameters.broj , br.ToString() } ,  {RequestParameters.srednoIme , _srednoIme}  , { RequestParameters.smer, _smer }
+            }, RequestScopes.AddUcenici);
         }
 
         public Ucenik(Dictionary<string, string> valuePairs)
@@ -249,12 +259,12 @@ namespace Middleware
 
         public void UpdateUcenikOceni(int br, string Token)
         {
-            //UpdateUcenik(br, RequestParameters.oceni, OceniToString(), Token);
+            UpdateUcenik(br, RequestParameters.oceni, OceniToString(), Token);
         }
 
         public void UpdateUcenikSmer(int br, string Token)
         {
-            //UpdateUcenik(br, RequestParameters.smer, _smer, Token);
+            UpdateUcenik(br, RequestParameters.smer, _smer, Token);
         }
 
         public void UpdateUcenik(int br, string UpdateParametar, string value, string Token)
@@ -372,6 +382,11 @@ namespace Middleware
             { RequestParameters.token , token} , { RequestParameters.smer_add , NovSmer._smer } , {RequestParameters.cel_smer , NovSmer._cel_smer } , { RequestParameters.predmeti , string.Join(",",NovSmer._predmeti)}
             }, RequestScopes.UpdateSmer);
         }
+
+        public Ucenik AddUcenik(string ime , string srednoime , string prezime , int brojdn , string smer)
+        {
+            Ucenik ucenik = new Ucenik(;
+        }
     }
 
     public class Klasen
@@ -431,14 +446,22 @@ namespace Middleware
         {
             if (_p == null) _p = new Paralelka(_paralelka, ucenici, new Dictionary<string, Smer>());
             _p._ucenici = new List<Ucenik>(ucenici);
+            if (ucenici.Count == 0) return;
             _smerovi = string.Join(",", ucenici.ConvertAll(x => x._smer).Distinct());
             GetSmerPredmeti();
         }
 
-        private void GetSmerPredmeti()
+        public void PopulateSmerovi(List<Ucenik> ucenici)
+        {
+            if (_p == null) _p = new Paralelka(_paralelka, ucenici, new Dictionary<string, Smer>());
+            _p._ucenici = ucenici;
+            GetSmerPredmeti();
+        }
+
+        public void GetSmerPredmeti()
         {
             _p._smerovi.Clear();
-
+            if (GetSmerovi().Length == 0) return;
             foreach (var x in GetSmerovi())
             {
                 _p._smerovi.Add(x, new Smer(Requests.GetData(new Dictionary<string, string>(){

@@ -41,7 +41,7 @@ namespace Frontend
 
             Klasen temp = Login.LoginWithCred(Username_txt.Text, Password_txt.Text);
 
-            if (temp._ime != "002" && temp._ime != string.Empty)
+            if (temp._ime != "002" && temp._ime != string.Empty && temp._ime != null)
             {
                 ShowAlertBox("Успешно логирање");
                 Main.Content = new Home_Page(Main, this, temp);
@@ -56,8 +56,8 @@ namespace Frontend
         [Conditional("DEBUG")]
         private void hardcode_userdata()
         {
-            Username_txt.Text = "XWqNWp";
-            Password_txt.Text = "kj5J7y";
+            Username_txt.Text = "Гоце_Ангеловски";
+            Password_txt.Text = "G0c3T@";
         }
 
         private void ShowAlertBox(string Alert)
