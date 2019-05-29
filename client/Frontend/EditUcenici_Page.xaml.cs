@@ -20,41 +20,23 @@ namespace Frontend
         int BrojDn = 0;
 
         private readonly Dictionary<string, string> names = new Dictionary<string, string>(){
-      {"Име", "ime"},
-      {"Презиме", "prezime"},
-      {"Средно Име", "srednoIme"},
-      {"Смер", "smer"},
-      {"родител(Татко)","tatko"},
-      {"родител(Мајка)","majka"},
-      {"број во дневник","broj"},
-      { "Државјанство","drzavjanstvo"},
-      {"Пол","gender"},
-      {"ден на раѓање","roden"},
-      {"место на раѓање","mesto_na_ragjanje"},
-      {
-        "место на живеење",
-        "mesto_na_zhiveenje"
-      },
-      {
-        "по кој пат ја учи годината",
-        "pat"
-      },
-      {
-        "дали е положена годината",
-        "polozhil"
-      },
-      {
-        "број на оправдани изостаноци",
-        "opravdani"
-      },
-      {
-        "број на неоправдани изостаноци",
-        "neopravdani"
-      },
-      {
-        "Поведение",
-        "povedenie"
-      }
+      {"Име", RequestParameters.ime},
+      {"Презиме", RequestParameters.prezime},
+      {"Средно Име", RequestParameters.srednoIme},
+      {"Смер", RequestParameters.smer},
+      {"родител(Татко)",RequestParameters.tatko},
+      {"родител(Мајка)",RequestParameters.majka},
+      {"број во дневник",RequestParameters.broj},
+      { "Државјанство",RequestParameters.drzavjanstvo},
+      {"Пол",RequestParameters.gender},
+      {"ден на раѓање",RequestParameters.roden},
+      {"место на раѓање",RequestParameters.mesto_na_ragjanje},
+      {"место на живеење",RequestParameters.mesto_na_zhiveenje},
+      {"по кој пат ја учи годината",RequestParameters.pat_polaga},
+      {"дали е положена годината",RequestParameters.polozhil},
+      {"број на оправдани изостаноци",RequestParameters.opravdani},
+      {"број на неоправдани изостаноци",RequestParameters.neopravdani},
+      {"Поведение",RequestParameters.povedenie}
 };
 
 
@@ -92,6 +74,7 @@ namespace Frontend
             dictionary.Add("број на оправдани изостаноци", "0");
             dictionary.Add("број на неоправдани изостаноци", "0");
             dictionary.Add("Поведение", "Примарно");
+
             if (Ucenici.Count > BrojDn)
             {
                 dictionary["Име"] = Ucenici[BrojDn]._ime;
@@ -135,7 +118,7 @@ namespace Frontend
                 MainGrid.Children.Add(stackPanel);
                 ++index;
             }
-            string[][] cb = new string[][]{ new string[]{ "Проектни Активности" ,"proektni" ,"izboren1_odg", } ,new string[] { "Проектни Активности", "proektni" , "izboren2_odg" } };
+            string[][] cb = new string[][] { new string[] { "Проектни Активности", "proektni", "izboren1_odg", }, new string[] { "Проектни Активности", "proektni", "izboren2_odg" } };
             foreach (string[] x in cb)
             {
                 StackPanel stackPanel = new StackPanel();
@@ -211,14 +194,15 @@ namespace Frontend
 
         }
 
-        private void ContentTextBoxTextChanged(object sender, TextChangedEventArgs e)
+        private void ContentTextBoxLostFocus(object sender, RoutedEventArgs e)
         {
         }
 
 
+
         private Border ContentBorder(string LabelContent)
         {
-            Border bd = CreateBorder(40, 5 , 20,10, "#FFED6A3E");
+            Border bd = CreateBorder(40, 5, 20, 10, "#FFED6A3E");
             bd.Child = CreateLabel(LabelContent, 20, "Arial");
             return bd;
         }
@@ -238,12 +222,12 @@ namespace Frontend
         String Valid(int x)
         {
             if (BrojDn + x >= 0 && BrojDn + x < Ucenici.Count) BrojDn += x;
-            return (BrojDn +1).ToString();
+            return (BrojDn + 1).ToString();
         }
 
         private void SaveBtnClicked(object sender, MouseButtonEventArgs e)
         {
-            if(BrojDn >= Ucenici.Count)
+            if (BrojDn >= Ucenici.Count)
             {
                 MessageBox.Show("Ученикот со таков број во дневник не постои");
             }
@@ -255,7 +239,7 @@ namespace Frontend
             Dictionary<string, string> tx = new Dictionary<string, string>();
             Dictionary<string, string> OrigData = new Dictionary<string, string>();
             Answer.ForEach((x => tx.Add(x.Name, x.Text)));
-            tx.Add("proektni",Ucenici[BrojDn].ProektniToString(CBList.ConvertAll( x => x.SelectedValue.ToString())));
+            tx.Add("proektni", Ucenici[BrojDn].ProektniToString(CBList.ConvertAll(x => x.SelectedValue.ToString())));
             OrigData["ime"] = Ucenici[BrojDn]._ime;
             OrigData["prezime"] = Ucenici[BrojDn]._prezime;
             OrigData["srednoIme"] = Ucenici[BrojDn]._srednoIme;
@@ -300,12 +284,12 @@ namespace Frontend
 
         private void CreateUcenik(string ime, string srednoime, string prezime, string smer, string br)
         {
-            if(UserKlas._p._smerovi.ContainsKey(smer) == false)
+            if (UserKlas._p._smerovi.ContainsKey(smer) == false)
             {
                 MessageBox.Show("Смерот не се совпаѓа");
                 return;
             }
-            List<Ucenik> match = Ucenici.Where(x => (x._prezime == prezime ) && (x._ime == ime) && (x._srednoIme == srednoime)).ToList();
+            List<Ucenik> match = Ucenici.Where(x => (x._prezime == prezime) && (x._ime == ime) && (x._srednoIme == srednoime)).ToList();
             Ucenici.Add(new Ucenik(ime, srednoime, prezime, UserKlas._p._smerovi[smer], br));
             Ucenici.Last()._duplicate_ctr = match.Count();
             Ucenici.Last().CreateServerUcenik(UserKlas._token);
@@ -321,9 +305,9 @@ namespace Frontend
             GetData();
         }
 
-        private void DeleteUcenikImgClicked(object sender , MouseButtonEventArgs e)
+        private void DeleteUcenikImgClicked(object sender, MouseButtonEventArgs e)
         {
-            if(BrojDn >= Ucenici.Count)
+            if (BrojDn >= Ucenici.Count)
             {
                 MessageBox.Show("Ученикот со тој број не постои");
                 return;
