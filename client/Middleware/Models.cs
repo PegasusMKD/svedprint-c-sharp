@@ -321,7 +321,7 @@ namespace Middleware
         public void UpdateUcenik(int br, string UpdateParametar, string value, string Token)
         {
             Requests.UpdateData(new Dictionary<string, string>() {
-            { RequestParameters.token , Token} , { RequestParameters.ime , _ime } , {RequestParameters.prezime , _prezime } , { RequestParameters.broj , br.ToString() } ,  {RequestParameters.srednoIme , _srednoIme}  , { UpdateParametar, value }
+            { RequestParameters.token , Token} , { RequestParameters.ime , _ime } , {RequestParameters.prezime , _prezime } , { RequestParameters.broj , (br+1).ToString() } ,  {RequestParameters.srednoIme , _srednoIme}  , { UpdateParametar, value }
             }, RequestScopes.UpdateUcenik);
         }
 
