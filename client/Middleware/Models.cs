@@ -425,8 +425,24 @@ namespace Middleware
 
         public void AddSmer(Smer NovSmer, string token)
         {
-            _smerovi.Add(NovSmer._smer, new Smer(NovSmer._smer, NovSmer._cel_smer));
+            //_smerovi.Add(NovSmer._smer, new Smer(NovSmer._smer, NovSmer._cel_smer));
             AddtoServerSmer(NovSmer, token);
+            
+            //_smerovi.Add(NovSmer._smer, new Smer(Requests.GetData(new Dictionary<string, string>(){
+            //    { RequestParameters.token, token},
+            //    { RequestParameters.smer, NovSmer._smer }
+            //}, RequestScopes.GetPredmetiSmer)[0]["predmeti"].Split(',').ToList(), NovSmer._smer, NovSmer._cel_smer));
+            
+            var predmeti = Requests.GetData(new Dictionary<string, string>(){
+                { RequestParameters.token, token},
+                { RequestParameters.smer, NovSmer._smer } 
+            }, RequestScopes.GetPredmetiSmer);
+            List<string> Lpredmeti = new List<string>();
+            if (!string.IsNullOrEmpty(predmeti[0]["predmeti"]))
+            {
+                Lpredmeti = predmeti[0]["predmeti"].Split(',').ToList();
+            }
+            _smerovi.Add(NovSmer._smer, new Smer(Lpredmeti, NovSmer._smer, NovSmer._cel_smer));
         }
 
         public void RemoveSmer(string SmerIme)
@@ -519,11 +535,17 @@ namespace Middleware
             if (GetSmerovi().Length == 0) return;
             foreach (var x in GetSmerovi())
             {
-                _p._smerovi.Add(x, new Smer(Requests.GetData(new Dictionary<string, string>(){
+                var predmeti = Requests.GetData(new Dictionary<string, string>(){
                     { RequestParameters.token, _token},
                     { RequestParameters.smer, x } ,
                     { RequestParameters.paralelka, _paralelka}
-                }, RequestScopes.GetPredmetiSmer)[0]["predmeti"].Split(',').ToList(), x));
+                }, RequestScopes.GetPredmetiSmer);
+                List<string> Lpredmeti = new List<string>();
+                if (!string.IsNullOrEmpty(predmeti[0]["predmeti"]))
+                {
+                    Lpredmeti = predmeti[0]["predmeti"].Split(',').ToList();
+                }
+                _p._smerovi.Add(x, new Smer(Lpredmeti, x));
             }
 
         }
