@@ -7,7 +7,7 @@
     <ProjectGuid>{891CC765-A626-4F18-9BAC-1483E9BC8DFF}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Frontend</RootNamespace>
-    <AssemblyName>Frontend</AssemblyName>
+    <AssemblyName>SvedPrint</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -227,7 +227,9 @@
     <Resource Include="Load_Icon.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="grades_icon_xlj_icon.ico" />
+    <Content Include="grades_icon_xlj_icon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="grades_icon_XwQ_icon.ico" />
