@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>grades_icon_xlj_icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -222,6 +225,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Load_Icon.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="grades_icon_xlj_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

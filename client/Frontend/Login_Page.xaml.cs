@@ -27,13 +27,10 @@ namespace Frontend
             
         }
         
-
         private void Login_Btn_Click(object sender, RoutedEventArgs e)
         {
             login();
         }
-
-
 
         private void login()
         {
