@@ -467,8 +467,24 @@ namespace Middleware
 
         public void AddSmer(Smer NovSmer, string token)
         {
-            _smerovi.Add(NovSmer._smer, new Smer(NovSmer._smer, NovSmer._cel_smer));
+            //_smerovi.Add(NovSmer._smer, new Smer(NovSmer._smer, NovSmer._cel_smer));
             AddtoServerSmer(NovSmer, token);
+
+            //_smerovi.Add(NovSmer._smer, new Smer(Requests.GetData(new Dictionary<string, string>(){
+            //    { RequestParameters.token, token},
+            //    { RequestParameters.smer, NovSmer._smer }
+            //}, RequestScopes.GetPredmetiSmer)[0]["predmeti"].Split(',').ToList(), NovSmer._smer, NovSmer._cel_smer));
+
+            var predmeti = Requests.GetData(new Dictionary<string, string>(){
+                { RequestParameters.token, token},
+                { RequestParameters.smer, NovSmer._smer }
+            }, RequestScopes.GetPredmetiSmer);
+            List<string> Lpredmeti = new List<string>();
+            if (!string.IsNullOrEmpty(predmeti[0]["predmeti"]))
+            {
+                Lpredmeti = predmeti[0]["predmeti"].Split(',').ToList();
+            }
+            _smerovi.Add(NovSmer._smer, new Smer(Lpredmeti, NovSmer._smer, NovSmer._cel_smer));
         }
 
         public void RemoveSmer(string SmerIme)

@@ -54,7 +54,7 @@ namespace Frontend
                     ctx.TextChanged += Ctx_TextChanged;
                     ctx.Name = "n" + SmerCtr.ToString() + "s" + PredmetCtr.ToString();
                     st.Children.Add(ctx);
-                    st.Children.Add(TextBorderGrid(true ,SmerCtr, PredmetCtr++));
+                    st.Children.Add(TextBorderGrid(true, SmerCtr, PredmetCtr++));
                 }
 
                 if (SmerCtr % 2 == 0)
@@ -71,8 +71,8 @@ namespace Frontend
 
 
                 DodajPredmeti.Add(ContentTextBox("Додавај Предмет"));
-                st.Children.Add(DodajPredmeti[DodajPredmeti.Count-1]);
-                st.Children.Add(TextBorderGrid(false , SmerCtr , DodajPredmeti.Count - 1));
+                st.Children.Add(DodajPredmeti[DodajPredmeti.Count - 1]);
+                st.Children.Add(TextBorderGrid(false, SmerCtr, DodajPredmeti.Count - 1));
 
                 SmerCtr++;
             }
@@ -128,7 +128,7 @@ namespace Frontend
             return bd;
         }
 
-        private Grid TextBorderGrid(bool IsX,int SmerCtr , int PredmetCtr)
+        private Grid TextBorderGrid(bool IsX, int SmerCtr, int PredmetCtr)
         {
             Grid gd = new Grid();
             gd.Margin = new Thickness(0, 0, 0, 10);
@@ -143,13 +143,13 @@ namespace Frontend
             border.Child = img;
 
             gd.Children.Add(border);
-            if(IsX == false)
+            if (IsX == false)
             {
                 img.MouseLeftButtonDown += new MouseButtonEventHandler((sender, e) => NewPredmetImgClicked(sender, e, SmerCtr, PredmetCtr));
             }
-            if(IsX == true)
+            if (IsX == true)
             {
-                img.MouseLeftButtonDown += new MouseButtonEventHandler((sender, e) => RemovePredmetImgClicked(sender, e, SmerCtr , PredmetCtr));
+                img.MouseLeftButtonDown += new MouseButtonEventHandler((sender, e) => RemovePredmetImgClicked(sender, e, SmerCtr, PredmetCtr));
                 img.MouseEnter += RemovePredmedimgMouseEnter;
                 img.MouseLeave += RemovePredmedimgMouseLeave;
             }
@@ -166,33 +166,35 @@ namespace Frontend
 
         private void NewSmerSaveClicked(object sender, MouseButtonEventArgs e)
         {
-            UserKlas._p.AddSmer(new Smer(DodajPredmeti[DodajPredmeti.Count()-2].Text,DodajPredmeti[DodajPredmeti.Count-1].Text), UserKlas._token);
+            // TODO:
+            // validator za kratenica na smer, max 7 karakteri
+            UserKlas._p.AddSmer(new Smer(DodajPredmeti[DodajPredmeti.Count() - 2].Text, DodajPredmeti[DodajPredmeti.Count - 1].Text), UserKlas._token);
             UserKlas.GetSmerPredmeti(UserKlas._p._smerovi.Keys.ToList());
             UpdateVar();
             GetData();
         }
 
-        private void NewPredmetImgClicked(object sender, MouseButtonEventArgs e , int i , int j)
+        private void NewPredmetImgClicked(object sender, MouseButtonEventArgs e, int i, int j)
         {
             string toBeChanged = UserKlas._p._smerovi.Keys.ElementAt(i);
             int ctr = 0;
-            foreach(Ucenik Ucenik in Ucenici)
+            foreach (Ucenik Ucenik in Ucenici)
             {
-                if(Ucenik._smer == toBeChanged)
+                if (Ucenik._smer == toBeChanged)
                 {
                     Ucenik._oceni.Add(1);
                     Ucenik.UpdateUcenikOceni(UserKlas._token);
                 }
                 ctr++;
             }
-            UserKlas._p._smerovi[toBeChanged].AddPredmet(DodajPredmeti[j].Text,UserKlas._token);
+            UserKlas._p._smerovi[toBeChanged].AddPredmet(DodajPredmeti[j].Text, UserKlas._token);
             UpdateVar();
             GetData();
         }
 
-        private void RemovePredmetImgClicked(object sender, MouseButtonEventArgs e, int i , int j)
+        private void RemovePredmetImgClicked(object sender, MouseButtonEventArgs e, int i, int j)
         {
-            if(ContentTextChanged)
+            if (ContentTextChanged)
             {
                 return;
             }
@@ -205,7 +207,7 @@ namespace Frontend
             {
                 if (Ucenik._smer == toBeChanged)
                 {
-                    if(Ucenik._oceni.Count>j)Ucenik._oceni.RemoveAt(j);
+                    if (Ucenik._oceni.Count > j) Ucenik._oceni.RemoveAt(j);
                     Ucenik.UpdateUcenikOceni(UserKlas._token);
                 }
                 ctr++;
@@ -241,7 +243,7 @@ namespace Frontend
         {
             Image img = new Image();
             img.Tag = smer;
-            img.Source = new BitmapImage( new Uri("trash_icon.png", UriKind.Relative));
+            img.Source = new BitmapImage(new Uri("trash_icon.png", UriKind.Relative));
             img.HorizontalAlignment = HorizontalAlignment.Right;
             img.Margin = new Thickness(10, 5, 10, 5);
             img.MouseLeftButtonDown += Img_MouseLeftButtonDown;
@@ -250,7 +252,7 @@ namespace Frontend
 
         private void Img_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if(UserKlas._p._smerovi.Count < 2)
+            if (UserKlas._p._smerovi.Count < 2)
             {
                 MessageBox.Show("неможе сите смерови да се избришат");
                 return;
@@ -264,11 +266,11 @@ namespace Frontend
             }
             else NovSmer = UserKlas._p._smerovi.Values.ElementAt(1);
             int ctr = 0;
-            foreach(Ucenik ucenik in Ucenici)
+            foreach (Ucenik ucenik in Ucenici)
             {
-                if(ucenik._smer == smer)
+                if (ucenik._smer == smer)
                 {
-                    ucenik.ChangeSmer(NovSmer , UserKlas._token);
+                    ucenik.ChangeSmer(NovSmer, UserKlas._token);
                 }
                 ctr++;
             }
