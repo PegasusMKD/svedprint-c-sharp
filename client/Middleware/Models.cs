@@ -117,7 +117,7 @@ namespace Middleware
             _drzavjanstvo = drzavjanstvo ?? throw new ArgumentNullException(nameof(drzavjanstvo));
         } */
 
-        public Ucenik(string ime, string srednoIme, string prezime, List<int> oceni, string smer, int broj, string roden, string mesto_na_zhiveenje, string mesto_na_ragjanje, string povedenie, int opravdani, int neopravdani, string tip, string pat_polaga, string tatko, string majka, string gender, string maturska, string izborni, string proektni, string merki, string prethodna_godina, string prethoden_uspeh, string prethodno_uchilishte, string delovoden_broj, string datum_sveditelstvo, string polozhil,  string prethodna_uchebna, string pedagoshki_merki, string drzavjanstvo,string pat_polaga_ispit, string ispiten, string prethoden_delovoden)
+        public Ucenik(string ime, string srednoIme, string prezime, List<int> oceni, string smer, int broj, string roden, string mesto_na_zhiveenje, string mesto_na_ragjanje, string povedenie, int opravdani, int neopravdani, string tip, string pat_polaga, string tatko, string majka, string gender, string maturska, string izborni, string proektni, string merki, string prethodna_godina, string prethoden_uspeh, string prethodno_uchilishte, string delovoden_broj, string datum_sveditelstvo, string polozhil, string prethodna_uchebna, string pedagoshki_merki, string drzavjanstvo, string pat_polaga_ispit, string ispiten, string prethoden_delovoden)
         { //string majkino,
             _ime = ime ?? "";
             _srednoIme = srednoIme ?? "";
@@ -149,7 +149,7 @@ namespace Middleware
             _datum_sveditelstvo = datum_sveditelstvo ?? "";
             _polozhil = polozhil ?? "";
             // _majkino = majkino ?? "";
-            
+
             _prethoden_delovoden = delovoden_broj ?? "";
             _pat_polaga_ispit = pat_polaga_ispit ?? "";
             _ispiten = ispiten ?? "";
@@ -187,8 +187,8 @@ namespace Middleware
         {
             Requests.UpdateData(new Dictionary<string, string>()
             {
-                { RequestParameters.token , token} , { RequestParameters.action , RequestParameters.delete } , { RequestParameters.ime , _ime } , {RequestParameters.prezime , _prezime } ,  {RequestParameters.srednoIme , _srednoIme}  
-            } , RequestScopes.UpdateUcenik);
+                { RequestParameters.token , token} , { RequestParameters.action , RequestParameters.delete } , { RequestParameters.ime , _ime } , {RequestParameters.prezime , _prezime } ,  {RequestParameters.srednoIme , _srednoIme}
+            }, RequestScopes.UpdateUcenik);
         }
 
         public Ucenik(Dictionary<string, string> valuePairs)
@@ -233,23 +233,52 @@ namespace Middleware
             // _majkino = valuePairs[RequestParameters.majkino] ?? "";
         }
 
-        public void UpdateUcenikData(List<string> UpdatedData , string token)
+        public void UpdateUcenikData(Dictionary<string, string> UpdatedData, Dictionary<string, string> OrigData, string token)
         {
-            int i = 0;
-            foreach(string x in UpdatedData)
+            /*
+             Requests.UpdateData(new Dictionary<string, string>() {
+            { RequestParameters.token , Token} , { RequestParameters.ime , _ime } , {RequestParameters.prezime , _prezime } , { RequestParameters.broj , br.ToString() } ,  {RequestParameters.srednoIme , _srednoIme}  , { UpdateParametar, value }
+            }, RequestScopes.UpdateUcenik);
+             */
+            Dictionary<string, string> toBeChanged = new Dictionary<string, string>(UpdatedData);
+            toBeChanged[RequestParameters.token] = token;
+
+            if (OrigData.ContainsKey(RequestParameters.ime))
             {
-                UpdateUcenik(int.Parse(UpdatedData[4]), Request[i++], x , token);
+                toBeChanged[RequestParameters.new_first_name] = toBeChanged[RequestParameters.ime];
+                toBeChanged[RequestParameters.ime] = OrigData[RequestParameters.ime];
             }
-            _ime = UpdatedData[0];
-            _srednoIme = UpdatedData[1];
-            _prezime = UpdatedData[2];
-            _smer = UpdatedData[3];
-            _broj = int.Parse(UpdatedData[4]);
-            _tatko = UpdatedData[5];
-            _majka = UpdatedData[6];
-            _roden = UpdatedData[7];
-            _mesto_na_ragjanje = UpdatedData[8];
-            _drzavjanstvo = UpdatedData[9];
+
+            if (OrigData.ContainsKey(RequestParameters.prezime))
+            {
+                toBeChanged[RequestParameters.new_last_name] = toBeChanged[RequestParameters.prezime];
+                toBeChanged[RequestParameters.prezime] = OrigData[RequestParameters.prezime];
+            }
+
+            if (OrigData.ContainsKey(RequestParameters.srednoIme))
+            {
+                toBeChanged[RequestParameters.new_middle_name] = toBeChanged[RequestParameters.srednoIme];
+                toBeChanged[RequestParameters.srednoIme] = OrigData[RequestParameters.srednoIme];
+            }
+
+            if (OrigData.ContainsKey(RequestParameters.broj))
+            {
+                toBeChanged[RequestParameters.new_broj_vo_dnevnik] = toBeChanged[RequestParameters.broj];
+                toBeChanged[RequestParameters.broj] = OrigData[RequestParameters.broj];
+            }
+
+            Requests.UpdateData(toBeChanged, RequestScopes.UpdateUcenik);
+
+            _ime = UpdatedData[RequestParameters.ime];
+            _srednoIme = UpdatedData[RequestParameters.srednoIme];
+            _prezime = UpdatedData[RequestParameters.prezime];
+            _smer = UpdatedData[RequestParameters.smer];
+            _broj = int.Parse(UpdatedData[RequestParameters.broj]);
+            _tatko = UpdatedData[RequestParameters.tatko];
+            _majka = UpdatedData[RequestParameters.majka];
+            _roden = UpdatedData[RequestParameters.roden];
+            _mesto_na_ragjanje = UpdatedData[RequestParameters.mesto_na_ragjanje];
+            _drzavjanstvo = UpdatedData[RequestParameters.drzavjanstvo];
         }
         string[] Request = {
             RequestParameters.new_first_name,
@@ -305,9 +334,9 @@ namespace Middleware
                 _oceni.Add(0);
             }
 
-             UpdateUcenik(br, RequestParameters.new_smer, NovSmer._smer, token);
+            UpdateUcenik(br, RequestParameters.new_smer, NovSmer._smer, token);
         }
-}
+    }
 
     public class Smer
     {
@@ -340,7 +369,7 @@ namespace Middleware
             UpdateSmer(token);
         }
 
-        public void UpdatePredmet(int ctr , string UpdatePredmet , string token)
+        public void UpdatePredmet(int ctr, string UpdatePredmet, string token)
         {
             _predmeti[ctr] = UpdatePredmet;
             UpdateSmer(token);
@@ -359,7 +388,7 @@ namespace Middleware
             {
                 res += s + ",";
             }
-            if(res.Length > 0)res = res.Substring(0, res.Length - 1);
+            if (res.Length > 0) res = res.Substring(0, res.Length - 1);
             Requests.UpdateData(new Dictionary<string, string>() {
             { RequestParameters.smer , _smer}, { RequestParameters.token , token } , { RequestParameters.predmeti, res}
             }, RequestParameters.smer);
@@ -370,7 +399,7 @@ namespace Middleware
         {
             Requests.UpdateData(new Dictionary<string, string>()
             {
-                { RequestParameters.token , token} , { RequestParameters.action , RequestParameters.delete } , { RequestParameters.smer , _smer } 
+                { RequestParameters.token , token} , { RequestParameters.action , RequestParameters.delete } , { RequestParameters.smer , _smer }
             }, RequestScopes.UpdateSmer);
         }
     }
@@ -381,11 +410,11 @@ namespace Middleware
         public string _paralelka { get; set; }
         [JsonProperty(RequestParameters.ucenici)]
         public List<Ucenik> _ucenici { get; set; }
-        public Dictionary<string,Smer> _smerovi;
+        public Dictionary<string, Smer> _smerovi;
         public Dictionary<string, Smer> _predmeti;
 
 
-        public Paralelka(string paralelka, List<Ucenik> ucenici, Dictionary<string,Smer> smerovi)
+        public Paralelka(string paralelka, List<Ucenik> ucenici, Dictionary<string, Smer> smerovi)
         {
             _paralelka = paralelka ?? throw new ArgumentNullException(nameof(paralelka));
             _ucenici = ucenici ?? throw new ArgumentNullException(nameof(ucenici));
@@ -396,7 +425,7 @@ namespace Middleware
 
         public void AddSmer(Smer NovSmer, string token)
         {
-            _smerovi.Add(NovSmer._smer, new Smer(NovSmer._smer,NovSmer._cel_smer));
+            _smerovi.Add(NovSmer._smer, new Smer(NovSmer._smer, NovSmer._cel_smer));
             AddtoServerSmer(NovSmer, token);
         }
 
