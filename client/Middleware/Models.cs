@@ -235,13 +235,13 @@ namespace Middleware
             _datum_sveditelstvo = valuePairs[RequestParameters.datum_sveditelstvo] ?? "";
             _polozhil = valuePairs[RequestParameters.polozhil] ?? "";
             _duplicate_ctr = int.Parse(valuePairs[RequestParameters.duplicate_ctr] ?? "-1");
+            _drzavjanstvo = valuePairs[RequestParameters.drzavjanstvo] ?? "";
             // _majkino = valuePairs[RequestParameters.majkino] ?? "";
         }
 
         public void UpdateUcenikData(List<string> UpdatedData , string token)
         {
             int i = 0;
-            UpdatedData.Add(_duplicate_ctr.ToString());
             foreach(string x in UpdatedData)
             {
                 UpdateUcenik(int.Parse(UpdatedData[4]), Request[i++], x , token);
