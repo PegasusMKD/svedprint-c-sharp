@@ -33,10 +33,11 @@
         <StackPanel x:Name="Password_panel" Grid.Column="3" Margin="1,0,20,10" Background="#FF5184B6" Height="4" VerticalAlignment="Bottom" Grid.Row="4" Grid.ColumnSpan="2"/>
         <Button x:Name="Login_Btn"  Content="Логирај се" Grid.Column="4" Margin="10,14,0,37" Background="#FFFF5D00" BorderBrush="{x:Null}" Foreground="White" FontSize="36" Grid.Row="5" Width="212" HorizontalAlignment="Left" VerticalAlignment="Center" Height="61" FontFamily="Segoe UI Black" Click="Login_Btn_Click"/>
         <TextBox x:Name="Username_txt" Grid.Column="4" Grid.Row="2" GotFocus="Username_txt_GotFocus" LostFocus="Username_txt_LostFocus" Text="Корисничко име" FontSize="27" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Black" FontFamily="Segoe UI Black" TextDecorations="{x:Null}" Height="45" VerticalAlignment="Bottom" SelectionBrush="#FFFF5D00" Margin="0,0,20,0" CaretBrush="#FFFF5D00" OpacityMask="White" KeyDown="Login_KeyDown"/>
-        <TextBox x:Name="Password_txt" Grid.Column="4" Grid.Row="3" GotFocus="Password_txt_GotFocus" LostFocus="Password_txt_LostFocus" Text="Лозинка" FontSize="27" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Black" FontFamily="Segoe UI Black" TextDecorations="{x:Null}" Height="45" VerticalAlignment="Bottom" SelectionBrush="{x:Null}" Margin="0,0,20,12" Grid.RowSpan="2" KeyDown="Login_KeyDown"/>
+        <TextBox x:Name="Password_txt" Grid.Column="3" Grid.Row="3" GotFocus="Password_txt_GotFocus" LostFocus="Password_txt_LostFocus" Text="Лозинка" FontSize="27" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Black" FontFamily="Segoe UI Black" TextDecorations="{x:Null}" Height="45" VerticalAlignment="Bottom" SelectionBrush="{x:Null}" Margin="26,0,25,12" Grid.RowSpan="2" KeyDown="Login_KeyDown" Grid.ColumnSpan="2"/>
         <StackPanel x:Name ="AlertPanel" Grid.ColumnSpan="5" Grid.Column="1" Grid.Row="7" Background="#FF343C6E" Margin="0,1,0,0" Visibility="Hidden">
             <Label x:Name="AlertLabel" Content="" FontSize="36" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
         </StackPanel>
         <Image Name ="Gif" Grid.Column="4" Height="72" Grid.Row="6" Width="98" HorizontalAlignment="Left" Source="3.gif" Visibility="Hidden"/>
+        <Label x:Name="ServerLabel" Content="ServerBranch" Width="Auto" Grid.Column="5" Margin="0,0,10,10" Grid.Row="7" Foreground="Black" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
     </Grid>
 </Page>

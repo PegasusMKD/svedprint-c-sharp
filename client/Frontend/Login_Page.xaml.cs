@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace Frontend
 {
@@ -24,7 +25,13 @@ namespace Frontend
             AlertTimer.Tick += new EventHandler(AlertTimer_Tick);
             AlertTimer.Interval = new TimeSpan(0, 0, 5);
 
-            
+            InjectServerLabel();
+        }
+        
+        private void InjectServerLabel()
+        {
+            ServerLabel.Foreground = new SolidColorBrush(Colors.SlateGray);
+            ServerLabel.Content = $"Server branch: {Login.ServerBranch}";
         }
         
         private void Login_Btn_Click(object sender, RoutedEventArgs e)
@@ -47,12 +54,6 @@ namespace Frontend
                 ShowAlertBox("Неуспешно логирање");
             }
 
-        }
-
-        [Conditional("DEBUG")]
-        private void hardcode_userdata()
-        {
-          
         }
 
         private void ShowAlertBox(string Alert)

@@ -75,6 +75,8 @@ namespace Middleware
         public string _drzavjanstvo { get; set; }
         [JsonProperty(RequestParameters.cel_smer)]
         public string _cel_smer { get; set; }
+        [JsonProperty(RequestParameters.duplicate_ctr)]
+        public int _duplicate_ctr { get; set; }
 
         /* vaka nekako treba da lici release verzija na constructor
          * treba da frla exception ako fali nekoj podatok vo baza

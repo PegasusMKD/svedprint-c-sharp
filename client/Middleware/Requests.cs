@@ -169,6 +169,7 @@ namespace Middleware
         public const string drzavjanstvo = "drzavjanstvo";
         public const string akt_godina = "akt_godina";
         public const string akt = "akt";
+        public const string duplicate_ctr = "ctr";
     }
 
     class RequestConverter : JsonConverter<Request>

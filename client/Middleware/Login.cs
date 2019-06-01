@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -46,5 +47,7 @@ namespace Middleware
             }
             return klasen;
         }
+
+        public static string ServerBranch => settings.Default.DB_BRANCH;
     }
 }
