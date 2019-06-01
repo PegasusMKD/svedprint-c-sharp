@@ -119,7 +119,7 @@ namespace Middleware
             _drzavjanstvo = drzavjanstvo ?? throw new ArgumentNullException(nameof(drzavjanstvo));
         } */
 
-        public Ucenik(string ime, string srednoIme, string prezime, List<int> oceni, string smer, int broj, string roden, string mesto_na_zhiveenje, string mesto_na_ragjanje, string povedenie, int opravdani, int neopravdani, string tip, string pat_polaga, string tatko, string majka, string gender, string maturska, string izborni, string proektni, string merki, string prethodna_godina, string prethoden_uspeh, string prethodno_uchilishte, string delovoden_broj, string datum_sveditelstvo, string polozhil,  string prethodna_uchebna, string pedagoshki_merki, string drzavjanstvo,string pat_polaga_ispit, string ispiten, string prethoden_delovoden)
+        public Ucenik(string ime, string srednoIme, string prezime, List<int> oceni, string smer, int broj, string roden, string mesto_na_zhiveenje, string mesto_na_ragjanje, string povedenie, int opravdani, int neopravdani, string tip, string pat_polaga, string tatko, string majka, string gender, string maturska, string izborni, string proektni, string merki, string prethodna_godina, string prethoden_uspeh, string prethodno_uchilishte, string delovoden_broj, string datum_sveditelstvo, string polozhil,  string prethodna_uchebna, string pedagoshki_merki, string drzavjanstvo,string pat_polaga_ispit, string ispiten, string prethoden_delovoden, int duplicate_ctr)
         { //string majkino,
             _ime = ime ?? "";
             _srednoIme = srednoIme ?? "";
@@ -157,6 +157,8 @@ namespace Middleware
             _ispiten = ispiten ?? "";
 
             _drzavjanstvo = drzavjanstvo ?? "";
+
+            _duplicate_ctr = duplicate_ctr;
         }
         public Ucenik() { }
 
@@ -189,7 +191,7 @@ namespace Middleware
         {
             Requests.UpdateData(new Dictionary<string, string>()
             {
-                { RequestParameters.token , token} , { RequestParameters.action , RequestParameters.delete } , { RequestParameters.ime , _ime } , {RequestParameters.prezime , _prezime } ,  {RequestParameters.srednoIme , _srednoIme}  
+                { RequestParameters.token , token} , { RequestParameters.action , RequestParameters.delete } , { RequestParameters.ime , _ime } , {RequestParameters.prezime , _prezime } ,  {RequestParameters.srednoIme , _srednoIme}  , {RequestParameters.duplicate_ctr, _duplicate_ctr.ToString()}
             } , RequestScopes.UpdateUcenik);
         }
 
@@ -232,12 +234,14 @@ namespace Middleware
             _delovoden_broj = valuePairs[RequestParameters.delovoden_broj] ?? "";
             _datum_sveditelstvo = valuePairs[RequestParameters.datum_sveditelstvo] ?? "";
             _polozhil = valuePairs[RequestParameters.polozhil] ?? "";
+            _duplicate_ctr = int.Parse(valuePairs[RequestParameters.duplicate_ctr] ?? "-1");
             // _majkino = valuePairs[RequestParameters.majkino] ?? "";
         }
 
         public void UpdateUcenikData(List<string> UpdatedData , string token)
         {
             int i = 0;
+            UpdatedData.Add(_duplicate_ctr.ToString());
             foreach(string x in UpdatedData)
             {
                 UpdateUcenik(int.Parse(UpdatedData[4]), Request[i++], x , token);
@@ -263,7 +267,8 @@ namespace Middleware
             RequestParameters.majka,
             RequestParameters.roden,
             RequestParameters.mesto_na_ragjanje,
-            RequestParameters.drzavjanstvo
+            RequestParameters.drzavjanstvo,
+            RequestParameters.duplicate_ctr
             //RequestParameters
         };
 
@@ -283,7 +288,8 @@ namespace Middleware
 
         public void UpdateUcenikOceni(int br, string Token)
         {
-            UpdateUcenik(br, RequestParameters.oceni, OceniToString(), Token);
+            //UpdateUcenik(br, RequestParameters.oceni, OceniToString(), Token);
+            UpdateUcenik(br, RequestParameters.oceni, string.Join(" ", _oceni), Token);
         }
 
         public void UpdateUcenikSmer(int br, string Token)
@@ -294,7 +300,7 @@ namespace Middleware
         public void UpdateUcenik(int br, string UpdateParametar, string value, string Token)
         {
             Requests.UpdateData(new Dictionary<string, string>() {
-            { RequestParameters.token , Token} , { RequestParameters.ime , _ime } , {RequestParameters.prezime , _prezime } , { RequestParameters.broj , br.ToString() } ,  {RequestParameters.srednoIme , _srednoIme}  , { UpdateParametar, value }
+            { RequestParameters.token , Token} , { RequestParameters.ime , _ime } , {RequestParameters.prezime , _prezime } , { RequestParameters.broj , br.ToString() } ,  {RequestParameters.srednoIme , _srednoIme}  , { UpdateParametar, value }, {RequestParameters.duplicate_ctr, _duplicate_ctr.ToString()} 
             }, RequestScopes.UpdateUcenik);
         }
 

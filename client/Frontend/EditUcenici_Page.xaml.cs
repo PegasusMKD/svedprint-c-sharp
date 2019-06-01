@@ -150,7 +150,7 @@ namespace Frontend
 
         private void SortUcenici()
         {
-            var ordered = Ucenici.OrderBy(x => x._prezime).ThenBy(x => x._ime);
+            var ordered = Ucenici.OrderBy(x => x._prezime).ThenBy(x => x._ime).ThenBy(x => x._duplicate_ctr);
             Ucenici = ordered.ToList();
             Home_Page.ucenici = Ucenici;
             //updateBrojDn
