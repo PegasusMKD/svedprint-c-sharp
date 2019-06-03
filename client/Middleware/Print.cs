@@ -159,21 +159,37 @@ namespace Middleware
             Directory.Delete(tmpFolder, true);
         }
 
+
+
         public static List<string> InitSveditelstvo(List<Ucenik> ucenici, Klasen klasen)
         {
             StringWriter sw = new StringWriter();
             List<string> l = new List<string>();
             string delimiter = ",";
+            int ctr_passable = 0;
             foreach (Ucenik u in ucenici)
             {
+                //Addition of Pazzio
+                if(!u.CheckPass())
+                    Console.Out("Не положил или фали оценка!");
+                    continue;
+
                 sw.GetStringBuilder().Clear();
 
+                jazik_index = 0;
                 // predmeti
-                sw.Write("\"" + String.Join("/", klasen._p._smerovi[u._smer]._predmeti) + "\"");
-                sw.Write(";");
+                //Dodavanje na jazikot vo listata na predmeti
+                newest_predmeti =  klasen._p._smerovi[u._smer]._predmeti;
+                newest_predmeti.Insert(jazik_index,u._jazik);
+                //Treba da si vidite vie za parsing-ov kako ke odi za so ovie konkretni predmeti
+                //newest_predmeti.Append(u._izborni);
 
+                sw.Write("\"" + String.Join("/",newest_predmeti) + "\"");
+                sw.Write(";");
                 // oceni
-                sw.Write("\"" + String.Join(" ", u._oceni) + "\"");
+                newest_oceni = u._oceni;
+                newest_oceni.Insert(jazik_index,u._jazik_ocena);
+                sw.Write("\"" + String.Join(" ", newest_oceni) + "\"");
                 sw.Write(";");
 
                 // uchilishte, grad, broj glavna kniga, godina (klas)
@@ -223,7 +239,30 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._smer);
                 sw.Write(delimiter);
+                
+                //Dodavano od Pazzio
+                /*
+                Ova fali i vo skriptata aswell, zatoa e iskomentirano
+                
+                //Ovdeka treba nekoe mesto, ama neznam koe, treba da prashash
+                //Vo shkolo
+                //sw.Write(u._
+                sw.Write(klasen._odobreno_sveditelstvo);
+                sw.Write(delimiter);
+                sw.Write(klasen._delovoden_broj + ctr_passable.ToString());
+                sw.Write(delimiter);
+                sw.Write(klasen._ime + " " + klasen._srednoIme + " " + klasen._prezime);
+                sw.Write(delimiter);
+                sw.Write(klasen._direktor);
+                sw.Write(delimiter);
+                sw.Write(klasen._akt);
+                sw.Write(delimiter);
+                sw.Write(klasen._akt_godina);
+                sw.Write(delimiter);
+                sw.Write(klasen._ministerstvo);
 
+                 */
+                 ctr_passable++;
                 // XX, YY
                 sw.Write(delimiter); // XX
                 sw.Write(""); // YY

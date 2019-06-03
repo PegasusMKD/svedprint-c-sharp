@@ -77,6 +77,11 @@ namespace Middleware
         public string _cel_smer { get; set; }
         [JsonProperty(RequestParameters.duplicate_ctr)]
         public int _duplicate_ctr { get; set; }
+        //Dodatoci od Pazzio
+        [JsonProperty(RequestParameters.jazik)]
+        public int _jazik { get; set; }
+        [JsonProperty(RequestParameters.jazik_ocena)]
+        public int _jazik_ocena { get; set; }
 
         /* vaka nekako treba da lici release verzija na constructor
          * treba da frla exception ako fali nekoj podatok vo baza
@@ -119,7 +124,8 @@ namespace Middleware
             _drzavjanstvo = drzavjanstvo ?? throw new ArgumentNullException(nameof(drzavjanstvo));
         } */
 
-        public Ucenik(string ime, string srednoIme, string prezime, List<int> oceni, string smer, int broj, string roden, string mesto_na_zhiveenje, string mesto_na_ragjanje, string povedenie, int opravdani, int neopravdani, string tip, string pat_polaga, string tatko, string majka, string gender, string maturska, string izborni, string proektni, string merki, string prethodna_godina, string prethoden_uspeh, string prethodno_uchilishte, string delovoden_broj, string datum_sveditelstvo, string polozhil,  string prethodna_uchebna, string pedagoshki_merki, string drzavjanstvo,string pat_polaga_ispit, string ispiten, string prethoden_delovoden, int duplicate_ctr)
+        public Ucenik(string ime, string srednoIme, string prezime, List<int> oceni, string smer, int broj, string roden, string mesto_na_zhiveenje, string mesto_na_ragjanje, string povedenie, int opravdani, int neopravdani, string tip, string pat_polaga, string tatko, string majka, string gender, string maturska, string izborni, string proektni, string merki, string prethodna_godina, string prethoden_uspeh, string prethodno_uchilishte, string delovoden_broj, string datum_sveditelstvo, string polozhil,  string prethodna_uchebna, string pedagoshki_merki, string drzavjanstvo,string pat_polaga_ispit, string ispiten, string prethoden_delovoden, int duplicate_ctr,
+            string jazik, int jazik_ocena)
         { //string majkino,
             _ime = ime ?? "";
             _srednoIme = srednoIme ?? "";
@@ -140,6 +146,7 @@ namespace Middleware
             _tatko = tatko ?? "";
             _gender = gender ?? "";
             _maturska = maturska ?? "";
+            //Treba da e lista, kako e vo sushtina e Predmet,dali polozhil;predmet,dali go polozhil...
             _izborni = izborni ?? "";
             _proektni = proektni ?? "";
             _merki = merki ?? "";
@@ -147,8 +154,10 @@ namespace Middleware
             _prethoden_uspeh = prethoden_uspeh ?? "";
             _prethodno_uchilishte = prethodno_uchilishte ?? "";
             _prethodna_uchebna = prethodna_uchebna ?? "";
-            _delovoden_broj = delovoden_broj ?? "";
-            _datum_sveditelstvo = datum_sveditelstvo ?? "";
+            //Ova se zema od kaj Klasniot
+            //_delovoden_broj = delovoden_broj ?? "";
+            //_datum_sveditelstvo = datum_sveditelstvo ?? "";
+            
             _polozhil = polozhil ?? "";
             // _majkino = majkino ?? "";
             
@@ -159,6 +168,10 @@ namespace Middleware
             _drzavjanstvo = drzavjanstvo ?? "";
 
             _duplicate_ctr = duplicate_ctr;
+            
+            //Dodatoci od Pazzio
+            _jazik = jazik ?? "";
+            _jazik_ocena = jazik_ocena ?? "";
         }
         public Ucenik() { }
 
@@ -178,6 +191,21 @@ namespace Middleware
             {
                 _oceni.Add(0);
             }
+        }
+
+        //Od pazzio, mozhno e da zatreba
+        public static int CheckPass()
+        {
+            int checker=0;
+            foreach(int i in _oceni){
+                       if(i == 0 || i == 1)
+                        checker++;
+                        break;
+                    }
+            if(checker==0)
+                return 1;
+            else
+                return 0;
         }
 
         public void CreateServerUcenik(string token)
@@ -450,11 +478,17 @@ namespace Middleware
         public string _delovoden_broj { get; set; }
         [JsonProperty(RequestParameters.akt_godina)]
         public string _akt_godina { get; set; }
-        [JsonProperty(RequestParameters.akt)]
-        public string _akt { get; set; }
+        //Dodavano od Pazzio        
+        [JsonProperty(RequestParameters.odobreno_sveditelstvo)]
+        public string _odobreno_sveitelstvo { get; set; }
+        [JsonProperty(RequestParameters.ministerstvo)]
+        public string _ministerstvo { get; set; }
+        
 
 
-        public Klasen(string ime, string srednoIme, string prezime, string token, string paralelka, string ucilishte, string grad, int godina, string smerovi, string akt_godina, string akt)
+
+        public Klasen(string ime, string srednoIme, string prezime, string token, string paralelka, string ucilishte, string grad, int godina, string smerovi, string akt_godina, string akt,string odobreno_sveitelstvo,
+            string ministerstvo)
         {
             _ime = ime ?? "";
             _srednoIme = srednoIme ?? "";
@@ -467,7 +501,9 @@ namespace Middleware
             // _godina = godina;
             _smerovi = smerovi ?? "";
             _akt_godina = akt_godina ?? "";
-            _akt = _akt ?? "";
+            _akt = akt ?? "";
+            _odobreno_sveitelstvo = odobreno_sveitelstvo ?? "";
+            _ministerstvo = ministerstvo ?? "";
         }
 
         public Klasen() { }
@@ -484,6 +520,8 @@ namespace Middleware
             _smerovi = string.Join(",", ucenici.ConvertAll(x => x._smer).Distinct());
             GetSmerPredmeti();
         }
+
+
 
         public void PopulateSmerovi(List<Ucenik> ucenici)
         {

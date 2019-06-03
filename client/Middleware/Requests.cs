@@ -148,6 +148,9 @@ namespace Middleware
         public const string cel_smer = "cel_smer";
         public const string action = "action";
         public const string delete = "del";
+        public const string odobreno_sveditelstvo = "odobreno_sveditelstvo";
+        public const string ministerstvo = "ministerstvo";
+        public const string jazik = "jazik";
         //
         public const string tip = "tip_ucenik";
         public const string povedenie = "povedenie";
