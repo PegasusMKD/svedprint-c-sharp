@@ -151,6 +151,7 @@ namespace Middleware
         public const string odobreno_sveditelstvo = "odobreno_sveditelstvo";
         public const string ministerstvo = "ministerstvo";
         public const string jazik = "jazik";
+        public const string jazik_ocena = "jazik_ocena";
         //
         public const string tip = "tip_ucenik";
         public const string povedenie = "povedenie";

@@ -79,9 +79,9 @@ namespace Middleware
         public int _duplicate_ctr { get; set; }
         //Dodatoci od Pazzio
         [JsonProperty(RequestParameters.jazik)]
-        public int _jazik { get; set; }
+        public string _jazik { get; set; }
         [JsonProperty(RequestParameters.jazik_ocena)]
-        public int _jazik_ocena { get; set; }
+        public string _jazik_ocena { get; set; }
 
         /* vaka nekako treba da lici release verzija na constructor
          * treba da frla exception ako fali nekoj podatok vo baza
@@ -125,7 +125,7 @@ namespace Middleware
         } */
 
         public Ucenik(string ime, string srednoIme, string prezime, List<int> oceni, string smer, int broj, string roden, string mesto_na_zhiveenje, string mesto_na_ragjanje, string povedenie, int opravdani, int neopravdani, string tip, string pat_polaga, string tatko, string majka, string gender, string maturska, string izborni, string proektni, string merki, string prethodna_godina, string prethoden_uspeh, string prethodno_uchilishte, string delovoden_broj, string datum_sveditelstvo, string polozhil,  string prethodna_uchebna, string pedagoshki_merki, string drzavjanstvo,string pat_polaga_ispit, string ispiten, string prethoden_delovoden, int duplicate_ctr,
-            string jazik, int jazik_ocena)
+            string jazik, string jazik_ocena)
         { //string majkino,
             _ime = ime ?? "";
             _srednoIme = srednoIme ?? "";
@@ -145,6 +145,7 @@ namespace Middleware
             _majka = majka ?? "";
             _tatko = tatko ?? "";
             _gender = gender ?? "";
+            //Predmet, ocena, datum na polaganje, mozhebi 
             _maturska = maturska ?? "";
             //Treba da e lista, kako e vo sushtina e Predmet,dali polozhil;predmet,dali go polozhil...
             _izborni = izborni ?? "";
@@ -193,20 +194,8 @@ namespace Middleware
             }
         }
 
-        //Od pazzio, mozhno e da zatreba
-        public static int CheckPass()
-        {
-            int checker=0;
-            foreach(int i in _oceni){
-                       if(i == 0 || i == 1)
-                        checker++;
-                        break;
-                    }
-            if(checker==0)
-                return 1;
-            else
-                return 0;
-        }
+        //Od pazzio, mozhno e da zatreba i se koristi vo Print.cs
+
 
         public void CreateServerUcenik(string token)
         {
@@ -263,7 +252,8 @@ namespace Middleware
             _datum_sveditelstvo = valuePairs[RequestParameters.datum_sveditelstvo] ?? "";
             _polozhil = valuePairs[RequestParameters.polozhil] ?? "";
             _duplicate_ctr = int.Parse(valuePairs[RequestParameters.duplicate_ctr] ?? "-1");
-            _drzavjanstvo = valuePairs[RequestParameters.drzavjanstvo] ?? "";
+            _jazik = valuePairs[RequestParameters.jazik] ?? "";
+            _jazik_ocena = valuePairs[RequestParameters.jazik_ocena] ?? "";
             // _majkino = valuePairs[RequestParameters.majkino] ?? "";
         }
 
@@ -296,7 +286,9 @@ namespace Middleware
             RequestParameters.roden,
             RequestParameters.mesto_na_ragjanje,
             RequestParameters.drzavjanstvo,
-            RequestParameters.duplicate_ctr
+            RequestParameters.duplicate_ctr,
+            RequestParameters.jazik_ocena,
+            RequestParameters.jazik
             //RequestParameters
         };
 
@@ -313,7 +305,19 @@ namespace Middleware
             if (_oceni.Count == 0) return "0.00";
             return Array.ConvertAll(_oceni.ToArray(), x => (float)x).Average().ToString("n2");
         }
-
+        public bool CheckPass()
+        {
+            bool checker = true;
+            foreach (int i in _oceni)
+            {
+                if(i == 0 || i == 1)
+                {
+                    checker = false;
+                    break;
+                }
+            }
+            return checker;
+        }
         public void UpdateUcenikOceni(int br, string Token)
         {
             //UpdateUcenik(br, RequestParameters.oceni, OceniToString(), Token);
@@ -478,6 +482,8 @@ namespace Middleware
         public string _delovoden_broj { get; set; }
         [JsonProperty(RequestParameters.akt_godina)]
         public string _akt_godina { get; set; }
+        [JsonProperty(RequestParameters.akt)]
+        public string _akt { get; set; }
         //Dodavano od Pazzio        
         [JsonProperty(RequestParameters.odobreno_sveditelstvo)]
         public string _odobreno_sveitelstvo { get; set; }

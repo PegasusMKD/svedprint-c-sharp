@@ -170,16 +170,17 @@ namespace Middleware
             foreach (Ucenik u in ucenici)
             {
                 //Addition of Pazzio
-                if(!u.CheckPass())
-                    Console.Out("Не положил или фали оценка!");
+                if (u.CheckPass())
+                {
+                    Console.Write("Не положил или фали оценка!");
                     continue;
-
+                }
                 sw.GetStringBuilder().Clear();
 
-                jazik_index = 0;
+                int jazik_index = 0;
                 // predmeti
                 //Dodavanje na jazikot vo listata na predmeti
-                newest_predmeti =  klasen._p._smerovi[u._smer]._predmeti;
+                List<string> newest_predmeti =  klasen._p._smerovi[u._smer]._predmeti;
                 newest_predmeti.Insert(jazik_index,u._jazik);
                 //Treba da si vidite vie za parsing-ov kako ke odi za so ovie konkretni predmeti
                 //newest_predmeti.Append(u._izborni);
@@ -187,8 +188,8 @@ namespace Middleware
                 sw.Write("\"" + String.Join("/",newest_predmeti) + "\"");
                 sw.Write(";");
                 // oceni
-                newest_oceni = u._oceni;
-                newest_oceni.Insert(jazik_index,u._jazik_ocena);
+                List<int> newest_oceni = u._oceni;
+                newest_oceni.Insert(jazik_index,int.Parse(u._jazik_ocena));
                 sw.Write("\"" + String.Join(" ", newest_oceni) + "\"");
                 sw.Write(";");
 
