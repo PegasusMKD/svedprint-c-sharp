@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using Excel=Microsoft.Office.Interop.Excel;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace Middleware
 {
@@ -48,8 +48,8 @@ namespace Middleware
             py.WaitForExit();
 
             printQueue = new List<PrintQueueItem>();
-            
-            for (int i = 0; i < data.Count-1; i++)
+
+            for (int i = 0; i < data.Count - 1; i++)
             {
                 PrintQueueItem x = new PrintQueueItem();
                 x.sides = new System.Drawing.Image[2];
@@ -72,10 +72,10 @@ namespace Middleware
             {
                 currentSide = 0;
                 pd.Print();
-                
+
             }
 
-           // ClearTmpFolder();
+            // ClearTmpFolder();
         }
 
         static int currentSide;
@@ -180,16 +180,16 @@ namespace Middleware
                 int jazik_index = 0;
                 // predmeti
                 //Dodavanje na jazikot vo listata na predmeti
-                List<string> newest_predmeti =  klasen._p._smerovi[u._smer]._predmeti;
-                newest_predmeti.Insert(jazik_index,u._jazik);
+                List<string> newest_predmeti = klasen._p._smerovi[u._smer]._predmeti;
+                newest_predmeti.Insert(jazik_index, u._jazik);
                 //Treba da si vidite vie za parsing-ov kako ke odi za so ovie konkretni predmeti
                 //newest_predmeti.Append(u._izborni);
 
-                sw.Write("\"" + String.Join("/",newest_predmeti) + "\"");
+                sw.Write("\"" + String.Join("/", newest_predmeti) + "\"");
                 sw.Write(";");
                 // oceni
                 List<int> newest_oceni = u._oceni;
-                newest_oceni.Insert(jazik_index,int.Parse(u._jazik_ocena));
+                newest_oceni.Insert(jazik_index, int.Parse(u._jazik_ocena));
                 sw.Write("\"" + String.Join(" ", newest_oceni) + "\"");
                 sw.Write(";");
 
@@ -240,7 +240,7 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._smer);
                 sw.Write(delimiter);
-                
+
                 //Dodavano od Pazzio
                 /*
                 Ova fali i vo skriptata aswell, zatoa e iskomentirano
@@ -263,7 +263,7 @@ namespace Middleware
                 sw.Write(klasen._ministerstvo);
 
                  */
-                 ctr_passable++;
+                ctr_passable++;
                 // XX, YY
                 sw.Write(delimiter); // XX
                 sw.Write(""); // YY
@@ -309,7 +309,7 @@ namespace Middleware
 
                 printQueue.Add(x);
             }
-            
+
             currentPage = 0;
             maxSides = 1;
             pd.PrintPage += new PrintPageEventHandler(onPrintPage);
@@ -339,7 +339,7 @@ namespace Middleware
                 {
                     tmparr.Add("NaN");
                 }
-                tmparr.AddRange(u._proektni.Split(' '));              
+                tmparr.AddRange(u._proektni.Split(' '));
                 while (tmparr.Count < 22)
                 {
                     tmparr.Add("NaN");
@@ -491,7 +491,8 @@ namespace Middleware
 
             for (int i = 0; i < data.Count; i++)
             {
-                pd.PrintPage += (sender, args) => {
+                pd.PrintPage += (sender, args) =>
+                {
                     args.Graphics.DrawImage(System.Drawing.Image.FromFile($"{tmpFolder}dipl-{i}.jpg"), args.PageBounds);
                     pd.DocumentName = $"{tmpFolder}dipl-{i}.jpg";
                 };
@@ -592,7 +593,7 @@ namespace Middleware
             Excel.Application excelApp = new Excel.Application();
             string filepath = Path.Combine(tmpFolder, "excel.xlsx");
             Excel.Workbook file = excelApp.Workbooks.Open(filepath);
-            Excel.Worksheet sheet = file.Worksheets[1]; // base 1
+            Excel.Worksheet sheet = (Excel.Worksheet)file.Worksheets[1]; // base 1
             sheet.PageSetup.PaperSize = Excel.XlPaperSize.xlPaperA4;
             sheet.PageSetup.Orientation = Excel.XlPageOrientation.xlLandscape;
             sheet.PrintOutEx(Preview: true, ActivePrinter: PrinterSettings.InstalledPrinters[printerChoice]);
