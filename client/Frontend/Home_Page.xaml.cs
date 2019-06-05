@@ -34,8 +34,15 @@ namespace Frontend
                 {RequestParameters.token, Klasen._token } 
             }, RequestScopes.GetParalelka);
 
+            if(result.Count == 0)
+            {
+                MessageBox.Show("404");
+                return;
+            }
+
             ucenici = result.ConvertAll(x => new Ucenik(x));
-            ucenici.OrderBy(x => x._prezime).ThenBy( x=> x._ime);
+            var uc = ucenici.OrderBy(x => x._prezime).ThenBy( x=> x._ime);
+            ucenici = uc.ToList();
             if(KlasenKlasa._smerovi != "")
             {
                 KlasenKlasa.PopulateSmerovi(ucenici);
@@ -52,8 +59,11 @@ namespace Frontend
         private void MainImgClicked(object sender, MouseButtonEventArgs e)
         {
             //Main.Content = loginPage;
-            if (ucenici.Count > 0) Main.Content = new Oceni(Main, this);
-            else MessageBox.Show("немате стаено ученици");
+            if (ucenici.Count == 0)
+            { MessageBox.Show("Нема пополнето ученици"); return; }
+            if (KlasenKlasa._p._smerovi.Count == 0)
+            { MessageBox.Show("Нема Смерови"); return; }
+            else Main.Content = new Oceni(Main, this);
         }
 
         private void PrintImgClicked(object sender, MouseButtonEventArgs e)

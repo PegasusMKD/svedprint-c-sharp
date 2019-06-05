@@ -88,10 +88,12 @@ namespace Frontend
             Dictionary<string, string> PredmetiProsek = new Dictionary<string, string>();
             foreach(Ucenik ucenik in Ucenici)
             {
-                if (ucenik._smer == "") continue;
+                if (ucenik._smer == "" || UserKlas._p._smerovi.Keys.Contains(ucenik._smer) == false) continue;
                 List<string> PredmetiOdSmer = UserKlas._p._smerovi[ucenik._smer]._predmeti;
 
-                for (int i = 0; i <PredmetiOdSmer.Count; i++)
+                if (PredmetiOdSmer.Count == 0) continue;
+
+                for (int i = 0; i <ucenik._oceni.Count; i++)
                 {
                     if (PredmetiProsek.ContainsKey(PredmetiOdSmer[i]))
                     {

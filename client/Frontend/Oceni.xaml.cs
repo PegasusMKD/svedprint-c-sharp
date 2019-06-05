@@ -22,17 +22,7 @@ namespace Frontend
 
         Dictionary<string,Smer> smerovi;
         List<Dictionary<string, string>> result;
-        private static Dictionary<string, string> smerovi_naslov = new Dictionary<string, string>();//treba da vlece od server
-        /*
-        {
-            {"ПМА",  "Природно Математико подрачје - А" },
-            {"ПМБ", "Природно Математичко Подрачје - Б" },
-            {"ОХА", "Општествено Х Подрачје А" },
-            {"ОХБ", "Општествено Х Подрачје Б" },
-            {"ЈУА", "Јазично Уметничко Подрачје А" },
-            {"ЈУБ", "Јазично Уметничко Подрачје Б" }
-
-        };*/
+        private static Dictionary<string, string> smerovi_naslov = new Dictionary<string, string>();
 
         List<Ucenik> Ucenici;
         static int brPredmeti;
@@ -242,6 +232,12 @@ namespace Frontend
                 Predmetibox[i].Content = UserKlas._p._smerovi[SelectedUcenik._smer]._predmeti[i];
             }
 
+            if (Ocenkibox.Count > 0)
+            {
+                Ocenkibox[0].SelectAll();
+                Ocenkibox[0].Focus();
+            }
+
             CanWork = true;
         }
 
@@ -264,7 +260,7 @@ namespace Frontend
             //update
             int br = int.Parse(BrojDn_label.Content.ToString());
             Ucenici[br-1]._oceni = Array.ConvertAll(Ocenkibox.ToArray(), x => int.Parse(x.Text)).ToList();
-            Ucenici[br - 1].UpdateUcenikOceni(br-1 , UserKlas._token);
+            Ucenici[br - 1].UpdateUcenikOceni(UserKlas._token);
 
             //Menu
             Prosek_out.Content = Ucenici[br - 1].prosek();
@@ -325,7 +321,7 @@ namespace Frontend
             br--;
             Smer NovSmer = UserKlas._p._smerovi.Values.ToArray()[combobox_smer.SelectedIndex];
 
-            Ucenici[br].ChangeSmer(NovSmer, br, UserKlas._token);
+            Ucenici[br].ChangeSmer(NovSmer,UserKlas._token);
 
             LoadOcenkiView(br);
             FillOcenki(br);

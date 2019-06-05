@@ -124,7 +124,7 @@ namespace Middleware
             _drzavjanstvo = drzavjanstvo ?? throw new ArgumentNullException(nameof(drzavjanstvo));
         } */
 
-        public Ucenik(string ime, string srednoIme, string prezime, List<int> oceni, string smer, int broj, string roden, string mesto_na_zhiveenje, string mesto_na_ragjanje, string povedenie, int opravdani, int neopravdani, string tip, string pat_polaga, string tatko, string majka, string gender, string maturska, string izborni, string proektni, string merki, string prethodna_godina, string prethoden_uspeh, string prethodno_uchilishte, string delovoden_broj, string datum_sveditelstvo, string polozhil,  string prethodna_uchebna, string pedagoshki_merki, string drzavjanstvo,string pat_polaga_ispit, string ispiten, string prethoden_delovoden, int duplicate_ctr,
+        public Ucenik(string ime, string srednoIme, string prezime, List<int> oceni, string smer, int broj, string roden, string mesto_na_zhiveenje, string mesto_na_ragjanje, string povedenie, int opravdani, int neopravdani, string tip, string pat_polaga, string tatko, string majka, string gender, string maturska, string izborni, string proektni, string merki, string prethodna_godina, string prethoden_uspeh, string prethodno_uchilishte, string delovoden_broj, string datum_sveditelstvo, string polozhil, string prethodna_uchebna, string pedagoshki_merki, string drzavjanstvo, string pat_polaga_ispit, string ispiten, string prethoden_delovoden, int duplicate_ctr,
             string jazik, string jazik_ocena)
         { //string majkino,
             _ime = ime ?? "";
@@ -158,10 +158,10 @@ namespace Middleware
             //Ova se zema od kaj Klasniot
             //_delovoden_broj = delovoden_broj ?? "";
             //_datum_sveditelstvo = datum_sveditelstvo ?? "";
-            
+
             _polozhil = polozhil ?? "";
             // _majkino = majkino ?? "";
-            
+
             _prethoden_delovoden = delovoden_broj ?? "";
             _pat_polaga_ispit = pat_polaga_ispit ?? "";
             _ispiten = ispiten ?? "";
@@ -169,11 +169,12 @@ namespace Middleware
             _drzavjanstvo = drzavjanstvo ?? "";
 
             _duplicate_ctr = duplicate_ctr;
-            
+
             //Dodatoci od Pazzio
             _jazik = jazik ?? "";
             _jazik_ocena = jazik_ocena ?? "";
         }
+
         public Ucenik() { }
 
         public Ucenik(string ime, string srednoime, string prezime, Smer smer, string br)
@@ -209,7 +210,7 @@ namespace Middleware
             Requests.UpdateData(new Dictionary<string, string>()
             {
                 { RequestParameters.token , token} , { RequestParameters.action , RequestParameters.delete } , { RequestParameters.ime , _ime } , {RequestParameters.prezime , _prezime } ,  {RequestParameters.srednoIme , _srednoIme}  , {RequestParameters.duplicate_ctr, _duplicate_ctr.ToString()}
-            } , RequestScopes.UpdateUcenik);
+            }, RequestScopes.UpdateUcenik);
         }
 
         public Ucenik(Dictionary<string, string> valuePairs)
@@ -222,7 +223,8 @@ namespace Middleware
             _oceni = new List<int>();
             foreach (string x in s)
             {
-                _oceni.Add(int.Parse(x));
+                int a = int.TryParse(x, out int DefaultOcena) ? DefaultOcena : 0;
+                _oceni.Add(a);
             }
 
             _smer = valuePairs[RequestParameters.smer] ?? "";
@@ -257,40 +259,56 @@ namespace Middleware
             // _majkino = valuePairs[RequestParameters.majkino] ?? "";
         }
 
-        public void UpdateUcenikData(List<string> UpdatedData , string token)
+        public string UpdateUcenikData(Dictionary<string, string> UpdatedData , Dictionary<string, string> OrigData, string token)
         {
-            int i = 0;
-            foreach(string x in UpdatedData)
+            Dictionary<string, string> queryParams = new Dictionary<string, string>(UpdatedData);
+            queryParams[nameof(token)] = token;
+            queryParams.Add(RequestParameters.duplicate_ctr, _duplicate_ctr.ToString());
+            if (OrigData.ContainsKey("ime"))
             {
-                UpdateUcenik(int.Parse(UpdatedData[4]), Request[i++], x , token);
+                queryParams["new_first_name"] = queryParams["ime"];
+                queryParams["ime"] = OrigData["ime"];
             }
-            _ime = UpdatedData[0];
-            _srednoIme = UpdatedData[1];
-            _prezime = UpdatedData[2];
-            _smer = UpdatedData[3];
-            _broj = int.Parse(UpdatedData[4]);
-            _tatko = UpdatedData[5];
-            _majka = UpdatedData[6];
-            _roden = UpdatedData[7];
-            _mesto_na_ragjanje = UpdatedData[8];
-            _drzavjanstvo = UpdatedData[9];
+            if (OrigData.ContainsKey("prezime"))
+            {
+                queryParams["new_last_name"] = queryParams["prezime"];
+                queryParams["prezime"] = OrigData["prezime"];
+            }
+            if (OrigData.ContainsKey("srednoIme"))
+            {
+                queryParams["new_middle_name"] = queryParams["srednoIme"];
+                queryParams["srednoIme"] = OrigData["srednoIme"];
+            }
+            if (OrigData.ContainsKey("broj"))
+            {
+                queryParams["new_broj_vo_dnevnik"] = queryParams["broj"];
+                queryParams["broj"] = OrigData["broj"];
+            }
+            string rez = Requests.UpdateData(queryParams, "ucenik");
+            this._ime = UpdatedData["ime"];
+            this._srednoIme = UpdatedData["srednoIme"];
+            this._prezime = UpdatedData["prezime"];
+            this._smer = UpdatedData["smer"];
+            this._broj = int.Parse(UpdatedData["broj"]);
+            this._tatko = UpdatedData["tatko"];
+            this._majka = UpdatedData["majka"];
+            this._roden = UpdatedData["roden"];
+            this._mesto_na_ragjanje = UpdatedData["mesto_na_ragjanje"];
+            this._drzavjanstvo = UpdatedData["drzavjanstvo"];
+            this._gender = UpdatedData["gender"];
+            this._roden = UpdatedData["roden"];
+            this._mesto_na_ragjanje = UpdatedData["mesto_na_ragjanje"];
+            this._mesto_na_zhiveenje = UpdatedData["mesto_na_zhiveenje"];
+            this._pat_polaga = UpdatedData["pat"];
+            this._polozhil = UpdatedData["polozhil"];
+            int result = 0;
+            int.TryParse(UpdatedData["opravdani"], out result);
+            this._opravdani = result;
+            int.TryParse(UpdatedData["neopravdani"], out result);
+            this._neopravdani = result;
+            this._povedenie = UpdatedData["povedenie"];
+            return rez;
         }
-        string[] Request = {
-            RequestParameters.new_first_name,
-            RequestParameters.new_middle_name,
-            RequestParameters.new_last_name,
-            RequestParameters.new_smer,
-            RequestParameters.new_broj_vo_dnevnik,
-            RequestParameters.tatko,
-            RequestParameters.majka,
-            RequestParameters.roden,
-            RequestParameters.mesto_na_ragjanje,
-            RequestParameters.drzavjanstvo,
-            RequestParameters.duplicate_ctr,
-            RequestParameters.jazik_ocena,
-            RequestParameters.jazik
-            //RequestParameters
-        };
 
         public string OceniToString()
         {
@@ -318,25 +336,38 @@ namespace Middleware
             }
             return checker;
         }
-        public void UpdateUcenikOceni(int br, string Token)
+
+        public string ProektniToString(List<string> tx)
+        {
+            int i = 0;
+            string s = "";
+            foreach(string x in tx)
+            {
+                if (i % 2 == 0)
+                {
+                    s += x + ",";
+                }
+                else s += x + ";";
+                i++;
+            }
+            s = s.Substring(0,s.Length-1);
+            return s;
+        }
+
+        public void UpdateUcenikOceni(string Token)
         {
             //UpdateUcenik(br, RequestParameters.oceni, OceniToString(), Token);
-            UpdateUcenik(br, RequestParameters.oceni, string.Join(" ", _oceni), Token);
+            UpdateUcenik(RequestParameters.oceni, string.Join(" ", _oceni), Token);
         }
 
-        public void UpdateUcenikSmer(int br, string Token)
+        public string UpdateUcenik(string UpdateParametar, string value, string Token)
         {
-            UpdateUcenik(br, RequestParameters.smer, _smer, Token);
-        }
-
-        public void UpdateUcenik(int br, string UpdateParametar, string value, string Token)
-        {
-            Requests.UpdateData(new Dictionary<string, string>() {
-            { RequestParameters.token , Token} , { RequestParameters.ime , _ime } , {RequestParameters.prezime , _prezime } , { RequestParameters.broj , br.ToString() } ,  {RequestParameters.srednoIme , _srednoIme}  , { UpdateParametar, value }, {RequestParameters.duplicate_ctr, _duplicate_ctr.ToString()} 
+            return Requests.UpdateData(new Dictionary<string, string>() {
+            { RequestParameters.token , Token} , { RequestParameters.ime , _ime } , {RequestParameters.prezime , _prezime } ,  {RequestParameters.srednoIme , _srednoIme}  , { UpdateParametar, value }, {RequestParameters.duplicate_ctr, _duplicate_ctr.ToString()} 
             }, RequestScopes.UpdateUcenik);
         }
 
-        public void ChangeSmer(Smer NovSmer, int br, string token)
+        public void ChangeSmer(Smer NovSmer,string token)
         {
             _smer = NovSmer._smer;
             _oceni.Clear();
@@ -345,11 +376,11 @@ namespace Middleware
                 _oceni.Add(0);
             }
 
-             UpdateUcenik(br, RequestParameters.new_smer, NovSmer._smer, token);
+            //UpdateUcenik(RequestParameters.new_smer, NovSmer._smer, token);
         }
-}
+        }
 
-    public class Smer
+        public class Smer
     {
         [JsonProperty(RequestParameters.predmeti)]
         public List<string> _predmeti { get; set; }
@@ -402,7 +433,7 @@ namespace Middleware
             if(res.Length > 0)res = res.Substring(0, res.Length - 1);
             Requests.UpdateData(new Dictionary<string, string>() {
             { RequestParameters.smer , _smer}, { RequestParameters.token , token } , { RequestParameters.predmeti, res}
-            }, RequestParameters.smer);
+            }, RequestScopes.UpdateSmer);
 
         }
 
@@ -445,6 +476,7 @@ namespace Middleware
             _smerovi.Remove(SmerIme);
             //UpdateSmerovi();
         }
+
 
         private void AddtoServerSmer(Smer NovSmer, string token)
         {
@@ -542,11 +574,26 @@ namespace Middleware
             if (GetSmerovi().Length == 0) return;
             foreach (var x in GetSmerovi())
             {
-                _p._smerovi.Add(x, new Smer(Requests.GetData(new Dictionary<string, string>(){
+                if (x == "") continue;
+
+                var req = Requests.GetData(new Dictionary<string, string>(){
                     { RequestParameters.token, _token},
                     { RequestParameters.smer, x } ,
                     { RequestParameters.paralelka, _paralelka}
-                }, RequestScopes.GetPredmetiSmer)[0]["predmeti"].Split(',').ToList(), x));
+                }, RequestScopes.GetPredmetiSmer)[0];
+
+
+                List<string> predmeti = req["predmeti"].Split(',').ToList();
+                if (req["predmeti"].Length == 0) predmeti = new List<string>();
+
+                Smer NovSmer = new Smer(predmeti, x);
+
+                if (NovSmer._predmeti.Count == 0)
+                {
+                    NovSmer._predmeti.Clear();
+                }
+
+                _p._smerovi.Add(x,NovSmer);
             }
 
         }
@@ -573,5 +620,6 @@ namespace Middleware
         public const string ADD = "type";
         public const string UPDATE = "updating";
     }
+
 
 }

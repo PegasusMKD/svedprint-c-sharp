@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Windows;
 
 namespace Middleware
 {
@@ -15,30 +16,37 @@ namespace Middleware
 
         public static List<Dictionary<string, string>> GetData(Dictionary<string, string> queryParams, string scope)
         {
-            Request request = new Request(type: RequestTypes.GET, scope: scope, queryParams: queryParams);
-
-            string json = JsonConvert.SerializeObject(request, new RequestConverter());
-            string uri = $"https://{settings.Default.DB_HOST}{settings.Default.DB_PORT}/{settings.Default.DB_BRANCH}/return/";
-            var httpRequest = (HttpWebRequest)WebRequest.Create(uri);
-            httpRequest.Method = @"POST";
-            httpRequest.ContentType = @"application/json";
-            using (var writer = new StreamWriter(httpRequest.GetRequestStream()))
+            try
             {
-                writer.Write(json);
+                Request request = new Request(type: RequestTypes.GET, scope: scope, queryParams: queryParams);
+
+                string json = JsonConvert.SerializeObject(request, new RequestConverter());
+                string uri = $"https://{settings.Default.DB_HOST}{settings.Default.DB_PORT}/{settings.Default.DB_BRANCH}/return/";
+                var httpRequest = (HttpWebRequest)WebRequest.Create(uri);
+                httpRequest.Method = @"POST";
+                httpRequest.ContentType = @"application/json";
+                using (var writer = new StreamWriter(httpRequest.GetRequestStream()))
+                {
+                    writer.Write(json);
+                }
+
+                var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+                var responseJson = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
+
+                //var response = await http.PostAsync(uri, new StringContent(json));
+                //string responseJson = await response.Content.ReadAsStringAsync();
+
+                List<Dictionary<string, string>> queryResult = new List<Dictionary<string, string>>();
+                queryResult = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(responseJson, new DictConverter());
+                printData(json, responseJson);
+
+                return queryResult;
             }
-            
-            var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
-            var responseJson = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
-
-
-            //var response = await http.PostAsync(uri, new StringContent(json));
-            //string responseJson = await response.Content.ReadAsStringAsync();
-
-            List<Dictionary<string, string>> queryResult = new List<Dictionary<string, string>>();
-            queryResult = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(responseJson, new DictConverter());
-            printData(json, responseJson);
-
-            return queryResult;
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                return new List<Dictionary<string, string>>();
+            }
         }
 
         [Conditional("DEBUG")]
@@ -51,38 +59,57 @@ namespace Middleware
 
         public static void AddData(Dictionary<string, string> queryParams, string scope)
         {
-            Request request = new Request(type: RequestTypes.ADD, scope: scope, queryParams: queryParams);
-
-            string json = JsonConvert.SerializeObject(request, new RequestConverter());
-            string uri = $"https://{settings.Default.DB_HOST}{settings.Default.DB_PORT}/{settings.Default.DB_BRANCH}/setup/";
-            var httpRequest = (HttpWebRequest)WebRequest.Create(uri);
-            httpRequest.Method = @"POST";
-            httpRequest.ContentType = @"application/json";
-            using (var writer = new StreamWriter(httpRequest.GetRequestStream()))
+            try
             {
-                writer.Write(json);
-            }
 
-            var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
-            var responseJson = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
+                Request request = new Request(type: RequestTypes.ADD, scope: scope, queryParams: queryParams);
+
+                string json = JsonConvert.SerializeObject(request, new RequestConverter());
+                string uri = $"https://{settings.Default.DB_HOST}{settings.Default.DB_PORT}/{settings.Default.DB_BRANCH}/setup/";
+                var httpRequest = (HttpWebRequest)WebRequest.Create(uri);
+                httpRequest.Method = @"POST";
+                httpRequest.ContentType = @"application/json";
+                using (var writer = new StreamWriter(httpRequest.GetRequestStream()))
+                {
+                    writer.Write(json);
+                }
+
+                var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+                var responseJson = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
 
-        public static void UpdateData(Dictionary<string, string> queryParams, string scope)
+        public static string UpdateData(Dictionary<string, string> queryParams, string scope)
         {
-            Request request = new Request(type: RequestTypes.UPDATE, scope: scope, queryParams: queryParams);
-
-            string json = JsonConvert.SerializeObject(request, new RequestConverter());
-            string uri = $"https://{settings.Default.DB_HOST}{settings.Default.DB_PORT}/{settings.Default.DB_BRANCH}/update/";
-            var httpRequest = (HttpWebRequest)WebRequest.Create(uri);
-            httpRequest.Method = @"POST";
-            httpRequest.ContentType = @"application/json";
-            using (var writer = new StreamWriter(httpRequest.GetRequestStream()))
+            try
             {
-                writer.Write(json);
-            }
+                Request request = new Request(type: RequestTypes.UPDATE, scope: scope, queryParams: queryParams);
 
-            var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
-            var responseJson = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
+                string json = JsonConvert.SerializeObject(request, new RequestConverter());
+                string uri = $"https://{settings.Default.DB_HOST}{settings.Default.DB_PORT}/{settings.Default.DB_BRANCH}/update/";
+                var httpRequest = (HttpWebRequest)WebRequest.Create(uri);
+                httpRequest.Method = @"POST";
+                httpRequest.ContentType = @"application/json";
+                using (var writer = new StreamWriter(httpRequest.GetRequestStream()))
+                {
+                    writer.Write(json);
+                }
+
+                var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+                var responseJson = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
+
+                return responseJson.ToString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                return "107";
+            }
         }
 
         public static void GetCarsav()

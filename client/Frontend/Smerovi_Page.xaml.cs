@@ -167,6 +167,7 @@ namespace Frontend
         private void NewSmerSaveClicked(object sender, MouseButtonEventArgs e)
         {
             UserKlas._p.AddSmer(new Smer(DodajPredmeti[DodajPredmeti.Count()-2].Text,DodajPredmeti[DodajPredmeti.Count-1].Text), UserKlas._token);
+            UserKlas.PopulateSmerovi(Ucenici);
             UpdateVar();
             GetData();
         }
@@ -180,7 +181,7 @@ namespace Frontend
                 if(Ucenik._smer == toBeChanged)
                 {
                     Ucenik._oceni.Add(1);
-                    Ucenik.UpdateUcenikOceni(ctr , UserKlas._token);
+                    Ucenik.UpdateUcenikOceni(UserKlas._token);
                 }
                 ctr++;
             }
@@ -204,8 +205,8 @@ namespace Frontend
             {
                 if (Ucenik._smer == toBeChanged)
                 {
-                    Ucenik._oceni.RemoveAt(j);
-                    Ucenik.UpdateUcenikOceni(ctr , UserKlas._token);
+                    if(Ucenik._oceni.Count>j)Ucenik._oceni.RemoveAt(j);
+                    Ucenik.UpdateUcenikOceni(UserKlas._token);
                 }
                 ctr++;
             }
@@ -239,7 +240,7 @@ namespace Frontend
         private Image CreateTrashIcon(string smer)
         {
             Image img = new Image();
-            img.Name = smer;
+            img.Tag = smer;
             img.Source = new BitmapImage( new Uri("trash_icon.png", UriKind.Relative));
             img.HorizontalAlignment = HorizontalAlignment.Right;
             img.Margin = new Thickness(10, 5, 10, 5);
@@ -255,7 +256,7 @@ namespace Frontend
                 return;
             }
             Image img = (Image)sender;
-            String smer = img.Name;
+            String smer = img.Tag.ToString();
             Smer NovSmer;
             if (UserKlas._p._smerovi.Keys.ElementAt(0) != smer)
             {
@@ -267,7 +268,7 @@ namespace Frontend
             {
                 if(ucenik._smer == smer)
                 {
-                    ucenik.ChangeSmer(NovSmer, ctr, UserKlas._token);
+                    ucenik.ChangeSmer(NovSmer , UserKlas._token);
                 }
                 ctr++;
             }

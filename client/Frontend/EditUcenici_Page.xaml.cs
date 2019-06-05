@@ -18,81 +18,219 @@ namespace Frontend
         Klasen UserKlas;
         List<Ucenik> Ucenici;
         int BrojDn = 0;
-        bool Saved = true;
+
+        private readonly Dictionary<string, string> names = new Dictionary<string, string>(){
+      {"Име", "ime"},
+      {"Презиме", "prezime"},
+      {"Средно Име", "srednoIme"},
+      {"Смер", "smer"},
+      {"родител(Татко)","tatko"},
+      {
+        "родител(Мајка)",
+        "majka"
+      },
+      {
+        "број во дневник",
+        "broj"
+      },
+      {
+        "Државјанство",
+        "drzavjanstvo"
+      },
+      {
+        "Пол",
+        "gender"
+      },
+      {
+        "ден на раѓање",
+        "roden"
+      },
+      {
+        "место на раѓање",
+        "mesto_na_ragjanje"
+      },
+      {
+        "место на живеење",
+        "mesto_na_zhiveenje"
+      },
+      {
+        "по кој пат ја учи годината",
+        "pat"
+      },
+      {
+        "дали е положена годината",
+        "polozhil"
+      },
+      {
+        "број на оправдани изостаноци",
+        "opravdani"
+      },
+      {
+        "број на неоправдани изостаноци",
+        "neopravdani"
+      },
+      {
+        "Поведение",
+        "povedenie"
+      }
+};
+
 
         public EditUcenici_Page()
         {
             InitializeComponent();
             UserKlas = Home_Page.KlasenKlasa;
             Ucenici = Home_Page.ucenici;
+            SortUcenici();
             GetData();
         }
 
         List<TextBox> Answer;
-        void GetData()
+        List<ComboBox> CBList;
+        private void GetData()
         {
             Answer = new List<TextBox>();
+            CBList = new List<ComboBox>();
             MainGrid.Children.Clear();
-            Saved = true;
-
-            Dictionary<string, string> res= new Dictionary<string, string>();
-            res.Add("Име", "Име");
-            res.Add("Средно Име", "Средно Име");
-            res.Add("Презиме", "Презиме");
-            res.Add("Смер", "Смер");
-            res.Add("број во дневник", "00");
-            res.Add("родител(Татко)", "Име Презиме");
-            res.Add("родител(Мајка)", "Име Презиме");
-            res.Add("ден на раѓање", "00.00.0000");
-            res.Add("место на раѓање", "Скопје");
-            res.Add("Државјанство", "РСМ");
-            //res.Add("пол", "");
-
+            Dictionary<string, string> dictionary = new Dictionary<string, string>();
+            dictionary.Add("Име", "Име");
+            dictionary.Add("Презиме", "Презиме");
+            dictionary.Add("Средно Име", "Средно Име");
+            dictionary.Add("Смер", "Смер");
+            dictionary.Add("родител(Татко)", "Име Презиме");
+            dictionary.Add("родител(Мајка)", "Име Презиме");
+            dictionary.Add("број во дневник", "00");
+            dictionary.Add("Државјанство", "Македонско");
+            dictionary.Add("Пол", "Машко/Женско");
+            dictionary.Add("ден на раѓање", "00.00.0000");
+            dictionary.Add("место на раѓање", "Скопје");
+            dictionary.Add("место на живеење", "Скопје");
+            dictionary.Add("по кој пат ја учи годината", "прв/втор пат");
+            dictionary.Add("дали е положена годината", "Положил");
+            dictionary.Add("број на оправдани изостаноци", "0");
+            dictionary.Add("број на неоправдани изостаноци", "0");
+            dictionary.Add("Поведение", "Примарно");
             if (Ucenici.Count > BrojDn)
             {
-                res["Име"] = Ucenici[BrojDn]._ime;
-                res["Средно Име"] = Ucenici[BrojDn]._srednoIme;
-                res["Презиме"] = Ucenici[BrojDn]._prezime;
-                res["Смер"] = Ucenici[BrojDn]._smer;
+                dictionary["Име"] = Ucenici[BrojDn]._ime;
+                dictionary["Презиме"] = Ucenici[BrojDn]._prezime;
+                dictionary["Средно Име"] = Ucenici[BrojDn]._srednoIme;
+                dictionary["Смер"] = Ucenici[BrojDn]._smer;
                 Ucenici[BrojDn]._broj = BrojDn;
-                res["број во дневник"] = (Ucenici[BrojDn]._broj + 1).ToString();
-                res["родител(Татко)"] = Ucenici[BrojDn]._tatko;
-                res["родител(Мајка)"] = Ucenici[BrojDn]._majka;
-                res["ден на раѓање"] = Ucenici[BrojDn]._roden;
-                res["место на раѓање"] = Ucenici[BrojDn]._mesto_na_ragjanje;
-                res["Државјанство"] = Ucenici[BrojDn]._drzavjanstvo;
+                dictionary["број во дневник"] = (Ucenici[BrojDn]._broj + 1).ToString();
+                dictionary["родител(Татко)"] = Ucenici[BrojDn]._tatko;
+                dictionary["родител(Мајка)"] = Ucenici[BrojDn]._majka;
+                dictionary["Државјанство"] = Ucenici[BrojDn]._drzavjanstvo;
+                dictionary["Пол"] = Ucenici[BrojDn]._gender;
+                dictionary["ден на раѓање"] = Ucenici[BrojDn]._roden;
+                dictionary["место на раѓање"] = Ucenici[BrojDn]._mesto_na_ragjanje;
+                dictionary["место на живеење"] = Ucenici[BrojDn]._mesto_na_zhiveenje;
+                dictionary["по кој пат ја учи годината"] = Ucenici[BrojDn]._pat_polaga;
+                dictionary["дали е положена годината"] = Ucenici[BrojDn]._polozhil;
+                dictionary["број на оправдани изостаноци"] = Ucenici[BrojDn]._opravdani.ToString();
+                dictionary["број на неоправдани изостаноци"] = Ucenici[BrojDn]._neopravdani.ToString();
+                dictionary["Поведение"] = Ucenici[BrojDn]._povedenie;
             }
-            MainGrid.Height = 0;
-
-            int i = 0;
-            foreach (KeyValuePair<string, string> x in res)
+            MainGrid.Height = 0.0;
+            int index = 0;
+            foreach (KeyValuePair<string, string> keyValuePair in dictionary)
             {
-                StackPanel st = new StackPanel();
-                if (i % 2 == 0)
+                StackPanel stackPanel = new StackPanel();
+                if (index % 2 == 0)
                 {
                     MainGrid.RowDefinitions.Add(new RowDefinition());
-                    MainGrid.RowDefinitions[MainGrid.RowDefinitions.Count - 1].Height = new GridLength(100);
-                    MainGrid.Height += 100;
+                    MainGrid.RowDefinitions[MainGrid.RowDefinitions.Count - 1].Height = new GridLength(100.0);
+                    MainGrid.Height += 100.0;
+                }
+                TextBox textBox = ContentTextBox(keyValuePair.Value);
+                textBox.Name = names[keyValuePair.Key];
+                Answer.Add(textBox);
+                stackPanel.Children.Add(ContentBorder(keyValuePair.Key));
+                stackPanel.Children.Add(Answer[index]);
+                stackPanel.Children.Add(UnderTextBorder());
+                Grid.SetRow(stackPanel, index / 2);
+                Grid.SetColumn(stackPanel, index % 2);
+                MainGrid.Children.Add(stackPanel);
+                ++index;
+            }
+            string[][] cb = new string[][]{ new string[]{ "Проектни Активности" ,"proektni" ,"izboren1_odg", } ,new string[] { "Проектни Активности", "proektni" , "izboren2_odg" } };
+            foreach (string[] x in cb)
+            {
+                StackPanel stackPanel = new StackPanel();
+                if (index % 2 == 0)
+                {
+                    MainGrid.RowDefinitions.Add(new RowDefinition());
+                    MainGrid.RowDefinitions[MainGrid.RowDefinitions.Count - 1].Height = new GridLength(100.0);
+                    MainGrid.Height += 130.0;
                 }
 
-                TextBox tx = ContentTextBox(x.Value);
-                tx.TextChanged += ContentTextBoxTextChanged;
-                Answer.Add(tx);
+                ComboBox CB = new ComboBox();
+                CB.Tag = x[1];
+                CB.Margin = new Thickness(30, 5, 30, 5);
+                if (UserKlas._p._smerovi.ContainsKey("ПА"))
+                {
+                    CB.ItemsSource = UserKlas._p._smerovi["ПА"]._predmeti;
+                    CB.SelectedIndex = 0;
+                }
+                CBList.Add(CB);
 
-                st.Children.Add(ContentBorder(x.Key));
-                st.Children.Add(Answer[i]);
-                st.Children.Add(UnderTextBorder());
+                stackPanel.Children.Add(ContentBorder(x[0]));
+                stackPanel.Children.Add(CBList.Last());
 
-                Grid.SetRow(st, i / 2);
-                Grid.SetColumn(st, i % 2);
-                MainGrid.Children.Add(st);
-                i++;
+                string[] odgovori = { "Реализирал", "Не Реализирал" };
+                ComboBox res = new ComboBox();
+                res.Tag = x[2];
+                res.Margin = new Thickness(30, 5, 30, 5);
+                res.ItemsSource = odgovori;
+                CBList.Add(res);
+                res.SelectedIndex = 0;
+
+                stackPanel.Children.Add(CBList.Last());
+                stackPanel.Children.Add(UnderTextBorder());
+
+                Grid.SetRow(stackPanel, index / 2);
+                Grid.SetColumn(stackPanel, index % 2);
+                MainGrid.Children.Add(stackPanel);
+
+                ++index;
             }
+            /*
+            MainGrid.Height += 150;
+            StackPanel CombostackPanel = new StackPanel();
+            if (index % 2 == 0)
+            {
+                MainGrid.RowDefinitions.Add(new RowDefinition());
+                MainGrid.RowDefinitions[MainGrid.RowDefinitions.Count - 1].Height = new GridLength(100.0);
+                MainGrid.Height += 150.0;
+            }
+            ComboBox CB = new ComboBox();
+            CB.Tag = "proektni";
+            CB.Margin = new Thickness(30, 5, 30, 5);
+            if (UserKlas._p._smerovi.ContainsKey("ПА")) CB.ItemsSource = UserKlas._p._smerovi["ПА"]._predmeti;
+            CBList.Add(CB);
+
+            CombostackPanel.Children.Add(ContentBorder("Проектни Активности"));
+            CombostackPanel.Children.Add(CBList.Last());
+
+            string[] odgovori = { "Реализирал", "Не Реализирал" };
+            ComboBox res = new ComboBox();
+            res.Tag = "Izboren1_Odg";
+            res.Margin = new Thickness(30, 5, 30, 5);
+            res.ItemsSource = odgovori;
+            CBList.Add(res);
+
+            CombostackPanel.Children.Add(CBList.Last());
+            CombostackPanel.Children.Add(UnderTextBorder());
+
+            Grid.SetRow(CombostackPanel, index / 2);
+            Grid.SetColumn(CombostackPanel, index % 2);
+            MainGrid.Children.Add(CombostackPanel);*/
+
+
         }
 
         private void ContentTextBoxTextChanged(object sender, TextChangedEventArgs e)
         {
-            Saved = true;
         }
 
 
@@ -123,17 +261,54 @@ namespace Frontend
 
         private void SaveBtnClicked(object sender, MouseButtonEventArgs e)
         {
-            List<string> tx = Answer.ConvertAll(x => x.Text);
-            Ucenici[BrojDn].UpdateUcenikData(tx, UserKlas._token);
+            if(BrojDn >= Ucenici.Count)
+            {
+                MessageBox.Show("Ученикот со таков број во дневник не постои");
+            }
+            Save();
+        }
+
+        private void Save()
+        {
+            Dictionary<string, string> tx = new Dictionary<string, string>();
+            Dictionary<string, string> OrigData = new Dictionary<string, string>();
+            Answer.ForEach((x => tx.Add(x.Name, x.Text)));
+            tx.Add("proektni",Ucenici[BrojDn].ProektniToString(CBList.ConvertAll( x => x.SelectedValue.ToString())));
+            OrigData["ime"] = Ucenici[BrojDn]._ime;
+            OrigData["prezime"] = Ucenici[BrojDn]._prezime;
+            OrigData["broj"] = BrojDn.ToString();
+            OrigData["srednoIme"] = Ucenici[BrojDn]._srednoIme;
+            MessageBox.Show(Output(Ucenici[BrojDn].UpdateUcenikData(tx, OrigData, UserKlas._token)));
             SortUcenici();
+        }
+
+        private string Output(string answer)
+        {
+            switch (answer)
+            {
+                case "000":
+                    return "Успесшно зачувување на ученикот";
+                default:
+
+                    return answer;
+            }
         }
 
         private void CreateUcenikImgClicked(object sender, MouseButtonEventArgs e)
         {
-            CreateUcenik(Answer[0].Text, Answer[1].Text, Answer[2].Text, Answer[3].Text, Answer[4].Text);
-            List<string> tx = Answer.ConvertAll(x => x.Text);
-            Ucenici[BrojDn].UpdateUcenikData(tx, UserKlas._token);
-            SortUcenici();
+            if (!this.UserKlas._p._smerovi.ContainsKey(this.Answer[3].Text))
+            {
+                int num = (int)MessageBox.Show("Смерот не се совпаѓа");
+            }
+            else
+            {
+                this.CreateUcenik(this.Answer[0].Text, this.Answer[1].Text, this.Answer[2].Text, this.Answer[3].Text, (this.BrojDn + 1).ToString());
+                int bk = BrojDn;
+                BrojDn = Ucenici.Count - 1;
+                Save();
+                BrojDn = bk;
+                this.SortUcenici();
+            }
         }
 
         private void CreateUcenik(string ime, string srednoime, string prezime, string smer, string br)
@@ -143,7 +318,9 @@ namespace Frontend
                 MessageBox.Show("Смерот не се совпаѓа");
                 return;
             }
+            List<Ucenik> match = Ucenici.Where(x => (x._prezime == prezime ) && (x._ime == ime) && (x._srednoIme == srednoime)).ToList();
             Ucenici.Add(new Ucenik(ime, srednoime, prezime, UserKlas._p._smerovi[smer], br));
+            if (match.Count > 0) Ucenici.Last()._duplicate_ctr = match.Count();
             Ucenici.Last().CreateServerUcenik(UserKlas._token);
             MessageBox.Show("успешно креирање на нов ученик");
         }
@@ -159,6 +336,11 @@ namespace Frontend
 
         private void DeleteUcenikImgClicked(object sender , MouseButtonEventArgs e)
         {
+            if(BrojDn >= Ucenici.Count)
+            {
+                MessageBox.Show("Ученикот со тој број не постои");
+                return;
+            }
             Ucenici[BrojDn].DeleteUcenik(UserKlas._token);
             Ucenici.RemoveAt(BrojDn);
             SortUcenici();
