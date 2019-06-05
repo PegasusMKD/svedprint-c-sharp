@@ -35,7 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>grades_icon_xlj_icon.ico</ApplicationIcon>
+    <ApplicationIcon>grades_icon_XwQ_icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -228,6 +228,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="grades_icon_xlj_icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="grades_icon_XwQ_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
