@@ -166,7 +166,10 @@ namespace Frontend
 
         private void NewSmerSaveClicked(object sender, MouseButtonEventArgs e)
         {
+            // TODO:
+            // validator za kratenica na smer, max 7 karakteri
             UserKlas._p.AddSmer(new Smer(DodajPredmeti[DodajPredmeti.Count()-2].Text,DodajPredmeti[DodajPredmeti.Count-1].Text), UserKlas._token);
+            // UserKlas.GetSmerPredmeti();
             UpdateVar();
             GetData();
         }

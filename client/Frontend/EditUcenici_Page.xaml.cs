@@ -18,7 +18,20 @@ namespace Frontend
         Klasen UserKlas;
         List<Ucenik> Ucenici;
         int BrojDn = 0;
-        bool Saved = true;
+        Dictionary<string, string> old = new Dictionary<string, string>();
+        readonly Dictionary<string, string> names = new Dictionary<string, string>()
+        {
+            {"Име",RequestParameters.ime},
+            {"Средно Име",RequestParameters.srednoIme},
+            {"Презиме",RequestParameters.prezime},
+            {"Смер",RequestParameters.smer},
+            {"број во дневник",RequestParameters.broj},
+            {"родител(Татко)",RequestParameters.tatko},
+            {"родител(Мајка)",RequestParameters.majka },
+            {"ден на раѓање",RequestParameters.roden},
+            {"место на раѓање",RequestParameters.mesto_na_ragjanje},
+            {"Државјанство",RequestParameters.drzavjanstvo}
+        };
 
         public EditUcenici_Page()
         {
@@ -33,7 +46,6 @@ namespace Frontend
         {
             Answer = new List<TextBox>();
             MainGrid.Children.Clear();
-            Saved = true;
 
             Dictionary<string, string> res= new Dictionary<string, string>();
             res.Add("Име", "Име");
@@ -76,7 +88,8 @@ namespace Frontend
                 }
 
                 TextBox tx = ContentTextBox(x.Value);
-                tx.TextChanged += ContentTextBoxTextChanged;
+                tx.Name = names[x.Key];
+                tx.LostFocus += ContentTextBoxLostFocus;
                 Answer.Add(tx);
 
                 st.Children.Add(ContentBorder(x.Key));
@@ -90,10 +103,11 @@ namespace Frontend
             }
         }
 
-        private void ContentTextBoxTextChanged(object sender, TextChangedEventArgs e)
+        private void ContentTextBoxLostFocus(object sender, RoutedEventArgs e)
         {
-            Saved = true;
+            // changes[((TextBox)sender).Name] = ((TextBox)sender).Text;
         }
+        
 
 
         private Border ContentBorder(string LabelContent)
@@ -123,16 +137,23 @@ namespace Frontend
 
         private void SaveBtnClicked(object sender, MouseButtonEventArgs e)
         {
-            List<string> tx = Answer.ConvertAll(x => x.Text);
-            Ucenici[BrojDn].UpdateUcenikData(tx, UserKlas._token);
+            Dictionary<string, string> tx = new Dictionary<string, string>(), orig = new Dictionary<string, string>();
+            Answer.ForEach(x => tx.Add(x.Name, x.Text));
+            orig[RequestParameters.ime] = Ucenici[BrojDn]._ime;
+            orig[RequestParameters.prezime] = Ucenici[BrojDn]._prezime;
+            orig[RequestParameters.broj] = BrojDn.ToString();
+            orig[RequestParameters.srednoIme] = Ucenici[BrojDn]._srednoIme;
+
+            Ucenici[BrojDn].UpdateUcenikData(tx, orig, UserKlas._token);
             SortUcenici();
         }
 
         private void CreateUcenikImgClicked(object sender, MouseButtonEventArgs e)
         {
             CreateUcenik(Answer[0].Text, Answer[1].Text, Answer[2].Text, Answer[3].Text, Answer[4].Text);
-            List<string> tx = Answer.ConvertAll(x => x.Text);
-            Ucenici[BrojDn].UpdateUcenikData(tx, UserKlas._token);
+            Dictionary<string, string> tx = new Dictionary<string, string>();
+            Answer.ForEach(x => tx.Add(x.Name, x.Text));
+            Ucenici.Last().UpdateUcenikData(tx, new Dictionary<string, string>(), UserKlas._token);
             SortUcenici();
         }
 
