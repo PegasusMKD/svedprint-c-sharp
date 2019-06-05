@@ -167,7 +167,7 @@ namespace Frontend
         private void NewSmerSaveClicked(object sender, MouseButtonEventArgs e)
         {
             UserKlas._p.AddSmer(new Smer(DodajPredmeti[DodajPredmeti.Count()-2].Text,DodajPredmeti[DodajPredmeti.Count-1].Text), UserKlas._token);
-            UserKlas.PopulateSmerovi(Ucenici);
+            UserKlas.GetSmerPredmeti(UserKlas._p._smerovi.Keys.ToList());
             UpdateVar();
             GetData();
         }

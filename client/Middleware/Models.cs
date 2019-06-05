@@ -286,8 +286,8 @@ namespace Middleware
             }
             string rez = Requests.UpdateData(queryParams, "ucenik");
             this._ime = UpdatedData["ime"];
-            this._srednoIme = UpdatedData["srednoIme"];
             this._prezime = UpdatedData["prezime"];
+            this._srednoIme = UpdatedData["srednoIme"];
             this._smer = UpdatedData["smer"];
             this._broj = int.Parse(UpdatedData["broj"]);
             this._tatko = UpdatedData["tatko"];
@@ -556,7 +556,7 @@ namespace Middleware
             _p._ucenici = new List<Ucenik>(ucenici);
             if (ucenici.Count == 0) return;
             _smerovi = string.Join(",", ucenici.ConvertAll(x => x._smer).Distinct());
-            GetSmerPredmeti();
+            GetSmerPredmeti(GetSmerovi().ToList());
         }
 
 
@@ -565,35 +565,29 @@ namespace Middleware
         {
             if (_p == null) _p = new Paralelka(_paralelka, ucenici, new Dictionary<string, Smer>());
             _p._ucenici = ucenici;
-            GetSmerPredmeti();
+            GetSmerPredmeti(GetSmerovi().ToList());
         }
 
-        public void GetSmerPredmeti()
+        public void GetSmerPredmeti(List<string>Smerovi)
         {
-            _p._smerovi.Clear();
-            if (GetSmerovi().Length == 0) return;
-            foreach (var x in GetSmerovi())
+            if (Smerovi.Count == 0) return;
+            foreach (var x in Smerovi)
             {
-                if (x == "") continue;
 
                 var req = Requests.GetData(new Dictionary<string, string>(){
                     { RequestParameters.token, _token},
                     { RequestParameters.smer, x } ,
                     { RequestParameters.paralelka, _paralelka}
                 }, RequestScopes.GetPredmetiSmer)[0];
-
+                    
 
                 List<string> predmeti = req["predmeti"].Split(',').ToList();
                 if (req["predmeti"].Length == 0) predmeti = new List<string>();
 
                 Smer NovSmer = new Smer(predmeti, x);
 
-                if (NovSmer._predmeti.Count == 0)
-                {
-                    NovSmer._predmeti.Clear();
-                }
-
-                _p._smerovi.Add(x,NovSmer);
+                if (!_p._smerovi.Keys.Contains(x)) _p._smerovi.Add(x, NovSmer);
+                else _p._smerovi[x]._predmeti = predmeti;
             }
 
         }

@@ -25,30 +25,12 @@ namespace Frontend
       {"Средно Име", "srednoIme"},
       {"Смер", "smer"},
       {"родител(Татко)","tatko"},
-      {
-        "родител(Мајка)",
-        "majka"
-      },
-      {
-        "број во дневник",
-        "broj"
-      },
-      {
-        "Државјанство",
-        "drzavjanstvo"
-      },
-      {
-        "Пол",
-        "gender"
-      },
-      {
-        "ден на раѓање",
-        "roden"
-      },
-      {
-        "место на раѓање",
-        "mesto_na_ragjanje"
-      },
+      {"родител(Мајка)","majka"},
+      {"број во дневник","broj"},
+      { "Државјанство","drzavjanstvo"},
+      {"Пол","gender"},
+      {"ден на раѓање","roden"},
+      {"место на раѓање","mesto_na_ragjanje"},
       {
         "место на живеење",
         "mesto_na_zhiveenje"
@@ -276,8 +258,8 @@ namespace Frontend
             tx.Add("proektni",Ucenici[BrojDn].ProektniToString(CBList.ConvertAll( x => x.SelectedValue.ToString())));
             OrigData["ime"] = Ucenici[BrojDn]._ime;
             OrigData["prezime"] = Ucenici[BrojDn]._prezime;
-            OrigData["broj"] = BrojDn.ToString();
             OrigData["srednoIme"] = Ucenici[BrojDn]._srednoIme;
+            OrigData["broj"] = BrojDn.ToString();
             MessageBox.Show(Output(Ucenici[BrojDn].UpdateUcenikData(tx, OrigData, UserKlas._token)));
             SortUcenici();
         }
@@ -296,18 +278,18 @@ namespace Frontend
 
         private void CreateUcenikImgClicked(object sender, MouseButtonEventArgs e)
         {
-            if (!this.UserKlas._p._smerovi.ContainsKey(this.Answer[3].Text))
+            if (!UserKlas._p._smerovi.ContainsKey(Answer[3].Text))
             {
                 int num = (int)MessageBox.Show("Смерот не се совпаѓа");
             }
             else
             {
-                this.CreateUcenik(this.Answer[0].Text, this.Answer[1].Text, this.Answer[2].Text, this.Answer[3].Text, (this.BrojDn + 1).ToString());
+                CreateUcenik(Answer[0].Text, Answer[2].Text, Answer[1].Text, Answer[3].Text, (BrojDn + 1).ToString());
                 int bk = BrojDn;
                 BrojDn = Ucenici.Count - 1;
                 Save();
                 BrojDn = bk;
-                this.SortUcenici();
+                SortUcenici();
             }
         }
 
@@ -320,7 +302,7 @@ namespace Frontend
             }
             List<Ucenik> match = Ucenici.Where(x => (x._prezime == prezime ) && (x._ime == ime) && (x._srednoIme == srednoime)).ToList();
             Ucenici.Add(new Ucenik(ime, srednoime, prezime, UserKlas._p._smerovi[smer], br));
-            if (match.Count > 0) Ucenici.Last()._duplicate_ctr = match.Count();
+            Ucenici.Last()._duplicate_ctr = match.Count();
             Ucenici.Last().CreateServerUcenik(UserKlas._token);
             MessageBox.Show("успешно креирање на нов ученик");
         }

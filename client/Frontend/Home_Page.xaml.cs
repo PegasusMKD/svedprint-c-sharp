@@ -36,8 +36,7 @@ namespace Frontend
 
             if(result.Count == 0)
             {
-                MessageBox.Show("404");
-                return;
+               /// MessageBox.Show("404");
             }
 
             ucenici = result.ConvertAll(x => new Ucenik(x));
