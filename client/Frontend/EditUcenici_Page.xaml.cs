@@ -196,7 +196,9 @@ namespace Frontend
 
         private void ContentTextBoxLostFocus(object sender, RoutedEventArgs e)
         {
+            // changes[((TextBox)sender).Name] = ((TextBox)sender).Text;
         }
+
 
 
 
