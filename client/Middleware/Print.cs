@@ -199,8 +199,16 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(klasen._grad);
                 sw.Write(delimiter);
+                Dictionary<string,string> year_dictionary = new Dictionary<string,string>(){
+                    {"I","1"},
+                    {"II","2"},
+                    {"III","3"},
+                    {"IV","4"}
+                };
+                var paralelka_godina = klasen._paralelka.Split('-').FirstOrDefault();
+                sw.Write(klasen._glavna_kniga + '/' + year_dictionary[paralelka_godina]);
                 sw.Write(delimiter); // broj glavna kniga
-                sw.Write(klasen._paralelka.Split('-').FirstOrDefault());
+                sw.Write(paralelka_godina);
                 sw.Write(delimiter);
 
                 // ime prezime na ucenik, ime prezime na roditel, DOB, naselba, opshtina, drzhava, drzhavjanstvo (hardcode)
@@ -242,15 +250,15 @@ namespace Middleware
                 sw.Write(delimiter);
 
                 //Dodavano od Pazzio
-                /*
-                Ova fali i vo skriptata aswell, zatoa e iskomentirano
-                
                 //Ovdeka treba nekoe mesto, ama neznam koe, treba da prashash
                 //Vo shkolo
                 //sw.Write(u._
+                sw.Write(klasen._mesto_odobruvanje_sveditelstvo);
+                sw.Write(delimiter);
                 sw.Write(klasen._odobreno_sveditelstvo);
                 sw.Write(delimiter);
-                sw.Write(klasen._delovoden_broj + ctr_passable.ToString());
+                sw.Write(klasen._delovoden_broj + '-' + year_dictionary[paralelka_godina] + '/' + klasen._paralelka.Split('-')[1] + '/' +  ctr_passable.ToString());
+                
                 sw.Write(delimiter);
                 sw.Write(klasen._ime + " " + klasen._srednoIme + " " + klasen._prezime);
                 sw.Write(delimiter);
@@ -261,9 +269,15 @@ namespace Middleware
                 sw.Write(klasen._akt_godina);
                 sw.Write(delimiter);
                 sw.Write(klasen._ministerstvo);
+                sw.Write(';');
 
-                 */
-                ctr_passable++;
+                List<string> proektni_list = new List<string>();
+                foreach(var x in u._proektni.Split(';')){proektni_list.Add(String.Join('/',x.Split(',')));}
+                
+                sw.Write(String.Join(',',proektni_list));
+
+
+                 ctr_passable++;
                 // XX, YY
                 sw.Write(delimiter); // XX
                 sw.Write(""); // YY
