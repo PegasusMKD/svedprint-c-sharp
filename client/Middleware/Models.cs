@@ -534,15 +534,16 @@ namespace Middleware
         public string _akt { get; set; }
         //Dodavano od Pazzio        
         [JsonProperty(RequestParameters.odobreno_sveditelstvo)]
-        public string _odobreno_sveitelstvo { get; set; }
+        public string _odobreno_sveditelstvo { get; set; }
         [JsonProperty(RequestParameters.ministerstvo)]
         public string _ministerstvo { get; set; }
+        [JsonProperty(RequestParameters.glavna_kniga)]
+        public string _glavna_kniga { get; set; }
+        [JsonProperty(RequestParameters. mesto_odobreno_sveditelstvo)]
+        public char _mesto_odobruvanje_sveditelstvo { get; internal set; }
 
-
-
-
-        public Klasen(string ime, string srednoIme, string prezime, string token, string paralelka, string ucilishte, string grad, int godina, string smerovi, string akt_godina, string akt, string odobreno_sveitelstvo,
-            string ministerstvo)
+        public Klasen(string ime, string srednoIme, string prezime, string token, string paralelka, string ucilishte, string grad, int godina, string smerovi, string akt_godina, string akt, string odobreno_sveditelstvo,
+            string ministerstvo, string glavna_kniga)
         {
             _ime = ime ?? "";
             _srednoIme = srednoIme ?? "";
@@ -556,8 +557,9 @@ namespace Middleware
             _smerovi = smerovi ?? "";
             _akt_godina = akt_godina ?? "";
             _akt = akt ?? "";
-            _odobreno_sveitelstvo = odobreno_sveitelstvo ?? "";
+            _odobreno_sveditelstvo = odobreno_sveditelstvo ?? "";
             _ministerstvo = ministerstvo ?? "";
+            _glavna_kniga = glavna_kniga;
         }
 
         public Klasen() { }

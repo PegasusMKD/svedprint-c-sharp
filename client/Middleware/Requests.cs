@@ -176,6 +176,7 @@ namespace Middleware
         public const string action = "action";
         public const string delete = "del";
         public const string odobreno_sveditelstvo = "odobreno_sveditelstvo";
+        public const string mesto_odobreno_sveditelstvo = "mesto_odobreno_sveditelstvo";
         public const string ministerstvo = "ministerstvo";
         public const string jazik = "jazik";
         public const string jazik_ocena = "jazik_ocena";
@@ -201,6 +202,7 @@ namespace Middleware
         public const string akt_godina = "akt_godina";
         public const string akt = "akt";
         public const string duplicate_ctr = "ctr";
+        public const string glavna_kniga = "glavna_kniga";
     }
 
     class RequestConverter : JsonConverter<Request>

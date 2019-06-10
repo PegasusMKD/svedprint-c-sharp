@@ -159,7 +159,12 @@ namespace Middleware
             Directory.Delete(tmpFolder, true);
         }
 
-
+        static readonly Dictionary<string, string> year_dictionary = new Dictionary<string, string>(){
+            {"I","1"},
+            {"II","2"},
+            {"III","3"},
+            {"IV","4"}
+        };
 
         public static List<string> InitSveditelstvo(List<Ucenik> ucenici, Klasen klasen)
         {
@@ -199,12 +204,7 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(klasen._grad);
                 sw.Write(delimiter);
-                Dictionary<string,string> year_dictionary = new Dictionary<string,string>(){
-                    {"I","1"},
-                    {"II","2"},
-                    {"III","3"},
-                    {"IV","4"}
-                };
+                
                 var paralelka_godina = klasen._paralelka.Split('-').FirstOrDefault();
                 sw.Write(klasen._glavna_kniga + '/' + year_dictionary[paralelka_godina]);
                 sw.Write(delimiter); // broj glavna kniga
@@ -272,9 +272,15 @@ namespace Middleware
                 sw.Write(';');
 
                 List<string> proektni_list = new List<string>();
-                foreach(var x in u._proektni.Split(';')){proektni_list.Add(String.Join('/',x.Split(',')));}
+                string[] v = u._proektni.Split(';');
                 
-                sw.Write(String.Join(',',proektni_list));
+                foreach (var x in v) {
+                    //proektni_list.Add(String.Join("/",x.Split(','))); // zoso kompliciranje
+                    proektni_list.Add(x.Replace(',', '/')); 
+                    
+                }
+                
+                sw.Write(String.Join(",",proektni_list));
 
 
                  ctr_passable++;
