@@ -39,6 +39,7 @@ namespace Middleware
             string outparam = String.Join("?", data);
 
             string pyscript = rootFolder + @"\print.exe";
+
             Process py = new Process();
             py.StartInfo.FileName = new Uri(pyscript).AbsolutePath;
             py.StartInfo.UseShellExecute = false;
@@ -74,7 +75,17 @@ namespace Middleware
                 pd.Print();
 
             }
+            
+            //foreach(var x in printQueue)
+            //{
+            //    foreach(var k in x.sides)
+            //    {
+            //        k.Dispose();
+            //    }
+            //}
 
+            printQueue.ForEach(x => x.sides.ToList().ForEach(job => job.Dispose()));
+            pd.Dispose();
             // ClearTmpFolder();
         }
 
@@ -156,6 +167,7 @@ namespace Middleware
         }
         public static void ClearTmpFolder()
         {
+            
             Directory.Delete(tmpFolder, true);
         }
 
@@ -175,27 +187,17 @@ namespace Middleware
             foreach (Ucenik u in ucenici)
             {
                 //Addition of Pazzio
-                if (u.CheckPass())
+                if (!u.CheckPass()) // really?
                 {
                     Console.Write("Не положил или фали оценка!");
                     continue;
                 }
                 sw.GetStringBuilder().Clear();
-
-                int jazik_index = 0;
-                // predmeti
-                //Dodavanje na jazikot vo listata na predmeti
-                List<string> newest_predmeti = klasen._p._smerovi[u._smer]._predmeti;
-                newest_predmeti.Insert(jazik_index, u._jazik);
-                //Treba da si vidite vie za parsing-ov kako ke odi za so ovie konkretni predmeti
-                //newest_predmeti.Append(u._izborni);
-
-                sw.Write("\"" + String.Join("/", newest_predmeti) + "\"");
+                
+                sw.Write("\"" + String.Join("/", klasen._p._smerovi[u._smer]._predmeti) + "\"");
                 sw.Write(";");
                 // oceni
-                List<int> newest_oceni = u._oceni;
-                newest_oceni.Insert(jazik_index, int.Parse(u._jazik_ocena));
-                sw.Write("\"" + String.Join(" ", newest_oceni) + "\"");
+                sw.Write("\"" + String.Join(" ", u._oceni) + "\"");
                 sw.Write(";");
 
                 // uchilishte, grad, broj glavna kniga, godina (klas)
@@ -218,9 +220,9 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._roden);
                 sw.Write(delimiter);
-                sw.Write(u._mesto_na_ragjanje);
+                sw.Write($",{u._mesto_na_ragjanje},{klasen._drzava}");
                 sw.Write(delimiter);
-                sw.Write(u._drzavjanstvo); // hardcoded drzavjanstvo
+                sw.Write(u._drzavjanstvo);
                 sw.Write(delimiter);
 
                 // momentalna i sledna ucebna godina, po koj pat ja uci godinata
@@ -232,7 +234,7 @@ namespace Middleware
                 sw.Write(delimiter);
 
                 // paralelka, povedenie, opravdani, neopravdani, tip, smer
-                sw.Write(klasen._paralelka);
+                sw.Write(klasen._paralelka.Replace('-', ' '));
                 sw.Write(delimiter);
                 sw.Write(u._povedenie);
                 sw.Write(delimiter);
@@ -242,11 +244,7 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._tip);
                 sw.Write(delimiter);
-                //sw.Write(nekoja vrednost);
-                sw.Write(delimiter);
-                //sw.Write(nekoja vrednost);
-                sw.Write(delimiter);
-                sw.Write(u._smer);
+                sw.Write(u._cel_smer);
                 sw.Write(delimiter);
 
                 //Dodavano od Pazzio
@@ -255,12 +253,12 @@ namespace Middleware
                 //sw.Write(u._
                 sw.Write(klasen._mesto_odobruvanje_sveditelstvo);
                 sw.Write(delimiter);
-                sw.Write(klasen._odobreno_sveditelstvo);
+                sw.Write("22.09.2019");
                 sw.Write(delimiter);
                 sw.Write(klasen._delovoden_broj + '-' + year_dictionary[paralelka_godina] + '/' + klasen._paralelka.Split('-')[1] + '/' +  ctr_passable.ToString());
                 
                 sw.Write(delimiter);
-                sw.Write(klasen._ime + " " + klasen._srednoIme + " " + klasen._prezime);
+                sw.Write(klasen._ime + (klasen._srednoIme != "" ? " " + klasen._srednoIme : "") + " " + klasen._prezime);
                 sw.Write(delimiter);
                 sw.Write(klasen._direktor);
                 sw.Write(delimiter);
@@ -283,10 +281,7 @@ namespace Middleware
                 sw.Write(String.Join(",",proektni_list));
 
 
-                 ctr_passable++;
-                // XX, YY
-                sw.Write(delimiter); // XX
-                sw.Write(""); // YY
+                ctr_passable++;
 
                 sw.Write("\"");
 

@@ -181,7 +181,7 @@ namespace Middleware
         public const string jazik = "jazik";
         public const string jazik_ocena = "jazik_ocena";
         //
-        public const string tip = "tip_ucenik";
+        public const string tip = "tip_obrazovanie";
         public const string povedenie = "povedenie";
         public const string roden = "roden";
         public const string gender = "gender";
@@ -203,6 +203,7 @@ namespace Middleware
         public const string akt = "akt";
         public const string duplicate_ctr = "ctr";
         public const string glavna_kniga = "glavna_kniga";
+        public const string drzava = "drzava";
     }
 
     class RequestConverter : JsonConverter<Request>

@@ -520,6 +520,8 @@ namespace Middleware
         public string _ucilishte { get; set; }
         [JsonProperty(RequestParameters.grad)]
         public string _grad { get; set; }
+        [JsonProperty(RequestParameters.drzava)]
+        public string _drzava { get; set; }
         [JsonProperty(RequestParameters.godina)]
         public int _godina { get; set; } // ucebna godina
         [JsonProperty("smerovi")]
@@ -539,11 +541,11 @@ namespace Middleware
         public string _ministerstvo { get; set; }
         [JsonProperty(RequestParameters.glavna_kniga)]
         public string _glavna_kniga { get; set; }
-        [JsonProperty(RequestParameters. mesto_odobreno_sveditelstvo)]
-        public char _mesto_odobruvanje_sveditelstvo { get; internal set; }
+        [JsonProperty(RequestParameters.mesto_odobreno_sveditelstvo)]
+        public string _mesto_odobruvanje_sveditelstvo { get; set; }
 
         public Klasen(string ime, string srednoIme, string prezime, string token, string paralelka, string ucilishte, string grad, int godina, string smerovi, string akt_godina, string akt, string odobreno_sveditelstvo,
-            string ministerstvo, string glavna_kniga)
+            string ministerstvo, string glavna_kniga, string mesto_odobruvanje_sveditelstvo, string drzava)
         {
             _ime = ime ?? "";
             _srednoIme = srednoIme ?? "";
@@ -552,14 +554,16 @@ namespace Middleware
             _paralelka = paralelka;
             _p = new Paralelka(_paralelka, new List<Ucenik>(), new Dictionary<string, Smer>());
             _ucilishte = ucilishte ?? "";
-            // _grad = grad ?? "";
-            // _godina = godina;
+            _grad = grad ?? "";
+            _godina = godina;
             _smerovi = smerovi ?? "";
             _akt_godina = akt_godina ?? "";
             _akt = akt ?? "";
             _odobreno_sveditelstvo = odobreno_sveditelstvo ?? "";
+            _mesto_odobruvanje_sveditelstvo = mesto_odobruvanje_sveditelstvo ?? "";
             _ministerstvo = ministerstvo ?? "";
-            _glavna_kniga = glavna_kniga;
+            _glavna_kniga = glavna_kniga ?? "";
+            _drzava = drzava ?? "";
         }
 
         public Klasen() { }

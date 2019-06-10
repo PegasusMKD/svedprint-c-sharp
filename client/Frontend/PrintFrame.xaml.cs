@@ -165,7 +165,7 @@ namespace Frontend
             //List<Ucenik> uceniks = Home_Page.ucenici.Where(x => toPrint.Contains(x._broj)).ToList();
             
             //Middleware.Print.PrintSveditelstva(uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex);
-            Middleware.Print.PrintGlavnaKniga(uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex);
+            Middleware.Print.PrintSveditelstva(uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex);
         }
 
         private void Btn_celprint_MouseUp(object sender, MouseButtonEventArgs e)
