@@ -1,6 +1,7 @@
 using Middleware;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -297,87 +298,15 @@ namespace Frontend
             Ucenici.Last().CreateServerUcenik(UserKlas._token);
             MessageBox.Show("успешно креирање на нов ученик");
         }
-
-        static readonly Dictionary<char, int> CompareValues = new Dictionary<char, int>()
-        {
-            {'А',1},
-            {'Б',2},
-            {'В',3},
-            {'Г',4},
-            {'Д',5},
-            {'Ѓ',6},
-            {'Е',7},
-            {'Ж',8},
-            {'З',9},
-            {'Ѕ',10},
-            {'И',11},
-            {'Ј',12},
-            {'К',13},
-            {'Л',14},
-            {'Љ',15},
-            {'М',16},
-            {'Н',17},
-            {'Њ',18},
-            {'О',19},
-            {'П',20},
-            {'Р',21},
-            {'С',22},
-            {'Т',23},
-            {'Ќ',24},
-            {'У',25},
-            {'Ф',26},
-            {'Х',27},
-            {'Ц',28},
-            {'Ч',29},
-            {'Џ',30},
-            {'Ш',31},
-
-            {'A',101},
-            {'B',102},
-            {'C',103},
-            {'D',104},
-            {'E',105},
-            {'F',106},
-            {'G',107},
-            {'H',108},
-            {'I',109},
-            {'J',110},
-            {'K',111},
-            {'L',112},
-            {'M',113},
-            {'N',114},
-            {'O',115},
-            {'P',116},
-            {'Q',117},
-            {'R',118},
-            {'S',119},
-            {'T',120},
-            {'U',121},
-            {'V',122},
-            {'W',123},
-            {'X',124},
-            {'Y',125},
-            {'Z',126},
-        };
-
+        
         private void SortUcenici()
         {
-
-            Comparison<string> c = (a, b) =>
-            {
-                if (a == b) return 0;
-                int sz = Math.Min(a.Length, b.Length);
-                for (int i = 0; i < sz; i++)
-                {
-                    if (CompareValues[char.ToUpper(a[i])] != CompareValues[char.ToUpper(b[i])])
-                    {
-                        return CompareValues[char.ToUpper(a[i])] - CompareValues[char.ToUpper(b[i])];
-                    }
-                }
-                return a.Length - b.Length;
-            };
             // var ordered = Ucenici.OrderBy(x => x._broj).ThenBy(x => x._duplicate_ctr);
-            var ordered = Ucenici.OrderBy(x => x._prezime, Comparer<string>.Create(c)).ThenBy(x => x._ime, Comparer<string>.Create(c)).ThenBy(x => x._duplicate_ctr);
+            
+            CultureInfo culture = new CultureInfo("mk-MK");
+            StringComparer strcomparer = StringComparer.Create(culture, true);
+            var ordered = Ucenici.OrderBy(x => x._prezime, strcomparer).ThenBy(x => x._ime, strcomparer).ThenBy(x => x._duplicate_ctr);
+
             Ucenici = ordered.ToList();
             Home_Page.ucenici = Ucenici;
             //updateBrojDn
