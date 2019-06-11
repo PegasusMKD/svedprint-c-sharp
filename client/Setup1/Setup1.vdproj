@@ -21,80 +21,56 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_84F6CC8F1DEF462A8C95E47D200FEB6B"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_98D1550DDF6451A6A25ECBF38E7AD84B"
-        "OwnerKey" = "8:_84F6CC8F1DEF462A8C95E47D200FEB6B"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_98D1550DDF6451A6A25ECBF38E7AD84B"
+        "MsmKey" = "8:_9B5C14782320D45D7C5E6DC9CA0D8F4F"
         "OwnerKey" = "8:_697184D548744069A4432F74172EE293"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_98D1550DDF6451A6A25ECBF38E7AD84B"
-        "OwnerKey" = "8:_F83B825E8D71FE1055C468F3EB1022FE"
+        "MsmKey" = "8:_F78C13B8F065978E9A7ED9BCB3BD9B67"
+        "OwnerKey" = "8:_9B5C14782320D45D7C5E6DC9CA0D8F4F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_F83B825E8D71FE1055C468F3EB1022FE"
+        "MsmKey" = "8:_F78C13B8F065978E9A7ED9BCB3BD9B67"
         "OwnerKey" = "8:_697184D548744069A4432F74172EE293"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_FE5815446F7082FFBE9854BF0F1ECB0F"
-        "OwnerKey" = "8:_84F6CC8F1DEF462A8C95E47D200FEB6B"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_FE5815446F7082FFBE9854BF0F1ECB0F"
-        "OwnerKey" = "8:_F83B825E8D71FE1055C468F3EB1022FE"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_FE5815446F7082FFBE9854BF0F1ECB0F"
         "OwnerKey" = "8:_697184D548744069A4432F74172EE293"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_FE5815446F7082FFBE9854BF0F1ECB0F"
+        "OwnerKey" = "8:_9B5C14782320D45D7C5E6DC9CA0D8F4F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_697184D548744069A4432F74172EE293"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_9B5C14782320D45D7C5E6DC9CA0D8F4F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_F78C13B8F065978E9A7ED9BCB3BD9B67"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_FE5815446F7082FFBE9854BF0F1ECB0F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_697184D548744069A4432F74172EE293"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_F83B825E8D71FE1055C468F3EB1022FE"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_84F6CC8F1DEF462A8C95E47D200FEB6B"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_98D1550DDF6451A6A25ECBF38E7AD84B"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -115,6 +91,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.6.1"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.6.1 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.6.1"
+                    }
+                }
+            }
         }
         "Release"
         {
@@ -181,20 +173,20 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_98D1550DDF6451A6A25ECBF38E7AD84B"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_9B5C14782320D45D7C5E6DC9CA0D8F4F"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Middleware, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_98D1550DDF6451A6A25ECBF38E7AD84B"
+                    "_9B5C14782320D45D7C5E6DC9CA0D8F4F"
                     {
-                    "Name" = "8:Newtonsoft.Json.dll"
+                    "Name" = "8:Middleware.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:Newtonsoft.Json.dll"
+            "SourcePath" = "8:Middleware.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_110DC729B7D3428984A5201C0F97288F"
@@ -212,20 +204,20 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F83B825E8D71FE1055C468F3EB1022FE"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F78C13B8F065978E9A7ED9BCB3BD9B67"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Middleware, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_F83B825E8D71FE1055C468F3EB1022FE"
+                    "_F78C13B8F065978E9A7ED9BCB3BD9B67"
                     {
-                    "Name" = "8:Middleware.dll"
+                    "Name" = "8:Newtonsoft.Json.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:Middleware.dll"
+            "SourcePath" = "8:Newtonsoft.Json.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_110DC729B7D3428984A5201C0F97288F"
@@ -331,7 +323,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SvedPrint"
         "ProductCode" = "8:{7B09EA6D-23AB-4836-97CF-88F5651F5E04}"
-        "PackageCode" = "8:{8E0100B8-1A46-4DA6-8A58-BFDEA5094E16}"
+        "PackageCode" = "8:{B3EADCC7-4665-49FC-A47A-40F2CD3813C8}"
         "UpgradeCode" = "8:{05080A69-668D-46CE-81AF-95F27A5885E3}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
@@ -908,7 +900,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_697184D548744069A4432F74172EE293"
             {
-            "SourcePath" = "8:..\\Frontend\\obj\\Release\\SvedPrint.exe"
+            "SourcePath" = "8:..\\Frontend\\obj\\Debug\\SvedPrint.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_110DC729B7D3428984A5201C0F97288F"
@@ -929,34 +921,6 @@
             "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:Built"
             "OutputProjectGuid" = "8:{891CC765-A626-4F18-9BAC-1483E9BC8DFF}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_84F6CC8F1DEF462A8C95E47D200FEB6B"
-            {
-            "SourcePath" = "8:..\\Middleware\\obj\\Release\\Middleware.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_110DC729B7D3428984A5201C0F97288F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:Built"
-            "OutputProjectGuid" = "8:{C1D39008-641B-4CAC-8938-F2AD79C1360E}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"
                 {
