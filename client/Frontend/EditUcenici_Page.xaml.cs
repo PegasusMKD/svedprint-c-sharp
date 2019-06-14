@@ -46,8 +46,6 @@ namespace Frontend
             InitializeComponent();
             UserKlas = Home_Page.KlasenKlasa;
             Ucenici = Home_Page.ucenici;
-            SortUcenici();
-            //GetData();
             Refresh();
         }
 
@@ -330,7 +328,7 @@ namespace Frontend
         {
             if (BrojDn >= Ucenici.Count)
             {
-                MessageBox.Show("Ученикот со таков број во дневник не постои");
+                MessageBox.Show("Ученикот со таков број во дневник не постои", "SvedPrint", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             Save();
         }
@@ -339,30 +337,31 @@ namespace Frontend
         {
             Dictionary<string, string> tx = new Dictionary<string, string>();
             Dictionary<string, string> OrigData = new Dictionary<string, string>();
-            Answer.ForEach((x => tx.Add(x.Name, x.Text)));
+            Answer.ForEach(x => tx.Add(x.Name, x.Text));
             tx.Add("proektni", Ucenici[BrojDn].ProektniToString(CBList.ConvertAll(x => x.SelectedValue.ToString())));
             OrigData["ime"] = Ucenici[BrojDn]._ime;
             OrigData["prezime"] = Ucenici[BrojDn]._prezime;
             OrigData["srednoIme"] = Ucenici[BrojDn]._srednoIme;
             OrigData["broj"] = BrojDn.ToString();
-            MessageBox.Show(Output(Ucenici[BrojDn].UpdateUcenikData(tx, OrigData, UserKlas._token)));
-            SortUcenici();
+            var z = Output(Ucenici[BrojDn].UpdateUcenikData(tx, OrigData, UserKlas._token));
+            MessageBox.Show(z.message, "SvedPrint", MessageBoxButton.OK, z.img);
+            // SortUcenici();
         }
 
-        private string Output(string answer)
+        private (string message, MessageBoxImage img)  Output(string answer)
         {
             switch (answer)
             {
                 case "000":
-                    return "Успесшно зачувување на ученикот";
+                    return ("Успешно зачувување на ученикот", MessageBoxImage.Information);
                 case "123":
-                    return "Паралелката нема ученици";
+                    return ("Паралелката нема ученици", MessageBoxImage.Exclamation);
                 case "502":
-                    return "Не постои ученикот,ве молиме креирајте го";
+                    return ("Не постои ученикот, ве молиме креирајте го", MessageBoxImage.Error);
                 case "107":
-                    return "Сервисот не е достапен, ве молиме исконтактирајте ги админите";
+                    return ("Сервисот не е достапен, ве молиме исконтактирајте ги админите", MessageBoxImage.Error);
                 default:
-                    return answer;
+                    return (answer, MessageBoxImage.Exclamation);
             }
         }
 
@@ -370,7 +369,7 @@ namespace Frontend
         {
             if (!UserKlas._p._smerovi.ContainsKey(Answer[3].Text))
             {
-                int num = (int)MessageBox.Show("Смерот не се совпаѓа");
+                MessageBox.Show("Смерот не се совпаѓа", "SvedPrint", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
             else
             {
@@ -379,7 +378,7 @@ namespace Frontend
                 BrojDn = Ucenici.Count - 1;
                 Save();
                 BrojDn = bk;
-                SortUcenici();
+                // SortUcenici();
             }
         }
 
@@ -387,14 +386,14 @@ namespace Frontend
         {
             if (UserKlas._p._smerovi.ContainsKey(smer) == false)
             {
-                MessageBox.Show("Смерот не се совпаѓа");
+                MessageBox.Show("Смерот не се совпаѓа", "SvedPrint", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 return;
             }
             List<Ucenik> match = Ucenici.Where(x => (x._prezime == prezime) && (x._ime == ime) && (x._srednoIme == srednoime)).ToList();
             Ucenici.Add(new Ucenik(ime, srednoime, prezime, UserKlas._p._smerovi[smer], br));
             Ucenici.Last()._duplicate_ctr = match.Count();
             Ucenici.Last().CreateServerUcenik(UserKlas._token);
-            MessageBox.Show("успешно креирање на нов ученик");
+            MessageBox.Show("успешно креирање на нов ученик", "SvedPrint", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         
         private void SortUcenici()
@@ -415,16 +414,13 @@ namespace Frontend
         {
             if (BrojDn >= Ucenici.Count)
             {
-                MessageBox.Show("Ученикот со тој број не постои");
+                MessageBox.Show("Ученикот со тој број не постои", "SvedPrint", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             Ucenici[BrojDn].DeleteUcenik(UserKlas._token);
             Ucenici.RemoveAt(BrojDn);
-            SortUcenici();
             Refresh();
         }
-
-        
     }
 
     public class Pole

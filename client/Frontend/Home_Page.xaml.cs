@@ -67,9 +67,9 @@ namespace Frontend
         {
             //Main.Content = loginPage;
             if (ucenici.Count == 0)
-            { MessageBox.Show("Нема пополнето ученици"); return; }
+            { MessageBox.Show("Нема пополнето ученици", "SvedPrint", MessageBoxButton.OK, MessageBoxImage.Exclamation); return; }
             if (KlasenKlasa._p._smerovi.Count == 0)
-            { MessageBox.Show("Нема Смерови"); return; }
+            { MessageBox.Show("Нема Смерови", "SvedPrint", MessageBoxButton.OK, MessageBoxImage.Exclamation); return; }
             else Main.Content = new Oceni(Main, this);
         }
 
