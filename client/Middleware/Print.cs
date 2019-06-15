@@ -5,8 +5,6 @@ using System.Drawing;
 using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
-using System.Windows;
 using System.Windows.Controls;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -75,7 +73,7 @@ namespace Middleware
                 pd.Print();
 
             }
-            
+
             //foreach(var x in printQueue)
             //{
             //    foreach(var k in x.sides)
@@ -167,7 +165,7 @@ namespace Middleware
         }
         public static void ClearTmpFolder()
         {
-            
+
             Directory.Delete(tmpFolder, true);
         }
 
@@ -193,7 +191,7 @@ namespace Middleware
                     continue;
                 }
                 sw.GetStringBuilder().Clear();
-                
+
                 sw.Write("\"" + String.Join("/", klasen._p._smerovi[u._smer]._predmeti) + "\"");
                 sw.Write(";");
                 // oceni
@@ -206,7 +204,7 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(klasen._grad);
                 sw.Write(delimiter);
-                
+
                 var paralelka_godina = klasen._paralelka.Split('-').FirstOrDefault();
                 sw.Write(klasen._glavna_kniga + '/' + year_dictionary[paralelka_godina]);
                 sw.Write(delimiter); // broj glavna kniga
@@ -253,10 +251,10 @@ namespace Middleware
                 //sw.Write(u._
                 sw.Write(klasen._mesto_odobruvanje_sveditelstvo);
                 sw.Write(delimiter);
-                sw.Write("22.09.2019");
+                sw.Write("22.09.2019"); // HARDCODED
                 sw.Write(delimiter);
-                sw.Write(klasen._delovoden_broj + '-' + year_dictionary[paralelka_godina] + '/' + klasen._paralelka.Split('-')[1] + '/' +  ctr_passable.ToString());
-                
+                sw.Write(klasen._delovoden_broj + '-' + year_dictionary[paralelka_godina] + '/' + klasen._paralelka.Split('-')[1] + '/' + ctr_passable.ToString());
+
                 sw.Write(delimiter);
                 sw.Write(klasen._ime + (klasen._srednoIme != "" ? " " + klasen._srednoIme : "") + " " + klasen._prezime);
                 sw.Write(delimiter);
@@ -271,14 +269,15 @@ namespace Middleware
 
                 List<string> proektni_list = new List<string>();
                 string[] v = u._proektni.Split(';');
-                
-                foreach (var x in v) {
+
+                foreach (var x in v)
+                {
                     //proektni_list.Add(String.Join("/",x.Split(','))); // zoso kompliciranje
-                    proektni_list.Add(x.Replace(',', '/')); 
-                    
+                    proektni_list.Add(x.Replace(',', '/'));
+
                 }
-                
-                sw.Write(String.Join(",",proektni_list));
+
+                sw.Write(String.Join(",", proektni_list));
 
 
                 ctr_passable++;
@@ -407,14 +406,14 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._majka);
                 sw.Write(delimiter);
-                //sw.Write(u._roden); // <------
-                sw.Write("14.06.2019");
+                sw.Write(u._roden); // <------
                 sw.Write(delimiter);
                 sw.Write(u._mesto_na_ragjanje); // mesto na ragjanje
                 sw.Write(delimiter);
                 sw.Write(u._mesto_na_zhiveenje);
                 sw.Write(delimiter);
-                sw.Write("drzava"); // <------
+                // sw.Write("drzava"); // <------
+                // najverojatno drzava ide u sklop so toa mesto na ziveenje ^^^
                 sw.Write(delimiter);
                 sw.Write(u._drzavjanstvo); // hardcoded drzavjanstvo
                 sw.Write(delimiter);
@@ -450,7 +449,11 @@ namespace Middleware
                 else
                     sw.Write("1990/1991");
                 sw.Write(delimiter);
-                sw.Write("IV - четврта");// <------
+                //sw.Write("IV - четврта");// <------
+
+                var rimsko = klasen._paralelka.Split('-')[0];
+                sw.Write($"{rimsko} - {rimskoDict[rimsko]}");
+
                 sw.Write(delimiter);
                 if (klasen._srednoIme != "")
                 {
@@ -478,6 +481,14 @@ namespace Middleware
             }
             return l;
         }
+
+        static readonly Dictionary<string, string> rimskoDict = new Dictionary<string, string>() {
+            { "I", "прва"},
+            { "II", "втора"},
+            { "III", "трета"},
+            { "IV", "четврта"}
+        };
+
         public static void PrintGkDiploma(List<Ucenik> ucenici, Klasen klasen, int printerChoice)
         {
             List<string> data = InitGkDiploma(ucenici, klasen);
