@@ -36,7 +36,8 @@ namespace Frontend
         
         private void Login_Btn_Click(object sender, RoutedEventArgs e)
         {
-            
+            Username_txt.Text = "Жаклина_Пандова";
+            Password_txt.Text = "P4nd0v4566";
             login();
         }
 
@@ -67,6 +68,7 @@ namespace Frontend
         private void AlertTimer_Tick(object sender, EventArgs e)
         {
            AlertPanel.Visibility = Visibility.Hidden;
+            AlertTimer.Stop();
         }
 
         private void Username_txt_GotFocus(object sender, RoutedEventArgs e)
