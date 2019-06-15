@@ -256,6 +256,7 @@ namespace Middleware
             _duplicate_ctr = int.Parse(valuePairs[RequestParameters.duplicate_ctr] ?? "-1");
             _jazik = valuePairs[RequestParameters.jazik] ?? "";
             _jazik_ocena = valuePairs[RequestParameters.jazik_ocena] ?? "";
+            _drzavjanstvo = valuePairs[RequestParameters.drzavjanstvo] ?? "";
             // _majkino = valuePairs[RequestParameters.majkino] ?? "";
         }
 
