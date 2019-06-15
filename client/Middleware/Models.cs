@@ -425,12 +425,7 @@ namespace Middleware
 
         private void UpdateSmer(string token)
         {
-            string res = "";
-            foreach (string s in _predmeti)
-            {
-                res += s + ",";
-            }
-            if (res.Length > 0) res = res.Substring(0, res.Length - 1);
+            var res = string.Join(",", _predmeti);
             Requests.UpdateData(new Dictionary<string, string>() {
             { RequestParameters.smer , _smer}, { RequestParameters.token , token } , { RequestParameters.predmeti, res}
             }, RequestScopes.UpdateSmer);
@@ -453,7 +448,6 @@ namespace Middleware
         [JsonProperty(RequestParameters.ucenici)]
         public List<Ucenik> _ucenici { get; set; }
         public Dictionary<string, Smer> _smerovi;
-        public Dictionary<string, Smer> _predmeti;
 
 
         public Paralelka(string paralelka, List<Ucenik> ucenici, Dictionary<string, Smer> smerovi)
