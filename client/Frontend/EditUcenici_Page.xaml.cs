@@ -47,13 +47,15 @@ namespace Frontend
             UserKlas = Home_Page.KlasenKlasa;
             Ucenici = Home_Page.ucenici;
             SortUcenici();
-            GetData();
+            //GetData();
+            Refresh();
         }
 
         List<TextBox> Answer;
         List<ComboBox> CBList;
-        private void GetData()
-        {
+        private void GetData5()
+        { 
+            /*
             Answer = new List<TextBox>();
             CBList = new List<ComboBox>();
             MainGrid.Children.Clear();
@@ -66,7 +68,7 @@ namespace Frontend
             dictionary.Add("родител(Мајка)", "Име Презиме");
             dictionary.Add("број во дневник", "00");
             dictionary.Add("Државјанство", "Македонско");
-            dictionary.Add("Пол", "Машко/Женско");
+            dictionary.Add("Пол", "Машки/Женски");
             dictionary.Add("ден на раѓање", "00.00.0000");
             dictionary.Add("место на раѓање", "Скопје");
             dictionary.Add("место на живеење", "Скопје");
@@ -74,7 +76,7 @@ namespace Frontend
             dictionary.Add("дали е положена годината", "Положил");
             dictionary.Add("број на оправдани изостаноци", "0");
             dictionary.Add("број на неоправдани изостаноци", "0");
-            dictionary.Add("Поведение", "Примарно");
+            dictionary.Add("Поведение", "Примeрно");
 
             if (Ucenici.Count > BrojDn)
             {
@@ -119,6 +121,7 @@ namespace Frontend
                 MainGrid.Children.Add(stackPanel);
                 ++index;
             }
+
             string[][] cb = new string[][] { new string[] { "Проектни Активности", "proektni", "izboren1_odg", }, new string[] { "Проектни Активности", "proektni", "izboren2_odg" } };
             foreach (string[] x in cb)
             {
@@ -159,40 +162,7 @@ namespace Frontend
                 MainGrid.Children.Add(stackPanel);
 
                 ++index;
-            }
-            /*
-            MainGrid.Height += 150;
-            StackPanel CombostackPanel = new StackPanel();
-            if (index % 2 == 0)
-            {
-                MainGrid.RowDefinitions.Add(new RowDefinition());
-                MainGrid.RowDefinitions[MainGrid.RowDefinitions.Count - 1].Height = new GridLength(100.0);
-                MainGrid.Height += 150.0;
-            }
-            ComboBox CB = new ComboBox();
-            CB.Tag = "proektni";
-            CB.Margin = new Thickness(30, 5, 30, 5);
-            if (UserKlas._p._smerovi.ContainsKey("ПА")) CB.ItemsSource = UserKlas._p._smerovi["ПА"]._predmeti;
-            CBList.Add(CB);
-
-            CombostackPanel.Children.Add(ContentBorder("Проектни Активности"));
-            CombostackPanel.Children.Add(CBList.Last());
-
-            string[] odgovori = { "Реализирал", "Не Реализирал" };
-            ComboBox res = new ComboBox();
-            res.Tag = "Izboren1_Odg";
-            res.Margin = new Thickness(30, 5, 30, 5);
-            res.ItemsSource = odgovori;
-            CBList.Add(res);
-
-            CombostackPanel.Children.Add(CBList.Last());
-            CombostackPanel.Children.Add(UnderTextBorder());
-
-            Grid.SetRow(CombostackPanel, index / 2);
-            Grid.SetColumn(CombostackPanel, index % 2);
-            MainGrid.Children.Add(CombostackPanel);*/
-
-
+            }*/
         }
 
         private void ContentTextBoxLostFocus(object sender, RoutedEventArgs e)
@@ -200,8 +170,136 @@ namespace Frontend
             // changes[((TextBox)sender).Name] = ((TextBox)sender).Text;
         }
 
+        List<TextBox> ListPolinjaTxt;
+        List<ComboBox> ListPolinjaCB;
+        List<Pole> polinja = new List<Pole>();
+        private void Refresh()
+        {
+            ListPolinjaTxt = new List<TextBox>();
+            ListPolinjaCB = new List<ComboBox>();
+            string[] PApredmeti = { "Ги немате пополнето Проектните Активности" };
+            string[] Smerovi = { "Ги немате пополнето Смеровите" };
+            if (UserKlas._p._smerovi.Keys.Contains("ПА")) PApredmeti = UserKlas._p._smerovi["ПА"]._predmeti.ToArray();
+            if (UserKlas._p._smerovi.Count > 0)
+            {
+                var x = UserKlas._p._smerovi.Keys.ToList();
+                x.Remove("ПА");
+                Smerovi = x.ToArray();
+            }
+            
+            List<string> Saved = new List<string>();
+            for(int i=0;i<19;i++)
+            { Saved.Add(""); }
 
+            if(Ucenici.Count > 0)
+            {
+                Saved[0]= Ucenici[BrojDn]._ime;
+                Saved[1] = Ucenici[BrojDn]._prezime;
+                Saved[2] = Ucenici[BrojDn]._tatko;
+                Saved[3] = Ucenici[BrojDn]._smer;
+                Saved[4] = Ucenici[BrojDn]._tatko;
+                Saved[5] = Ucenici[BrojDn]._majka;
+                Saved[6] = Ucenici[BrojDn]._broj.ToString();
+                Saved[7] = Ucenici[BrojDn]._drzavjanstvo;
+                Saved[8] = Ucenici[BrojDn]._gender;
+                Saved[9] = Ucenici[BrojDn]._roden;
+                Saved[10] = Ucenici[BrojDn]._mesto_na_ragjanje;
+                Saved[11] = Ucenici[BrojDn]._mesto_na_zhiveenje;
+                Saved[12] = Ucenici[BrojDn]._pat_polaga;
+                Saved[13] = Ucenici[BrojDn]._polozhil;
+                Saved[14] = Ucenici[BrojDn]._opravdani.ToString();
+                Saved[15] = Ucenici[BrojDn]._neopravdani.ToString();
+                Saved[16] = Ucenici[BrojDn]._povedenie;
+                Saved[17] = Ucenici[BrojDn]._proektni.Split(';')[0]; // " , ;"
+                Saved[18] = Ucenici[BrojDn]._proektni.Split(';')[1];
+            }
 
+            polinja.Add(new Pole("Име", RequestParameters.ime,  new string[] { "Име" } , Saved[0]) );
+            polinja.Add(new Pole("Презиме", RequestParameters.ime, new string[] { "Презиме" }, Saved[1]));
+            polinja.Add(new Pole("Татково име", RequestParameters.srednoIme, new string[] { "Татково име" }, Saved[2]));
+            polinja.Add(new Pole("Смер", RequestParameters.smer, Smerovi, Saved[3]));
+            polinja.Add(new Pole("Родител(Татко)", RequestParameters.majka, new string[] { "Име Презиме" }, Saved[4]));
+            polinja.Add(new Pole("Родител(Мајка)", RequestParameters.tatko, new string[] { "Име Презиме" }, Saved[5]));
+            polinja.Add(new Pole("број во дневник", RequestParameters.broj, new string[] { "00" }, Saved[6]));
+            polinja.Add(new Pole("Државјанство", RequestParameters.drzavjanstvo, new string[] { "Македонско" }, Saved[7]));
+            polinja.Add(new Pole("Пол", RequestParameters.gender, new string[] { "Машки" , "Женски" }, Saved[8]));
+            polinja.Add(new Pole("ден на раѓање", RequestParameters.roden, new string[] { "00.00.0000" }, Saved[9]));
+            polinja.Add(new Pole("место на раѓање", RequestParameters.mesto_na_ragjanje, new string[] { "Скопје" }, Saved[10]));
+            polinja.Add(new Pole("место на живеење", RequestParameters.mesto_na_zhiveenje, new string[] { "Скопје" }, Saved[11]));
+            polinja.Add(new Pole("по кој пат ја учи годината", RequestParameters.pat_polaga, new string[] { "прв пат" , "втор пат" , "трет пат" }, Saved[12]));
+            polinja.Add(new Pole("дали е положена годината", RequestParameters.polozhil, new string[] { "Положил" , "Не Положил" }, Saved[13]));
+            polinja.Add(new Pole("број на оправдани изостаноци", RequestParameters.opravdani, new string[] { "0" }, Saved[14]));
+            polinja.Add(new Pole("број на неоправдани изостаноци", RequestParameters.neopravdani, new string[] { "0" }, Saved[15]));
+            polinja.Add(new Pole("Поведение", RequestParameters.povedenie, new string[] { "Примeрно" , "Добро" , "Незадоволно" }, Saved[16]));
+            polinja.Add(new Pole("Проектна Активност 1", RequestParameters.povedenie, PApredmeti, Saved[17]));
+            polinja.Add(new Pole("Проектна Активност 2", RequestParameters.povedenie, PApredmeti, Saved[18]));
+
+            int index = 0;
+            foreach (Pole Pole in polinja)
+            {
+                StackPanel stackPanel = new StackPanel();
+                if (index % 2 == 0)
+                {
+                    MainGrid.RowDefinitions.Add(new RowDefinition());
+                    MainGrid.RowDefinitions[MainGrid.RowDefinitions.Count - 1].Height = new GridLength(100.0);
+                    MainGrid.Height += 100.0;
+                }
+
+                StackPanel st = new StackPanel();
+
+                if (Pole.isCB)
+                {
+                    ComboBox CB = CreateComboBox(Pole.Ime , Pole.DefaultVrednost);
+                    if(Pole.Odgovor == "")CB.SelectedIndex = 0;
+                    else CB.SelectedValue = Pole.Odgovor;
+                    ListPolinjaCB.Add(CB);
+                    st.Children.Add(CB);
+                    if(Pole.Ime == "Проектна Активност 1" || Pole.Ime == "Проектна Активност 2")
+                    {
+                        ComboBox CBPoleodg = CreateComboBox(Pole.Ime + "ODG", new string[] { "Реализирал", "Не Реализирал" });
+                        CBPoleodg.SelectedIndex = 0;
+                        ListPolinjaCB.Add(CBPoleodg);
+                        st.Children.Add(CBPoleodg);
+                    }
+                }
+                else
+                {
+                    TextBox textBox = ContentTextBox(Pole.GetOdgovor());
+                    textBox.GotFocus += txtPolinjaGotFocus;
+                    textBox.Tag = Pole.Ime;
+                    ListPolinjaTxt.Add(textBox);
+                    st.Children.Add(textBox);
+                }
+
+                stackPanel.Children.Add(ContentBorder(Pole.Ime));
+                stackPanel.Children.Add(st);
+                stackPanel.Children.Add(UnderTextBorder());
+                Grid.SetRow(stackPanel, index / 2);
+                Grid.SetColumn(stackPanel, index % 2);
+                MainGrid.Children.Add(stackPanel);
+                ++index;
+            }
+        }
+
+        private void txtPolinjaGotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox tx = (TextBox)(sender);
+            Pole pol = polinja.Find(x => x.Ime == tx.Tag.ToString());
+            if (((TextBox)sender).Text == pol.DefaultVrednost[0]) RemoveText(sender);
+        }
+
+        private void AddText(object sender, string v)
+        {
+            if (string.IsNullOrWhiteSpace(((System.Windows.Controls.TextBox)sender).Text))
+            {
+                ((System.Windows.Controls.TextBox)sender).Text = v;
+            }
+        }
+
+        private void RemoveText(object sender)
+        {
+            ((System.Windows.Controls.TextBox)sender).Text = "";
+        }
 
         private Border ContentBorder(string LabelContent)
         {
@@ -213,13 +311,13 @@ namespace Frontend
         private void LeftTriangleClicked(object sender, MouseEventArgs e)
         {
             BrojDnLabel.Text = Valid(-1);
-            GetData();
+            Refresh();
         }
 
         private void RightTriangleClicked(object sender, MouseButtonEventArgs e)
         {
             BrojDnLabel.Text = Valid(+1);
-            GetData();
+            Refresh();
         }
 
         String Valid(int x)
@@ -310,7 +408,7 @@ namespace Frontend
             Ucenici = ordered.ToList();
             Home_Page.ucenici = Ucenici;
             //updateBrojDn
-            GetData();
+            Refresh();
         }
 
         private void DeleteUcenikImgClicked(object sender, MouseButtonEventArgs e)
@@ -323,9 +421,34 @@ namespace Frontend
             Ucenici[BrojDn].DeleteUcenik(UserKlas._token);
             Ucenici.RemoveAt(BrojDn);
             SortUcenici();
-            GetData();
+            Refresh();
         }
 
         
+    }
+
+    public class Pole
+    {
+        public string Ime;
+        public string RequestParametar;
+        public string[] DefaultVrednost;
+        public string Odgovor;
+        public bool isCB = false;
+
+        public Pole(string ime, string requestparameter , string[] defaultvrednost , string odgovor = "")
+        {
+            Ime = ime;
+            RequestParametar = requestparameter;
+            DefaultVrednost = defaultvrednost;
+            Odgovor = odgovor;
+            if (defaultvrednost.Length > 1) isCB = true;
+        }
+
+        public string GetOdgovor()
+        {
+            if (Odgovor == "") return DefaultVrednost[0];
+            else return Odgovor;
+        }
+
     }
 }

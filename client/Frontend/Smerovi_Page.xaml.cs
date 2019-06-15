@@ -169,7 +169,7 @@ namespace Frontend
             // TODO:
             // validator za kratenica na smer, max 7 karakteri
             UserKlas._p.AddSmer(new Smer(DodajPredmeti[DodajPredmeti.Count() - 2].Text, DodajPredmeti[DodajPredmeti.Count - 1].Text), UserKlas._token);
-            UserKlas.GetSmerPredmeti(UserKlas._p._smerovi.Keys.ToList());
+            UserKlas.SetSmeroviPredmeti();
             UpdateVar();
             GetData();
         }

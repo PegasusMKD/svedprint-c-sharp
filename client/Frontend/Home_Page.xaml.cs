@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -34,20 +36,26 @@ namespace Frontend
                 {RequestParameters.token, Klasen._token } 
             }, RequestScopes.GetParalelka);
 
-            if(result.Count == 0)
-            {
-               /// MessageBox.Show("404");
-            }
-
             ucenici = result.ConvertAll(x => new Ucenik(x));
-            var uc = ucenici.OrderBy(x => x._prezime).ThenBy( x=> x._ime);
-            ucenici = uc.ToList();
+            SortUcenici();
+            KlasenKlasa.SetSmeroviPredmeti();
+
+            /*
             if(KlasenKlasa._smerovi != "")
             {
                 KlasenKlasa.PopulateSmerovi(ucenici);
             }
-            else KlasenKlasa.PopulateSmeroviFromUcenici(ucenici);
+            else KlasenKlasa.PopulateSmeroviFromUcenici(ucenici);*/
             
+        }
+
+        private void SortUcenici()
+        {
+            CultureInfo culture = new CultureInfo("mk-MK");
+            StringComparer strcomparer = StringComparer.Create(culture, true);
+            var ordered = ucenici.OrderBy(x => x._prezime, strcomparer).ThenBy(x => x._ime, strcomparer).ThenBy(x => x._duplicate_ctr);
+
+            ucenici = ordered.ToList();
         }
 
         private void SettingsImg_Clicked(object sender, MouseButtonEventArgs e)

@@ -572,6 +572,23 @@ namespace Middleware
             char delimiter = ',';
             return _smerovi.Split(delimiter);
         }
+
+        public void SetSmeroviPredmeti()
+        {
+            List<string> Smerovi = new List<string>(); 
+            if (_p == null)
+            {
+                _p = new Paralelka(_paralelka, new List<Ucenik>(), new Dictionary<string, Smer>());
+                if (_smerovi != "") Smerovi = _smerovi.Split(',').ToList();
+            }
+            else
+            {
+                Smerovi = _p._smerovi.Keys.ToList();
+            }
+            if( Smerovi.Count > 0) GetSmerPredmeti(Smerovi);
+        }
+
+        /*
         public void PopulateSmeroviFromUcenici(List<Ucenik> ucenici)
         {
             if (_p == null) _p = new Paralelka(_paralelka, ucenici, new Dictionary<string, Smer>());
@@ -581,27 +598,23 @@ namespace Middleware
             GetSmerPredmeti(GetSmerovi().ToList());
         }
 
-
-
         public void PopulateSmerovi(List<Ucenik> ucenici)
         {
             if (_p == null) _p = new Paralelka(_paralelka, ucenici, new Dictionary<string, Smer>());
             _p._ucenici = ucenici;
             GetSmerPredmeti(GetSmerovi().ToList());
-        }
+        }*/
 
         public void GetSmerPredmeti(List<string> Smerovi)
         {
             if (Smerovi.Count == 0) return;
             foreach (var x in Smerovi)
             {
-
                 var req = Requests.GetData(new Dictionary<string, string>(){
                     { RequestParameters.token, _token},
                     { RequestParameters.smer, x } ,
                     { RequestParameters.paralelka, _paralelka}
                 }, RequestScopes.GetPredmetiSmer)[0];
-
 
                 List<string> predmeti = req["predmeti"].Split(',').ToList();
                 if (req["predmeti"].Length == 0) predmeti = new List<string>();

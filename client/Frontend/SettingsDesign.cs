@@ -62,5 +62,19 @@ namespace Frontend
         {
             return CreateBorder(10, 0, 25, 5, "#FF3D84C6");
         }
+
+        public static ComboBox CreateComboBox(string PoleTag,string[] izbori)
+        {
+            ComboBox CB = new ComboBox();
+            CB.OverridesDefaultStyle = false;
+            CB.ItemsSource = izbori;
+            CB.Tag = PoleTag;
+            CB.Margin = new Thickness(30, 5, 30, 5);
+            CB.FontSize = 25;
+           // CB.BorderBrush = Brushes.Yellow;
+           // CB.Background = Brushes.Yellow;
+           // CB.Resources.Add(SystemColors.WindowBrushKey, Brushes.Yellow);
+            return CB;
+        }
     }
 }
