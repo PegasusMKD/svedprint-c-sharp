@@ -294,7 +294,6 @@ namespace Middleware
             this._majka = UpdatedData["majka"];
             this._roden = UpdatedData["roden"];
             this._mesto_na_ragjanje = UpdatedData["mesto_na_ragjanje"];
-            this._drzavjanstvo = UpdatedData["drzavjanstvo"];
             this._gender = UpdatedData["gender"];
             this._roden = UpdatedData["roden"];
             this._mesto_na_ragjanje = UpdatedData["mesto_na_ragjanje"];
@@ -308,6 +307,29 @@ namespace Middleware
             this._neopravdani = result;
             this._povedenie = UpdatedData["povedenie"];
             return rez;
+        }
+
+        public Dictionary<string,string> GetPolinja ()
+        {
+            Dictionary<string, string> polinja = new Dictionary<string, string>();
+            polinja.Add(RequestParameters.ime , _ime);
+            polinja.Add(RequestParameters.prezime , _prezime);
+            polinja.Add(RequestParameters.srednoIme, _srednoIme);
+            polinja.Add(RequestParameters.smer, _smer );
+            polinja.Add(RequestParameters.tatko, _tatko);
+            polinja.Add(RequestParameters.majka, _majka );
+            polinja.Add(RequestParameters.broj, _broj.ToString() );
+            polinja.Add(RequestParameters.gender,_gender);
+            polinja.Add(RequestParameters.roden , _roden );
+            polinja.Add(RequestParameters.mesto_na_ragjanje , _mesto_na_ragjanje);
+            polinja.Add(RequestParameters.mesto_na_zhiveenje , _mesto_na_zhiveenje);
+            polinja.Add(RequestParameters.pat_polaga , _pat_polaga);
+            polinja.Add(RequestParameters.polozhil  , _polozhil);
+            polinja.Add(RequestParameters.povedenie, _povedenie);
+            polinja.Add(RequestParameters.opravdani , _opravdani.ToString() );
+            polinja.Add(RequestParameters.neopravdani , _neopravdani.ToString());
+            polinja.Add(RequestParameters.proektni , _proektni);
+            return polinja;
         }
 
         public string OceniToString()
