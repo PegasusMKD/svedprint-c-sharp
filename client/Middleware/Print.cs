@@ -300,9 +300,9 @@ namespace Middleware
 
             pd.DefaultPageSettings.PaperSize = pd.PrinterSettings.PaperSizes.Cast<PaperSize>().First<PaperSize>(size => size.Kind == PaperKind.A3);
             pd.OriginAtMargins = false;
-            pd.DefaultPageSettings.Landscape = true;
+            pd.DefaultPageSettings.Landscape = false;
 
-            data.Insert(0, "glavna"); // mozno e da e "sveditelstva"
+            data.Insert(0, "\"glavna\""); // mozno e da e "sveditelstva"
             string outparam = String.Join("?", data);
 
             string pyscript = rootFolder + "\\print.exe";
@@ -319,7 +319,7 @@ namespace Middleware
             {
                 PrintQueueItem x = new PrintQueueItem();
                 x.sides = new System.Drawing.Image[1];
-                x.sides[0] = System.Drawing.Image.FromFile(new Uri($"{tmpFolder}test-{i}.jpg").AbsolutePath);
+                x.sides[0] = System.Drawing.Image.FromFile(new Uri($"{tmpFolder}gk-{i}.jpg").AbsolutePath);
 
                 printQueue.Add(x);
             }
@@ -353,7 +353,7 @@ namespace Middleware
                 {
                     tmparr.Add("NaN");
                 }
-                tmparr.AddRange(u._proektni.Split(' '));
+                tmparr.AddRange(u._proektni.Split(';').ToList().ConvertAll(x => x.Split(',')[0]));
                 while (tmparr.Count < 22)
                 {
                     tmparr.Add("NaN");
@@ -368,10 +368,10 @@ namespace Middleware
                 {
                     tmparr.Add("NaN");
                 }
-                var tmppoloz = u._polozhil.Split(' ').ToList();
+                var tmppoloz = u._proektni.Split(';').ToList().ConvertAll(x => x.Split(',')[1].ToLower());
                 tmppoloz = tmppoloz.ConvertAll(x =>
                 {
-                    if (x == "положено")
+                    if (x == "реализирал")
                     {
                         return "1";
                     }
@@ -390,7 +390,7 @@ namespace Middleware
 
                 // delovoden broj, godina (klas), paralelka, broj vo dnevnik
                 sw.Write("\"");
-                sw.Write(u._delovoden_broj);
+                sw.Write(klasen._delovoden_broj);
                 sw.Write(delimiter);
                 sw.Write(klasen._paralelka.Replace('-', delimiter[0]));
                 sw.Write(delimiter);
@@ -412,18 +412,24 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._mesto_na_zhiveenje);
                 sw.Write(delimiter);
-                // sw.Write("drzava"); // <------
+                sw.Write("drzava"); // <------
                 // najverojatno drzava ide u sklop so toa mesto na ziveenje ^^^
                 sw.Write(delimiter);
                 sw.Write(u._drzavjanstvo); // hardcoded drzavjanstvo
                 sw.Write(delimiter);
 
+                var rimsko = klasen._paralelka.Split('-')[0];
+                int idx = rimskoDict.Keys.ToList().IndexOf(rimsko);
+
                 // prethodna godina (oddelenie), uspeh od prethodna godina, prethodna ucebna godina, prethodno uciliste, pat
-                sw.Write(u._prethodna_godina);
+
+                sw.Write($"{rimskoDict.Keys.ToArray()[idx-1]} - {rimskoDict.Values.ToArray()[idx-1]}");
+
                 sw.Write(delimiter);
                 sw.Write(u._prethoden_uspeh);
                 sw.Write(delimiter);
-                sw.Write(u._prethodna_uchebna);
+                //sw.Write(u._prethodna_uchebna);
+                sw.Write("1990/1991");
                 sw.Write(delimiter);
                 sw.Write(u._prethodno_uchilishte);
                 sw.Write(delimiter);
@@ -432,7 +438,7 @@ namespace Middleware
 
                 sw.Write(u._tip); // <------
                 sw.Write(delimiter);
-                sw.Write(u._smer);
+                sw.Write(u._cel_smer);
                 sw.Write(delimiter);
                 sw.Write(u._povedenie);
                 sw.Write(delimiter);
@@ -444,16 +450,13 @@ namespace Middleware
                 //Koja e celta na ovaa godina? ne bi bilo isto so Split-ot odma pod nego?
                 //sw.Write(klasen._godina); // ucebna godina. bara kalendarska godina. nesto kako prethodna_uchebna ama ne prethodna tuku segasna
                 // workaround
-                if (u._prethodna_godina != "")
-                    sw.Write(string.Join("/", u._prethodna_godina.Split('/').ToList().ConvertAll(x => int.Parse(x) + 1)));
-                else
-                    sw.Write("1990/1991");
+                
+                sw.Write("1990/1991");
                 sw.Write(delimiter);
                 //sw.Write("IV - четврта");// <------
-
-                var rimsko = klasen._paralelka.Split('-')[0];
-                sw.Write($"{rimsko} - {rimskoDict[rimsko]}");
-
+                
+                sw.Write($"{rimskoDict.Keys.ToArray()[idx]} - {rimskoDict.Values.ToArray()[idx]}");
+                
                 sw.Write(delimiter);
                 if (klasen._srednoIme != "")
                 {
@@ -483,6 +486,7 @@ namespace Middleware
         }
 
         static readonly Dictionary<string, string> rimskoDict = new Dictionary<string, string>() {
+            { "9", "деветто" },
             { "I", "прва"},
             { "II", "втора"},
             { "III", "трета"},
