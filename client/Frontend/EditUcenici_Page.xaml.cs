@@ -20,27 +20,6 @@ namespace Frontend
         List<Ucenik> Ucenici;
         int BrojDn = 0;
 
-        private readonly Dictionary<string, string> names = new Dictionary<string, string>(){
-      {"Име", RequestParameters.ime},
-      {"Презиме", RequestParameters.prezime},
-      {"Средно Име", RequestParameters.srednoIme},
-      {"Смер", RequestParameters.smer},
-      {"родител(Татко)",RequestParameters.tatko},
-      {"родител(Мајка)",RequestParameters.majka},
-      {"број во дневник",RequestParameters.broj},
-      { "Државјанство",RequestParameters.drzavjanstvo},
-      {"Пол",RequestParameters.gender},
-      {"ден на раѓање",RequestParameters.roden},
-      {"место на раѓање",RequestParameters.mesto_na_ragjanje},
-      {"место на живеење",RequestParameters.mesto_na_zhiveenje},
-      {"по кој пат ја учи годината",RequestParameters.pat_polaga},
-      {"дали е положена годината",RequestParameters.polozhil},
-      {"број на оправдани изостаноци",RequestParameters.opravdani},
-      {"број на неоправдани изостаноци",RequestParameters.neopravdani},
-      {"Поведение",RequestParameters.povedenie}
-};
-
-
         public EditUcenici_Page()
         {
             InitializeComponent();
@@ -73,54 +52,39 @@ namespace Frontend
                 x.Remove("ПА");
                 Smerovi = x.ToArray();
             }
-
-            List<string> Saved = new List<string>();
-            for (int i = 0; i < 19; i++)
-            { Saved.Add(""); }
+            
+            List<string> polinjaUpdate = new List<string>();
+            
+            polinja.Add(new Pole("Име", RequestParameters.ime,  new string[] { "Име" } ));
+            polinja.Add(new Pole("Презиме", RequestParameters.prezime, new string[] { "Презиме" }));
+            polinja.Add(new Pole("Татково име", RequestParameters.srednoIme, new string[] { "Татково име" }));
+            polinja.Add(new Pole("Смер", RequestParameters.smer, Smerovi));
+            polinja.Add(new Pole("број во дневник", RequestParameters.broj, new string[] { "0" }));
+            polinja.Add(new Pole("ден на раѓање", RequestParameters.roden, new string[] { "00.00.0000" }));
+            polinja.Add(new Pole("Пол", RequestParameters.gender, new string[] { "Машки" , "Женски" }));
+            polinja.Add(new Pole("број на оправдани изостаноци", RequestParameters.opravdani, new string[] { "0" }));
+            polinja.Add(new Pole("број на неоправдани изостаноци", RequestParameters.neopravdani, new string[] { "0" }));
+            polinja.Add(new Pole("Родител(Татко)", RequestParameters.tatko, new string[] { "Име Презиме" }));
+            polinja.Add(new Pole("Родител(Мајка)", RequestParameters.majka, new string[] { "Име Презиме" }));
+            polinja.Add(new Pole("место на раѓање", RequestParameters.mesto_na_ragjanje, new string[] { "Скопје" }));
+            polinja.Add(new Pole("место на живеење", RequestParameters.mesto_na_zhiveenje, new string[] { "Скопје" }));
+            polinja.Add(new Pole("по кој пат ја учи годината", RequestParameters.pat_polaga, new string[] { "прв пат" , "втор пат" , "трет пат" }));
+            polinja.Add(new Pole("дали е положена годината", RequestParameters.polozhil, new string[] { "Положил" , "Не Положил" }));
+            polinja.Add(new Pole("Поведение", RequestParameters.povedenie, new string[] { "Примeрно" , "Добро" , "Задоволително" }));
+            polinja.Add(new Pole("Проектна Активност 1", RequestParameters.proektni, PApredmeti));
+            polinja.Add(new Pole("Проектна Активност 2", RequestParameters.proektni, PApredmeti));
 
             if (Ucenici.Count > 0 && Ucenici.Count > BrojDn)
             {
-                Saved[0] = Ucenici[BrojDn]._ime;
-                Saved[1] = Ucenici[BrojDn]._prezime;
-                Saved[2] = Ucenici[BrojDn]._tatko;
-                Saved[3] = Ucenici[BrojDn]._smer;
-                Saved[4] = Ucenici[BrojDn]._tatko;
-                Saved[5] = Ucenici[BrojDn]._majka;
-                Saved[6] = Ucenici[BrojDn]._broj.ToString();
-                Saved[7] = Ucenici[BrojDn]._drzavjanstvo;
-                Saved[8] = Ucenici[BrojDn]._gender;
-                Saved[9] = Ucenici[BrojDn]._roden;
-                Saved[10] = Ucenici[BrojDn]._mesto_na_ragjanje;
-                Saved[11] = Ucenici[BrojDn]._mesto_na_zhiveenje;
-                Saved[12] = Ucenici[BrojDn]._pat_polaga;
-                Saved[13] = Ucenici[BrojDn]._polozhil;
-                Saved[14] = Ucenici[BrojDn]._opravdani.ToString();
-                Saved[15] = Ucenici[BrojDn]._neopravdani.ToString();
-                Saved[16] = Ucenici[BrojDn]._povedenie;
-                Saved[17] = Ucenici[BrojDn]._proektni.Split(';')[0]; // " , ;"
-                Saved[18] = Ucenici[BrojDn]._proektni.Split(';')[1];
+                Dictionary<string, string> PolinjaModels = Ucenici[BrojDn].GetPolinja();
+                foreach (Pole pole in polinja)
+                {
+                    ///polinja.Find(y => y.RequestParametar == x.Key).Odgovor = x.Value;
+                    polinja.Find(x => x.Ime == pole.Ime).Odgovor = PolinjaModels[pole.RequestParametar];
+                }
             }
-            if (Saved[6] == "") Saved[6] = (BrojDn + 1).ToString();
 
-            polinja.Add(new Pole("Име", RequestParameters.ime, new string[] { "Име" }, Saved[0]));
-            polinja.Add(new Pole("Презиме", RequestParameters.prezime, new string[] { "Презиме" }, Saved[1]));
-            polinja.Add(new Pole("Татково име", RequestParameters.srednoIme, new string[] { "Татково име" }, Saved[2]));
-            polinja.Add(new Pole("Смер", RequestParameters.smer, Smerovi, Saved[3]));
-            polinja.Add(new Pole("Родител(Татко)", RequestParameters.tatko, new string[] { "Име Презиме" }, Saved[4]));
-            polinja.Add(new Pole("Родител(Мајка)", RequestParameters.majka, new string[] { "Име Презиме" }, Saved[5]));
-            polinja.Add(new Pole("број во дневник", RequestParameters.broj, new string[] { "0" }, Saved[6]));
-            polinja.Add(new Pole("Државјанство", RequestParameters.drzavjanstvo, new string[] { "Македонско" }, Saved[7]));
-            polinja.Add(new Pole("Пол", RequestParameters.gender, new string[] { "Машки", "Женски" }, Saved[8]));
-            polinja.Add(new Pole("ден на раѓање", RequestParameters.roden, new string[] { "00.00.0000" }, Saved[9]));
-            polinja.Add(new Pole("место на раѓање", RequestParameters.mesto_na_ragjanje, new string[] { "Скопје" }, Saved[10]));
-            polinja.Add(new Pole("место на живеење", RequestParameters.mesto_na_zhiveenje, new string[] { "Скопје" }, Saved[11]));
-            polinja.Add(new Pole("по кој пат ја учи годината", RequestParameters.pat_polaga, new string[] { "прв пат", "втор пат", "трет пат" }, Saved[12]));
-            polinja.Add(new Pole("дали е положена годината", RequestParameters.polozhil, new string[] { "Положил", "Не Положил" }, Saved[13]));
-            polinja.Add(new Pole("број на оправдани изостаноци", RequestParameters.opravdani, new string[] { "0" }, Saved[14]));
-            polinja.Add(new Pole("број на неоправдани изостаноци", RequestParameters.neopravdani, new string[] { "0" }, Saved[15]));
-            polinja.Add(new Pole("Поведение", RequestParameters.povedenie, new string[] { "Примeрно", "Добро", "Незадоволно" }, Saved[16]));
-            polinja.Add(new Pole("Проектна Активност 1", RequestParameters.proektni, PApredmeti, Saved[17]));
-            polinja.Add(new Pole("Проектна Активност 2", RequestParameters.proektni, PApredmeti, Saved[18]));
+            if (polinja.Find(x => x.RequestParametar == RequestParameters.broj).GetOdgovor() == "0") polinja.Find(x => x.RequestParametar == RequestParameters.broj).Odgovor = (BrojDn+1).ToString();
 
             int index = 0;
             foreach (Pole Pole in polinja)
@@ -131,10 +95,9 @@ namespace Frontend
 
                 if (Pole.isCB)
                 {
-                    ComboBox CB = CreateComboBox(Pole.Ime, Pole.DefaultVrednost);
+                    ComboBox CB = CreateComboBox(Pole.Ime , Pole.DefaultVrednost);
+                    CB.SelectedValue = Pole.GetOdgovor();
                     CB.SelectionChanged += CB_SelectionChanged;
-                    if (Pole.Odgovor == "") CB.SelectedIndex = 0;
-                    else CB.SelectedValue = Pole.Odgovor;
                     ListPolinjaCB.Add(CB);
                     st.Children.Add(CB);
                     if (Pole.Ime == "Проектна Активност 1" || Pole.Ime == "Проектна Активност 2")
@@ -160,17 +123,7 @@ namespace Frontend
                 stackPanel.Children.Add(ContentBorder(Pole.Ime));
                 stackPanel.Children.Add(st);
                 stackPanel.Children.Add(UnderTextBorder());
-                /*
-                Grid.SetRow(stackPanel, index / 2);
-                Grid.SetColumn(stackPanel, index % 2);
-                MainGrid.Children.Add(stackPanel);
-                if (index % 2 == 0)
-                {
-                    MainGrid.RowDefinitions.Add(new RowDefinition());
-                    MainGrid.RowDefinitions[MainGrid.RowDefinitions.Count - 1].Height = new GridLength();
-                    MainGrid.Height += stackPanel.ActualHeight;
-                }
-                */
+
                 if (index % 2 == 0)
                 {
                     st1.Children.Add(stackPanel);
@@ -251,13 +204,21 @@ namespace Frontend
 
         private void SaveBtnClicked(object sender, MouseButtonEventArgs e)
         {
-            if (BrojDn >= Ucenici.Count)
+            if (BrojDn > Ucenici.Count)
             {
                 MessageBox.Show("Ученикот со таков број во дневник не постои", "SvedPrint", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            if(Ucenici.Count == BrojDn)
+            {
+                CreateUcenik(polinja[0].Odgovor, polinja[2].Odgovor, polinja[1].Odgovor, polinja[3].GetOdgovor(), (BrojDn + 1).ToString());
+                int bk = BrojDn;
+                BrojDn = Ucenici.Count - 1;
+                BrojDn = bk;
+            }
             Save2();
         }
-        private void Save2()
+        
+	private void Save2()
         {
             Dictionary<string, string> tx = new Dictionary<string, string>();
             Dictionary<string, string> OrigData = new Dictionary<string, string>();
@@ -333,7 +294,8 @@ namespace Frontend
 
         private void CreateUcenikImgClicked(object sender, MouseButtonEventArgs e)
         {
-            if (ListPolinjaCB.Find(x => x.Tag.ToString() == "Смер").Items.Count == 0)
+            /*
+	    if (ListPolinjaCB.Find(x => x.Tag.ToString() == "Смер").Items.Count == 0)
             {
                 MessageBox.Show("Смерот не се совпаѓа", "SvedPrint", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
@@ -345,6 +307,7 @@ namespace Frontend
                 Save2();
                 BrojDn = bk;
             }
+	    */
         }
 
         private void CreateUcenik(string ime, string srednoime, string prezime, string smer, string br)
@@ -397,13 +360,20 @@ namespace Frontend
             Ime = ime;
             RequestParametar = requestparameter;
             DefaultVrednost = defaultvrednost;
-            Odgovor = odgovor;
+            if(odgovor != "")Odgovor = odgovor;
             if (defaultvrednost.Length > 1) isCB = true;
         }
 
         public string GetOdgovor()
         {
-            if (Odgovor == "") return DefaultVrednost[0];
+            if (Ime == "Проектна Активност 1" || Ime == "Проектна Активност 2")
+            {
+                if (Odgovor == null) return DefaultVrednost[0];
+                int i = int.Parse(Ime[Ime.Length-1].ToString());
+                return Odgovor.Split(';')[i - 1].Split(',')[0];
+            }
+
+            if (Odgovor == "" || Odgovor == null) return DefaultVrednost[0];
             else return Odgovor;
         }
 
