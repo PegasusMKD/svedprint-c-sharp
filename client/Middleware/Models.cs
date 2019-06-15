@@ -62,7 +62,7 @@ namespace Middleware
         [JsonProperty(RequestParameters.prethodno_uchilishte)]
         public string _prethodno_uchilishte { get; set; }
         [JsonProperty(RequestParameters.prethodna_uchebna)]
-        public string _prethodna_uchebna { get; private set; }
+        public string _prethodna_uchebna { get; set; }
         [JsonProperty(RequestParameters.delovoden_broj)]
         public string _delovoden_broj { get; set; }
         [JsonProperty(RequestParameters.datum_sveditelstvo)]

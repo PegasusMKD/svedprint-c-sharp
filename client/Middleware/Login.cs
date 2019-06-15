@@ -33,7 +33,7 @@ namespace Middleware
             var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
             var responseJson = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
 
-            Console.WriteLine(JToken.Parse(responseJson).ToString(Formatting.Indented));
+            // Console.WriteLine(JToken.Parse(responseJson).ToString(Formatting.Indented));
 
             Klasen klasen = new Klasen();
             try

@@ -37,7 +37,6 @@ namespace Frontend
             }, RequestScopes.GetParalelka);
 
             ucenici = result.ConvertAll(x => new Ucenik(x));
-            SortUcenici();
             KlasenKlasa.SetSmeroviPredmeti();
 
             /*
@@ -47,15 +46,6 @@ namespace Frontend
             }
             else KlasenKlasa.PopulateSmeroviFromUcenici(ucenici);*/
             
-        }
-
-        private void SortUcenici()
-        {
-            CultureInfo culture = new CultureInfo("mk-MK");
-            StringComparer strcomparer = StringComparer.Create(culture, true);
-            var ordered = ucenici.OrderBy(x => x._prezime, strcomparer).ThenBy(x => x._ime, strcomparer).ThenBy(x => x._duplicate_ctr);
-
-            ucenici = ordered.ToList();
         }
 
         private void SettingsImg_Clicked(object sender, MouseButtonEventArgs e)
