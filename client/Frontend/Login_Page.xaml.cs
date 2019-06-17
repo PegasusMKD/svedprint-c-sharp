@@ -36,8 +36,8 @@ namespace Frontend
         
         private void Login_Btn_Click(object sender, RoutedEventArgs e)
         {
-            Username_txt.Text = "Владица_Василевска";
-            Password_txt.Text = "vl@d@89";
+            //Username_txt.Text = "Владица_Василевска";
+            //Password_txt.Text = "vl@d@89";
             login();
         }
 

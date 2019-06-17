@@ -39,7 +39,7 @@ namespace Middleware
             try
             {
                 klasen = JsonConvert.DeserializeObject<Klasen>(responseJson);
-                Console.WriteLine(klasen._ime);
+                // Console.WriteLine(klasen._ime);
             } catch(Exception e)
             {
                 Console.WriteLine(e.ToString());
