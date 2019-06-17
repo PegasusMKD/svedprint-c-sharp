@@ -206,7 +206,7 @@ namespace Middleware
                 sw.Write(delimiter);
 
                 var paralelka_godina = klasen._paralelka.Split('-').FirstOrDefault();
-                sw.Write(klasen._glavna_kniga + '/' + year_dictionary[paralelka_godina]);
+                sw.Write(klasen._glavna_kniga + '/' + year_dictionary[paralelka_godina]);// <----
                 sw.Write(delimiter); // broj glavna kniga
                 sw.Write(paralelka_godina);
                 sw.Write(delimiter);
@@ -214,17 +214,17 @@ namespace Middleware
                 // ime prezime na ucenik, ime prezime na roditel, DOB, naselba, opshtina, drzhava, drzhavjanstvo (hardcode)
                 sw.Write(u._ime + " " + u._prezime);
                 sw.Write(delimiter);
-                sw.Write(u._tatko + " " + u._prezime);
+                sw.Write(u._tatko);
                 sw.Write(delimiter);
                 sw.Write(u._roden);
                 sw.Write(delimiter);
-                //sw.Write($",{u._mesto_na_ragjanje},{klasen._drzava}");
+                sw.Write($",{u._mesto_na_ragjanje},{klasen._drzava}");
                 sw.Write(delimiter);
                 sw.Write(u._drzavjanstvo);
                 sw.Write(delimiter);
 
                 // momentalna i sledna ucebna godina, po koj pat ja uci godinata
-                sw.Write(klasen._godina.ToString());
+                sw.Write(klasen._godina.ToString());// <-----
                 sw.Write(delimiter);
                 sw.Write((klasen._godina + 1).ToString());
                 sw.Write(delimiter);
@@ -242,19 +242,19 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._tip);
                 sw.Write(delimiter);
-                sw.Write(u._cel_smer);
+                sw.Write(klasen._p._smerovi[u._smer]._cel_smer);
                 sw.Write(delimiter);
 
                 //Dodavano od Pazzio
                 //Ovdeka treba nekoe mesto, ama neznam koe, treba da prashash
                 //Vo shkolo
                 //sw.Write(u._
-                sw.Write(klasen._mesto_odobruvanje_sveditelstvo);
+                sw.Write(klasen._grad);
                 sw.Write(delimiter);
-                //sw.Write("22.09.2019"); // HARDCODED
+                sw.Write(klasen._odobreno_sveditelstvo);
                 sw.Write(delimiter);
                 //sw.Write(klasen._delovoden_broj + '-' + year_dictionary[paralelka_godina] + '/' + klasen._paralelka.Split('-')[1] + '/' + ctr_passable.ToString());
-
+                
                 sw.Write(delimiter);
                 sw.Write(klasen._ime + (klasen._srednoIme != "" ? " " + klasen._srednoIme : "") + " " + klasen._prezime);
                 sw.Write(delimiter);
@@ -390,7 +390,7 @@ namespace Middleware
 
                 // delovoden broj, godina (klas), paralelka, broj vo dnevnik
                 sw.Write("\"");
-                sw.Write(klasen._delovoden_broj);
+                //sw.Write(klasen._delovoden_broj);
                 sw.Write(delimiter);
                 sw.Write(klasen._paralelka.Replace('-', delimiter[0]));
                 sw.Write(delimiter);
@@ -413,7 +413,6 @@ namespace Middleware
                 sw.Write(u._mesto_na_zhiveenje);
                 sw.Write(delimiter);
                 sw.Write(klasen._drzava); // <------
-                // najverojatno drzava ide u sklop so toa mesto na ziveenje ^^^
                 sw.Write(delimiter);
                 sw.Write(u._drzavjanstvo); // hardcoded drzavjanstvo
                 sw.Write(delimiter);
@@ -438,7 +437,7 @@ namespace Middleware
 
                 sw.Write(u._tip); // <------
                 sw.Write(delimiter);
-                sw.Write(u._cel_smer);
+                sw.Write(klasen._p._smerovi[u._smer]._cel_smer);
                 sw.Write(delimiter);
                 sw.Write(u._povedenie);
                 sw.Write(delimiter);
@@ -474,7 +473,7 @@ namespace Middleware
                 //sw.Write(u._delovoden_broj);
                 //sw.Write("08-7/16/2"); // <----- HARDCODED
                 sw.Write(delimiter);
-                //sw.Write(u._datum_sveditelstvo);
+                sw.Write(klasen._odobreno_sveditelstvo);
                 //sw.Write("14.06.2019"); // <------ HARDCODED
 
 

@@ -73,8 +73,6 @@ namespace Middleware
         // public string _majkino { get; set; }
         [JsonProperty(RequestParameters.drzavjanstvo)]
         public string _drzavjanstvo { get; set; }
-        [JsonProperty(RequestParameters.cel_smer)]
-        public string _cel_smer { get; set; }
         [JsonProperty(RequestParameters.duplicate_ctr)]
         public int _duplicate_ctr { get; set; }
         //Dodatoci od Pazzio
@@ -412,18 +410,18 @@ namespace Middleware
         [JsonProperty(RequestParameters.cel_smer)]
         public string _cel_smer { get; set; }
 
-        public Smer(List<string> predmeti, string smer, string cel_smer = "")
+        public Smer(List<string> predmeti, string smer, string cel_smer)
         {
-            _predmeti = predmeti ?? throw new ArgumentNullException(nameof(predmeti));
-            _smer = smer ?? throw new ArgumentNullException(nameof(smer));
-            _cel_smer = cel_smer ?? throw new ArgumentNullException(nameof(cel_smer));
+            _predmeti = predmeti ?? new List<string>();
+            _smer = smer ?? "";
+            _cel_smer = cel_smer ?? "";
         }
 
-        public Smer(string smer, string cel_smer = "")
+        public Smer(string smer, string cel_smer)
         {
             _predmeti = new List<string>();
-            _smer = smer ?? throw new ArgumentNullException(nameof(smer));
-            _cel_smer = cel_smer ?? throw new ArgumentNullException(nameof(cel_smer));
+            _smer = smer ?? "";
+            _cel_smer = cel_smer ?? "";
         }
 
         public Smer() { }
@@ -558,17 +556,15 @@ namespace Middleware
         public string _ministerstvo { get; set; }
         [JsonProperty(RequestParameters.glavna_kniga)]
         public string _glavna_kniga { get; set; }
-        [JsonProperty(RequestParameters.mesto_odobreno_sveditelstvo)]
-        public string _mesto_odobruvanje_sveditelstvo { get; set; }
 
         public Klasen(string ime, string srednoIme, string prezime, string token, string paralelka, string ucilishte, string grad, int godina, string smerovi, string akt_godina, string akt, string odobreno_sveditelstvo,
-            string ministerstvo, string glavna_kniga, string mesto_odobruvanje_sveditelstvo, string drzava)
+            string ministerstvo, string glavna_kniga, string drzava)
         {
             _ime = ime ?? "";
             _srednoIme = srednoIme ?? "";
             _prezime = prezime ?? "";
             _token = token ?? "";
-            _paralelka = paralelka;
+            _paralelka = paralelka ?? "";
             _p = new Paralelka(_paralelka, new List<Ucenik>(), new Dictionary<string, Smer>());
             _ucilishte = ucilishte ?? "";
             _grad = grad ?? "";
@@ -577,7 +573,6 @@ namespace Middleware
             _akt_godina = akt_godina ?? "";
             _akt = akt ?? "";
             _odobreno_sveditelstvo = odobreno_sveditelstvo ?? "";
-            _mesto_odobruvanje_sveditelstvo = mesto_odobruvanje_sveditelstvo ?? "";
             _ministerstvo = ministerstvo ?? "";
             _glavna_kniga = glavna_kniga ?? "";
             _drzava = drzava ?? "";
@@ -636,7 +631,7 @@ namespace Middleware
                 List<string> predmeti = req["predmeti"].Split(',').ToList();
                 if (req["predmeti"].Length == 0) predmeti = new List<string>();
 
-                Smer NovSmer = new Smer(predmeti, x);
+                Smer NovSmer = new Smer(predmeti, x, req["cel_smer"]);
 
                 if (!_p._smerovi.Keys.Contains(x)) _p._smerovi.Add(x, NovSmer);
                 else _p._smerovi[x]._predmeti = predmeti;
