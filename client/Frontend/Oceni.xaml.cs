@@ -52,6 +52,8 @@ namespace Frontend
             settings_img.MouseLeftButtonDown += new MouseButtonEventHandler(Back_Settings);
             hide_menu_img.MouseLeftButtonDown += new MouseButtonEventHandler(Menu_hide);
 
+            LoadProektnaAktivnost();
+
         }
 
         private void LoadListView()
@@ -211,6 +213,7 @@ namespace Frontend
 
                 OcenkiGrid.Height = OcenkiGrid.Height + ImgHeight + TxtHeight;
                 if (last != -2) break;
+
             }
         }
 
@@ -239,6 +242,64 @@ namespace Frontend
             }
 
             CanWork = true;
+        }
+
+        private void LoadProektnaAktivnost()
+        {
+            /*
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Label Background="{x:Null}" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White">Реализирал</Label>
+                                <StackPanel Height="40" Name="StackPanel1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Viewbox Height="{Binding Path=ActualHeight, ElementName=StackPanel1}">
+                                        <CheckBox />
+                                    </Viewbox>
+                                </StackPanel>
+                            </StackPanel>
+             * */
+
+            StackPanel MainST = new StackPanel();
+
+            ComboBox CB = new ComboBox();
+            CB.Background = null;
+            CB.Margin = new Thickness(28, 10, 78, 0);
+            CB.FontSize = 24;
+            CB.VerticalAlignment = VerticalAlignment.Top;
+            CB.Height = 38;
+            CB.Style = (Style)FindResource("ComboBoxStyle2");
+            MainST.Children.Add(CB);
+
+            StackPanel checkST = new StackPanel();
+            MainST.Children.Add(grid());
+
+            st2.Children.Add(MainST);
+        }
+
+        private Grid grid ()
+        {
+            Grid gd = new Grid();
+            gd.Margin = new Thickness(0, 0, 0, 10);
+            gd.Children.Add(SettingsDesign.UnderTextBorder());
+            Border border = SettingsDesign.CreateBorder(36, 0, 0, 6, "#FF3D84C6");
+            border.Margin = new Thickness(0, -42, 35, 0);
+            border.Width = 35;
+            border.HorizontalAlignment = HorizontalAlignment.Right;
+
+            CheckBox Check = new CheckBox();
+            Check.Style = (Style)FindResource("CheckBoxBiggerStyle");
+            //Check.RenderTransformOrigin = new Point(0.5, 0.5);
+            Check.RenderTransform = new ScaleTransform( 2.0 , 2.0 );
+            Check.Background = Brushes.Transparent;
+            Check.BorderBrush = Brushes.Transparent;
+            border.Child = Check ;
+
+            ///  ScaleTransform scale = new ScaleTransform(2.0, 2.0);
+            /// yourCheckBox.RenderTransformOrigin = new Point(0.5, 0.5);
+            /// yourCheckBox.RenderTransform = scale;
+
+            gd.Children.Add(border);
+
+            return gd;
+
         }
 
         private void OcenkiBox_Text_Changed(object sender, EventArgs e)

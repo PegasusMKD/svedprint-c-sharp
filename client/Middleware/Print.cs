@@ -463,7 +463,7 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(klasen._direktor);
                 sw.Write(delimiter);
-                sw.Write(u._merki);
+                sw.Write(u._pedagoski_merki);
                 sw.Write(delimiter);
                 //sw.Write(u._delovoden_broj);
                 sw.Write("08-7/16/2"); // <-----

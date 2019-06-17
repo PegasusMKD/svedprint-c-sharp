@@ -25,27 +25,28 @@ namespace Middleware
             var httpRequest = (HttpWebRequest)WebRequest.Create(uri);
             httpRequest.Method = "POST";
             httpRequest.ContentType = "application/json";
-            using (var writer = new StreamWriter(httpRequest.GetRequestStream()))
-            {
-                writer.Write(loginJson);
-            }
-
-            var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
-            var responseJson = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
-
-            Console.WriteLine(JToken.Parse(responseJson).ToString(Formatting.Indented));
-
             Klasen klasen = new Klasen();
             try
-            {
-                klasen = JsonConvert.DeserializeObject<Klasen>(responseJson);
-                Console.WriteLine(klasen._ime);
-            } catch(Exception e)
-            {
-                Console.WriteLine(e.ToString());
-                klasen._ime = "100";
-            }
-            return klasen;
+                {
+                    using (var writer = new StreamWriter(httpRequest.GetRequestStream()))
+                    {
+                        writer.Write(loginJson);
+                    }
+
+                    var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+                    var responseJson = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
+
+                    Console.WriteLine(JToken.Parse(responseJson).ToString(Formatting.Indented));
+
+                    klasen = JsonConvert.DeserializeObject<Klasen>(responseJson);
+                    Console.WriteLine(klasen._ime);
+                } catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                    klasen._ime = "100";
+                }
+                return klasen;
+
         }
 
         public static string ServerBranch => settings.Default.DB_BRANCH;

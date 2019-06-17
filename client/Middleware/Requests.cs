@@ -196,7 +196,7 @@ namespace Middleware
         public const string datum_sveditelstvo = "datum_na_sveditelstvo";
         public const string polozhil = "polozhil";
         public const string prethodna_uchebna = "prethodna_uchebna";
-        public const string pedagoshki_merki = "pedagoshki_merki";
+        public const string pedagoshki_merki = "merki";
         public const string direktor = "direktor";
         public const string drzavjanstvo = "drzavjanstvo";
         public const string akt_godina = "akt_godina";

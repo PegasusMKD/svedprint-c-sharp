@@ -7,6 +7,87 @@
       mc:Ignorable="d" Background="#FFF1F3CE"
       d:DesignHeight="600" d:DesignWidth="900"
       Title="Oceni">
+    <Page.Resources>
+        <SolidColorBrush x:Key="OptionMark.Static.Background" Color="#FFFFFFFF"/>
+        <SolidColorBrush x:Key="OptionMark.Static.Border" Color="#FF707070"/>
+        <Style x:Key="OptionMarkFocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="14,0,0,0" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="OptionMark.MouseOver.Background" Color="#FF3D84C6"/>
+        <SolidColorBrush x:Key="OptionMark.MouseOver.Border" Color="Transparent"/>
+        <SolidColorBrush x:Key="OptionMark.MouseOver.Glyph" Color="White"/>
+        <SolidColorBrush x:Key="OptionMark.Disabled.Background" Color="#FF3D84C6"/>
+        <SolidColorBrush x:Key="OptionMark.Disabled.Border" Color="Transparent"/>
+        <SolidColorBrush x:Key="OptionMark.Disabled.Glyph" Color="White"/>
+        <SolidColorBrush x:Key="OptionMark.Pressed.Background" Color="#FF3D84C6"/>
+        <SolidColorBrush x:Key="OptionMark.Pressed.Border" Color="Transparent"/>
+        <SolidColorBrush x:Key="OptionMark.Pressed.Glyph" Color="White"/>
+        <SolidColorBrush x:Key="OptionMark.Static.Glyph" Color="White"/>
+        <Style x:Key="CheckBoxBiggerStyle" TargetType="{x:Type CheckBox}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <Setter Property="Background" Value="{StaticResource OptionMark.Static.Background}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource OptionMark.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type CheckBox}">
+                        <Grid x:Name="templateRoot" Background="Transparent" SnapsToDevicePixels="True">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border x:Name="checkBoxBorder" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="1,1,0,0" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Height="15" Width="15">
+                                <Grid x:Name="markGrid" Height="Auto" Width="Auto" Margin="0,0,-1,-1">
+                                    <Path x:Name="optionMark" Data="F1 M 9.97498,1.22334L 4.6983,9.09834L 4.52164,9.09834L 0,5.19331L 1.27664,3.52165L 4.255,6.08833L 8.33331,1.52588e-005L 9.97498,1.22334 Z " Fill="{StaticResource OptionMark.Static.Glyph}" Margin="1" Opacity="0" Stretch="None"/>
+                                    <Rectangle x:Name="indeterminateMark" Fill="{StaticResource OptionMark.Static.Glyph}" Margin="2" Opacity="0"/>
+                                </Grid>
+                            </Border>
+                            <ContentPresenter x:Name="contentPresenter" Grid.Column="1" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="HasContent" Value="true">
+                                <Setter Property="FocusVisualStyle" Value="{StaticResource OptionMarkFocusVisual}"/>
+                                <Setter Property="Padding" Value="4,-1,0,0"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.MouseOver.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.MouseOver.Border}"/>
+                                <Setter Property="Fill" TargetName="optionMark" Value="{StaticResource OptionMark.MouseOver.Glyph}"/>
+                                <Setter Property="Fill" TargetName="indeterminateMark" Value="{StaticResource OptionMark.MouseOver.Glyph}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.Disabled.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.Disabled.Border}"/>
+                                <Setter Property="Fill" TargetName="optionMark" Value="{StaticResource OptionMark.Disabled.Glyph}"/>
+                                <Setter Property="Fill" TargetName="indeterminateMark" Value="{StaticResource OptionMark.Disabled.Glyph}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.Pressed.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.Pressed.Border}"/>
+                                <Setter Property="Fill" TargetName="optionMark" Value="{StaticResource OptionMark.Pressed.Glyph}"/>
+                                <Setter Property="Fill" TargetName="indeterminateMark" Value="{StaticResource OptionMark.Pressed.Glyph}"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="true">
+                                <Setter Property="Opacity" TargetName="optionMark" Value="1"/>
+                                <Setter Property="Opacity" TargetName="indeterminateMark" Value="0"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="{x:Null}">
+                                <Setter Property="Opacity" TargetName="optionMark" Value="0"/>
+                                <Setter Property="Opacity" TargetName="indeterminateMark" Value="1"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
 
     <Grid Name="MainGrid">
         <Grid.RowDefinitions>
@@ -36,12 +117,13 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="108*"/>
                 <ColumnDefinition Width="13*"/>
-                <ColumnDefinition Width="409*"/>
+                <ColumnDefinition Width="205*"/>
+                <ColumnDefinition Width="204*"/>
                 <ColumnDefinition Width="121*"/>
             </Grid.ColumnDefinitions>
-            <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="prosek_krug.png" Margin="0" Height="65" Grid.RowSpan="2" Width="65"/>
+            <Image Source="prosek_krug.png" Margin="0" Height="64" Grid.RowSpan="2" Width="64"/>
 
-            <ComboBox Name ="combobox_smer" SelectionChanged="Combobox_Smer_SelectionChanged" Grid.Column="2" Height="36" VerticalAlignment="Center" Margin="0,32" Grid.RowSpan="2"  FontSize="20" HorizontalContentAlignment="Center" Foreground="Black" BorderBrush="#FF395F86">
+            <ComboBox Name ="combobox_smer"  SelectionChanged="Combobox_Smer_SelectionChanged" Grid.Column="2" Height="36" VerticalAlignment="Top" Margin="0,10,0,0" Grid.RowSpan="2"  FontSize="20" HorizontalContentAlignment="Center" Foreground="Black" BorderBrush="#FF395F86" Grid.ColumnSpan="2" >
                 <ComboBox.Background>
                     <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                         <GradientStop Color="#FF27517C" Offset="0"/>
@@ -49,26 +131,86 @@
                     </LinearGradientBrush>
                 </ComboBox.Background>
             </ComboBox>
-            <Border  Grid.Column="3" Grid.Row="1" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Top" Background="#FF395F86" CornerRadius="15" Height="37" Width="80">
+            <Border  Grid.Column="4" Grid.Row="1" HorizontalAlignment="Center" Margin="20,0,21,0" VerticalAlignment="Top" Background="#FF395F86" CornerRadius="15" Height="37" Width="80">
                 <Label Name ="Prosek_out" Content="" Margin="0" FontSize="20" BorderBrush="Black"  Foreground="White"  HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             </Border>
-            <Label Content="просек"  HorizontalAlignment="Center" Margin="0,0,0,0" FontSize="23" Foreground="White" VerticalAlignment="Top" HorizontalContentAlignment="Center" Grid.Column="3" Grid.RowSpan="2"/>
-            <Label Name ="BrojDn_label" Content="" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center" Grid.RowSpan="2" FontSize="36" Foreground="White"/>
+            <Label Content="просек"  HorizontalAlignment="Center" Margin="18,0,19,0" FontSize="23" Foreground="White" VerticalAlignment="Top" HorizontalContentAlignment="Center" Grid.Column="4" Grid.RowSpan="2" Height="41" Width="84"/>
+            <Label Name ="BrojDn_label" Content="" HorizontalAlignment="Center" Margin="49,21" VerticalAlignment="Center" Grid.RowSpan="2" FontSize="36" Foreground="White" Height="58" Width="10"/>
+            <ComboBox Grid.Column="2" Margin="0,20,10,0" Grid.Row="1" VerticalAlignment="Top" Height="30">1 Странски Јазик</ComboBox>
+            <ComboBox Grid.Column="3" Margin="5,20,0,0" Grid.Row="1" VerticalAlignment="Top" Height="30">2 Странски Јазик</ComboBox>
 
         </Grid>
         <ScrollViewer Grid.Column="1" Grid.Row="2" Background="#FF3E4959" VerticalScrollBarVisibility="Auto">
-            <Grid Name="OcenkiGrid" Grid.Column="1" Background="#FF3E4959" Grid.Row="2" Height="0" VerticalAlignment="Top">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="46*"/>
-                    <RowDefinition Height="173*"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="157*"/>
-                    <ColumnDefinition Width="157*"/>
-                    <ColumnDefinition Width="158*"/>
-                    <ColumnDefinition Width="157*"/>
-                </Grid.ColumnDefinitions>
-            </Grid>
+            <StackPanel>
+                <Grid Name="OcenkiGrid" Grid.Column="1" Background="#FF3E4959" Grid.Row="2" Height="0" VerticalAlignment="Top">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="46*"/>
+                        <RowDefinition Height="173*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="157*"/>
+                        <ColumnDefinition Width="157*"/>
+                        <ColumnDefinition Width="158*"/>
+                        <ColumnDefinition Width="157*"/>
+                    </Grid.ColumnDefinitions>
+                </Grid>
+                <StackPanel>
+                    <Border Height="50" Margin="20,20,20,0" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" Grid.ColumnSpan="2">
+                        <Label Content="Проектни активности" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
+                    </Border>
+                    <Grid Name="IzborniGrid" Grid.Column="2" Background="#FF3E4959" Grid.Row="2"  VerticalAlignment="Top">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Name="st1" Grid.Column="0">
+                            <ComboBox Background="{x:Null}" Margin="38,10,38,0" FontSize="24" VerticalAlignment="Top" Height="38" Style="{DynamicResource ComboBoxStyle2}">
+                            </ComboBox>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Label Background="{x:Null}" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White">Реализирал</Label>
+                                <StackPanel Height="40" Name="StackPanel1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Viewbox Height="{Binding Path=ActualHeight, ElementName=StackPanel1}">
+                                        <CheckBox />
+                                    </Viewbox>
+                                </StackPanel>
+                            </StackPanel>
+                            <Border Height="50" Margin="20,20,20,0" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" Grid.ColumnSpan="2">
+                                <Label Content="Изостаноци" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
+                            </Border>
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,0">
+                                    <StackPanel>
+                                        <Border Width="50" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF5C98B4" CornerRadius="100">
+                                            <TextBox Background="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" SelectionBrush="#FFFF5100" BorderBrush="{x:Null}" FontSize="20" Foreground="White">110</TextBox>
+                                        </Border>
+                                        <Label FontSize="20" Foreground="White">Оправдани</Label>
+                                    </StackPanel>
+                                    <StackPanel>
+                                        <Border Width="50" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF5C98B4" CornerRadius="100">
+                                            <TextBox Background="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" SelectionBrush="{x:Null}" BorderBrush="{x:Null}" FontSize="20" Foreground="White">110</TextBox>
+                                        </Border>
+                                        <Label FontSize="20" Foreground="White">Неоправдани</Label>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Name="st2"  Grid.Column="1">
+                            <Border Height="50" Margin="20,20,20,0" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" Grid.ColumnSpan="2">
+                                <Label Content="Поведение" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
+                            </Border>
+                            <Border Height="50" Margin="20,20,20,0" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" Grid.ColumnSpan="2">
+                                <Label Content="Педагошки мерки" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
+                            </Border>
+
+                        </StackPanel>
+
+                    </Grid>
+                </StackPanel>
+                <StackPanel>
+                   
+                    
+                </StackPanel>
+            </StackPanel>
         </ScrollViewer>
 
         <Grid Grid.Column="1" Background="#FFED6A3D" HorizontalAlignment="Left" Width="81">
