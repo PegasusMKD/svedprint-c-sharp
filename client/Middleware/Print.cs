@@ -218,7 +218,7 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._roden);
                 sw.Write(delimiter);
-                sw.Write($",{u._mesto_na_ragjanje},{klasen._drzava}");
+                //sw.Write($",{u._mesto_na_ragjanje},{klasen._drzava}");
                 sw.Write(delimiter);
                 sw.Write(u._drzavjanstvo);
                 sw.Write(delimiter);
@@ -251,9 +251,9 @@ namespace Middleware
                 //sw.Write(u._
                 sw.Write(klasen._mesto_odobruvanje_sveditelstvo);
                 sw.Write(delimiter);
-                sw.Write("22.09.2019"); // HARDCODED
+                //sw.Write("22.09.2019"); // HARDCODED
                 sw.Write(delimiter);
-                sw.Write(klasen._delovoden_broj + '-' + year_dictionary[paralelka_godina] + '/' + klasen._paralelka.Split('-')[1] + '/' + ctr_passable.ToString());
+                //sw.Write(klasen._delovoden_broj + '-' + year_dictionary[paralelka_godina] + '/' + klasen._paralelka.Split('-')[1] + '/' + ctr_passable.ToString());
 
                 sw.Write(delimiter);
                 sw.Write(klasen._ime + (klasen._srednoIme != "" ? " " + klasen._srednoIme : "") + " " + klasen._prezime);
@@ -412,7 +412,7 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._mesto_na_zhiveenje);
                 sw.Write(delimiter);
-                sw.Write("drzava"); // <------
+                sw.Write(klasen._drzava); // <------
                 // najverojatno drzava ide u sklop so toa mesto na ziveenje ^^^
                 sw.Write(delimiter);
                 sw.Write(u._drzavjanstvo); // hardcoded drzavjanstvo
@@ -429,7 +429,7 @@ namespace Middleware
                 sw.Write(u._prethoden_uspeh);
                 sw.Write(delimiter);
                 //sw.Write(u._prethodna_uchebna);
-                sw.Write("1990/1991");
+                //sw.Write("1990/1991"); HARDCODED
                 sw.Write(delimiter);
                 sw.Write(u._prethodno_uchilishte);
                 sw.Write(delimiter);
@@ -451,7 +451,7 @@ namespace Middleware
                 //sw.Write(klasen._godina); // ucebna godina. bara kalendarska godina. nesto kako prethodna_uchebna ama ne prethodna tuku segasna
                 // workaround
                 
-                sw.Write("1990/1991");
+                //sw.Write("1990/1991");
                 sw.Write(delimiter);
                 //sw.Write("IV - четврта");// <------
                 
@@ -472,10 +472,10 @@ namespace Middleware
                 sw.Write(u._merki);
                 sw.Write(delimiter);
                 //sw.Write(u._delovoden_broj);
-                sw.Write("08-7/16/2"); // <-----
+                //sw.Write("08-7/16/2"); // <----- HARDCODED
                 sw.Write(delimiter);
                 //sw.Write(u._datum_sveditelstvo);
-                sw.Write("14.06.2019"); // <------
+                //sw.Write("14.06.2019"); // <------ HARDCODED
 
 
                 sw.Write("\"");
