@@ -254,7 +254,7 @@ namespace Middleware
                 sw.Write(klasen._odobreno_sveditelstvo);
                 sw.Write(delimiter);
                 //sw.Write(klasen._delovoden_broj + '-' + year_dictionary[paralelka_godina] + '/' + klasen._paralelka.Split('-')[1] + '/' + ctr_passable.ToString());
-                
+
                 sw.Write(delimiter);
                 sw.Write(klasen._ime + (klasen._srednoIme != "" ? " " + klasen._srednoIme : "") + " " + klasen._prezime);
                 sw.Write(delimiter);
@@ -283,6 +283,9 @@ namespace Middleware
                 ctr_passable++;
 
                 sw.Write("\"");
+
+                int offsetx = 0, offsety = 0;
+                sw.Write($";\"{offsetx},{offsety}\"");
 
                 l.Add(sw.ToString());
             }
@@ -422,7 +425,7 @@ namespace Middleware
 
                 // prethodna godina (oddelenie), uspeh od prethodna godina, prethodna ucebna godina, prethodno uciliste, pat
 
-                sw.Write($"{rimskoDict.Keys.ToArray()[idx-1]} - {rimskoDict.Values.ToArray()[idx-1]}");
+                sw.Write($"{rimskoDict.Keys.ToArray()[idx - 1]} - {rimskoDict.Values.ToArray()[idx - 1]}");
 
                 sw.Write(delimiter);
                 sw.Write(u._prethoden_uspeh);
@@ -449,13 +452,13 @@ namespace Middleware
                 //Koja e celta na ovaa godina? ne bi bilo isto so Split-ot odma pod nego?
                 //sw.Write(klasen._godina); // ucebna godina. bara kalendarska godina. nesto kako prethodna_uchebna ama ne prethodna tuku segasna
                 // workaround
-                
+
                 //sw.Write("1990/1991");
                 sw.Write(delimiter);
                 //sw.Write("IV - четврта");// <------
-                
+
                 sw.Write($"{rimskoDict.Keys.ToArray()[idx]} - {rimskoDict.Values.ToArray()[idx]}");
-                
+
                 sw.Write(delimiter);
                 if (klasen._srednoIme != "")
                 {
@@ -478,6 +481,9 @@ namespace Middleware
 
 
                 sw.Write("\"");
+
+                int offsetx = 0, offsety = 0;
+                sw.Write($";\"{offsetx},{offsety}\"");
 
                 l.Add(sw.ToString());
             }
