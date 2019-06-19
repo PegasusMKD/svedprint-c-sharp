@@ -449,7 +449,7 @@ namespace Middleware
                 sw.Write(delimiter);
 
                 //Koja e celta na ovaa godina? ne bi bilo isto so Split-ot odma pod nego?
-                sw.Write(klasen._godina); // ucebna godina. bara kalendarska godina. nesto kako prethodna_uchebna ama ne prethodna tuku segasna
+                sw.Write($"20{klasen._godina}/20{klasen._godina+1}"); // ucebna godina. bara kalendarska godina. nesto kako prethodna_uchebna ama ne prethodna tuku segasna
                 // workaround
 
                 //sw.Write("1990/1991");

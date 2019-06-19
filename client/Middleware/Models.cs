@@ -257,6 +257,7 @@ namespace Middleware
             _prethodna_godina = valuePairs[RequestParameters.prethodna_godina] ?? "";
             _prethodno_uchilishte = valuePairs[RequestParameters.prethodno_uchilishte] ?? "";
             _prethoden_uspeh = valuePairs[RequestParameters.prethoden_uspeh] ?? " ";
+            _drzavjanstvo = valuePairs[RequestParameters.drzavjanstvo] ?? "";
             // _majkino = valuePairs[RequestParameters.majkino] ?? "";
         }
 
