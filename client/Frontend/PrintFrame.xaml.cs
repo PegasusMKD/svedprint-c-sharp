@@ -165,6 +165,9 @@ namespace Frontend
 
         private void Btn_edinecnoprint_MouseUp(object sender, MouseButtonEventArgs e)
         {
+            int offsetx, offsety;
+            offsetx = int.Parse(X_offset.Text);
+            offsety = int.Parse(Y_offset.Text);
             List<int> toPrint = uceniciToPrint.Text.Split(',').ToList().ConvertAll(x => int.Parse(x));
             // fix dodeka broevite vo dnevnik se isti
             List<Ucenik> uceniks = Home_Page.ucenici.Where(x => toPrint.Contains(Home_Page.ucenici.IndexOf(x) + 1)).ToList();
@@ -175,23 +178,26 @@ namespace Frontend
             switch (Menu.SelectedIndex)
             {
                 case 0:
-                    Middleware.Print.PrintSveditelstva(uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex);
+                    Middleware.Print.PrintSveditelstva(uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
                     break;
                 case 1:
-                    Middleware.Print.PrintGlavnaKniga(uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex);
+                    Middleware.Print.PrintGlavnaKniga(uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
                     break;
             }
         }
 
         private void Btn_celprint_MouseUp(object sender, MouseButtonEventArgs e)
         {
+            int offsetx, offsety;
+            offsetx = int.Parse(X_offset.Text);
+            offsety = int.Parse(Y_offset.Text);
             switch (Menu.SelectedIndex)
             {
                 case 0:
-                    Middleware.Print.PrintSveditelstva(Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex);
+                    Middleware.Print.PrintSveditelstva(Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
                     break;
                 case 1:
-                    Middleware.Print.PrintGlavnaKniga(Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex);
+                    Middleware.Print.PrintGlavnaKniga(Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
                     break;
             }
         }

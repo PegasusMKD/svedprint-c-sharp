@@ -19,9 +19,9 @@ namespace Middleware
         static string tmpFolder = Path.GetTempPath() + @"pics\";
         static List<PrintQueueItem> printQueue;
         static int currentPage;
-        public static void PrintSveditelstva(List<Ucenik> ucenici, Klasen klasen, int printerChoice)
+        public static void PrintSveditelstva(List<Ucenik> ucenici, Klasen klasen, int printerChoice, int offsetx, int offsety)
         {
-            List<string> data = InitSveditelstvo(ucenici, klasen);
+            List<string> data = InitSveditelstvo(ucenici, klasen, offsetx, offsety);
             string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
             PrintDialog printDialog = new PrintDialog();
             PrintDocument pd = new PrintDocument();
@@ -101,7 +101,7 @@ namespace Middleware
 
         public static void PreviewSveditelstvo(Ucenik u, Klasen k)
         {
-            List<string> data = InitSveditelstvo(new List<Ucenik>() { u }, k);
+            List<string> data = InitSveditelstvo(new List<Ucenik>() { u }, k, 0, 0);
             string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
 
             data.Insert(0, "\"sveditelstvo\""); // mozno e da e "sveditelstva"
@@ -123,7 +123,7 @@ namespace Middleware
         }
         public static void PreviewGlavnaKniga(Ucenik u, Klasen k)
         {
-            List<string> data = InitGlavnaKniga(new List<Ucenik>() { u }, k);
+            List<string> data = InitGlavnaKniga(new List<Ucenik>() { u }, k, 0, 0);
             string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
 
             data.Insert(0, "\"glavna\""); // mozno e da e "sveditelstva"
@@ -176,7 +176,7 @@ namespace Middleware
             {"IV","4"}
         };
 
-        public static List<string> InitSveditelstvo(List<Ucenik> ucenici, Klasen klasen)
+        public static List<string> InitSveditelstvo(List<Ucenik> ucenici, Klasen klasen, int offsetx, int offsety)
         {
             StringWriter sw = new StringWriter();
             List<string> l = new List<string>();
@@ -283,17 +283,15 @@ namespace Middleware
                 ctr_passable++;
 
                 sw.Write("\"");
-
-                int offsetx = 0, offsety = 0;
                 sw.Write($";\"{offsetx},{offsety}\"");
 
                 l.Add(sw.ToString());
             }
             return l;
         }
-        public static void PrintGlavnaKniga(List<Ucenik> ucenici, Klasen klasen, int printerChoice)
+        public static void PrintGlavnaKniga(List<Ucenik> ucenici, Klasen klasen, int printerChoice, int offsetx, int offsety)
         {
-            List<string> data = InitGlavnaKniga(ucenici, klasen);
+            List<string> data = InitGlavnaKniga(ucenici, klasen, offsetx, offsety);
             string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
             PrintDialog printDialog = new PrintDialog();
             PrintDocument pd = new PrintDocument();
@@ -338,7 +336,7 @@ namespace Middleware
 
             }
         }
-        public static List<string> InitGlavnaKniga(List<Ucenik> ucenici, Klasen klasen)
+        public static List<string> InitGlavnaKniga(List<Ucenik> ucenici, Klasen klasen, int offsetx, int offsety)
         {
             // https://raw.githubusercontent.com/darijan2002/ps/ps/gk/sample_params.txt?token=ADAAZQMNTPXEEBZ7LCUYXD245FMAC
             StringWriter sw = new StringWriter();
@@ -393,10 +391,8 @@ namespace Middleware
 
                 // delovoden broj, godina (klas), paralelka, broj vo dnevnik
                 sw.Write("\"");
-                string[] db = klasen._delovoden_broj.Split('-');
-                var paralelka_godina = klasen._paralelka.Split('-').FirstOrDefault();
-                var val = int.Parse(db[1]) + int.Parse(year_dictionary[paralelka_godina]);
-                sw.Write($"{db[0]}/{val.ToString("D8")}");
+                var god = klasen._paralelka.Split('-').FirstOrDefault();
+                sw.Write(klasen._glavna_kniga + '/' + year_dictionary[god]);// <----
                 sw.Write(delimiter);
                 sw.Write(klasen._paralelka.Replace('-', delimiter[0]));
                 sw.Write(delimiter);
@@ -433,7 +429,7 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._prethoden_uspeh);
                 sw.Write(delimiter);
-                //sw.Write(u._prethodna_uchebna);
+                sw.Write(u._prethodna_uchebna);
                 //sw.Write("1990/1991"); HARDCODED
                 sw.Write(delimiter);
                 sw.Write(u._prethodno_uchilishte);
@@ -453,7 +449,7 @@ namespace Middleware
                 sw.Write(delimiter);
 
                 //Koja e celta na ovaa godina? ne bi bilo isto so Split-ot odma pod nego?
-                //sw.Write(klasen._godina); // ucebna godina. bara kalendarska godina. nesto kako prethodna_uchebna ama ne prethodna tuku segasna
+                sw.Write(klasen._godina); // ucebna godina. bara kalendarska godina. nesto kako prethodna_uchebna ama ne prethodna tuku segasna
                 // workaround
 
                 //sw.Write("1990/1991");
@@ -476,16 +472,18 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._pedagoski_merki);
                 sw.Write(delimiter);
+                string[] db = klasen._delovoden_broj.Split('-');
+                string[] paralelka_godina = klasen._paralelka.Split('-');
+                var val = int.Parse(db[1]) + int.Parse(year_dictionary[paralelka_godina[0]]) - 1;
+                sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_godina[1]}/{u._broj}");
                 //sw.Write(u._delovoden_broj);
-                //sw.Write("08-7/16/2"); // <----- HARDCODED
+                //sw.Write("08-07/16/2"); // <----- HARDCODED
                 sw.Write(delimiter);
                 sw.Write(klasen._odobreno_sveditelstvo);
                 //sw.Write("14.06.2019"); // <------ HARDCODED
 
 
                 sw.Write("\"");
-
-                int offsetx = 0, offsety = 0;
                 sw.Write($";\"{offsetx},{offsety}\"");
 
                 l.Add(sw.ToString());
