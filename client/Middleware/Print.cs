@@ -393,7 +393,10 @@ namespace Middleware
 
                 // delovoden broj, godina (klas), paralelka, broj vo dnevnik
                 sw.Write("\"");
-                //sw.Write(klasen._delovoden_broj);
+                string[] db = klasen._delovoden_broj.Split('-');
+                var paralelka_godina = klasen._paralelka.Split('-').FirstOrDefault();
+                var val = int.Parse(db[1]) + int.Parse(year_dictionary[paralelka_godina]);
+                sw.Write($"{db[0]}/{val.ToString("D8")}");
                 sw.Write(delimiter);
                 sw.Write(klasen._paralelka.Replace('-', delimiter[0]));
                 sw.Write(delimiter);

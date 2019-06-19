@@ -20,6 +20,7 @@ namespace Frontend
         Page HomePage;
         public PrintFrame(Frame m, Page homepage)
         {
+            if (!Properties.Settings.Default.IsPrintAllowed) return; // print block, treba test
             InitializeComponent();
             // SvedImg.Source = new BitmapImage(new Uri(new Uri(Directory.GetCurrentDirectory(), UriKind.Absolute), new Uri(@"C:\Users\lukaj\Documents\front-0.png", UriKind.Relative)));
             Main = m;
