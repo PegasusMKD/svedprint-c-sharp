@@ -71,6 +71,10 @@ namespace Frontend
             polinja.Add(new Pole("по кој пат ја учи годината", RequestParameters.pat_polaga, new string[] { "прв пат" , "втор пат" , "трет пат" }));
             polinja.Add(new Pole("дали е положена годината", RequestParameters.polozhil, new string[] { "Положил" , "Не Положил" }));
             polinja.Add(new Pole("Поведение", RequestParameters.povedenie, new string[] { "Примeрно" , "Добро" , "Задоволително" }));
+            polinja.Add(new Pole("Педагошки мерки", RequestParameters.pedagoshki_merki, new string[] { "1", "2", "3" , "4" }));
+            polinja.Add(new Pole("Предходна година", RequestParameters.prethodna_godina, new string[] { "I", "II", "III" , "IV"}));
+            polinja.Add(new Pole("Предходно Училиште", RequestParameters.prethodno_uchilishte, new string[] { "СУГС - Раде Јовчевски Корчагин" }));
+            polinja.Add(new Pole("Предходен Успех", RequestParameters.prethoden_uspeh, new string[] { "5.00" }));
             polinja.Add(new Pole("Проектна Активност 1", RequestParameters.proektni, PApredmeti));
             polinja.Add(new Pole("Проектна Активност 2", RequestParameters.proektni, PApredmeti));
 
@@ -168,13 +172,13 @@ namespace Frontend
         {
             if (string.IsNullOrWhiteSpace(((System.Windows.Controls.TextBox)sender).Text))
             {
-                ((System.Windows.Controls.TextBox)sender).Text = v;
+                ((TextBox)sender).Text = v;
             }
         }
 
         private void RemoveText(object sender)
         {
-            ((System.Windows.Controls.TextBox)sender).Text = "";
+            ((TextBox)sender).Text = "";
         }
 
         private Border ContentBorder(string LabelContent)
@@ -215,10 +219,10 @@ namespace Frontend
                 BrojDn = Ucenici.Count - 1;
                 BrojDn = bk;
             }
-            Save2();
+            Save();
         }
-        
-	private void Save2()
+
+        private void Save()
         {
             Dictionary<string, string> tx = new Dictionary<string, string>();
             Dictionary<string, string> OrigData = new Dictionary<string, string>();
@@ -228,17 +232,19 @@ namespace Frontend
                 if (x.RequestParametar != RequestParameters.proektni) tx.Add(x.RequestParametar, x.GetOdgovor());
                 else
                 {
-                    proektni.Add(x.GetOdgovor());
+                    proektni.Add(x.GetOdgovorProektni());
                     proektni.Add(ListPolinjaCB.Find(y => y.Tag.ToString() == x.RequestParametar).SelectedValue.ToString());
                 }
                 if (x.RequestParametar == RequestParameters.broj)
                 {
                     if (int.Parse(x.GetOdgovor()) != BrojDn + 1)
                     {
-
                         int i = int.Parse(x.GetOdgovor());
-                        Ucenici[i - 1]._broj = BrojDn + 1;
-                        Ucenici[i - 1].UpdateUcenik(RequestParameters.broj, (BrojDn + 1).ToString(), UserKlas._token);
+                        if (Ucenici[i - 1]._broj == i)
+                        {
+                            Ucenici[i - 1]._broj = BrojDn+1;
+                            Ucenici[i - 1].UpdateUcenik(RequestParameters.broj, (BrojDn + 1).ToString(),UserKlas._token);
+                        }
                         Ucenici[BrojDn]._broj = i;
                     }
                 }
@@ -368,13 +374,19 @@ namespace Frontend
         {
             if (Ime == "Проектна Активност 1" || Ime == "Проектна Активност 2")
             {
-                if (Odgovor == null) return DefaultVrednost[0];
+                if (Odgovor == null || Odgovor == "") return DefaultVrednost[0];
                 int i = int.Parse(Ime[Ime.Length-1].ToString());
                 return Odgovor.Split(';')[i - 1].Split(',')[0];
             }
 
             if (Odgovor == "" || Odgovor == null) return DefaultVrednost[0];
             else return Odgovor;
+        }
+
+        public string GetOdgovorProektni()
+        {
+            int i = int.Parse(Ime[Ime.Length - 1].ToString());
+            return Odgovor;
         }
 
     }

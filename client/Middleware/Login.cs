@@ -25,13 +25,16 @@ namespace Middleware
             var httpRequest = (HttpWebRequest)WebRequest.Create(uri);
             httpRequest.Method = "POST";
             httpRequest.ContentType = "application/json";
-            using (var writer = new StreamWriter(httpRequest.GetRequestStream()))
-            {
-                writer.Write(loginJson);
-            }
+            Klasen klasen = new Klasen();
+            try
+                {
+                    using (var writer = new StreamWriter(httpRequest.GetRequestStream()))
+                    {
+                        writer.Write(loginJson);
+                    }
 
-            var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
-            var responseJson = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
+                    var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+                    var responseJson = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
 
             // Console.WriteLine(JToken.Parse(responseJson).ToString(Formatting.Indented));
 

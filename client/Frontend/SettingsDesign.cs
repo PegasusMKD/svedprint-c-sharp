@@ -70,7 +70,7 @@ namespace Frontend
             CB.ItemsSource = izbori;
             CB.Tag = PoleTag;
             CB.Margin = new Thickness(30, 5, 30, 5);
-            CB.FontSize = 25;
+            CB.FontSize = 24;
            // CB.BorderBrush = Brushes.Yellow;
            // CB.Background = Brushes.Yellow;
            // CB.Resources.Add(SystemColors.WindowBrushKey, Brushes.Yellow);

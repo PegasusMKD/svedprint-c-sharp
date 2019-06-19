@@ -54,7 +54,7 @@ namespace Middleware
         [JsonProperty(RequestParameters.proektni)]
         public string _proektni { get; set; }
         [JsonProperty(RequestParameters.merki)]
-        public string _merki { get; set; }
+        public string _pedagoski_merki { get; set; }
         [JsonProperty(RequestParameters.prethodna_godina)]
         public string _prethodna_godina { get; set; }
         [JsonProperty(RequestParameters.prethoden_uspeh)]
@@ -148,7 +148,7 @@ namespace Middleware
             //Treba da e lista, kako e vo sushtina e Predmet,dali polozhil;predmet,dali go polozhil...
             _izborni = izborni ?? "";
             _proektni = proektni ?? "";
-            _merki = merki ?? "";
+            _pedagoski_merki = merki ?? "";
             _prethodna_godina = prethodna_godina ?? "";
             _prethoden_uspeh = prethoden_uspeh ?? "";
             _prethodno_uchilishte = prethodno_uchilishte ?? "";
@@ -236,7 +236,7 @@ namespace Middleware
             _tip = valuePairs[RequestParameters.tip] ?? "";
             _pat_polaga = valuePairs[RequestParameters.pat_polaga] ?? "";
             _pat_polaga_ispit = valuePairs[RequestParameters.pat_polaga_ispit] ?? "";
-            _ispiten = valuePairs[RequestParameters.ispiten] ?? "";
+            _ispiten = valuePairs[RequestParameters.ispiten] ?? ""; 
             _prethoden_delovoden = valuePairs[RequestParameters.prethoden_delovoden] ?? "";
             _tatko = valuePairs[RequestParameters.tatko] ?? "";
             _majka = valuePairs[RequestParameters.majka] ?? "";
@@ -244,7 +244,6 @@ namespace Middleware
             _maturska = valuePairs[RequestParameters.maturska] ?? "";
             _izborni = valuePairs[RequestParameters.izborni] ?? "";
             _proektni = valuePairs[RequestParameters.proektni] ?? "";
-            _merki = valuePairs[RequestParameters.merki] ?? "";
             _prethodna_godina = valuePairs[RequestParameters.prethodna_godina] ?? "";
             _prethoden_uspeh = valuePairs[RequestParameters.prethoden_uspeh] ?? "";
             _prethodno_uchilishte = valuePairs[RequestParameters.prethodno_uchilishte] ?? "";
@@ -254,7 +253,10 @@ namespace Middleware
             _duplicate_ctr = int.Parse(valuePairs[RequestParameters.duplicate_ctr] ?? "-1");
             _jazik = valuePairs[RequestParameters.jazik] ?? "";
             _jazik_ocena = valuePairs[RequestParameters.jazik_ocena] ?? "";
-            _drzavjanstvo = valuePairs[RequestParameters.drzavjanstvo] ?? "";
+            _pedagoski_merki = valuePairs[RequestParameters.pedagoshki_merki] ?? "";
+            _prethodna_godina = valuePairs[RequestParameters.prethodna_godina] ?? "";
+            _prethodno_uchilishte = valuePairs[RequestParameters.prethodno_uchilishte] ?? "";
+            _prethoden_uspeh = valuePairs[RequestParameters.prethoden_uspeh] ?? " ";
             // _majkino = valuePairs[RequestParameters.majkino] ?? "";
         }
 
@@ -305,6 +307,10 @@ namespace Middleware
             int.TryParse(UpdatedData["neopravdani"], out result);
             this._neopravdani = result;
             this._povedenie = UpdatedData["povedenie"];
+            _pedagoski_merki = UpdatedData[RequestParameters.pedagoshki_merki];
+            _prethodna_godina = UpdatedData[RequestParameters.prethodna_godina];
+            _prethoden_uspeh = UpdatedData[RequestParameters.prethoden_uspeh];
+            _prethodno_uchilishte = UpdatedData[RequestParameters.prethodno_uchilishte];
             return rez;
         }
 
@@ -328,6 +334,10 @@ namespace Middleware
             polinja.Add(RequestParameters.opravdani , _opravdani.ToString() );
             polinja.Add(RequestParameters.neopravdani , _neopravdani.ToString());
             polinja.Add(RequestParameters.proektni , _proektni);
+            polinja.Add(RequestParameters.pedagoshki_merki, _pedagoski_merki);
+            polinja.Add(RequestParameters.prethodna_godina, _prethodna_godina);
+            polinja.Add(RequestParameters.prethodno_uchilishte, _prethodno_uchilishte);
+            polinja.Add(RequestParameters.prethoden_uspeh, _prethoden_uspeh);
             return polinja;
         }
 
@@ -495,7 +505,7 @@ namespace Middleware
                 { RequestParameters.smer, NovSmer._smer }
             }, RequestScopes.GetPredmetiSmer);
             List<string> Lpredmeti = new List<string>();
-            if (!string.IsNullOrEmpty(predmeti[0]["predmeti"]))
+            if (predmeti.Count > 0 && !string.IsNullOrEmpty(predmeti[0]["predmeti"]))
             {
                 Lpredmeti = predmeti[0]["predmeti"].Split(',').ToList();
             }
