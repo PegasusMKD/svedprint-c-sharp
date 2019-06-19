@@ -301,13 +301,16 @@ namespace Middleware
             this._mesto_na_zhiveenje = UpdatedData["mesto_na_zhiveenje"];
             this._pat_polaga = UpdatedData["pat"];
             this._polozhil = UpdatedData["polozhil"];
+            if (UpdatedData.Keys.Contains(RequestParameters.pedagoshki_merki)) _pedagoski_merki = UpdatedData[RequestParameters.pedagoshki_merki];
+            if (UpdatedData.Keys.Contains(RequestParameters.povedenie)) _povedenie = UpdatedData[RequestParameters.povedenie];
+            /*
             int result = 0;
             int.TryParse(UpdatedData["opravdani"], out result);
             this._opravdani = result;
             int.TryParse(UpdatedData["neopravdani"], out result);
             this._neopravdani = result;
-            this._povedenie = UpdatedData["povedenie"];
-            _pedagoski_merki = UpdatedData[RequestParameters.pedagoshki_merki];
+            this._povedenie = UpdatedData["povedenie"];*/
+            //_pedagoski_merki = UpdatedData[RequestParameters.pedagoshki_merki];
             _prethodna_godina = UpdatedData[RequestParameters.prethodna_godina];
             _prethoden_uspeh = UpdatedData[RequestParameters.prethoden_uspeh];
             _prethodno_uchilishte = UpdatedData[RequestParameters.prethodno_uchilishte];
@@ -383,6 +386,21 @@ namespace Middleware
             }
             s = s.Substring(0, s.Length - 1);
             return s;
+        }
+
+        public void UpdateProektni(int i , string cb_pole, bool Isrealised, string token)
+        {
+
+            string realizirano;
+            if (Isrealised) realizirano = ",Реализирал";
+            else realizirano = ",Не реализирал";
+
+            List<string> tx = _proektni.Split(';').ToList();
+            tx[i] = cb_pole + realizirano;
+            string rez = string.Join(";", tx);
+
+            UpdateUcenik(RequestParameters.proektni, rez, token);
+            _proektni = rez;
         }
 
         public void UpdateUcenikOceni(string Token)

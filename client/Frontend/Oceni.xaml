@@ -135,9 +135,9 @@
                 <Label Name ="Prosek_out" Content="" Margin="0" FontSize="20" BorderBrush="Black"  Foreground="White"  HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             </Border>
             <Label Content="просек"  HorizontalAlignment="Center" Margin="18,0,19,0" FontSize="23" Foreground="White" VerticalAlignment="Top" HorizontalContentAlignment="Center" Grid.Column="4" Grid.RowSpan="2" Height="41" Width="84"/>
-            <Label Name ="BrojDn_label" Content="" HorizontalAlignment="Center" Margin="49,21" VerticalAlignment="Center" Grid.RowSpan="2" FontSize="36" Foreground="White" Height="58" Width="10"/>
-            <ComboBox Grid.Column="2" Margin="0,20,10,0" Grid.Row="1" VerticalAlignment="Top" Height="30">1 Странски Јазик</ComboBox>
-            <ComboBox Grid.Column="3" Margin="5,20,0,0" Grid.Row="1" VerticalAlignment="Top" Height="30">2 Странски Јазик</ComboBox>
+            <Label Name ="BrojDn_label" Content="" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center" Grid.RowSpan="2" FontSize="36" Foreground="White"/>
+            <ComboBox Name="SJ_1_CB"  Grid.Column="2" Margin="0,20,10,0" Grid.Row="1" VerticalAlignment="Top" Height="30" FontSize="20"></ComboBox>
+            <ComboBox Name="SJ_2_CB"  Grid.Column="3" Margin="5,20,0,0" Grid.Row="1" VerticalAlignment="Top" Height="30" FontSize="20"></ComboBox>
 
         </Grid>
         <ScrollViewer Grid.Column="1" Grid.Row="2" Background="#FF3E4959" VerticalScrollBarVisibility="Auto">
@@ -164,51 +164,59 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <StackPanel Name="st1" Grid.Column="0">
-                            <ComboBox Background="{x:Null}" Margin="38,10,38,0" FontSize="24" VerticalAlignment="Top" Height="38" Style="{DynamicResource ComboBoxStyle2}">
-                            </ComboBox>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Label Background="{x:Null}" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White">Реализирал</Label>
-                                <StackPanel Height="40" Name="StackPanel1" Orientation="Horizontal" HorizontalAlignment="Right">
-                                    <Viewbox Height="{Binding Path=ActualHeight, ElementName=StackPanel1}">
-                                        <CheckBox />
-                                    </Viewbox>
-                                </StackPanel>
-                            </StackPanel>
+                          
+
+                        </StackPanel>
+                        <StackPanel Name="st2"  Grid.Column="1">
+
+
+                        </StackPanel>
+
+
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
                             <Border Height="50" Margin="20,20,20,0" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" Grid.ColumnSpan="2">
                                 <Label Content="Изостаноци" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
                             </Border>
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,0">
                                     <StackPanel>
-                                        <Border Width="50" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF5C98B4" CornerRadius="100">
-                                            <TextBox Background="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" SelectionBrush="#FFFF5100" BorderBrush="{x:Null}" FontSize="20" Foreground="White">110</TextBox>
+                                        <Border Width="70" Height="70" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF5C98B4" CornerRadius="100">
+                                            <TextBox Name="OpravdaniTxt"  Background="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" SelectionBrush="#FFFF5100" BorderBrush="{x:Null}" FontSize="30" Foreground="White" BorderThickness="0" Text="0"/>
                                         </Border>
                                         <Label FontSize="20" Foreground="White">Оправдани</Label>
                                     </StackPanel>
                                     <StackPanel>
-                                        <Border Width="50" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF5C98B4" CornerRadius="100">
-                                            <TextBox Background="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" SelectionBrush="{x:Null}" BorderBrush="{x:Null}" FontSize="20" Foreground="White">110</TextBox>
+                                        <Border Width="70" Height="70" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF5C98B4" CornerRadius="100">
+                                            <TextBox Name="NeopravdaniTxt" Background="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" SelectionBrush="{x:Null}" BorderBrush="{x:Null}" FontSize="30" Foreground="White" BorderThickness="0" Text="0"/>
                                         </Border>
                                         <Label FontSize="20" Foreground="White">Неоправдани</Label>
                                     </StackPanel>
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>
-                        <StackPanel Name="st2"  Grid.Column="1">
+                        <StackPanel Grid.Column="1" Margin="0,0,0,10">
                             <Border Height="50" Margin="20,20,20,0" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" Grid.ColumnSpan="2">
-                                <Label Content="Поведение" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
+                            <Label Content="Поведение" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
                             </Border>
+                            <ComboBox Name="PovedenieCB"  Background="{x:Null}" Margin="38,10,38,0" FontSize="24" VerticalAlignment="Top" Height="38" Style="{DynamicResource ComboBoxStyle2}">
+                            </ComboBox>
                             <Border Height="50" Margin="20,20,20,0" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" Grid.ColumnSpan="2">
-                                <Label Content="Педагошки мерки" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
+                             <Label Content="Педагошки мерки" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
                             </Border>
-
+                            <ComboBox Name="PedagoskiMerkiCB"  Background="{x:Null}" Margin="38,10,38,0" FontSize="24" VerticalAlignment="Top" Height="38" Style="{DynamicResource ComboBoxStyle2}">
+                            </ComboBox>
                         </StackPanel>
-
                     </Grid>
                 </StackPanel>
                 <StackPanel>
-                   
-                    
+
+
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>

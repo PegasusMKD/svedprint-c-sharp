@@ -17,7 +17,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <Image Name="SaveImg" Source="check_icon.png" HorizontalAlignment="Left" Margin="20,5,0,5" MouseLeftButtonDown="SaveBtnClicked" ></Image>
+       
         
         <Grid Margin="0,2,0,2" VerticalAlignment="Top" HorizontalAlignment="Center" >
             <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="prosek_krug.png" Margin="0" Width="65" Grid.Row="1" Grid.Column="1"/>
@@ -26,7 +26,7 @@
             <Image Name="RightTriangle" Margin="150,0,0,3" VerticalAlignment="Bottom" Source="triangle right.png" Height="50" MouseLeftButtonDown="RightTriangleClicked"/>
         </Grid>
         <DockPanel HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,5,20,5">
-            <Image Source="plus.png" MouseLeftButtonDown="CreateUcenikImgClicked" />
+            <Image Source="check_icon.png" MouseLeftButtonDown="SaveBtnClicked" />
             <Image Source="trash_icon.png" MouseLeftButtonDown ="DeleteUcenikImgClicked" Margin="10,0,0,0"></Image>
         </DockPanel>
 

@@ -37,15 +37,16 @@ namespace Frontend
             }, RequestScopes.GetParalelka);
 
             ucenici = result.ConvertAll(x => new Ucenik(x));
+            SortUcenici();
             KlasenKlasa.SetSmeroviPredmeti();
+          
+        }
 
-            /*
-            if(KlasenKlasa._smerovi != "")
-            {
-                KlasenKlasa.PopulateSmerovi(ucenici);
-            }
-            else KlasenKlasa.PopulateSmeroviFromUcenici(ucenici);*/
+        private void SortUcenici()
+        {
+            var ordered = ucenici.OrderBy(x => x._broj);
             
+            ucenici = ordered.ToList();
         }
 
         private void SettingsImg_Clicked(object sender, MouseButtonEventArgs e)
@@ -55,11 +56,10 @@ namespace Frontend
 
         private void MainImgClicked(object sender, MouseButtonEventArgs e)
         {
-            //Main.Content = loginPage;
             if (ucenici.Count == 0)
-            { MessageBox.Show("Нема пополнето ученици", "SvedPrint", MessageBoxButton.OK, MessageBoxImage.Exclamation); return; }
+            { MessageBox.Show("Нема пополнето ученици"); return; }
             if (KlasenKlasa._p._smerovi.Count == 0)
-            { MessageBox.Show("Нема Смерови", "SvedPrint", MessageBoxButton.OK, MessageBoxImage.Exclamation); return; }
+            { MessageBox.Show("Нема Смерови"); return; }
             else Main.Content = new Oceni(Main, this);
         }
 
