@@ -39,22 +39,13 @@ namespace Frontend
             ucenici = result.ConvertAll(x => new Ucenik(x));
             SortUcenici();
             KlasenKlasa.SetSmeroviPredmeti();
-
-            /*
-            if(KlasenKlasa._smerovi != "")
-            {
-                KlasenKlasa.PopulateSmerovi(ucenici);
-            }
-            else KlasenKlasa.PopulateSmeroviFromUcenici(ucenici);*/
-            
+          
         }
 
         private void SortUcenici()
         {
-            CultureInfo culture = new CultureInfo("mk-MK");
-            StringComparer strcomparer = StringComparer.Create(culture, true);
-            var ordered = ucenici.OrderBy(x => x._prezime, strcomparer).ThenBy(x => x._ime, strcomparer).ThenBy(x => x._duplicate_ctr);
-
+            var ordered = ucenici.OrderBy(x => x._broj);
+            
             ucenici = ordered.ToList();
         }
 
@@ -65,7 +56,6 @@ namespace Frontend
 
         private void MainImgClicked(object sender, MouseButtonEventArgs e)
         {
-            //Main.Content = loginPage;
             if (ucenici.Count == 0)
             { MessageBox.Show("Нема пополнето ученици"); return; }
             if (KlasenKlasa._p._smerovi.Count == 0)

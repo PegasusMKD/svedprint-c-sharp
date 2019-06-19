@@ -45,15 +45,94 @@ namespace Frontend
             LoadListView();
 
             LoadOcenkiView(0);
+            Load_stranski_jazici(0);
             FillOcenki(0);
+
+            SJ_1_CB.SelectionChanged += SJ_1_CB_SelectionChanged;
+            SJ_2_CB.SelectionChanged += SJ_1_CB_SelectionChanged;
 
             home_img.MouseLeftButtonDown += new MouseButtonEventHandler(Back_Home);
             print_img.MouseLeftButtonDown += new MouseButtonEventHandler(Back_Print);
             settings_img.MouseLeftButtonDown += new MouseButtonEventHandler(Back_Settings);
             hide_menu_img.MouseLeftButtonDown += new MouseButtonEventHandler(Menu_hide);
 
-            LoadProektnaAktivnost();
+            OpravdaniTxt.TextChanged += OpravdaniTxt_TextChanged;
+            NeopravdaniTxt.TextChanged += NeopravdaniTxt_TextChanged;
 
+            PovedenieCB.ItemsSource = new string[] { "Примeрно", "Добро", "Задоволително" };
+            PedagoskiMerkiCB.ItemsSource = new string[] { "0", "1", "2", "3", "4" };
+
+            LoadExtraPolinja(0);
+
+            PovedenieCB.SelectionChanged += PovedenieCB_SelectionChanged;
+            PedagoskiMerkiCB.SelectionChanged += PedagoskiMerkiCB_SelectionChanged;
+
+        }
+
+        private void SJ_1_CB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!CanWork) return;
+            CanWork = false;    
+            string str = SJ_1_CB.SelectedIndex.ToString() + ";" + SJ_2_CB.SelectedIndex.ToString();
+            Ucenici[Br].UpdateUcenik(RequestParameters.jazik, str, UserKlas._token);
+            Ucenici[Br]._jazik = str;
+
+            FillOcenki(int.Parse(BrojDn_label.Content.ToString())-1);
+        }
+        
+        private void Load_stranski_jazici(int BrojDn)
+        {
+            CanWork = false;
+            //Ucenici[Br]._jazik = "2;1";
+            if (UserKlas._p._smerovi.Keys.Contains("Странски Јазици"))
+            {
+                if(SJ_1_CB.Items.Count==0) SJ_1_CB.ItemsSource = UserKlas._p._smerovi["Странски Јазици"]._predmeti;
+                if(SJ_2_CB.Items.Count==0) SJ_2_CB.ItemsSource = UserKlas._p._smerovi["Странски Јазици"]._predmeti;
+                if (Ucenici[BrojDn]._jazik != null && Ucenici[BrojDn]._jazik != "" && Ucenici[BrojDn]._jazik.Split(';').Length > 1)
+                {
+                    string[] jazici = Ucenici[BrojDn]._jazik.Split(';');
+                     SJ_1_CB.SelectedIndex = int.Parse(jazici[0]);
+                     SJ_2_CB.SelectedIndex = int.Parse(jazici[1]);
+                }
+                else
+                {
+                    SJ_1_CB.SelectedIndex = 0;
+                    SJ_2_CB.SelectedIndex = 1;
+                }
+            }
+            FillOcenki(BrojDn);
+            CanWork = true;
+
+        }
+
+        private void PedagoskiMerkiCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox cb = (ComboBox)sender;
+            if (cb.SelectedIndex == -1) return;
+            Ucenici[Br].UpdateUcenik(RequestParameters.pedagoshki_merki , cb.SelectedValue.ToString() , UserKlas._token);
+            Ucenici[Br]._pedagoski_merki = cb.SelectedValue.ToString();
+        }
+
+        private void PovedenieCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox cb = (ComboBox)sender;
+            if (cb.SelectedIndex == -1) return;
+            Ucenici[Br].UpdateUcenik(RequestParameters.povedenie, cb.SelectedValue.ToString(), UserKlas._token);
+            Ucenici[Br]._povedenie = cb.SelectedValue.ToString();
+        }
+
+        private void NeopravdaniTxt_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!int.TryParse(NeopravdaniTxt.Text, out int n)) return;
+            Ucenici[Br]._neopravdani = int.Parse(NeopravdaniTxt.Text);
+            Ucenici[Br].UpdateUcenik(RequestParameters.neopravdani, Ucenici[Br]._neopravdani.ToString(), UserKlas._token);
+        }
+
+        private void OpravdaniTxt_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!int.TryParse(OpravdaniTxt.Text, out int n)) return;
+            Ucenici[Br]._opravdani = int.Parse(OpravdaniTxt.Text);
+            Ucenici[Br].UpdateUcenik(RequestParameters.opravdani, Ucenici[Br]._opravdani.ToString() , UserKlas._token);
         }
 
         private void LoadListView()
@@ -95,6 +174,20 @@ namespace Frontend
             return st;
         }
 
+        List<string> SearchSTpredmeti(string smer)
+        {
+            if (SJ_1_CB.SelectedIndex == -1 || SJ_2_CB.SelectedIndex == -1) return UserKlas._p._smerovi[smer]._predmeti;
+            List<string> predmeti = new List<string>();
+            foreach(string predmet in UserKlas._p._smerovi[smer]._predmeti)
+            {
+                string s = predmet;
+                if (predmet == "1 СЈ") s = SJ_1_CB.SelectedValue.ToString();
+                if (predmet == "2 СЈ") s = SJ_2_CB.SelectedValue.ToString();
+                predmeti.Add(s);
+            }
+            return predmeti;
+        }
+
         List<TextBox> Ocenkibox = new List<TextBox>();
         List<Label> Predmetibox = new List<Label>();
         private void LoadOcenkiView(int BrojDn)
@@ -106,6 +199,7 @@ namespace Frontend
                 CanWork = true;
                 return;
             }
+
             List<string> predmeti = UserKlas._p._smerovi[Ucenici[BrojDn]._smer]._predmeti;
             //combobox_smer.SelectedIndex = 0;
             int Size = predmeti.Count;
@@ -215,10 +309,14 @@ namespace Frontend
                 if (last != -2) break;
 
             }
+        
         }
 
+        int Br;
         private void FillOcenki(int brojDn)
         {
+            CanWork = false;
+
             Ucenik SelectedUcenik = Ucenici[brojDn];
 
             //fill Menu
@@ -228,11 +326,12 @@ namespace Frontend
             combobox_smer.SelectedValue = smerovi_naslov[SelectedUcenik._smer].ToString();
 
             //fill OcenkiView
-            for (int i = 0; i < UserKlas._p._smerovi[SelectedUcenik._smer]._predmeti.Count; i++)
+            List<string> predmeti = SearchSTpredmeti(Ucenici[brojDn]._smer);
+            for (int i = 0; i < predmeti.Count; i++)
             {
                 if (i < SelectedUcenik._oceni.Count) Ocenkibox[i].Text = SelectedUcenik._oceni[i].ToString();//5 5 5 5 5 5 5 5
                 else Ocenkibox[i].Text = "0";
-                Predmetibox[i].Content = UserKlas._p._smerovi[SelectedUcenik._smer]._predmeti[i];
+                Predmetibox[i].Content = predmeti[i];
             }
 
             if (Ocenkibox.Count > 0)
@@ -241,65 +340,122 @@ namespace Frontend
                 Ocenkibox[0].Focus();
             }
 
+            LoadProektnaAktivnost();
+
+            OpravdaniTxt.Text = SelectedUcenik._opravdani.ToString();
+            NeopravdaniTxt.Text = SelectedUcenik._neopravdani.ToString();
+
+            LoadExtraPolinja(brojDn);
+
             CanWork = true;
         }
 
+        private void LoadExtraPolinja(int br)
+        {
+            PovedenieCB.SelectedValue = Ucenici[br]._povedenie;
+            PedagoskiMerkiCB.SelectedValue = Ucenici[br]._pedagoski_merki;
+            if (PovedenieCB.SelectedIndex == -1) PovedenieCB.SelectedIndex = 0;
+            if (PedagoskiMerkiCB.SelectedIndex == -1) PovedenieCB.SelectedIndex = 0;
+        }
+
+        int Proektnictr = 2;
         private void LoadProektnaAktivnost()
         {
-            /*
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Label Background="{x:Null}" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White">Реализирал</Label>
-                                <StackPanel Height="40" Name="StackPanel1" Orientation="Horizontal" HorizontalAlignment="Right">
-                                    <Viewbox Height="{Binding Path=ActualHeight, ElementName=StackPanel1}">
-                                        <CheckBox />
-                                    </Viewbox>
-                                </StackPanel>
-                            </StackPanel>
-             * */
+            st1.Children.Clear();
+            st2.Children.Clear();
+
+            for (int i = 0; i < Proektnictr; i++)
+            {
+                if(i % 2 ==0)
+                {
+                    st1.Children.Add(ProektnaPanel(i));
+                }
+                else
+                {
+                    st2.Children.Add(ProektnaPanel(i));
+                }
+            }
+        }
+
+        List<CheckBox> realiziranoProektni = new List<CheckBox>();
+        private StackPanel ProektnaPanel (int i)
+        {
+            string[] PreValue = null;
+            if (Ucenici[Br]._proektni != null &&  Ucenici[Br]._proektni.Length > 0) PreValue = Ucenici[Br]._proektni.Split(';')[i].Split(',');
 
             StackPanel MainST = new StackPanel();
 
             ComboBox CB = new ComboBox();
             CB.Background = null;
-            CB.Margin = new Thickness(28, 10, 78, 0);
+            CB.Margin = new Thickness(28, 10, 28, 0);
             CB.FontSize = 24;
             CB.VerticalAlignment = VerticalAlignment.Top;
             CB.Height = 38;
             CB.Style = (Style)FindResource("ComboBoxStyle2");
+            CB.Tag = i.ToString();
+            if (UserKlas._p._smerovi.ContainsKey("ПА"))
+            {
+                CB.ItemsSource = UserKlas._p._smerovi["ПА"]._predmeti;
+                if (PreValue == null)
+                {
+                    CB.SelectedIndex = 0;
+                    string str ="";
+                    for(int x=0;x<Proektnictr;x++)
+                    {
+                        str += CB.SelectedValue + ",Реализирал;";
+                    }
+                    Ucenici[Br]._proektni = str;
+                    PreValue = Ucenici[Br]._proektni.Split(';')[i].Split(',');
+                }
+                else CB.SelectedValue = PreValue[0];
+            }
+            CB.SelectionChanged += CB_SelectionChanged;
             MainST.Children.Add(CB);
 
             StackPanel checkST = new StackPanel();
-            MainST.Children.Add(grid());
+            checkST.Orientation = Orientation.Horizontal;
+            checkST.HorizontalAlignment = HorizontalAlignment.Center;
 
-            st2.Children.Add(MainST);
-        }
-
-        private Grid grid ()
-        {
-            Grid gd = new Grid();
-            gd.Margin = new Thickness(0, 0, 0, 10);
-            gd.Children.Add(SettingsDesign.UnderTextBorder());
-            Border border = SettingsDesign.CreateBorder(36, 0, 0, 6, "#FF3D84C6");
-            border.Margin = new Thickness(0, -42, 35, 0);
-            border.Width = 35;
-            border.HorizontalAlignment = HorizontalAlignment.Right;
+            Label lb = SettingsDesign.CreateLabel("Реализирал", 22, "Segoe UI");
+            lb.FontWeight = FontWeights.Normal;
+            lb.HorizontalAlignment = HorizontalAlignment.Left;
+            lb.VerticalAlignment = VerticalAlignment.Center;
+            checkST.Children.Add(lb);
 
             CheckBox Check = new CheckBox();
-            Check.Style = (Style)FindResource("CheckBoxBiggerStyle");
-            //Check.RenderTransformOrigin = new Point(0.5, 0.5);
-            Check.RenderTransform = new ScaleTransform( 2.0 , 2.0 );
-            Check.Background = Brushes.Transparent;
-            Check.BorderBrush = Brushes.Transparent;
-            border.Child = Check ;
+            Check.HorizontalAlignment = HorizontalAlignment.Right;
+            Check.VerticalAlignment = VerticalAlignment.Top;
+            if(PreValue[1] == "Реализирал")Check.IsChecked = true;
+            Check.RenderTransform = new ScaleTransform(2.5, 2.5);
+            realiziranoProektni.Add(Check);
+            Check.Tag = i.ToString();
+            Check.Checked += Check_Checked;
+            Check.Unchecked += Check_Unchecked;
+            checkST.Children.Add(Check);
 
-            ///  ScaleTransform scale = new ScaleTransform(2.0, 2.0);
-            /// yourCheckBox.RenderTransformOrigin = new Point(0.5, 0.5);
-            /// yourCheckBox.RenderTransform = scale;
+            MainST.Children.Add(checkST);
+            return MainST;
 
-            gd.Children.Add(border);
+        }
 
-            return gd;
+        private void Check_Unchecked(object sender, RoutedEventArgs e)
+        {
+            int i = int.Parse(((CheckBox)sender).Tag.ToString());
+            string PreValue = Ucenici[Br]._proektni.Split(';')[i].Split(',')[0];
+            Ucenici[Br].UpdateProektni(i, PreValue, false, UserKlas._token);
+        }
 
+        private void Check_Checked(object sender, RoutedEventArgs e)
+        {
+            int i = int.Parse(((CheckBox)sender).Tag.ToString());
+            string PreValue = Ucenici[Br]._proektni.Split(';')[i].Split(',')[0];
+            Ucenici[Br].UpdateProektni(i, PreValue, true, UserKlas._token);
+        }
+
+        private void CB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int i = int.Parse(((ComboBox)sender).Tag.ToString());
+            Ucenici[Br].UpdateProektni(i , ((ComboBox)sender).SelectedValue.ToString() , realiziranoProektni[i].IsChecked.Value , UserKlas._token);
         }
 
         private void OcenkiBox_Text_Changed(object sender, EventArgs e)
@@ -351,6 +507,8 @@ namespace Frontend
         {
             CanWork = false;
 
+            Br = brojDn;
+
             if (ClickedMenuItem != null)//hover
             {
                 DockPanel st2 = (DockPanel)ClickedMenuItem;
@@ -364,12 +522,12 @@ namespace Frontend
             if (Ucenici[brojDn]._smer != "")
             {
                 LoadOcenkiView(brojDn);
+                Load_stranski_jazici(brojDn);
                 FillOcenki(brojDn);
             }
             else
             {
                 MessageBox.Show("ученикот нема одберено смер");
-                CanWork = true;
             }
         }
 
@@ -385,6 +543,7 @@ namespace Frontend
             Ucenici[br].ChangeSmer(NovSmer,UserKlas._token);
 
             LoadOcenkiView(br);
+            Load_stranski_jazici(br);
             FillOcenki(br);
         }
 

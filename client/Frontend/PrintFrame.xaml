@@ -41,7 +41,7 @@
                         <Label Content="Принтај цел клас" HorizontalAlignment="Center" VerticalAlignment="Bottom" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold" Margin="16,0,16,1"/>
                     </Border>
                 </StackPanel>
-                <StackPanel Margin="0,0,0,80">
+                <StackPanel Margin="0,0,0,50">
                     <Border x:Name="btn_edinecnoprint" Height="50" Margin="20,0" VerticalAlignment="Center" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" MouseUp="Btn_edinecnoprint_MouseUp">
                         <Label Content="Принтај Единечно" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
                     </Border>
@@ -52,7 +52,7 @@
                     <Border Height="50" Margin="20,0" VerticalAlignment="Center" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10">
                         <Label Content="Избери Принтер" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
                     </Border>
-                    <ComboBox Name ="combobox_printer" FontSize="24" Height="36" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" Foreground="Black" BorderBrush="#FF395F86">
+                    <ComboBox Name ="combobox_printer" FontSize="24" Height="36" HorizontalContentAlignment="Center" Foreground="Black" BorderBrush="#FF395F86" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <ComboBox.Background>
                             <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                                 <GradientStop Color="#FF27517C" Offset="0"/>
@@ -63,6 +63,21 @@
                     <!--<TextBox Text="Printer XP jetPro" FontSize="24" Background="{x:Null}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0"/>-->
                     <Border Height="10" Margin="25,0" VerticalAlignment="Center" Background="White" BorderThickness="2" CornerRadius="10"/>
                 </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,10,0,0" HorizontalAlignment="Center">
+                        <Border Height="50" Margin="30,0,10,0" VerticalAlignment="Center" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" HorizontalAlignment="Center">
+                            <Label Content=" Х " HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
+                        </Border>
+                        <TextBox Name="X_offset" FontSize="40" Text="0" Background="{x:Null}" SelectionBrush="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" Foreground="White" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,0">
+                        <Border Height="50" Margin="30,0,10,0" VerticalAlignment="Center" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10">
+                            <Label Content=" Y " HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
+                        </Border>
+                        <TextBox Name="Y_offset" FontSize="40" Text="0" Background="{x:Null}" SelectionBrush="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" Foreground="White" />
+                    </StackPanel>
+                </StackPanel>
+                <Border Height="10" Margin="25,0" VerticalAlignment="Center" Background="White" BorderThickness="2" CornerRadius="10"/>
             </StackPanel>
         </Grid>
     </Grid>
