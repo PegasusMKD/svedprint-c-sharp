@@ -75,33 +75,7 @@ namespace Frontend
             return bitmap;
         }
 
-        private void Print()
-        {
-            string input = @"C:\Users\lukaj\OneDrive\Desktop\bk1.jpeg";
-            PrintDialog printDialog = new PrintDialog();
-            PrintDocument pd = new PrintDocument();
-            pd.PrintPage += (sender, args) =>
-            {
-                args.Graphics.DrawImage(InsertText("македонски", @"C:\Users\lukaj\OneDrive\Desktop\bk.jpeg"), args.PageBounds);
-            };
-            pd.OriginAtMargins = false;
-            //pd.PrinterSettings.PrinterName = PrinterSettings.InstalledPrinters
-
-            for (int i = 0; i < PrinterSettings.InstalledPrinters.Count; i++)
-            {
-                // MessageBox.Show(String.Format("{0}: {1}", i, PrinterSettings.InstalledPrinters[i]));
-            }
-            //int choice = 0;
-
-            int choice = 3;
-            pd.PrinterSettings.PrinterName = PrinterSettings.InstalledPrinters[choice];
-            pd.DefaultPageSettings.PaperSize = pd.PrinterSettings.PaperSizes.Cast<PaperSize>().First<PaperSize>(size => size.Kind == PaperKind.A4);
-            pd.DefaultPageSettings.Landscape = true;
-
-            pd.Print();
-        }
-
-        private void Menu_SelectionChanged(object sender, SelectionChangedEventArgs e)
+      private void Menu_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }

@@ -438,6 +438,8 @@ namespace Middleware
         public string _smer { get; set; }
         [JsonProperty(RequestParameters.cel_smer)]
         public string _cel_smer { get; set; }
+        int[] jaziciPos = new int[] { -1 , -1 };
+        string[] stranskijazici = null;
 
         public Smer(List<string> predmeti, string smer, string cel_smer)
         {
@@ -454,6 +456,19 @@ namespace Middleware
         }
 
         public Smer() { }
+
+        public List<string> GetCelPredmeti(int i , int j , List<string> sj)
+        {
+            List<string> predmeti = new List<string>();
+            foreach (string predmet in _predmeti)
+            {
+                string s = predmet;
+                if (predmet == "1 СЈ") s = sj[i];
+                if (predmet == "2 СЈ") s = sj[j];
+                predmeti.Add(s);
+            }
+            return predmeti;
+        }
 
         public void AddPredmet(string NovPredmet, String token)
         {
@@ -626,25 +641,20 @@ namespace Middleware
             {
                 Smerovi = _p._smerovi.Keys.ToList();
             }
+
+            //Smerovi = LoadDefaultSmerovi(Smerovi);
             if( Smerovi.Count > 0) GetSmerPredmeti(Smerovi);
         }
 
-        /*
-        public void PopulateSmeroviFromUcenici(List<Ucenik> ucenici)
+        
+        private List<string> LoadDefaultSmerovi(List<string> Smerovi)
         {
-            if (_p == null) _p = new Paralelka(_paralelka, ucenici, new Dictionary<string, Smer>());
-            _p._ucenici = new List<Ucenik>(ucenici);
-            if (ucenici.Count == 0) return;
-            _smerovi = string.Join(",", ucenici.ConvertAll(x => x._smer).Distinct());
-            GetSmerPredmeti(GetSmerovi().ToList());
+            if (!Smerovi.Contains("ПА")) Smerovi.Add("ПА");
+            if (!Smerovi.Contains("Странски Јазици")) Smerovi.Add("Странски Јазици");
+            if (!Smerovi.Contains("Изборни Предмети")) Smerovi.Add("Изборни Предмети");
+            return Smerovi;
         }
 
-        public void PopulateSmerovi(List<Ucenik> ucenici)
-        {
-            if (_p == null) _p = new Paralelka(_paralelka, ucenici, new Dictionary<string, Smer>());
-            _p._ucenici = ucenici;
-            GetSmerPredmeti(GetSmerovi().ToList());
-        }*/
 
         public void GetSmerPredmeti(List<string> Smerovi)
         {
