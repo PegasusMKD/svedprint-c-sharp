@@ -333,8 +333,10 @@ namespace Middleware
             {
                 currentSide = 0;
                 pd.Print();
-
             }
+
+            printQueue.ForEach(x => x.sides.ToList().ForEach(job => job.Dispose()));
+            pd.Dispose();
         }
         public static List<string> InitGlavnaKniga(List<Ucenik> ucenici, Klasen klasen, int offsetx, int offsety)
         {
@@ -492,7 +494,7 @@ namespace Middleware
         }
 
         static readonly Dictionary<string, string> rimskoDict = new Dictionary<string, string>() {
-            { "9", "деветто" },
+            { "IX", "деветто" },
             { "I", "прва"},
             { "II", "втора"},
             { "III", "трета"},
