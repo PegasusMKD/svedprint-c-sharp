@@ -252,7 +252,6 @@ namespace Middleware
             _polozhil = valuePairs[RequestParameters.polozhil] ?? "";
             _duplicate_ctr = int.Parse(valuePairs[RequestParameters.duplicate_ctr] ?? "-1");
             _jazik = valuePairs[RequestParameters.jazik] ?? "";
-            _jazik_ocena = valuePairs[RequestParameters.jazik_ocena] ?? "";
             _pedagoski_merki = valuePairs[RequestParameters.pedagoshki_merki] ?? "";
             string outvar;
             bool success = valuePairs.TryGetValue(RequestParameters.prethodna_uchebna, out outvar);

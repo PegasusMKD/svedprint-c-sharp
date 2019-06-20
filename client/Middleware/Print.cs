@@ -94,9 +94,12 @@ namespace Middleware
         private static void onPrintPage(object sender, PrintPageEventArgs e)
         {
             Graphics g = e.Graphics;
-            g.DrawImage(printQueue[currentPage].sides[currentSide], e.PageBounds);
-            currentSide++;
-            e.HasMorePages = (currentSide % maxSides != 0);
+            if (currentSide < maxSides)
+            {
+                g.DrawImage(printQueue[currentPage].sides[currentSide], e.PageBounds);
+                currentSide++;
+            }
+            e.HasMorePages = (currentSide < maxSides);
             g.Dispose();
         }
 
@@ -317,27 +320,34 @@ namespace Middleware
             py.WaitForExit();
             printQueue = new List<PrintQueueItem>();
 
-            for (int i = 0; i < data.Count - 1; i++)
+            int partition = 5;
+            for (int part = 0; part < 9; part++)
             {
-                PrintQueueItem x = new PrintQueueItem();
-                x.sides = new System.Drawing.Image[1];
-                x.sides[0] = System.Drawing.Image.FromFile(new Uri($"{tmpFolder}gk-{i}.jpg").AbsolutePath);
+                if (partition * part > data.Count - 1) break;
+                printQueue.Clear();
+                for (int i = partition*part; i < Math.Min(data.Count - 1, partition*(part+1)); i++)
+                {
+                    PrintQueueItem x = new PrintQueueItem();
+                    x.sides = new System.Drawing.Image[1];
+                    x.sides[0] = System.Drawing.Image.FromFile(new Uri($"{tmpFolder}gk-{i}.jpg").AbsolutePath);
 
-                printQueue.Add(x);
+                    printQueue.Add(x);
+                }
+
+                currentPage = 0;
+                maxSides = 1;
+                pd.PrintPage += new PrintPageEventHandler(onPrintPage);
+
+                for (int i = partition*part; i < Math.Min(data.Count - 1, partition * (part + 1)); i++)
+                {
+                    currentSide = 0;
+                    pd.Print();
+                    currentPage++;
+                }
+
+                printQueue.ForEach(x => x.sides.ToList().ForEach(job => job.Dispose()));
+                pd.Dispose();
             }
-
-            currentPage = 0;
-            maxSides = 1;
-            pd.PrintPage += new PrintPageEventHandler(onPrintPage);
-
-            for (currentPage = 0; currentPage < data.Count - 1; currentPage++)
-            {
-                currentSide = 0;
-                pd.Print();
-            }
-
-            printQueue.ForEach(x => x.sides.ToList().ForEach(job => job.Dispose()));
-            pd.Dispose();
         }
         public static List<string> InitGlavnaKniga(List<Ucenik> ucenici, Klasen klasen, int offsetx, int offsety)
         {
@@ -480,7 +490,7 @@ namespace Middleware
                 string[] paralelka_godina = klasen._paralelka.Split('-');
                 var val = int.Parse(db[1]) + int.Parse(year_dictionary[paralelka_godina[0]]) - 1;
                 bool failed = false;
-                if(!u.CheckPass() || "пз".Contains(u._polozhil.ToLower()[0]))
+                if(!u.CheckPass() || !"пз".Contains(u._polozhil.ToLower()[0]))
                 {
                     failed_ctr++;
                     failed = true;
