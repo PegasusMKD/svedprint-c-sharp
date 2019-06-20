@@ -93,7 +93,7 @@ namespace Frontend
 
                 if (PredmetiOdSmer.Count == 0) continue;
 
-                for (int i = 0; i <ucenik._oceni.Count; i++)
+                for (int i = 0; i <ucenik._oceni.Count && i < PredmetiOdSmer.Count; i++)
                 {
                     if (PredmetiProsek.ContainsKey(PredmetiOdSmer[i]))
                     {

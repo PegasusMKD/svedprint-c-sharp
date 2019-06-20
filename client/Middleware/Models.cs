@@ -456,11 +456,21 @@ namespace Middleware
 
         public Smer() { }
 
-        public List<string> GetCeliPredmeti(string jazici , List<string> sj)
+        public List<string> GetCeliPredmeti(string jazici , Dictionary<string , Smer > Smerovi)
         {
+            if(! Smerovi.Keys.Contains("Странски Јазици"))
+            {
+                return _predmeti;
+            }
 
-            int i = int.Parse(jazici.Split(';')[0]);
-            int j = int.Parse(jazici.Split(';')[1]);
+            int i = 0, j = 1;
+            if (jazici != null && jazici != "")
+            {
+                i = int.Parse(jazici.Split(';')[0]);
+                j = int.Parse(jazici.Split(';')[1]);
+            }
+
+            List<string> sj = Smerovi["Странски Јазици"]._predmeti;
 
             List<string> predmeti = new List<string>();
 
@@ -642,7 +652,7 @@ namespace Middleware
             return _smerovi.Split(delimiter);
         }
 
-        public void SetSmeroviPredmeti()
+        public void SetSmeroviPredmeti(string token)
         {
             List<string> Smerovi = new List<string>(); 
             if (_p == null)
@@ -655,16 +665,16 @@ namespace Middleware
                 Smerovi = _p._smerovi.Keys.ToList();
             }
 
-            //Smerovi = LoadDefaultSmerovi(Smerovi);
+            Smerovi = LoadDefaultSmerovi(Smerovi , token);
             if( Smerovi.Count > 0) GetSmerPredmeti(Smerovi);
         }
 
         
-        private List<string> LoadDefaultSmerovi(List<string> Smerovi)
+        private List<string> LoadDefaultSmerovi(List<string> Smerovi , string token)
         {
-            if (!Smerovi.Contains("ПА")) Smerovi.Add("ПА");
-            if (!Smerovi.Contains("Странски Јазици")) Smerovi.Add("Странски Јазици");
-            if (!Smerovi.Contains("Изборни Предмети")) Smerovi.Add("Изборни Предмети");
+            if (!Smerovi.Contains("ПА")) _p.AddSmer(new Smer("ПА", "цел смер"), token);
+            if (!Smerovi.Contains("Странски Јазици")) _p.AddSmer(new Smer("Странски Јазици", "цел смер"), token);
+            if (!Smerovi.Contains("Изборни Предмети")) _p.AddSmer(new Smer("Изборни Предмети", "цел смер"), token);
             return Smerovi;
         }
 

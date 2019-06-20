@@ -38,7 +38,7 @@ namespace Frontend
 
             ucenici = result.ConvertAll(x => new Ucenik(x));
             SortUcenici();
-            KlasenKlasa.SetSmeroviPredmeti();
+            KlasenKlasa.SetSmeroviPredmeti(KlasenKlasa._token);
           
         }
 
