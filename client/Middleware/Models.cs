@@ -439,7 +439,6 @@ namespace Middleware
         [JsonProperty(RequestParameters.cel_smer)]
         public string _cel_smer { get; set; }
         int[] jaziciPos = new int[] { -1 , -1 };
-        string[] stranskijazici = null;
 
         public Smer(List<string> predmeti, string smer, string cel_smer)
         {
@@ -457,15 +456,29 @@ namespace Middleware
 
         public Smer() { }
 
-        public List<string> GetCelPredmeti(int i , int j , List<string> sj)
+        public List<string> GetCeliPredmeti(string jazici , List<string> sj)
         {
+
+            int i = int.Parse(jazici.Split(';')[0]);
+            int j = int.Parse(jazici.Split(';')[1]);
+
             List<string> predmeti = new List<string>();
-            foreach (string predmet in _predmeti)
+
+            int ctr = 0;
+            if (jaziciPos[0] == -1)
+                foreach (string predmet in _predmeti)
+                {
+                    string s = predmet;
+                    if (predmet == "1 СЈ") { s = sj[i]; jaziciPos[0] = ctr; }
+                    if (predmet == "2 СЈ") { s = sj[j]; jaziciPos[1] = ctr; }
+                    predmeti.Add(s);
+                    ctr++;
+                }
+            else
             {
-                string s = predmet;
-                if (predmet == "1 СЈ") s = sj[i];
-                if (predmet == "2 СЈ") s = sj[j];
-                predmeti.Add(s);
+                predmeti = _predmeti;
+                predmeti[jaziciPos[0]] = sj[i]; 
+                predmeti[jaziciPos[1]] = sj[j];
             }
             return predmeti;
         }

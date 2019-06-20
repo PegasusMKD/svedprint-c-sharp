@@ -349,7 +349,7 @@ namespace Middleware
 
                 // predmeti
                 tmparr.Clear();
-                tmparr.AddRange(klasen._p._smerovi[u._smer]._predmeti);
+                tmparr.AddRange(klasen._p._smerovi[u._smer].GetCeliPredmeti(u._jazik, klasen._p._smerovi["Странски Јазици"]._predmeti));
                 while (tmparr.Count < 17)
                 {
                     tmparr.Add("NaN");
