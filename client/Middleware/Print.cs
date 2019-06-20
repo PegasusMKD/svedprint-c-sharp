@@ -180,7 +180,7 @@ namespace Middleware
         {
             StringWriter sw = new StringWriter();
             List<string> l = new List<string>();
-            string delimiter = ",";
+            string delimiter = "|";
             int ctr_passable = 0;
             foreach (Ucenik u in ucenici)
             {
@@ -218,7 +218,7 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._roden);
                 sw.Write(delimiter);
-                sw.Write($",{u._mesto_na_ragjanje},{klasen._drzava}");
+                sw.Write($"{delimiter}{u._mesto_na_ragjanje}{delimiter}{klasen._drzava}"); // opstina
                 sw.Write(delimiter);
                 sw.Write(u._drzavjanstvo);
                 sw.Write(delimiter);
@@ -277,13 +277,13 @@ namespace Middleware
 
                 }
 
-                sw.Write(String.Join(",", proektni_list));
+                sw.Write(String.Join(delimiter, proektni_list));
 
 
                 ctr_passable++;
 
                 sw.Write("\"");
-                sw.Write($";\"{offsetx},{offsety}\"");
+                sw.Write($";\"{offsetx}{delimiter}{offsety}\"");
 
                 l.Add(sw.ToString());
             }
@@ -333,15 +333,17 @@ namespace Middleware
             {
                 currentSide = 0;
                 pd.Print();
-
             }
+
+            printQueue.ForEach(x => x.sides.ToList().ForEach(job => job.Dispose()));
+            pd.Dispose();
         }
         public static List<string> InitGlavnaKniga(List<Ucenik> ucenici, Klasen klasen, int offsetx, int offsety)
         {
             // https://raw.githubusercontent.com/darijan2002/ps/ps/gk/sample_params.txt?token=ADAAZQMNTPXEEBZ7LCUYXD245FMAC
             StringWriter sw = new StringWriter();
             List<string> l = new List<string>();
-            string delimiter = ",";
+            string delimiter = "|";
             foreach (Ucenik u in ucenici)
             {
                 sw.GetStringBuilder().Clear();
@@ -429,7 +431,7 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._prethoden_uspeh);
                 sw.Write(delimiter);
-                sw.Write(u._prethodna_uchebna);
+                sw.Write($"20{klasen._godina-1}/20{klasen._godina}");
                 //sw.Write("1990/1991"); HARDCODED
                 sw.Write(delimiter);
                 sw.Write(u._prethodno_uchilishte);
@@ -484,7 +486,7 @@ namespace Middleware
 
 
                 sw.Write("\"");
-                sw.Write($";\"{offsetx},{offsety}\"");
+                sw.Write($";\"{offsetx}{delimiter}{offsety}\"");
 
                 l.Add(sw.ToString());
             }
@@ -492,7 +494,7 @@ namespace Middleware
         }
 
         static readonly Dictionary<string, string> rimskoDict = new Dictionary<string, string>() {
-            { "9", "деветто" },
+            { "IX", "деветто" },
             { "I", "прва"},
             { "II", "втора"},
             { "III", "трета"},
