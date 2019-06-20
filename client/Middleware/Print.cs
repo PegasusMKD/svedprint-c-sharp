@@ -89,6 +89,7 @@ namespace Middleware
 
         static int currentSide;
         static int maxSides;
+        private static int failed_ctr;
 
         private static void onPrintPage(object sender, PrintPageEventArgs e)
         {
@@ -344,6 +345,7 @@ namespace Middleware
             StringWriter sw = new StringWriter();
             List<string> l = new List<string>();
             string delimiter = "|";
+            failed_ctr = 0;
             foreach (Ucenik u in ucenici)
             {
                 sw.GetStringBuilder().Clear();
@@ -477,7 +479,13 @@ namespace Middleware
                 string[] db = klasen._delovoden_broj.Split('-');
                 string[] paralelka_godina = klasen._paralelka.Split('-');
                 var val = int.Parse(db[1]) + int.Parse(year_dictionary[paralelka_godina[0]]) - 1;
-                sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_godina[1]}/{u._broj}");
+                bool failed = false;
+                if(!u.CheckPass() || "пз".Contains(u._polozhil.ToLower()[0]))
+                {
+                    failed_ctr++;
+                    failed = true;
+                }
+                sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_godina[1]}/{u._broj-failed_ctr}");
                 //sw.Write(u._delovoden_broj);
                 //sw.Write("08-07/16/2"); // <----- HARDCODED
                 sw.Write(delimiter);
@@ -488,7 +496,10 @@ namespace Middleware
                 sw.Write("\"");
                 sw.Write($";\"{offsetx}{delimiter}{offsety}\"");
 
-                l.Add(sw.ToString());
+                if (!failed)
+                {
+                    l.Add(sw.ToString());
+                }
             }
             return l;
         }

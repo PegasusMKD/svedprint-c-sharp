@@ -464,7 +464,7 @@ namespace Middleware
             }
 
             int i = 0, j = 1;
-            if (jazici != null && jazici != "")
+            if (jazici != null && jazici != "" && jazici.Length == 3)
             {
                 i = int.Parse(jazici.Split(';')[0]);
                 j = int.Parse(jazici.Split(';')[1]);
