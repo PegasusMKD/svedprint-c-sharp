@@ -59,8 +59,8 @@ namespace Frontend
             OpravdaniTxt.TextChanged += OpravdaniTxt_TextChanged;
             NeopravdaniTxt.TextChanged += NeopravdaniTxt_TextChanged;
 
-            PovedenieCB.ItemsSource = new string[] { "Примeрно", "Добро", "Задоволително" };
-            PedagoskiMerkiCB.ItemsSource = new string[] { "0", "1", "2", "3", "4" };
+            PovedenieCB.ItemsSource = new string[] { "Примeрно", "Добро", "Незадоволително" };
+            PedagoskiMerkiCB.ItemsSource = new string[] { "нема", "усмена опеман", "писмена опемена", "3", "4" };
 
             LoadExtraPolinja(0);
 
