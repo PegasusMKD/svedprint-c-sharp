@@ -102,7 +102,7 @@ namespace Frontend
             {
                 if(SJ_1_CB.Items.Count==0) SJ_1_CB.ItemsSource = UserKlas._p._smerovi["Странски Јазици"]._predmeti;
                 if(SJ_2_CB.Items.Count==0) SJ_2_CB.ItemsSource = UserKlas._p._smerovi["Странски Јазици"]._predmeti;
-                if (Ucenici[BrojDn]._jazik != null && Ucenici[BrojDn]._jazik != "" && Ucenici[BrojDn]._jazik.Split(';').Length > 1)
+                if (Ucenici[BrojDn]._jazik != null && Ucenici[BrojDn]._jazik != "" && Ucenici[BrojDn]._jazik.Length > 2)
                 {
                     string[] jazici = Ucenici[BrojDn]._jazik.Split(';');
                      SJ_1_CB.SelectedIndex = int.Parse(jazici[0]);
@@ -368,7 +368,7 @@ namespace Frontend
         private void LoadExtraPolinja(int br)
         {
             CanWork = false;    
-            IzborenPredmetCB.SelectedValue = Ucenici[br]._izborni;
+            if(Ucenici[br]._izborni != null && Ucenici[br]._izborni != "") IzborenPredmetCB.SelectedIndex = int.Parse(Ucenici[br]._izborni);
             PovedenieCB.SelectedValue = Ucenici[br]._povedenie;
             PedagoskiMerkiCB.SelectedValue = Ucenici[br]._pedagoski_merki;
             if (PovedenieCB.SelectedIndex == -1) PovedenieCB.SelectedIndex = 0;

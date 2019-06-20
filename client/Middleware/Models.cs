@@ -303,6 +303,8 @@ namespace Middleware
             this._polozhil = UpdatedData["polozhil"];
             if (UpdatedData.Keys.Contains(RequestParameters.pedagoshki_merki)) _pedagoski_merki = UpdatedData[RequestParameters.pedagoshki_merki];
             if (UpdatedData.Keys.Contains(RequestParameters.povedenie)) _povedenie = UpdatedData[RequestParameters.povedenie];
+            if (UpdatedData.Keys.Contains(RequestParameters.izborni)) _izborni = UpdatedData[RequestParameters.izborni];
+            if (UpdatedData.Keys.Contains(RequestParameters.jazik)) _jazik = UpdatedData[RequestParameters.jazik];
             /*
             int result = 0;
             int.TryParse(UpdatedData["opravdani"], out result);
@@ -483,7 +485,7 @@ namespace Middleware
             List<string> predmeti = new List<string>();
 
             int ctr = 0;
-            if (jaziciPos[0] == -1)
+            if (true)
                 foreach (string predmet in _predmeti)
                 {
                     string s = predmet;

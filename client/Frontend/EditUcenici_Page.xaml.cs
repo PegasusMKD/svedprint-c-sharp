@@ -210,6 +210,9 @@ namespace Frontend
 
                  polinja.Add(new Pole("Поведение", RequestParameters.povedenie, new string[] { "Примeрно" }));
                  polinja.Add(new Pole("Педагошки мерки", RequestParameters.pedagoshki_merki, new string[] { "0" }));
+                 polinja.Add(new Pole("Јазици", RequestParameters.pedagoshki_merki, new string[] { "0:1" }));
+                 polinja.Add(new Pole("Изборен Предмет 1", RequestParameters.izborni, new string[] { "0"}));
+                 //polinja.Add(new Pole("", RequestParameters.pedagoshki_merki, new string[] { "0" }));
             }
             Save();
         }
