@@ -326,7 +326,8 @@ namespace Frontend
             combobox_smer.SelectedValue = smerovi_naslov[SelectedUcenik._smer].ToString();
 
             //fill OcenkiView
-            List<string> predmeti = SearchSTpredmeti(Ucenici[brojDn]._smer);
+            //List<string> predmeti = SearchSTpredmeti(Ucenici[brojDn]._smer);
+            List<string> predmeti = UserKlas._p._smerovi[Ucenici[brojDn]._smer].GetCeliPredmeti(Ucenici[brojDn]._jazik, UserKlas._p._smerovi["Странски Јазици"]._predmeti);
             for (int i = 0; i < predmeti.Count; i++)
             {
                 if (i < SelectedUcenik._oceni.Count) Ocenkibox[i].Text = SelectedUcenik._oceni[i].ToString();//5 5 5 5 5 5 5 5
