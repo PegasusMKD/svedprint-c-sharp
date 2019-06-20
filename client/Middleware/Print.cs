@@ -431,7 +431,7 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._prethoden_uspeh);
                 sw.Write(delimiter);
-                sw.Write(u._prethodna_uchebna);
+                sw.Write($"20{klasen._godina-1}/20{klasen._godina}");
                 //sw.Write("1990/1991"); HARDCODED
                 sw.Write(delimiter);
                 sw.Write(u._prethodno_uchilishte);

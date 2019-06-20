@@ -254,9 +254,9 @@ namespace Middleware
             _jazik = valuePairs[RequestParameters.jazik] ?? "";
             _jazik_ocena = valuePairs[RequestParameters.jazik_ocena] ?? "";
             _pedagoski_merki = valuePairs[RequestParameters.pedagoshki_merki] ?? "";
-            _prethodna_godina = valuePairs[RequestParameters.prethodna_godina] ?? "";
-            _prethodno_uchilishte = valuePairs[RequestParameters.prethodno_uchilishte] ?? "";
-            _prethoden_uspeh = valuePairs[RequestParameters.prethoden_uspeh] ?? " ";
+            string outvar;
+            bool success = valuePairs.TryGetValue(RequestParameters.prethodna_uchebna, out outvar);
+            _prethodna_uchebna = success ? outvar : "";
             _drzavjanstvo = valuePairs[RequestParameters.drzavjanstvo] ?? "";
             // _majkino = valuePairs[RequestParameters.majkino] ?? "";
         }
