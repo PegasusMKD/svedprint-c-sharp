@@ -351,7 +351,7 @@ namespace Middleware
 
                 // predmeti
                 tmparr.Clear();
-                tmparr.AddRange(klasen._p._smerovi[u._smer].GetCeliPredmeti(u._jazik, klasen._p._smerovi));
+                tmparr.AddRange(klasen._p._smerovi[u._smer].GetCeliPredmeti(u._jazik , u._izborni, klasen._p._smerovi));
                 while (tmparr.Count < 17)
                 {
                     tmparr.Add("NaN");

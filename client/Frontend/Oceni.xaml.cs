@@ -48,8 +48,6 @@ namespace Frontend
             Load_stranski_jazici(0);
             FillOcenki(0);
 
-            SJ_1_CB.SelectionChanged += SJ_1_CB_SelectionChanged;
-            SJ_2_CB.SelectionChanged += SJ_1_CB_SelectionChanged;
 
             home_img.MouseLeftButtonDown += new MouseButtonEventHandler(Back_Home);
             print_img.MouseLeftButtonDown += new MouseButtonEventHandler(Back_Print);
@@ -63,11 +61,27 @@ namespace Frontend
             PedagoskiMerkiCB.ItemsSource = new string[] { "нема", "усмена опомена", "писмена опомена", "3", "4" };
             if (UserKlas._p._smerovi.Keys.Contains("Изборни Предмети")) IzborenPredmetCB.ItemsSource = UserKlas._p._smerovi["Изборни Предмети"]._predmeti;
 
+            CanWork = false;
+            SJ_1_CB.SelectionChanged += SJ_1_CB_SelectionChanged;
+            SJ_2_CB.SelectionChanged += SJ_1_CB_SelectionChanged;
+            IzborenPredmetCB.SelectionChanged += izborniSeletionChanged;
+
             LoadExtraPolinja(0);
 
             PovedenieCB.SelectionChanged += PovedenieCB_SelectionChanged;
             PedagoskiMerkiCB.SelectionChanged += PedagoskiMerkiCB_SelectionChanged;
 
+        }
+
+        private void izborniSeletionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!CanWork) return;
+            CanWork = false;
+            string str = IzborenPredmetCB.SelectedIndex.ToString();
+            Ucenici[Br].UpdateUcenik(RequestParameters.izborni, IzborenPredmetCB.SelectedIndex.ToString(), UserKlas._token);
+            Ucenici[Br]._izborni = str;
+
+            FillOcenki(Br);
         }
 
         private void SJ_1_CB_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -78,12 +92,7 @@ namespace Frontend
             Ucenici[Br].UpdateUcenik(RequestParameters.jazik, str, UserKlas._token);
             Ucenici[Br]._jazik = str;
 
-            FillOcenki(int.Parse(BrojDn_label.Content.ToString())-1);
-        }
-
-        private void Load_IzborniPredmeti(int BrojDn)
-        {
-           
+            FillOcenki(Br);
         }
 
         private void Load_stranski_jazici(int BrojDn)
@@ -332,7 +341,7 @@ namespace Frontend
 
             //fill OcenkiView
             //List<string> predmeti = SearchSTpredmeti(Ucenici[brojDn]._smer);
-            List<string> predmeti = UserKlas._p._smerovi[Ucenici[brojDn]._smer].GetCeliPredmeti(Ucenici[brojDn]._jazik, UserKlas._p._smerovi);
+            List<string> predmeti = UserKlas._p._smerovi[Ucenici[brojDn]._smer].GetCeliPredmeti(Ucenici[brojDn]._jazik , Ucenici[brojDn]._izborni , UserKlas._p._smerovi);
             for (int i = 0; i < predmeti.Count; i++)
             {
                 if (i < SelectedUcenik._oceni.Count) Ocenkibox[i].Text = SelectedUcenik._oceni[i].ToString();//5 5 5 5 5 5 5 5
@@ -358,12 +367,14 @@ namespace Frontend
 
         private void LoadExtraPolinja(int br)
         {
+            CanWork = false;    
             IzborenPredmetCB.SelectedValue = Ucenici[br]._izborni;
             PovedenieCB.SelectedValue = Ucenici[br]._povedenie;
             PedagoskiMerkiCB.SelectedValue = Ucenici[br]._pedagoski_merki;
             if (PovedenieCB.SelectedIndex == -1) PovedenieCB.SelectedIndex = 0;
             if (PedagoskiMerkiCB.SelectedIndex == -1) PedagoskiMerkiCB.SelectedIndex = 0;
             if (IzborenPredmetCB.SelectedIndex == -1) IzborenPredmetCB.SelectedIndex = 0;
+            CanWork = true;
         }
 
         int Proektnictr = 2;

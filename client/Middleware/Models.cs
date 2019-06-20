@@ -252,7 +252,6 @@ namespace Middleware
             _polozhil = valuePairs[RequestParameters.polozhil] ?? "";
             _duplicate_ctr = int.Parse(valuePairs[RequestParameters.duplicate_ctr] ?? "-1");
             _jazik = valuePairs[RequestParameters.jazik] ?? "";
-            _jazik_ocena = valuePairs[RequestParameters.jazik_ocena] ?? "";
             _pedagoski_merki = valuePairs[RequestParameters.pedagoshki_merki] ?? "";
             string outvar;
             bool success = valuePairs.TryGetValue(RequestParameters.prethodna_uchebna, out outvar);
@@ -456,21 +455,30 @@ namespace Middleware
 
         public Smer() { }
 
-        public List<string> GetCeliPredmeti(string jazici , Dictionary<string , Smer > Smerovi)
+        public List<string> GetCeliPredmeti(string jazici, string izbp , Dictionary<string , Smer > Smerovi)
         {
-            if(! Smerovi.Keys.Contains("Странски Јазици"))
+            int i = 0, j = 0 , izbctr = 0;
+            List<string> sj = new List<string>();
+            if (Smerovi.Keys.Contains("Странски Јазици"))
             {
-                return _predmeti;
+                if (jazici != null && jazici != "" && jazici.Length == 3)
+                {
+                    i = int.Parse(jazici.Split(';')[0]);
+                    j = int.Parse(jazici.Split(';')[1]);
+                }
+                sj = Smerovi["Странски Јазици"]._predmeti;
             }
+            else sj.Add("");
 
-            int i = 0, j = 1;
-            if (jazici != null && jazici != "")
+            string izboren = "";
+            if(Smerovi["Изборни Предмети"]._predmeti.Count > 0)
             {
-                i = int.Parse(jazici.Split(';')[0]);
-                j = int.Parse(jazici.Split(';')[1]);
-            }
+                if (izbp != null && izbp != "") izbctr = int.Parse(izbp);
+                else izbctr = -1;
 
-            List<string> sj = Smerovi["Странски Јазици"]._predmeti;
+                //izbctr = 1;
+                if (izbctr != -1) izboren = Smerovi["Изборни Предмети"]._predmeti[izbctr];
+            }
 
             List<string> predmeti = new List<string>();
 
@@ -481,6 +489,7 @@ namespace Middleware
                     string s = predmet;
                     if (predmet == "1 СЈ") { s = sj[i]; jaziciPos[0] = ctr; }
                     if (predmet == "2 СЈ") { s = sj[j]; jaziciPos[1] = ctr; }
+                    if (predmet == "Изборен Предмет 1") { s = izboren; }
                     predmeti.Add(s);
                     ctr++;
                 }
