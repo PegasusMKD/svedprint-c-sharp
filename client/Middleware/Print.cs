@@ -36,8 +36,7 @@ namespace Middleware
             data.Insert(0, "\"sveditelstva\""); // mozno e da e "sveditelstva", "sveditelstvo"
             string outparam = String.Join("?", data);
 
-            string pyscript = rootFolder + @"\print.exe";
-
+            string pyscript = rootFolder + "\\print.exe";
             Process py = new Process();
             py.StartInfo.FileName = new Uri(pyscript).AbsolutePath;
             py.StartInfo.UseShellExecute = false;
@@ -85,6 +84,36 @@ namespace Middleware
             printQueue.ForEach(x => x.sides.ToList().ForEach(job => job.Dispose()));
             pd.Dispose();
             // ClearTmpFolder();
+
+            int partition = 5;
+            for (int part = 0; part < 9; part++)
+            {
+                if (partition * part > data.Count - 1) break;
+                printQueue.Clear();
+                for (int i = partition * part; i < Math.Min(data.Count - 1, partition * (part + 1)); i++)
+                {
+                    PrintQueueItem x = new PrintQueueItem();
+                    x.sides = new System.Drawing.Image[2];
+                    x.sides[0] = System.Drawing.Image.FromFile(new Uri($"{tmpFolder}front-{i}.jpg").AbsolutePath);
+                    x.sides[1] = System.Drawing.Image.FromFile(new Uri($"{tmpFolder}back-{i}.jpg").AbsolutePath);
+
+                    printQueue.Add(x);
+                }
+
+                currentPage = 0;
+                maxSides = 2;
+                pd.PrintPage += new PrintPageEventHandler(onPrintPage);
+
+                for (int i = partition * part; i < Math.Min(data.Count - 1, partition * (part + 1)); i++)
+                {
+                    currentSide = 0;
+                    pd.Print();
+                    currentPage++;
+                }
+
+                printQueue.ForEach(x => x.sides.ToList().ForEach(job => job.Dispose()));
+            }
+            pd.Dispose(); // test
         }
 
         static int currentSide;
@@ -318,6 +347,7 @@ namespace Middleware
             py.StartInfo.CreateNoWindow = true;
             py.Start();
             py.WaitForExit();
+
             printQueue = new List<PrintQueueItem>();
 
             int partition = 5;
