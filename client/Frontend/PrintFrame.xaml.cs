@@ -43,7 +43,7 @@ namespace Frontend
             }
         }
 
-        string[] Menuitems = { "Сведителство", "Главна Книга", "Постапки" };
+        string[] Menuitems = { "Свидетелство", "Главна Книга", "Постапки" };
         private void LoadListView()
         {
 
