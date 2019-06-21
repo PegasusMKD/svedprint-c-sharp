@@ -400,6 +400,8 @@ namespace Middleware
             List<string> tx = _proektni.Split(';').ToList();
             tx[i] = cb_pole + realizirano;
             string rez = string.Join(";", tx);
+            rez = rez.Substring(0, rez.Length - 1);
+
 
             UpdateUcenik(RequestParameters.proektni, rez, token);
             _proektni = rez;

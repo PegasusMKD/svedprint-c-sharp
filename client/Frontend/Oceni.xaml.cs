@@ -62,6 +62,7 @@ namespace Frontend
             if (UserKlas._p._smerovi.Keys.Contains("Изборни Предмети")) IzborenPredmetCB.ItemsSource = UserKlas._p._smerovi["Изборни Предмети"]._predmeti;
 
             CanWork = false;
+
             SJ_1_CB.SelectionChanged += SJ_1_CB_SelectionChanged;
             SJ_2_CB.SelectionChanged += SJ_1_CB_SelectionChanged;
             IzborenPredmetCB.SelectionChanged += izborniSeletionChanged;
@@ -70,6 +71,8 @@ namespace Frontend
 
             PovedenieCB.SelectionChanged += PovedenieCB_SelectionChanged;
             PedagoskiMerkiCB.SelectionChanged += PedagoskiMerkiCB_SelectionChanged;
+
+            CanWork = true;
 
         }
 
