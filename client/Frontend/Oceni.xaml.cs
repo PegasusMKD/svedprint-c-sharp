@@ -22,7 +22,7 @@ namespace Frontend
 
         Dictionary<string,Smer> smerovi;
         List<Dictionary<string, string>> result;
-        private static Dictionary<string, string> smerovi_naslov = new Dictionary<string, string>();
+        private static Dictionary<string, Smer> smerovi_naslov = new Dictionary<string, Smer>();
 
         List<Ucenik> Ucenici;
         static int brPredmeti;
@@ -37,10 +37,9 @@ namespace Frontend
             smerovi = Home_Page.smerovi;
             Ucenici = Home_Page.ucenici;
 
-            foreach(KeyValuePair<string,Smer> Smer in UserKlas._p._smerovi)
-            {
-                smerovi_naslov[Smer.Key] = Smer.Value._smer;
-            }
+            smerovi_naslov = UserKlas._p.GetSmerovi();
+
+            if (UserKlas._paralelka.Contains("IV")) MaturskiPanel.Visibility = Visibility.Visible;
 
             LoadListView();
 
@@ -160,7 +159,7 @@ namespace Frontend
             {
                 Menu.Items.Add(MenuDP(x._ime, x._prezime, i++));
             }
-            combobox_smer.ItemsSource = smerovi_naslov.Values;
+            combobox_smer.ItemsSource = smerovi_naslov.Keys;
             //foreach(KeyValuePair<string,Smer> val in UserKlas._p._smerovi)
             //{
             //    combobox_smer.Items.Add(val.Value._smer);
@@ -340,7 +339,7 @@ namespace Frontend
             Ucenik_Name.Content = SelectedUcenik._ime + " " + SelectedUcenik._prezime;
             Prosek_out.Content = SelectedUcenik.prosek();
             BrojDn_label.Content = (brojDn + 1).ToString();
-            combobox_smer.SelectedValue = smerovi_naslov[SelectedUcenik._smer].ToString();
+            combobox_smer.SelectedValue = smerovi_naslov[SelectedUcenik._smer]._smer;
 
             //fill OcenkiView
             //List<string> predmeti = SearchSTpredmeti(Ucenici[brojDn]._smer);

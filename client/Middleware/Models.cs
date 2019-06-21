@@ -596,6 +596,16 @@ namespace Middleware
             }, RequestScopes.UpdateSmer);
         }
 
+        public Dictionary<string,Smer> GetSmerovi()
+        {
+            Dictionary<string, Smer> rez = new Dictionary<string, Smer>();
+            foreach(KeyValuePair<string,Smer> x in _smerovi )
+            {
+                if (x.Key != "ПА" && x.Key != "Странски Јазици" && x.Key != "Изборни Предмети") rez.Add(x.Key,x.Value);
+            }
+            return rez;
+        }
+
     }
 
     public class Klasen
@@ -713,6 +723,7 @@ namespace Middleware
             }
 
         }
+
     }
 
     class Request

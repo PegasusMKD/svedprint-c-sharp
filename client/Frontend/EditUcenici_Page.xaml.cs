@@ -42,11 +42,9 @@ namespace Frontend
             string[] PApredmeti = { "Ги немате пополнето Проектните Активности" };
             string[] Smerovi = { "Ги немате пополнето Смеровите" };
             if (UserKlas._p._smerovi.Keys.Contains("ПА")) PApredmeti = UserKlas._p._smerovi["ПА"]._predmeti.ToArray();
-            if (UserKlas._p._smerovi.Count > 0)
+            if (UserKlas._p._smerovi.Count > 3)
             {
-                var x = UserKlas._p._smerovi.Keys.ToList();
-                x.Remove("ПА");
-                Smerovi = x.ToArray();
+                Smerovi = UserKlas._p.GetSmerovi().Keys.ToArray();
             }
             
             List<string> polinjaUpdate = new List<string>();
@@ -208,12 +206,10 @@ namespace Frontend
                 BrojDn = Ucenici.Count - 1;
                 BrojDn = bk;
 
-                 polinja.Add(new Pole("Поведение", RequestParameters.povedenie, new string[] { "Примeрно" }));
-                 polinja.Add(new Pole("Педагошки мерки", RequestParameters.pedagoshki_merki, new string[] { "0" }));
-                 polinja.Add(new Pole("Јазици", RequestParameters.jazik, new string[] { "0:1" }));
-                 polinja.Add(new Pole("Изборен Предмет 1", RequestParameters.izborni, new string[] { "0"}));
-                 //polinja.Add(new Pole("Јазици", RequestParameters.jazik, new string[] { "0:1" }));
-                 //polinja.Add(new Pole("", RequestParameters.pedagoshki_merki, new string[] { "0" }));
+                polinja.Add(new Pole("Поведение", RequestParameters.povedenie, new string[] { "Примeрно" }));
+                polinja.Add(new Pole("Педагошки мерки", RequestParameters.pedagoshki_merki, new string[] { "0" }));
+                polinja.Add(new Pole("Јазици", RequestParameters.jazik, new string[] { "0:1" }));
+                polinja.Add(new Pole("Изборен Предмет 1", RequestParameters.izborni, new string[] { "0"}));
             }
             Save();
         }
