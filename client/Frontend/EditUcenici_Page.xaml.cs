@@ -55,22 +55,22 @@ namespace Frontend
             polinja.Add(new Pole("Презиме", RequestParameters.prezime, new string[] { "Презиме" }));
             polinja.Add(new Pole("Татково име", RequestParameters.srednoIme, new string[] { "Татково име" }));
             polinja.Add(new Pole("Смер", RequestParameters.smer, Smerovi));
-            polinja.Add(new Pole("број во дневник", RequestParameters.broj, new string[] { "0" }));
-            polinja.Add(new Pole("ден на раѓање", RequestParameters.roden, new string[] { "00.00.0000" }));
+            polinja.Add(new Pole("Број во дневник", RequestParameters.broj, new string[] { "0" }));
+            polinja.Add(new Pole("Датум на раѓање", RequestParameters.roden, new string[] { "00.00.0000" }));
             polinja.Add(new Pole("Пол", RequestParameters.gender, new string[] { "Машки" , "Женски" }));
-            polinja.Add(new Pole("место на раѓање", RequestParameters.mesto_na_ragjanje, new string[] { "Скопје" }));
-            polinja.Add(new Pole("место на живеење", RequestParameters.mesto_na_zhiveenje, new string[] { "Скопје" }));
+            polinja.Add(new Pole("Место на раѓање", RequestParameters.mesto_na_ragjanje, new string[] { "Скопје" }));
+            polinja.Add(new Pole("Место на живеење", RequestParameters.mesto_na_zhiveenje, new string[] { "Скопје" }));
            // polinja.Add(new Pole("број на оправдани изостаноци", RequestParameters.opravdani, new string[] { "0" }));
            // polinja.Add(new Pole("број на неоправдани изостаноци", RequestParameters.neopravdani, new string[] { "0" }));
-            polinja.Add(new Pole("Родител(Татко)", RequestParameters.tatko, new string[] { "Име Презиме" }));
-            polinja.Add(new Pole("Родител(Мајка)", RequestParameters.majka, new string[] { "Име Презиме" }));
-            polinja.Add(new Pole("по кој пат ја учи годината", RequestParameters.pat_polaga, new string[] { "прв пат" , "втор пат" , "трет пат" }));
-            polinja.Add(new Pole("дали е положена годината", RequestParameters.polozhil, new string[] { "Положил" , "Не Положил" }));
+            polinja.Add(new Pole("Родител (Татко)", RequestParameters.tatko, new string[] { "Име Презиме" }));
+            polinja.Add(new Pole("Родител (Мајка)", RequestParameters.majka, new string[] { "Име Презиме" }));
+            polinja.Add(new Pole("По кој пат ја учи годината", RequestParameters.pat_polaga, new string[] { "прв пат" , "втор пат" , "трет пат" }));
+            polinja.Add(new Pole("Дали е положена годината", RequestParameters.polozhil, new string[] { "Положил" , "Не Положил" }));
            // polinja.Add(new Pole("Поведение", RequestParameters.povedenie, new string[] { "Примeрно" , "Добро" , "Задоволително" }));
            // polinja.Add(new Pole("Педагошки мерки", RequestParameters.pedagoshki_merki, new string[] { "1", "2", "3" , "4" }));
-            polinja.Add(new Pole("Предходна година", RequestParameters.prethodna_godina, new string[] { "I", "II", "III" , "IV"}));
-            polinja.Add(new Pole("Предходно Училиште", RequestParameters.prethodno_uchilishte, new string[] { "СУГС - Раде Јовчевски Корчагин" }));
-            polinja.Add(new Pole("Предходен Успех", RequestParameters.prethoden_uspeh, new string[] { "5.00" }));
+            polinja.Add(new Pole("Претходна година", RequestParameters.prethodna_godina, new string[] { "I", "II", "III" , "IV"}));
+            polinja.Add(new Pole("Претходно училиште", RequestParameters.prethodno_uchilishte, new string[] { "СУГС - Раде Јовчевски Корчагин" }));
+            polinja.Add(new Pole("Претходен успех", RequestParameters.prethoden_uspeh, new string[] { "5.00" }));
            // polinja.Add(new Pole("Проектна Активност 1", RequestParameters.proektni, PApredmeti));
           //  polinja.Add(new Pole("Проектна Активност 2", RequestParameters.proektni, PApredmeti));
 
@@ -212,6 +212,7 @@ namespace Frontend
                  polinja.Add(new Pole("Педагошки мерки", RequestParameters.pedagoshki_merki, new string[] { "0" }));
                  polinja.Add(new Pole("Јазици", RequestParameters.jazik, new string[] { "0:1" }));
                  polinja.Add(new Pole("Изборен Предмет 1", RequestParameters.izborni, new string[] { "0"}));
+                 //polinja.Add(new Pole("Јазици", RequestParameters.jazik, new string[] { "0:1" }));
                  //polinja.Add(new Pole("", RequestParameters.pedagoshki_merki, new string[] { "0" }));
             }
             Save();

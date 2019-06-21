@@ -32,12 +32,12 @@ namespace Middleware
             pd.DefaultPageSettings.PaperSize = pd.PrinterSettings.PaperSizes.Cast<PaperSize>().First<PaperSize>(size => size.Kind == PaperKind.A4);
             pd.OriginAtMargins = false;
             pd.DefaultPageSettings.Landscape = false;
+            pd.PrinterSettings.Duplex = Duplex.Vertical;
 
             data.Insert(0, "\"sveditelstva\""); // mozno e da e "sveditelstva", "sveditelstvo"
             string outparam = String.Join("?", data);
 
-            string pyscript = rootFolder + @"\print.exe";
-
+            string pyscript = rootFolder + "\\print.exe";
             Process py = new Process();
             py.StartInfo.FileName = new Uri(pyscript).AbsolutePath;
             py.StartInfo.UseShellExecute = false;
@@ -47,44 +47,36 @@ namespace Middleware
             py.WaitForExit();
 
             printQueue = new List<PrintQueueItem>();
-
-            for (int i = 0; i < data.Count - 1; i++)
+            //return;
+            int partition = 5;
+            for (int part = 0; part < 9; part++)
             {
-                PrintQueueItem x = new PrintQueueItem();
-                x.sides = new System.Drawing.Image[2];
-                x.sides[0] = System.Drawing.Image.FromFile(new Uri($"{tmpFolder}front-{i}.jpg").AbsolutePath);
-                x.sides[1] = System.Drawing.Image.FromFile(new Uri($"{tmpFolder}back-{i}.jpg").AbsolutePath);
+                if (partition * part > data.Count - 1) break;
+                printQueue.Clear();
+                for (int i = partition * part; i < Math.Min(data.Count - 1, partition * (part + 1)); i++)
+                {
+                    PrintQueueItem x = new PrintQueueItem();
+                    x.sides = new System.Drawing.Image[2];
+                    x.sides[0] = System.Drawing.Image.FromFile(new Uri($"{tmpFolder}front-{i}.jpg").AbsolutePath);
+                    x.sides[1] = System.Drawing.Image.FromFile(new Uri($"{tmpFolder}back-{i}.jpg").AbsolutePath);
 
-                printQueue.Add(x);
+                    printQueue.Add(x);
+                }
+
+                currentPage = 0;
+                maxSides = 2;
+                pd.PrintPage += new PrintPageEventHandler(onPrintPage);
+
+                for (int i = partition * part; i < Math.Min(data.Count - 1, partition * (part + 1)); i++)
+                {
+                    currentSide = 0;
+                    pd.Print();
+                    currentPage++;
+                }
+
+                printQueue.ForEach(x => x.sides.ToList().ForEach(job => job.Dispose()));
             }
-
-            if (pd.PrinterSettings.CanDuplex)
-            {
-                pd.PrinterSettings.Duplex = Duplex.Vertical;
-            }
-
-            currentPage = 0;
-            maxSides = 2;
-            pd.PrintPage += new PrintPageEventHandler(onPrintPage);
-
-            for (currentPage = 0; currentPage < data.Count - 1; currentPage++)
-            {
-                currentSide = 0;
-                pd.Print();
-
-            }
-
-            //foreach(var x in printQueue)
-            //{
-            //    foreach(var k in x.sides)
-            //    {
-            //        k.Dispose();
-            //    }
-            //}
-
-            printQueue.ForEach(x => x.sides.ToList().ForEach(job => job.Dispose()));
-            pd.Dispose();
-            // ClearTmpFolder();
+            pd.Dispose(); // test
         }
 
         static int currentSide;
@@ -172,31 +164,30 @@ namespace Middleware
 
             Directory.Delete(tmpFolder, true);
         }
-
         static readonly Dictionary<string, string> year_dictionary = new Dictionary<string, string>(){
             {"I","1"},
             {"II","2"},
             {"III","3"},
             {"IV","4"}
         };
-
         public static List<string> InitSveditelstvo(List<Ucenik> ucenici, Klasen klasen, int offsetx, int offsety)
         {
             StringWriter sw = new StringWriter();
             List<string> l = new List<string>();
             string delimiter = "|";
-            int ctr_passable = 0;
+            int failed_ctr = 0;
             foreach (Ucenik u in ucenici)
             {
                 //Addition of Pazzio
-                if (!u.CheckPass()) // really?
+                if (!u.CheckPass())
                 {
                     Console.Write("Не положил или фали оценка!");
                     continue;
                 }
                 sw.GetStringBuilder().Clear();
 
-                sw.Write("\"" + String.Join("/", klasen._p._smerovi[u._smer]._predmeti) + "\"");
+                sw.Write("\"" + String.Join("/", klasen._p._smerovi[u._smer].GetCeliPredmeti(u._jazik, u._izborni, klasen._p._smerovi)) + "\"");
+                //sw.Write("\"" + String.Join("/", klasen._p._smerovi[u._smer]._predmeti) + "\"");
                 sw.Write(";");
                 // oceni
                 sw.Write("\"" + String.Join(" ", u._oceni) + "\"");
@@ -246,7 +237,15 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._tip);
                 sw.Write(delimiter);
-                sw.Write(klasen._p._smerovi[u._smer]._cel_smer);
+                if (int.Parse(year_dictionary[paralelka_godina]) >= 3)
+                {
+                    sw.Write(klasen._p._smerovi[u._smer]._cel_smer);
+
+                }
+                else
+                {
+                    sw.Write("");
+                }
                 sw.Write(delimiter);
 
                 //Dodavano od Pazzio
@@ -258,6 +257,17 @@ namespace Middleware
                 sw.Write(klasen._odobreno_sveditelstvo);
                 sw.Write(delimiter);
                 //sw.Write(klasen._delovoden_broj + '-' + year_dictionary[paralelka_godina] + '/' + klasen._paralelka.Split('-')[1] + '/' + ctr_passable.ToString());
+
+                string[] db = klasen._delovoden_broj.Split('-');
+                string[] paralelka_god = klasen._paralelka.Split('-');
+                var val = int.Parse(db[1]) + int.Parse(year_dictionary[paralelka_god[0]]) - 1;
+                bool failed = false;
+                if (!u.CheckPass() || !"пз".Contains(u._polozhil.ToLower()[0]))
+                {
+                    failed_ctr++;
+                    failed = true;
+                }
+                sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_god[1]}/{u._broj - failed_ctr}");
 
                 sw.Write(delimiter);
                 sw.Write(klasen._ime + (klasen._srednoIme != "" ? " " + klasen._srednoIme : "") + " " + klasen._prezime);
@@ -283,13 +293,12 @@ namespace Middleware
 
                 sw.Write(String.Join(delimiter, proektni_list));
 
-
-                ctr_passable++;
-
                 sw.Write("\"");
                 sw.Write($";\"{offsetx}{delimiter}{offsety}\"");
 
-                l.Add(sw.ToString());
+                if (!failed) {
+                    l.Add(sw.ToString());
+                }
             }
             return l;
         }
@@ -318,6 +327,7 @@ namespace Middleware
             py.StartInfo.CreateNoWindow = true;
             py.Start();
             py.WaitForExit();
+
             printQueue = new List<PrintQueueItem>();
 
             int partition = 5;
