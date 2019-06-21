@@ -36,17 +36,16 @@ namespace Frontend
         
         private void Login_Btn_Click(object sender, RoutedEventArgs e)
         {
-           // Username_txt.Text = "Владица_Василевска";
-           // Password_txt.Text = "vl@d@89";
             login();
         }
 
         private void login()
         {
-
+            //Username_txt.Text = "Анкица_Миленковска";
+            //Password_txt.Text = "An4e592";
             Klasen temp = Login.LoginWithCred(Username_txt.Text, Password_txt.Text);
 
-            if (temp._ime != "002" && temp._ime != string.Empty && temp._ime != null)
+            if (temp._ime != null && temp._ime != "002" && temp._ime != string.Empty)
             {
                 ShowAlertBox("Успешно логирање");
                 Main.Content = new Home_Page(Main, this, temp);

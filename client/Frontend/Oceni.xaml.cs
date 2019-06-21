@@ -22,7 +22,7 @@ namespace Frontend
 
         Dictionary<string,Smer> smerovi;
         List<Dictionary<string, string>> result;
-        private static Dictionary<string, string> smerovi_naslov = new Dictionary<string, string>();
+        private static Dictionary<string, Smer> smerovi_naslov = new Dictionary<string, Smer>();
 
         List<Ucenik> Ucenici;
         static int brPredmeti;
@@ -37,10 +37,9 @@ namespace Frontend
             smerovi = Home_Page.smerovi;
             Ucenici = Home_Page.ucenici;
 
-            foreach(KeyValuePair<string,Smer> Smer in UserKlas._p._smerovi)
-            {
-                smerovi_naslov[Smer.Key] = Smer.Value._smer;
-            }
+            smerovi_naslov = UserKlas._p.GetSmerovi();
+
+            if (UserKlas._paralelka.Contains("IV")) MaturskiPanel.Visibility = Visibility.Visible;
 
             LoadListView();
 
@@ -48,8 +47,6 @@ namespace Frontend
             Load_stranski_jazici(0);
             FillOcenki(0);
 
-            SJ_1_CB.SelectionChanged += SJ_1_CB_SelectionChanged;
-            SJ_2_CB.SelectionChanged += SJ_1_CB_SelectionChanged;
 
             home_img.MouseLeftButtonDown += new MouseButtonEventHandler(Back_Home);
             print_img.MouseLeftButtonDown += new MouseButtonEventHandler(Back_Print);
@@ -59,14 +56,34 @@ namespace Frontend
             OpravdaniTxt.TextChanged += OpravdaniTxt_TextChanged;
             NeopravdaniTxt.TextChanged += NeopravdaniTxt_TextChanged;
 
-            PovedenieCB.ItemsSource = new string[] { "Примeрно", "Добро", "Задоволително" };
-            PedagoskiMerkiCB.ItemsSource = new string[] { "0", "1", "2", "3", "4" };
+            PovedenieCB.ItemsSource = new string[] { "Примeрно", "Добро", "Незадоволително" };
+            PedagoskiMerkiCB.ItemsSource = new string[] { "нема", "усмена опомена", "писмена опомена", "3", "4" };
+            if (UserKlas._p._smerovi.Keys.Contains("Изборни Предмети")) IzborenPredmetCB.ItemsSource = UserKlas._p._smerovi["Изборни Предмети"]._predmeti;
+
+            CanWork = false;
+
+            SJ_1_CB.SelectionChanged += SJ_1_CB_SelectionChanged;
+            SJ_2_CB.SelectionChanged += SJ_1_CB_SelectionChanged;
+            IzborenPredmetCB.SelectionChanged += izborniSeletionChanged;
 
             LoadExtraPolinja(0);
 
             PovedenieCB.SelectionChanged += PovedenieCB_SelectionChanged;
             PedagoskiMerkiCB.SelectionChanged += PedagoskiMerkiCB_SelectionChanged;
 
+            CanWork = true;
+
+        }
+
+        private void izborniSeletionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!CanWork) return;
+            CanWork = false;
+            string str = IzborenPredmetCB.SelectedIndex.ToString();
+            Ucenici[Br].UpdateUcenik(RequestParameters.izborni, IzborenPredmetCB.SelectedIndex.ToString(), UserKlas._token);
+            Ucenici[Br]._izborni = str;
+
+            FillOcenki(Br);
         }
 
         private void SJ_1_CB_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -77,18 +94,17 @@ namespace Frontend
             Ucenici[Br].UpdateUcenik(RequestParameters.jazik, str, UserKlas._token);
             Ucenici[Br]._jazik = str;
 
-            FillOcenki(int.Parse(BrojDn_label.Content.ToString())-1);
+            FillOcenki(Br);
         }
-        
+
         private void Load_stranski_jazici(int BrojDn)
         {
             CanWork = false;
-            //Ucenici[Br]._jazik = "2;1";
             if (UserKlas._p._smerovi.Keys.Contains("Странски Јазици"))
             {
                 if(SJ_1_CB.Items.Count==0) SJ_1_CB.ItemsSource = UserKlas._p._smerovi["Странски Јазици"]._predmeti;
                 if(SJ_2_CB.Items.Count==0) SJ_2_CB.ItemsSource = UserKlas._p._smerovi["Странски Јазици"]._predmeti;
-                if (Ucenici[BrojDn]._jazik != null && Ucenici[BrojDn]._jazik != "" && Ucenici[BrojDn]._jazik.Split(';').Length > 1)
+                if (Ucenici[BrojDn]._jazik != null && Ucenici[BrojDn]._jazik != "" && Ucenici[BrojDn]._jazik.Length > 2)
                 {
                     string[] jazici = Ucenici[BrojDn]._jazik.Split(';');
                      SJ_1_CB.SelectedIndex = int.Parse(jazici[0]);
@@ -143,7 +159,7 @@ namespace Frontend
             {
                 Menu.Items.Add(MenuDP(x._ime, x._prezime, i++));
             }
-            combobox_smer.ItemsSource = smerovi_naslov.Values;
+            combobox_smer.ItemsSource = smerovi_naslov.Keys;
             //foreach(KeyValuePair<string,Smer> val in UserKlas._p._smerovi)
             //{
             //    combobox_smer.Items.Add(val.Value._smer);
@@ -323,10 +339,11 @@ namespace Frontend
             Ucenik_Name.Content = SelectedUcenik._ime + " " + SelectedUcenik._prezime;
             Prosek_out.Content = SelectedUcenik.prosek();
             BrojDn_label.Content = (brojDn + 1).ToString();
-            combobox_smer.SelectedValue = smerovi_naslov[SelectedUcenik._smer].ToString();
+            combobox_smer.SelectedValue = smerovi_naslov[SelectedUcenik._smer]._smer;
 
             //fill OcenkiView
-            List<string> predmeti = SearchSTpredmeti(Ucenici[brojDn]._smer);
+            //List<string> predmeti = SearchSTpredmeti(Ucenici[brojDn]._smer);
+            List<string> predmeti = UserKlas._p._smerovi[Ucenici[brojDn]._smer].GetCeliPredmeti(Ucenici[brojDn]._jazik , Ucenici[brojDn]._izborni , UserKlas._p._smerovi);
             for (int i = 0; i < predmeti.Count; i++)
             {
                 if (i < SelectedUcenik._oceni.Count) Ocenkibox[i].Text = SelectedUcenik._oceni[i].ToString();//5 5 5 5 5 5 5 5
@@ -352,10 +369,14 @@ namespace Frontend
 
         private void LoadExtraPolinja(int br)
         {
+            CanWork = false;    
+            if(Ucenici[br]._izborni != null && Ucenici[br]._izborni != "") IzborenPredmetCB.SelectedIndex = int.Parse(Ucenici[br]._izborni);
             PovedenieCB.SelectedValue = Ucenici[br]._povedenie;
             PedagoskiMerkiCB.SelectedValue = Ucenici[br]._pedagoski_merki;
             if (PovedenieCB.SelectedIndex == -1) PovedenieCB.SelectedIndex = 0;
-            if (PedagoskiMerkiCB.SelectedIndex == -1) PovedenieCB.SelectedIndex = 0;
+            if (PedagoskiMerkiCB.SelectedIndex == -1) PedagoskiMerkiCB.SelectedIndex = 0;
+            if (IzborenPredmetCB.SelectedIndex == -1) IzborenPredmetCB.SelectedIndex = 0;
+            CanWork = true;
         }
 
         int Proektnictr = 2;
