@@ -38,7 +38,7 @@ namespace Middleware
 
                 List<Dictionary<string, string>> queryResult = new List<Dictionary<string, string>>();
                 queryResult = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(responseJson, new DictConverter());
-                printData(json, responseJson);
+                // printData(json, responseJson);
 
                 return queryResult;
             }

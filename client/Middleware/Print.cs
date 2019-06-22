@@ -5,8 +5,6 @@ using System.Drawing;
 using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
-using System.Windows;
 using System.Windows.Controls;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -21,9 +19,9 @@ namespace Middleware
         static string tmpFolder = Path.GetTempPath() + @"pics\";
         static List<PrintQueueItem> printQueue;
         static int currentPage;
-        public static void PrintSveditelstva(List<Ucenik> ucenici, Klasen klasen, int printerChoice)
+        public static void PrintSveditelstva(List<Ucenik> ucenici, Klasen klasen, int printerChoice, int offsetx, int offsety)
         {
-            List<string> data = InitSveditelstvo(ucenici, klasen);
+            List<string> data = InitSveditelstvo(ucenici, klasen, offsetx, offsety);
             string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
             PrintDialog printDialog = new PrintDialog();
             PrintDocument pd = new PrintDocument();
@@ -34,12 +32,12 @@ namespace Middleware
             pd.DefaultPageSettings.PaperSize = pd.PrinterSettings.PaperSizes.Cast<PaperSize>().First<PaperSize>(size => size.Kind == PaperKind.A4);
             pd.OriginAtMargins = false;
             pd.DefaultPageSettings.Landscape = false;
+            pd.PrinterSettings.Duplex = Duplex.Vertical;
 
             data.Insert(0, "\"sveditelstva\""); // mozno e da e "sveditelstva", "sveditelstvo"
             string outparam = String.Join("?", data);
 
-            string pyscript = rootFolder + @"\print.exe";
-
+            string pyscript = rootFolder + "\\print.exe";
             Process py = new Process();
             py.StartInfo.FileName = new Uri(pyscript).AbsolutePath;
             py.StartInfo.UseShellExecute = false;
@@ -49,61 +47,57 @@ namespace Middleware
             py.WaitForExit();
 
             printQueue = new List<PrintQueueItem>();
-
-            for (int i = 0; i < data.Count - 1; i++)
+            //return;
+            int partition = 5;
+            for (int part = 0; part < 9; part++)
             {
-                PrintQueueItem x = new PrintQueueItem();
-                x.sides = new System.Drawing.Image[2];
-                x.sides[0] = System.Drawing.Image.FromFile(new Uri($"{tmpFolder}front-{i}.jpg").AbsolutePath);
-                x.sides[1] = System.Drawing.Image.FromFile(new Uri($"{tmpFolder}back-{i}.jpg").AbsolutePath);
+                if (partition * part > data.Count - 1) break;
+                printQueue.Clear();
+                for (int i = partition * part; i < Math.Min(data.Count - 1, partition * (part + 1)); i++)
+                {
+                    PrintQueueItem x = new PrintQueueItem();
+                    x.sides = new System.Drawing.Image[2];
+                    x.sides[0] = System.Drawing.Image.FromFile(new Uri($"{tmpFolder}front-{i}.jpg").AbsolutePath);
+                    x.sides[1] = System.Drawing.Image.FromFile(new Uri($"{tmpFolder}back-{i}.jpg").AbsolutePath);
 
-                printQueue.Add(x);
+                    printQueue.Add(x);
+                }
+
+                currentPage = 0;
+                maxSides = 2;
+                pd.PrintPage += new PrintPageEventHandler(onPrintPage);
+
+                for (int i = partition * part; i < Math.Min(data.Count - 1, partition * (part + 1)); i++)
+                {
+                    currentSide = 0;
+                    pd.Print();
+                    currentPage++;
+                }
+
+                printQueue.ForEach(x => x.sides.ToList().ForEach(job => job.Dispose()));
             }
-
-            if (pd.PrinterSettings.CanDuplex)
-            {
-                pd.PrinterSettings.Duplex = Duplex.Vertical;
-            }
-
-            currentPage = 0;
-            maxSides = 2;
-            pd.PrintPage += new PrintPageEventHandler(onPrintPage);
-
-            for (currentPage = 0; currentPage < data.Count - 1; currentPage++)
-            {
-                currentSide = 0;
-                pd.Print();
-
-            }
-            
-            //foreach(var x in printQueue)
-            //{
-            //    foreach(var k in x.sides)
-            //    {
-            //        k.Dispose();
-            //    }
-            //}
-
-            printQueue.ForEach(x => x.sides.ToList().ForEach(job => job.Dispose()));
-            pd.Dispose();
-            // ClearTmpFolder();
+            pd.Dispose(); // test
         }
 
         static int currentSide;
         static int maxSides;
+        private static int failed_ctr;
 
         private static void onPrintPage(object sender, PrintPageEventArgs e)
         {
             Graphics g = e.Graphics;
-            g.DrawImage(printQueue[currentPage].sides[currentSide], e.PageBounds);
-            currentSide++;
-            e.HasMorePages = (currentSide % maxSides != 0);
+            if (currentSide < maxSides)
+            {
+                g.DrawImage(printQueue[currentPage].sides[currentSide], e.PageBounds);
+                currentSide++;
+            }
+            e.HasMorePages = (currentSide < maxSides);
             g.Dispose();
         }
 
         public static void PreviewSveditelstvo(Ucenik u, Klasen k)
         {
-            List<string> data = InitSveditelstvo(new List<Ucenik>() { u }, k);
+            List<string> data = InitSveditelstvo(new List<Ucenik>() { u }, k, 0, 0);
             string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
 
             data.Insert(0, "\"sveditelstvo\""); // mozno e da e "sveditelstva"
@@ -125,7 +119,7 @@ namespace Middleware
         }
         public static void PreviewGlavnaKniga(Ucenik u, Klasen k)
         {
-            List<string> data = InitGlavnaKniga(new List<Ucenik>() { u }, k);
+            List<string> data = InitGlavnaKniga(new List<Ucenik>() { u }, k, 0, 0);
             string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
 
             data.Insert(0, "\"glavna\""); // mozno e da e "sveditelstva"
@@ -167,34 +161,33 @@ namespace Middleware
         }
         public static void ClearTmpFolder()
         {
-            
+
             Directory.Delete(tmpFolder, true);
         }
-
         static readonly Dictionary<string, string> year_dictionary = new Dictionary<string, string>(){
             {"I","1"},
             {"II","2"},
             {"III","3"},
             {"IV","4"}
         };
-
-        public static List<string> InitSveditelstvo(List<Ucenik> ucenici, Klasen klasen)
+        public static List<string> InitSveditelstvo(List<Ucenik> ucenici, Klasen klasen, int offsetx, int offsety)
         {
             StringWriter sw = new StringWriter();
             List<string> l = new List<string>();
-            string delimiter = ",";
-            int ctr_passable = 0;
+            string delimiter = "|";
+            int failed_ctr = 0;
             foreach (Ucenik u in ucenici)
             {
                 //Addition of Pazzio
-                if (!u.CheckPass()) // really?
+                if (!u.CheckPass())
                 {
                     Console.Write("Не положил или фали оценка!");
                     continue;
                 }
                 sw.GetStringBuilder().Clear();
-                
-                sw.Write("\"" + String.Join("/", klasen._p._smerovi[u._smer]._predmeti) + "\"");
+
+                sw.Write("\"" + String.Join("/", klasen._p._smerovi[u._smer].GetCeliPredmeti(u._jazik, u._izborni, klasen._p._smerovi)) + "\"");
+                //sw.Write("\"" + String.Join("/", klasen._p._smerovi[u._smer]._predmeti) + "\"");
                 sw.Write(";");
                 // oceni
                 sw.Write("\"" + String.Join(" ", u._oceni) + "\"");
@@ -206,9 +199,9 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(klasen._grad);
                 sw.Write(delimiter);
-                
+
                 var paralelka_godina = klasen._paralelka.Split('-').FirstOrDefault();
-                sw.Write(klasen._glavna_kniga + '/' + year_dictionary[paralelka_godina]);
+                sw.Write(klasen._glavna_kniga + '/' + year_dictionary[paralelka_godina]);// <----
                 sw.Write(delimiter); // broj glavna kniga
                 sw.Write(paralelka_godina);
                 sw.Write(delimiter);
@@ -216,17 +209,17 @@ namespace Middleware
                 // ime prezime na ucenik, ime prezime na roditel, DOB, naselba, opshtina, drzhava, drzhavjanstvo (hardcode)
                 sw.Write(u._ime + " " + u._prezime);
                 sw.Write(delimiter);
-                sw.Write(u._tatko + " " + u._prezime);
+                sw.Write(u._tatko);
                 sw.Write(delimiter);
                 sw.Write(u._roden);
                 sw.Write(delimiter);
-                sw.Write($",{u._mesto_na_ragjanje},{klasen._drzava}");
+                sw.Write($"{delimiter}{u._mesto_na_ragjanje}{delimiter}{klasen._drzava}"); // opstina
                 sw.Write(delimiter);
                 sw.Write(u._drzavjanstvo);
                 sw.Write(delimiter);
 
                 // momentalna i sledna ucebna godina, po koj pat ja uci godinata
-                sw.Write(klasen._godina.ToString());
+                sw.Write(klasen._godina.ToString());// <-----
                 sw.Write(delimiter);
                 sw.Write((klasen._godina + 1).ToString());
                 sw.Write(delimiter);
@@ -244,19 +237,38 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._tip);
                 sw.Write(delimiter);
-                sw.Write(u._cel_smer);
+                if (int.Parse(year_dictionary[paralelka_godina]) >= 3)
+                {
+                    sw.Write(klasen._p._smerovi[u._smer]._cel_smer);
+
+                }
+                else
+                {
+                    sw.Write("");
+                }
                 sw.Write(delimiter);
 
                 //Dodavano od Pazzio
                 //Ovdeka treba nekoe mesto, ama neznam koe, treba da prashash
                 //Vo shkolo
                 //sw.Write(u._
-                sw.Write(klasen._mesto_odobruvanje_sveditelstvo);
+                sw.Write(klasen._grad);
                 sw.Write(delimiter);
-                sw.Write("22.09.2019");
+                sw.Write(klasen._odobreno_sveditelstvo);
                 sw.Write(delimiter);
-                sw.Write(klasen._delovoden_broj + '-' + year_dictionary[paralelka_godina] + '/' + klasen._paralelka.Split('-')[1] + '/' +  ctr_passable.ToString());
-                
+                //sw.Write(klasen._delovoden_broj + '-' + year_dictionary[paralelka_godina] + '/' + klasen._paralelka.Split('-')[1] + '/' + ctr_passable.ToString());
+
+                string[] db = klasen._delovoden_broj.Split('-');
+                string[] paralelka_god = klasen._paralelka.Split('-');
+                var val = int.Parse(db[1]) + int.Parse(year_dictionary[paralelka_god[0]]) - 1;
+                bool failed = false;
+                if (!u.CheckPass() || !"пз".Contains(u._polozhil.ToLower()[0]))
+                {
+                    failed_ctr++;
+                    failed = true;
+                }
+                sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_god[1]}/{u._broj - failed_ctr}");
+
                 sw.Write(delimiter);
                 sw.Write(klasen._ime + (klasen._srednoIme != "" ? " " + klasen._srednoIme : "") + " " + klasen._prezime);
                 sw.Write(delimiter);
@@ -271,27 +283,28 @@ namespace Middleware
 
                 List<string> proektni_list = new List<string>();
                 string[] v = u._proektni.Split(';');
-                
-                foreach (var x in v) {
+
+                foreach (var x in v)
+                {
                     //proektni_list.Add(String.Join("/",x.Split(','))); // zoso kompliciranje
-                    proektni_list.Add(x.Replace(',', '/')); 
-                    
+                    proektni_list.Add(x.Replace(',', '/'));
+
                 }
-                
-                sw.Write(String.Join(",",proektni_list));
 
-
-                ctr_passable++;
+                sw.Write(String.Join(delimiter, proektni_list));
 
                 sw.Write("\"");
+                sw.Write($";\"{offsetx}{delimiter}{offsety}\"");
 
-                l.Add(sw.ToString());
+                if (!failed) {
+                    l.Add(sw.ToString());
+                }
             }
             return l;
         }
-        public static void PrintGlavnaKniga(List<Ucenik> ucenici, Klasen klasen, int printerChoice)
+        public static void PrintGlavnaKniga(List<Ucenik> ucenici, Klasen klasen, int printerChoice, int offsetx, int offsety)
         {
-            List<string> data = InitGlavnaKniga(ucenici, klasen);
+            List<string> data = InitGlavnaKniga(ucenici, klasen, offsetx, offsety);
             string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
             PrintDialog printDialog = new PrintDialog();
             PrintDocument pd = new PrintDocument();
@@ -301,9 +314,9 @@ namespace Middleware
 
             pd.DefaultPageSettings.PaperSize = pd.PrinterSettings.PaperSizes.Cast<PaperSize>().First<PaperSize>(size => size.Kind == PaperKind.A3);
             pd.OriginAtMargins = false;
-            pd.DefaultPageSettings.Landscape = true;
+            pd.DefaultPageSettings.Landscape = false;
 
-            data.Insert(0, "glavna"); // mozno e da e "sveditelstva"
+            data.Insert(0, "\"glavna\""); // mozno e da e "sveditelstva"
             string outparam = String.Join("?", data);
 
             string pyscript = rootFolder + "\\print.exe";
@@ -314,34 +327,45 @@ namespace Middleware
             py.StartInfo.CreateNoWindow = true;
             py.Start();
             py.WaitForExit();
+
             printQueue = new List<PrintQueueItem>();
 
-            for (int i = 0; i < data.Count - 1; i++)
+            int partition = 5;
+            for (int part = 0; part < 9; part++)
             {
-                PrintQueueItem x = new PrintQueueItem();
-                x.sides = new System.Drawing.Image[1];
-                x.sides[0] = System.Drawing.Image.FromFile(new Uri($"{tmpFolder}test-{i}.jpg").AbsolutePath);
+                if (partition * part > data.Count - 1) break;
+                printQueue.Clear();
+                for (int i = partition*part; i < Math.Min(data.Count - 1, partition*(part+1)); i++)
+                {
+                    PrintQueueItem x = new PrintQueueItem();
+                    x.sides = new System.Drawing.Image[1];
+                    x.sides[0] = System.Drawing.Image.FromFile(new Uri($"{tmpFolder}gk-{i}.jpg").AbsolutePath);
 
-                printQueue.Add(x);
-            }
+                    printQueue.Add(x);
+                }
 
-            currentPage = 0;
-            maxSides = 1;
-            pd.PrintPage += new PrintPageEventHandler(onPrintPage);
+                currentPage = 0;
+                maxSides = 1;
+                pd.PrintPage += new PrintPageEventHandler(onPrintPage);
 
-            for (currentPage = 0; currentPage < data.Count - 1; currentPage++)
-            {
-                currentSide = 0;
-                pd.Print();
+                for (int i = partition*part; i < Math.Min(data.Count - 1, partition * (part + 1)); i++)
+                {
+                    currentSide = 0;
+                    pd.Print();
+                    currentPage++;
+                }
 
+                printQueue.ForEach(x => x.sides.ToList().ForEach(job => job.Dispose()));
+                pd.Dispose();
             }
         }
-        public static List<string> InitGlavnaKniga(List<Ucenik> ucenici, Klasen klasen)
+        public static List<string> InitGlavnaKniga(List<Ucenik> ucenici, Klasen klasen, int offsetx, int offsety)
         {
             // https://raw.githubusercontent.com/darijan2002/ps/ps/gk/sample_params.txt?token=ADAAZQMNTPXEEBZ7LCUYXD245FMAC
             StringWriter sw = new StringWriter();
             List<string> l = new List<string>();
-            string delimiter = ",";
+            string delimiter = "|";
+            failed_ctr = 0;
             foreach (Ucenik u in ucenici)
             {
                 sw.GetStringBuilder().Clear();
@@ -349,12 +373,12 @@ namespace Middleware
 
                 // predmeti
                 tmparr.Clear();
-                tmparr.AddRange(klasen._p._smerovi[u._smer]._predmeti);
+                tmparr.AddRange(klasen._p._smerovi[u._smer].GetCeliPredmeti(u._jazik , u._izborni, klasen._p._smerovi));
                 while (tmparr.Count < 17)
                 {
                     tmparr.Add("NaN");
                 }
-                tmparr.AddRange(u._proektni.Split(' '));
+                tmparr.AddRange(u._proektni.Split(';').ToList().ConvertAll(x => x.Split(',')[0]));
                 while (tmparr.Count < 22)
                 {
                     tmparr.Add("NaN");
@@ -369,10 +393,10 @@ namespace Middleware
                 {
                     tmparr.Add("NaN");
                 }
-                var tmppoloz = u._polozhil.Split(' ').ToList();
+                var tmppoloz = u._proektni.Split(';').ToList().ConvertAll(x => x.Split(',')[1].ToLower());
                 tmppoloz = tmppoloz.ConvertAll(x =>
                 {
-                    if (x == "положено")
+                    if (x == "реализирал")
                     {
                         return "1";
                     }
@@ -391,7 +415,8 @@ namespace Middleware
 
                 // delovoden broj, godina (klas), paralelka, broj vo dnevnik
                 sw.Write("\"");
-                sw.Write(u._delovoden_broj);
+                var god = klasen._paralelka.Split('-').FirstOrDefault();
+                sw.Write(klasen._glavna_kniga + '/' + year_dictionary[god]);// <----
                 sw.Write(delimiter);
                 sw.Write(klasen._paralelka.Replace('-', delimiter[0]));
                 sw.Write(delimiter);
@@ -407,24 +432,29 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._majka);
                 sw.Write(delimiter);
-                //sw.Write(u._roden); // <------
-                sw.Write("14.06.2019");
+                sw.Write(u._roden); // <------
                 sw.Write(delimiter);
                 sw.Write(u._mesto_na_ragjanje); // mesto na ragjanje
                 sw.Write(delimiter);
                 sw.Write(u._mesto_na_zhiveenje);
                 sw.Write(delimiter);
-                sw.Write("drzava"); // <------
+                sw.Write(klasen._drzava); // <------
                 sw.Write(delimiter);
                 sw.Write(u._drzavjanstvo); // hardcoded drzavjanstvo
                 sw.Write(delimiter);
 
+                var rimsko = klasen._paralelka.Split('-')[0];
+                int idx = rimskoDict.Keys.ToList().IndexOf(rimsko);
+
                 // prethodna godina (oddelenie), uspeh od prethodna godina, prethodna ucebna godina, prethodno uciliste, pat
-                sw.Write(u._prethodna_godina);
+
+                sw.Write($"{rimskoDict.Keys.ToArray()[idx - 1]} - {rimskoDict.Values.ToArray()[idx - 1]}");
+
                 sw.Write(delimiter);
-                sw.Write(u._prethoden_uspeh);
+                //sw.Write(u._prethoden_uspeh);
                 sw.Write(delimiter);
-                sw.Write(u._prethodna_uchebna);
+                sw.Write($"20{klasen._godina-1}/20{klasen._godina}");
+                //sw.Write("1990/1991"); HARDCODED
                 sw.Write(delimiter);
                 sw.Write(u._prethodno_uchilishte);
                 sw.Write(delimiter);
@@ -433,7 +463,7 @@ namespace Middleware
 
                 sw.Write(u._tip); // <------
                 sw.Write(delimiter);
-                sw.Write(u._smer);
+                sw.Write(klasen._p._smerovi[u._smer]._cel_smer);
                 sw.Write(delimiter);
                 sw.Write(u._povedenie);
                 sw.Write(delimiter);
@@ -443,14 +473,15 @@ namespace Middleware
                 sw.Write(delimiter);
 
                 //Koja e celta na ovaa godina? ne bi bilo isto so Split-ot odma pod nego?
-                //sw.Write(klasen._godina); // ucebna godina. bara kalendarska godina. nesto kako prethodna_uchebna ama ne prethodna tuku segasna
+                sw.Write($"20{klasen._godina}/20{klasen._godina+1}"); // ucebna godina. bara kalendarska godina. nesto kako prethodna_uchebna ama ne prethodna tuku segasna
                 // workaround
-                if (u._prethodna_godina != "")
-                    sw.Write(string.Join("/", u._prethodna_godina.Split('/').ToList().ConvertAll(x => int.Parse(x) + 1)));
-                else
-                    sw.Write("1990/1991");
+
+                //sw.Write("1990/1991");
                 sw.Write(delimiter);
-                sw.Write("IV - четврта");// <------
+                //sw.Write("IV - четврта");// <------
+
+                sw.Write($"{rimskoDict.Keys.ToArray()[idx]} - {rimskoDict.Values.ToArray()[idx]}");
+
                 sw.Write(delimiter);
                 if (klasen._srednoIme != "")
                 {
@@ -465,19 +496,42 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._pedagoski_merki);
                 sw.Write(delimiter);
+                string[] db = klasen._delovoden_broj.Split('-');
+                string[] paralelka_godina = klasen._paralelka.Split('-');
+                var val = int.Parse(db[1]) + int.Parse(year_dictionary[paralelka_godina[0]]) - 1;
+                bool failed = false;
+                if(!u.CheckPass() || !"пз".Contains(u._polozhil.ToLower()[0]))
+                {
+                    failed_ctr++;
+                    failed = true;
+                }
+                sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_godina[1]}/{u._broj-failed_ctr}");
                 //sw.Write(u._delovoden_broj);
-                sw.Write("08-7/16/2"); // <-----
+                //sw.Write("08-07/16/2"); // <----- HARDCODED
                 sw.Write(delimiter);
-                //sw.Write(u._datum_sveditelstvo);
-                sw.Write("14.06.2019"); // <------
+                sw.Write(klasen._odobreno_sveditelstvo);
+                //sw.Write("14.06.2019"); // <------ HARDCODED
 
 
                 sw.Write("\"");
+                sw.Write($";\"{offsetx}{delimiter}{offsety}\"");
 
-                l.Add(sw.ToString());
+                if (!failed)
+                {
+                    l.Add(sw.ToString());
+                }
             }
             return l;
         }
+
+        static readonly Dictionary<string, string> rimskoDict = new Dictionary<string, string>() {
+            { "IX", "деветто" },
+            { "I", "прва"},
+            { "II", "втора"},
+            { "III", "трета"},
+            { "IV", "четврта"}
+        };
+
         public static void PrintGkDiploma(List<Ucenik> ucenici, Klasen klasen, int printerChoice)
         {
             List<string> data = InitGkDiploma(ucenici, klasen);

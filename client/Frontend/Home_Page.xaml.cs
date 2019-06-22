@@ -38,7 +38,7 @@ namespace Frontend
 
             ucenici = result.ConvertAll(x => new Ucenik(x));
             SortUcenici();
-            KlasenKlasa.SetSmeroviPredmeti();
+            KlasenKlasa.SetSmeroviPredmeti(KlasenKlasa._token);
           
         }
 
@@ -65,7 +65,7 @@ namespace Frontend
 
         private void PrintImgClicked(object sender, MouseButtonEventArgs e)
         {
-            Main.Content = new PrintFrame(Main, this);
+            // Main.Content = new PrintFrame(Main, this);
         }
     }
 }

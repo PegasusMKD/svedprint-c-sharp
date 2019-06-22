@@ -43,6 +43,7 @@ namespace Frontend
         {
             //Username_txt.Text = "Анкица_Миленковска";
             //Password_txt.Text = "An4e592";
+
             Klasen temp = Login.LoginWithCred(Username_txt.Text, Password_txt.Text);
 
             if (temp._ime != null && temp._ime != "002" && temp._ime != string.Empty)

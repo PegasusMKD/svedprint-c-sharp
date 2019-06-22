@@ -20,12 +20,14 @@ namespace Frontend
         Page HomePage;
         public PrintFrame(Frame m, Page homepage)
         {
+            if (!Properties.Settings.Default.IsPrintAllowed) return; // print block, treba test
             InitializeComponent();
             // SvedImg.Source = new BitmapImage(new Uri(new Uri(Directory.GetCurrentDirectory(), UriKind.Absolute), new Uri(@"C:\Users\lukaj\Documents\front-0.png", UriKind.Relative)));
             Main = m;
             HomePage = homepage;
             LoadPrinterBox();
             LoadListView();
+            Menu.SelectedIndex = 0;
         }
 
         private void LoadPrinterBox()
@@ -34,23 +36,24 @@ namespace Frontend
             if (combobox_printer.HasItems)
             {
                 combobox_printer.SelectedIndex = 0;
-            } else
+            }
+            else
             {
                 MessageBox.Show("Програмата не пронајде принтер." + Environment.NewLine + "Ве молиме поврзете принтер!", "Грешка!", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
-        string[] Menuitems = { "Сведителство", "Главна Книга", "Постапки" };
+        string[] Menuitems = { "Свидетелство", "Главна Книга", "Постапки" };
         private void LoadListView()
         {
 
-            for(int i=0; i < Menuitems.Length; i++)
+            for (int i = 0; i < Menuitems.Length; i++)
             {
                 Menu.Items.Add(MenuDP(Menuitems[i], i));
             }
         }
 
-        private Bitmap InsertText(string text,string imageFilePath)
+        private Bitmap InsertText(string text, string imageFilePath)
         {
 
             PointF firstLocation = new PointF(900, 050);
@@ -60,7 +63,7 @@ namespace Frontend
 
             using (Graphics graphics = Graphics.FromImage(bitmap))
             {
-                using (Font arialFont = new Font("Arial", 50 , System.Drawing.FontStyle.Bold ))
+                using (Font arialFont = new Font("Arial", 50, System.Drawing.FontStyle.Bold))
                 {
                     graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
                     graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
@@ -72,32 +75,7 @@ namespace Frontend
             return bitmap;
         }
 
-        private void Print()
-        {
-            string input = @"C:\Users\lukaj\OneDrive\Desktop\bk1.jpeg";
-            PrintDialog printDialog = new PrintDialog();
-            PrintDocument pd = new PrintDocument();
-            pd.PrintPage += (sender, args) => {
-                args.Graphics.DrawImage(InsertText("македонски", @"C:\Users\lukaj\OneDrive\Desktop\bk.jpeg"), args.PageBounds);
-            };
-            pd.OriginAtMargins = false;
-            //pd.PrinterSettings.PrinterName = PrinterSettings.InstalledPrinters
-
-            for (int i = 0; i < PrinterSettings.InstalledPrinters.Count; i++)
-            {
-               // MessageBox.Show(String.Format("{0}: {1}", i, PrinterSettings.InstalledPrinters[i]));
-            }
-            //int choice = 0;
-            
-            int choice = 3;
-            pd.PrinterSettings.PrinterName = PrinterSettings.InstalledPrinters[choice];
-            pd.DefaultPageSettings.PaperSize = pd.PrinterSettings.PaperSizes.Cast<PaperSize>().First<PaperSize>(size => size.Kind == PaperKind.A4);
-            pd.DefaultPageSettings.Landscape = true;
-
-            pd.Print();
-        }
-
-        private void Menu_SelectionChanged(object sender, SelectionChangedEventArgs e)
+      private void Menu_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }
@@ -106,7 +84,7 @@ namespace Frontend
         {
             DockPanel st = new DockPanel();
             System.Windows.Controls.Label tx = new System.Windows.Controls.Label();
-            tx.Content =Name;
+            tx.Content = Name;
             st.Children.Add(tx);
             st.Height = 50;
             st.Width = 400;
@@ -134,11 +112,14 @@ namespace Frontend
         private void MouseLeave(object sender, MouseEventArgs e)
         {
             DockPanel st = (DockPanel)sender;
-            if (ClickedMenuItem != sender) st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(165, 166, 140));
+            if (ClickedMenuItem != sender)
+            {
+                st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(165, 166, 140));
+            }
         }
 
         private void MouseLeftButtonDown(object sender, MouseButtonEventArgs e, int i)
-        { 
+        {
             if (ClickedMenuItem != null)
             {
                 DockPanel st2 = (DockPanel)ClickedMenuItem;
@@ -148,7 +129,7 @@ namespace Frontend
             st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(237, 106, 61));
             ClickedMenuItem = sender;
 
-            Title.Content = Menuitems[i-1];  
+            Title.Content = Menuitems[i - 1];
         }
 
         private void Home_Button_Clicked(object sender, MouseButtonEventArgs e)
@@ -158,19 +139,41 @@ namespace Frontend
 
         private void Btn_edinecnoprint_MouseUp(object sender, MouseButtonEventArgs e)
         {
+            int offsetx, offsety;
+            offsetx = int.Parse(X_offset.Text);
+            offsety = int.Parse(Y_offset.Text);
             List<int> toPrint = uceniciToPrint.Text.Split(',').ToList().ConvertAll(x => int.Parse(x));
             // fix dodeka broevite vo dnevnik se isti
-            List<Ucenik> uceniks = Home_Page.ucenici.Where(x => toPrint.Contains(Home_Page.ucenici.IndexOf(x)+1)).ToList();
+            List<Ucenik> uceniks = Home_Page.ucenici.Where(x => toPrint.Contains(Home_Page.ucenici.IndexOf(x) + 1)).ToList();
             // posle fix za razlicni broevi
             //List<Ucenik> uceniks = Home_Page.ucenici.Where(x => toPrint.Contains(x._broj)).ToList();
-            
+
             //Middleware.Print.PrintSveditelstva(uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex);
-            Middleware.Print.PrintSveditelstva(uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex);
+            switch (Menu.SelectedIndex)
+            {
+                case 0:
+                    Middleware.Print.PrintSveditelstva(uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+                    break;
+                case 1:
+                    Middleware.Print.PrintGlavnaKniga(uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+                    break;
+            }
         }
 
         private void Btn_celprint_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            Middleware.Print.PrintSveditelstva(Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex);
+            int offsetx, offsety;
+            offsetx = int.Parse(X_offset.Text);
+            offsety = int.Parse(Y_offset.Text);
+            switch (Menu.SelectedIndex)
+            {
+                case 0:
+                    Middleware.Print.PrintSveditelstva(Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+                    break;
+                case 1:
+                    Middleware.Print.PrintGlavnaKniga(Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+                    break;
+            }
         }
     }
 }

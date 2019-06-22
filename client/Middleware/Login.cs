@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Windows;
 
 namespace Middleware
 {
@@ -27,26 +28,31 @@ namespace Middleware
             httpRequest.ContentType = "application/json";
             Klasen klasen = new Klasen();
             try
+            {
+                using (var writer = new StreamWriter(httpRequest.GetRequestStream()))
                 {
-                    using (var writer = new StreamWriter(httpRequest.GetRequestStream()))
-                    {
-                        writer.Write(loginJson);
-                    }
+                    writer.Write(loginJson);
+                }
 
-                    var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
-                    var responseJson = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
+                var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+                var responseJson = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
 
-                    Console.WriteLine(JToken.Parse(responseJson).ToString(Formatting.Indented));
-
+                // Console.WriteLine(JToken.Parse(responseJson).ToString(Formatting.Indented));
+                
+                try
+                {
                     klasen = JsonConvert.DeserializeObject<Klasen>(responseJson);
-                    Console.WriteLine(klasen._ime);
+                    // Console.WriteLine(klasen._ime);
                 } catch (Exception e)
                 {
                     Console.WriteLine(e.ToString());
                     klasen._ime = "100";
                 }
-                return klasen;
-
+            } catch (Exception ex)
+            {
+                MessageBox.Show(ex.StackTrace);
+            }
+            return klasen;
         }
 
         public static string ServerBranch => settings.Default.DB_BRANCH;

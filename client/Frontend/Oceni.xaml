@@ -154,27 +154,23 @@
                         <ColumnDefinition Width="157*"/>
                     </Grid.ColumnDefinitions>
                 </Grid>
-                <StackPanel>
-                    <Border Height="50" Margin="20,20,20,0" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" Grid.ColumnSpan="2">
-                        <Label Content="Проектни активности" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
-                    </Border>
-                    <Grid Name="IzborniGrid" Grid.Column="2" Background="#FF3E4959" Grid.Row="2"  VerticalAlignment="Top">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Name="st1" Grid.Column="0">
-                          
-
-                        </StackPanel>
-                        <StackPanel Name="st2"  Grid.Column="1">
-
-
-                        </StackPanel>
-
-
-                    </Grid>
-                    <Grid>
+                <StackPanel Name="ExtraPolinjaPanel">
+                    <StackPanel>
+                        <Border Height="50" Margin="20,20,20,0" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" Grid.ColumnSpan="2">
+                            <Label Content="Проектни активности" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
+                        </Border>
+                        <Grid Name="IzborniGrid" Grid.Column="2" Background="#FF3E4959" Grid.Row="2"  VerticalAlignment="Top">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Name="st1" Grid.Column="0">
+                            </StackPanel>
+                            <StackPanel Name="st2"  Grid.Column="1">
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                    <Grid Name="ExtraPolinja">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
@@ -186,37 +182,85 @@
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,0">
                                     <StackPanel>
-                                        <Border Width="70" Height="70" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF5C98B4" CornerRadius="100">
-                                            <TextBox Name="OpravdaniTxt"  Background="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" SelectionBrush="#FFFF5100" BorderBrush="{x:Null}" FontSize="30" Foreground="White" BorderThickness="0" Text="0"/>
+                                        <Border Width="50" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF5C98B4" CornerRadius="100">
+                                            <TextBox Name="OpravdaniTxt"  Background="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" SelectionBrush="#FFFF5100" BorderBrush="{x:Null}" FontSize="24" Foreground="White" BorderThickness="0" Text="0"/>
                                         </Border>
                                         <Label FontSize="20" Foreground="White">Оправдани</Label>
                                     </StackPanel>
                                     <StackPanel>
-                                        <Border Width="70" Height="70" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF5C98B4" CornerRadius="100">
-                                            <TextBox Name="NeopravdaniTxt" Background="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" SelectionBrush="{x:Null}" BorderBrush="{x:Null}" FontSize="30" Foreground="White" BorderThickness="0" Text="0"/>
+                                        <Border Width="50" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF5C98B4" CornerRadius="100">
+                                            <TextBox Name="NeopravdaniTxt" Background="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" SelectionBrush="{x:Null}" BorderBrush="{x:Null}" FontSize="24" Foreground="White" BorderThickness="0" Text="0"/>
                                         </Border>
                                         <Label FontSize="20" Foreground="White">Неоправдани</Label>
                                     </StackPanel>
                                 </StackPanel>
                             </StackPanel>
+                            <StackPanel>
+                                <Border Height="50" Margin="20,20,20,0" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" Grid.ColumnSpan="2">
+                                    <Label Content="Изборен предмет" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
+                                </Border>
+                                <ComboBox Name="IzborenPredmetCB"  Background="{x:Null}" Margin="38,20,38,0" FontSize="24" VerticalAlignment="Top" Height="38" Style="{DynamicResource ComboBoxStyle2}">
+                                </ComboBox>
+                            </StackPanel>
                         </StackPanel>
                         <StackPanel Grid.Column="1" Margin="0,0,0,10">
-                            <Border Height="50" Margin="20,20,20,0" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" Grid.ColumnSpan="2">
-                            <Label Content="Поведение" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
+                            <Border Height="50" Margin="20,20,20,15" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" Grid.ColumnSpan="2">
+                            <Label Content="Педагошки мерки" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
                             </Border>
-                            <ComboBox Name="PovedenieCB"  Background="{x:Null}" Margin="38,10,38,0" FontSize="24" VerticalAlignment="Top" Height="38" Style="{DynamicResource ComboBoxStyle2}">
+                            <ComboBox Name="PedagoskiMerkiCB"  Background="{x:Null}" Margin="38,0,38,10" FontSize="24" VerticalAlignment="Top" Height="38" Style="{DynamicResource ComboBoxStyle2}">
                             </ComboBox>
-                            <Border Height="50" Margin="20,20,20,0" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" Grid.ColumnSpan="2">
-                             <Label Content="Педагошки мерки" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
+                            <ComboBox Name="PedagoskiMerkiCBNagradi"  Background="{x:Null}" Margin="38,0" FontSize="24" VerticalAlignment="Top" Height="38" Style="{DynamicResource ComboBoxStyle2}">
+                            </ComboBox>
+                            <Border Height="50" Margin="20,18,20,0" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" Grid.ColumnSpan="2">
+                             <Label Content="Поведение" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
                             </Border>
-                            <ComboBox Name="PedagoskiMerkiCB"  Background="{x:Null}" Margin="38,10,38,0" FontSize="24" VerticalAlignment="Top" Height="38" Style="{DynamicResource ComboBoxStyle2}">
+                            <ComboBox Name="PovedenieCB"  Background="{x:Null}" Margin="38,20,38,0" FontSize="24" VerticalAlignment="Top" Height="38" Style="{DynamicResource ComboBoxStyle2}">
                             </ComboBox>
                         </StackPanel>
                     </Grid>
                 </StackPanel>
-                <StackPanel>
+                <StackPanel Name="MaturskiPanel" Visibility="Collapsed">
+                    <Border Height="50" Margin="20,20,20,0" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" Grid.ColumnSpan="2">
+                        <Label Content="Матурски предмети" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
+                    </Border>
+                    <Grid Name="MaturskiPolinja" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <Border Height="50" Margin="20" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" >
+                                <Label Content="1 ехтерен Предмет" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="28" FontFamily="Arial" FontWeight="Bold"/>
+                            </Border>
+                            <ComboBox Name="MaturskiPredmet_1"  Background="{x:Null}" Margin="38,0" FontSize="24" VerticalAlignment="Top" Height="38" Style="{DynamicResource ComboBoxStyle2}">
+                            </ComboBox>
+                            <Border Height="50" Margin="20" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" >
+                                <Label Content="3 ехтерен Предмет" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="28" FontFamily="Arial" FontWeight="Bold"/>
+                            </Border>
+                            <ComboBox Name="MaturskiPredmet_3"  Background="{x:Null}" Margin="38,0" FontSize="24" VerticalAlignment="Top" Height="38" Style="{DynamicResource ComboBoxStyle2}">
+                            </ComboBox>
 
-
+                        </StackPanel>
+                        <StackPanel Grid.Column="1">
+                            <Border Height="50" Margin="20" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" >
+                                <Label Content="2 ехтерен Предмет" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="28" FontFamily="Arial" FontWeight="Bold"/>
+                            </Border>
+                            <ComboBox Name="MaturskiPredmet_2"  Background="{x:Null}" Margin="38,0" FontSize="24" VerticalAlignment="Top" Height="38" Style="{DynamicResource ComboBoxStyle2}">
+                            </ComboBox>
+                            <Border Height="50" Margin="20" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" >
+                                <Label Content="интерен Предмет" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="28" FontFamily="Arial" FontWeight="Bold"/>
+                            </Border>
+                            <ComboBox Name="MaturskiPredmet_4"  Background="{x:Null}" Margin="38,0" FontSize="24" VerticalAlignment="Top" Height="38" Style="{DynamicResource ComboBoxStyle2}">
+                            </ComboBox>
+                        </StackPanel>
+                    </Grid>
+                    <StackPanel Name="proektna_zadaca">
+                        <Border Height="50" Margin="20,20,20,5" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" >
+                            <Label Content="проектна задача" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="28" FontFamily="Arial" FontWeight="Bold"/>
+                        </Border>
+                        <TextBox Margin="30,0,30,1" FontSize="24" Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="1,1,1,0" Foreground="White" SelectionBrush="{x:Null}"></TextBox>
+                        <Border Height="10" Margin="25,0,25,10" VerticalAlignment="Center" Background="White" BorderThickness="2" CornerRadius="5"/>
+                    </StackPanel>
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>

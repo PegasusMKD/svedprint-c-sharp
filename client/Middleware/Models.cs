@@ -62,7 +62,7 @@ namespace Middleware
         [JsonProperty(RequestParameters.prethodno_uchilishte)]
         public string _prethodno_uchilishte { get; set; }
         [JsonProperty(RequestParameters.prethodna_uchebna)]
-        public string _prethodna_uchebna { get; private set; }
+        public string _prethodna_uchebna { get; set; }
         [JsonProperty(RequestParameters.delovoden_broj)]
         public string _delovoden_broj { get; set; }
         [JsonProperty(RequestParameters.datum_sveditelstvo)]
@@ -73,8 +73,6 @@ namespace Middleware
         // public string _majkino { get; set; }
         [JsonProperty(RequestParameters.drzavjanstvo)]
         public string _drzavjanstvo { get; set; }
-        [JsonProperty(RequestParameters.cel_smer)]
-        public string _cel_smer { get; set; }
         [JsonProperty(RequestParameters.duplicate_ctr)]
         public int _duplicate_ctr { get; set; }
         //Dodatoci od Pazzio
@@ -254,11 +252,11 @@ namespace Middleware
             _polozhil = valuePairs[RequestParameters.polozhil] ?? "";
             _duplicate_ctr = int.Parse(valuePairs[RequestParameters.duplicate_ctr] ?? "-1");
             _jazik = valuePairs[RequestParameters.jazik] ?? "";
-            _jazik_ocena = valuePairs[RequestParameters.jazik_ocena] ?? "";
             _pedagoski_merki = valuePairs[RequestParameters.pedagoshki_merki] ?? "";
-            _prethodna_godina = valuePairs[RequestParameters.prethodna_godina] ?? "";
-            _prethodno_uchilishte = valuePairs[RequestParameters.prethodno_uchilishte] ?? "";
-            _prethoden_uspeh = valuePairs[RequestParameters.prethoden_uspeh] ?? " ";
+            string outvar;
+            bool success = valuePairs.TryGetValue(RequestParameters.prethodna_uchebna, out outvar);
+            _prethodna_uchebna = success ? outvar : "";
+            _drzavjanstvo = valuePairs[RequestParameters.drzavjanstvo] ?? "";
             // _majkino = valuePairs[RequestParameters.majkino] ?? "";
         }
 
@@ -305,6 +303,8 @@ namespace Middleware
             this._polozhil = UpdatedData["polozhil"];
             if (UpdatedData.Keys.Contains(RequestParameters.pedagoshki_merki)) _pedagoski_merki = UpdatedData[RequestParameters.pedagoshki_merki];
             if (UpdatedData.Keys.Contains(RequestParameters.povedenie)) _povedenie = UpdatedData[RequestParameters.povedenie];
+            if (UpdatedData.Keys.Contains(RequestParameters.izborni)) _izborni = UpdatedData[RequestParameters.izborni];
+            if (UpdatedData.Keys.Contains(RequestParameters.jazik)) _jazik = UpdatedData[RequestParameters.jazik];
             /*
             int result = 0;
             int.TryParse(UpdatedData["opravdani"], out result);
@@ -400,6 +400,8 @@ namespace Middleware
             List<string> tx = _proektni.Split(';').ToList();
             tx[i] = cb_pole + realizirano;
             string rez = string.Join(";", tx);
+            rez = rez.Substring(0, rez.Length - 1);
+
 
             UpdateUcenik(RequestParameters.proektni, rez, token);
             _proektni = rez;
@@ -439,22 +441,70 @@ namespace Middleware
         public string _smer { get; set; }
         [JsonProperty(RequestParameters.cel_smer)]
         public string _cel_smer { get; set; }
+        int[] jaziciPos = new int[] { -1 , -1 };
 
-        public Smer(List<string> predmeti, string smer, string cel_smer = "")
+        public Smer(List<string> predmeti, string smer, string cel_smer)
         {
-            _predmeti = predmeti ?? throw new ArgumentNullException(nameof(predmeti));
-            _smer = smer ?? throw new ArgumentNullException(nameof(smer));
-            _cel_smer = cel_smer ?? throw new ArgumentNullException(nameof(cel_smer));
+            _predmeti = predmeti ?? new List<string>();
+            _smer = smer ?? "";
+            _cel_smer = cel_smer ?? "";
         }
 
-        public Smer(string smer, string cel_smer = "")
+        public Smer(string smer, string cel_smer)
         {
             _predmeti = new List<string>();
-            _smer = smer ?? throw new ArgumentNullException(nameof(smer));
-            _cel_smer = cel_smer ?? throw new ArgumentNullException(nameof(cel_smer));
+            _smer = smer ?? "";
+            _cel_smer = cel_smer ?? "";
         }
 
         public Smer() { }
+
+        public List<string> GetCeliPredmeti(string jazici, string izbp , Dictionary<string , Smer > Smerovi)
+        {
+            int i = 0, j = 0 , izbctr = 0;
+            List<string> sj = new List<string>();
+            if (Smerovi.Keys.Contains("Странски Јазици"))
+            {
+                if (jazici != null && jazici != "" && jazici.Length == 3)
+                {
+                    i = int.Parse(jazici.Split(';')[0]);
+                    j = int.Parse(jazici.Split(';')[1]);
+                }
+                sj = Smerovi["Странски Јазици"]._predmeti;
+            }
+            else sj.Add("");
+
+            string izboren = "";
+            if(Smerovi["Изборни Предмети"]._predmeti.Count > 0)
+            {
+                if (izbp != null && izbp != "") izbctr = int.Parse(izbp);
+                else izbctr = -1;
+
+                //izbctr = 1;
+                if (izbctr != -1) izboren = Smerovi["Изборни Предмети"]._predmeti[izbctr];
+            }
+
+            List<string> predmeti = new List<string>();
+
+            int ctr = 0;
+            if (true)
+                foreach (string predmet in _predmeti)
+                {
+                    string s = predmet;
+                    if (predmet == "1 СЈ") { s = sj[i]; jaziciPos[0] = ctr; }
+                    if (predmet == "2 СЈ") { s = sj[j]; jaziciPos[1] = ctr; }
+                    if (predmet == "Изборен Предмет 1") { s = izboren; }
+                    predmeti.Add(s);
+                    ctr++;
+                }
+            else
+            {
+                predmeti = _predmeti;
+                predmeti[jaziciPos[0]] = sj[i]; 
+                predmeti[jaziciPos[1]] = sj[j];
+            }
+            return predmeti;
+        }
 
         public void AddPredmet(string NovPredmet, String token)
         {
@@ -476,12 +526,7 @@ namespace Middleware
 
         private void UpdateSmer(string token)
         {
-            string res = "";
-            foreach (string s in _predmeti)
-            {
-                res += s + ",";
-            }
-            if (res.Length > 0) res = res.Substring(0, res.Length - 1);
+            var res = string.Join(",", _predmeti);
             Requests.UpdateData(new Dictionary<string, string>() {
             { RequestParameters.smer , _smer}, { RequestParameters.token , token } , { RequestParameters.predmeti, res}
             }, RequestScopes.UpdateSmer);
@@ -504,7 +549,6 @@ namespace Middleware
         [JsonProperty(RequestParameters.ucenici)]
         public List<Ucenik> _ucenici { get; set; }
         public Dictionary<string, Smer> _smerovi;
-        public Dictionary<string, Smer> _predmeti;
 
 
         public Paralelka(string paralelka, List<Ucenik> ucenici, Dictionary<string, Smer> smerovi)
@@ -552,6 +596,16 @@ namespace Middleware
             }, RequestScopes.UpdateSmer);
         }
 
+        public Dictionary<string,Smer> GetSmerovi()
+        {
+            Dictionary<string, Smer> rez = new Dictionary<string, Smer>();
+            foreach(KeyValuePair<string,Smer> x in _smerovi )
+            {
+                if (x.Key != "ПА" && x.Key != "Странски Јазици" && x.Key != "Изборни Предмети") rez.Add(x.Key,x.Value);
+            }
+            return rez;
+        }
+
     }
 
     public class Klasen
@@ -592,17 +646,15 @@ namespace Middleware
         public string _ministerstvo { get; set; }
         [JsonProperty(RequestParameters.glavna_kniga)]
         public string _glavna_kniga { get; set; }
-        [JsonProperty(RequestParameters.mesto_odobreno_sveditelstvo)]
-        public string _mesto_odobruvanje_sveditelstvo { get; set; }
 
         public Klasen(string ime, string srednoIme, string prezime, string token, string paralelka, string ucilishte, string grad, int godina, string smerovi, string akt_godina, string akt, string odobreno_sveditelstvo,
-            string ministerstvo, string glavna_kniga, string mesto_odobruvanje_sveditelstvo, string drzava)
+            string ministerstvo, string glavna_kniga, string drzava)
         {
             _ime = ime ?? "";
             _srednoIme = srednoIme ?? "";
             _prezime = prezime ?? "";
             _token = token ?? "";
-            _paralelka = paralelka;
+            _paralelka = paralelka ?? "";
             _p = new Paralelka(_paralelka, new List<Ucenik>(), new Dictionary<string, Smer>());
             _ucilishte = ucilishte ?? "";
             _grad = grad ?? "";
@@ -611,7 +663,6 @@ namespace Middleware
             _akt_godina = akt_godina ?? "";
             _akt = akt ?? "";
             _odobreno_sveditelstvo = odobreno_sveditelstvo ?? "";
-            _mesto_odobruvanje_sveditelstvo = mesto_odobruvanje_sveditelstvo ?? "";
             _ministerstvo = ministerstvo ?? "";
             _glavna_kniga = glavna_kniga ?? "";
             _drzava = drzava ?? "";
@@ -624,7 +675,7 @@ namespace Middleware
             return _smerovi.Split(delimiter);
         }
 
-        public void SetSmeroviPredmeti()
+        public void SetSmeroviPredmeti(string token)
         {
             List<string> Smerovi = new List<string>(); 
             if (_p == null)
@@ -636,25 +687,20 @@ namespace Middleware
             {
                 Smerovi = _p._smerovi.Keys.ToList();
             }
+
+            Smerovi = LoadDefaultSmerovi(Smerovi , token);
             if( Smerovi.Count > 0) GetSmerPredmeti(Smerovi);
         }
 
-        /*
-        public void PopulateSmeroviFromUcenici(List<Ucenik> ucenici)
+        
+        private List<string> LoadDefaultSmerovi(List<string> Smerovi , string token)
         {
-            if (_p == null) _p = new Paralelka(_paralelka, ucenici, new Dictionary<string, Smer>());
-            _p._ucenici = new List<Ucenik>(ucenici);
-            if (ucenici.Count == 0) return;
-            _smerovi = string.Join(",", ucenici.ConvertAll(x => x._smer).Distinct());
-            GetSmerPredmeti(GetSmerovi().ToList());
+            if (!Smerovi.Contains("ПА")) _p.AddSmer(new Smer("ПА", "цел смер"), token);
+            if (!Smerovi.Contains("Странски Јазици")) _p.AddSmer(new Smer("Странски Јазици", "цел смер"), token);
+            if (!Smerovi.Contains("Изборни Предмети")) _p.AddSmer(new Smer("Изборни Предмети", "цел смер"), token);
+            return Smerovi;
         }
 
-        public void PopulateSmerovi(List<Ucenik> ucenici)
-        {
-            if (_p == null) _p = new Paralelka(_paralelka, ucenici, new Dictionary<string, Smer>());
-            _p._ucenici = ucenici;
-            GetSmerPredmeti(GetSmerovi().ToList());
-        }*/
 
         public void GetSmerPredmeti(List<string> Smerovi)
         {
@@ -670,13 +716,14 @@ namespace Middleware
                 List<string> predmeti = req["predmeti"].Split(',').ToList();
                 if (req["predmeti"].Length == 0) predmeti = new List<string>();
 
-                Smer NovSmer = new Smer(predmeti, x);
+                Smer NovSmer = new Smer(predmeti, x, req["cel_smer"]);
 
                 if (!_p._smerovi.Keys.Contains(x)) _p._smerovi.Add(x, NovSmer);
                 else _p._smerovi[x]._predmeti = predmeti;
             }
 
         }
+
     }
 
     class Request
