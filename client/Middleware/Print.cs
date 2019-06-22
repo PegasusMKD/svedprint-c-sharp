@@ -451,7 +451,7 @@ namespace Middleware
                 sw.Write($"{rimskoDict.Keys.ToArray()[idx - 1]} - {rimskoDict.Values.ToArray()[idx - 1]}");
 
                 sw.Write(delimiter);
-                sw.Write(u._prethoden_uspeh);
+                //sw.Write(u._prethoden_uspeh);
                 sw.Write(delimiter);
                 sw.Write($"20{klasen._godina-1}/20{klasen._godina}");
                 //sw.Write("1990/1991"); HARDCODED

@@ -400,6 +400,8 @@ namespace Middleware
             List<string> tx = _proektni.Split(';').ToList();
             tx[i] = cb_pole + realizirano;
             string rez = string.Join(";", tx);
+            rez = rez.Substring(0, rez.Length - 1);
+
 
             UpdateUcenik(RequestParameters.proektni, rez, token);
             _proektni = rez;
@@ -594,6 +596,16 @@ namespace Middleware
             }, RequestScopes.UpdateSmer);
         }
 
+        public Dictionary<string,Smer> GetSmerovi()
+        {
+            Dictionary<string, Smer> rez = new Dictionary<string, Smer>();
+            foreach(KeyValuePair<string,Smer> x in _smerovi )
+            {
+                if (x.Key != "ПА" && x.Key != "Странски Јазици" && x.Key != "Изборни Предмети") rez.Add(x.Key,x.Value);
+            }
+            return rez;
+        }
+
     }
 
     public class Klasen
@@ -711,6 +723,7 @@ namespace Middleware
             }
 
         }
+
     }
 
     class Request

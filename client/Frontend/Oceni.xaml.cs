@@ -61,6 +61,7 @@ namespace Frontend
             if (UserKlas._p._smerovi.Keys.Contains("Изборни Предмети")) IzborenPredmetCB.ItemsSource = UserKlas._p._smerovi["Изборни Предмети"]._predmeti;
 
             CanWork = false;
+
             SJ_1_CB.SelectionChanged += SJ_1_CB_SelectionChanged;
             SJ_2_CB.SelectionChanged += SJ_1_CB_SelectionChanged;
             IzborenPredmetCB.SelectionChanged += izborniSeletionChanged;
@@ -72,17 +73,6 @@ namespace Frontend
 
             CanWork = true;
 
-        }
-
-        private void izborniSeletionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (!CanWork) return;
-            CanWork = false;
-            string str = IzborenPredmetCB.SelectedIndex.ToString();
-            Ucenici[Br].UpdateUcenik(RequestParameters.izborni, IzborenPredmetCB.SelectedIndex.ToString(), UserKlas._token);
-            Ucenici[Br]._izborni = str;
-
-            FillOcenki(Br);
         }
 
         private void izborniSeletionChanged(object sender, SelectionChangedEventArgs e)
