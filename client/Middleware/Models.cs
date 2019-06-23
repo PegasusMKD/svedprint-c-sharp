@@ -461,11 +461,12 @@ namespace Middleware
 
         public List<string> GetCeliPredmeti(string jazici, string izbp , Dictionary<string , Smer > Smerovi)
         {
-            int i = 0, j = 0 , izbctr = 0;
+            int i = 0, j = 1 , izbctr = 0;
             List<string> sj = new List<string>();
             if (Smerovi.Keys.Contains("Странски Јазици"))
             {
-                if (jazici != null && jazici != "" && jazici.Length == 3)
+                // ne znam zosto, ama jazici kaj nekoi e x;y; - ima visok ; na kraj sto go buni kodot
+                if (jazici != null && jazici != "" && (jazici.Length == 3 || jazici.Length == 4))
                 {
                     i = int.Parse(jazici.Split(';')[0]);
                     j = int.Parse(jazici.Split(';')[1]);
@@ -487,21 +488,14 @@ namespace Middleware
             List<string> predmeti = new List<string>();
 
             int ctr = 0;
-            if (true)
-                foreach (string predmet in _predmeti)
-                {
-                    string s = predmet;
-                    if (predmet == "1 СЈ") { s = sj[i]; jaziciPos[0] = ctr; }
-                    if (predmet == "2 СЈ") { s = sj[j]; jaziciPos[1] = ctr; }
-                    if (predmet == "Изборен Предмет 1") { s = izboren; }
-                    predmeti.Add(s);
-                    ctr++;
-                }
-            else
+            foreach (string predmet in _predmeti)
             {
-                predmeti = _predmeti;
-                predmeti[jaziciPos[0]] = sj[i]; 
-                predmeti[jaziciPos[1]] = sj[j];
+                string s = predmet;
+                if (predmet == "1 СЈ") { s = sj[i]; jaziciPos[0] = ctr; }
+                if (predmet == "2 СЈ") { s = sj[j]; jaziciPos[1] = ctr; }
+                if (predmet == "Изборен Предмет 1") { s = izboren; }
+                predmeti.Add(s);
+                ctr++;
             }
             return predmeti;
         }

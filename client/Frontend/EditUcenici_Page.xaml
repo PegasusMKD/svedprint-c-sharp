@@ -31,7 +31,7 @@
         </DockPanel>
 
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" HorizontalContentAlignment="Stretch" VerticalAlignment="Top" VerticalContentAlignment="Stretch" >
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" HorizontalContentAlignment="Stretch" VerticalAlignment="Top" VerticalContentAlignment="Stretch" Padding="5 20">
             <Grid Name = "MainGrid" Grid.Row="1" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>

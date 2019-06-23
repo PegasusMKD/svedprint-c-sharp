@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using static Frontend.SettingsDesign;
@@ -85,35 +86,45 @@ namespace Frontend
 
         private Dictionary<string, string> PredmetiProsekCalc()
         {
-            Dictionary<string, string> PredmetiProsek = new Dictionary<string, string>();
+            // StringBuilder zosto pobrzo e od obicno string concatenation
+            Dictionary<string, StringBuilder> PredmetiProsek = new Dictionary<string, StringBuilder>();
             foreach(Ucenik ucenik in Ucenici)
             {
                 if (ucenik._smer == "" || UserKlas._p._smerovi.Keys.Contains(ucenik._smer) == false) continue;
-                List<string> PredmetiOdSmer = UserKlas._p._smerovi[ucenik._smer]._predmeti;
+                // List<string> PredmetiOdSmer = UserKlas._p._smerovi[ucenik._smer]._predmeti;
+                List<string> PredmetiOdSmer = UserKlas._p._smerovi[ucenik._smer].GetCeliPredmeti(ucenik._jazik, ucenik._izborni, UserKlas._p._smerovi);
 
                 if (PredmetiOdSmer.Count == 0) continue;
 
                 for (int i = 0; i <ucenik._oceni.Count && i < PredmetiOdSmer.Count; i++)
                 {
+                    if (string.IsNullOrEmpty(PredmetiOdSmer[i])) continue;
                     if (PredmetiProsek.ContainsKey(PredmetiOdSmer[i]))
                     {
-                        PredmetiProsek[PredmetiOdSmer[i]] = PredmetiProsek[PredmetiOdSmer[i]] + " " + ucenik._oceni[i].ToString();
+                        // PredmetiProsek[PredmetiOdSmer[i]] = PredmetiProsek[PredmetiOdSmer[i]] + " " + ucenik._oceni[i].ToString();
+                        PredmetiProsek[PredmetiOdSmer[i]].AppendFormat(" {0}", ucenik._oceni[i]);
                     }
                     else
                     {
-                        PredmetiProsek[PredmetiOdSmer[i]] = ucenik._oceni[i].ToString();
+                        // PredmetiProsek[PredmetiOdSmer[i]] = ucenik._oceni[i].ToString();
+                        PredmetiProsek.Add(PredmetiOdSmer[i], new StringBuilder(ucenik._oceni[i].ToString()));
                     }
                 }
 
             }
 
-            Dictionary<string, string> t = PredmetiProsek;
-            foreach(var predmet in  t.ToArray())
+            Dictionary<string, StringBuilder> t = PredmetiProsek;
+            Dictionary<string, string> retval = new Dictionary<string, string>();
+            foreach(var predmet in t.ToArray())
             {
-                PredmetiProsek[predmet.Key] = Array.ConvertAll(predmet.Value.Split(' '), x => float.Parse(x)).Average().ToString("n2");
+                //PredmetiProsek[predmet.Key].Clear();
+                //PredmetiProsek[predmet.Key].Append(Array.ConvertAll(predmet.Value.ToString().Split(' '), x => float.Parse(x)).Average().ToString("n2"));
+                if (predmet.Key == "") continue;
+                retval[predmet.Key] = Array.ConvertAll(predmet.Value.ToString().Split(' '), x => float.Parse(x)).Average().ToString("n2");
             }
 
-            return PredmetiProsek;
+            
+            return retval;
         }
 
     }

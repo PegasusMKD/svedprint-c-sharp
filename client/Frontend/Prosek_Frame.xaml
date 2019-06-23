@@ -6,8 +6,8 @@
       xmlns:local="clr-namespace:Frontend"
       mc:Ignorable="d" 
       d:DesignWidth="538" Background="#FF3E4959"
-      Title="Prosek_Frame" Height="538">
-
+      Title="Prosek_Frame" Height="Auto">
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" Padding="5 20">
     <Grid Background="#FF3E4959">
         <Grid.RowDefinitions>
             <RowDefinition Height="40*"/>
@@ -31,4 +31,5 @@
 
         </Grid>
     </Grid>
+    </ScrollViewer>
 </Page>

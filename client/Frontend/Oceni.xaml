@@ -140,7 +140,7 @@
             <ComboBox Name="SJ_2_CB"  Grid.Column="3" Margin="5,20,0,0" Grid.Row="1" VerticalAlignment="Top" Height="30" FontSize="20"></ComboBox>
 
         </Grid>
-        <ScrollViewer Grid.Column="1" Grid.Row="2" Background="#FF3E4959" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Grid.Column="1" Grid.Row="2" Background="#FF3E4959" VerticalScrollBarVisibility="Auto" Padding="0 20">
             <StackPanel>
                 <Grid Name="OcenkiGrid" Grid.Column="1" Background="#FF3E4959" Grid.Row="2" Height="0" VerticalAlignment="Top">
                     <Grid.RowDefinitions>

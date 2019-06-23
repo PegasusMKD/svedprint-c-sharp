@@ -7,7 +7,7 @@
       mc:Ignorable="d" d:DesignHeight="651" d:DesignWidth="538" Background="#FF3E4959"
       Title="Smerovi_Page" >
 
-    <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
+    <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" Padding="5 20">
         <Grid Grid.Row="1" Grid.Column="1" Background="#FF3E4959">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
