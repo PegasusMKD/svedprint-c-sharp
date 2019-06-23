@@ -160,10 +160,7 @@ namespace Frontend
                 Menu.Items.Add(MenuDP(x._ime, x._prezime, i++));
             }
             combobox_smer.ItemsSource = smerovi_naslov.Keys;
-            //foreach(KeyValuePair<string,Smer> val in UserKlas._p._smerovi)
-            //{
-            //    combobox_smer.Items.Add(val.Value._smer);
-            //}
+
         }
 
         private DockPanel MenuDP(string Name, string Prezime, int brojDn)
@@ -188,20 +185,6 @@ namespace Frontend
             st.MouseLeave += new MouseEventHandler(MenuItemMouseLeave); 
 
             return st;
-        }
-
-        List<string> SearchSTpredmeti(string smer)
-        {
-            if (SJ_1_CB.SelectedIndex == -1 || SJ_2_CB.SelectedIndex == -1) return UserKlas._p._smerovi[smer]._predmeti;
-            List<string> predmeti = new List<string>();
-            foreach(string predmet in UserKlas._p._smerovi[smer]._predmeti)
-            {
-                string s = predmet;
-                if (predmet == "1 СЈ") s = SJ_1_CB.SelectedValue.ToString();
-                if (predmet == "2 СЈ") s = SJ_2_CB.SelectedValue.ToString();
-                predmeti.Add(s);
-            }
-            return predmeti;
         }
 
         List<TextBox> Ocenkibox = new List<TextBox>();
@@ -342,7 +325,6 @@ namespace Frontend
             combobox_smer.SelectedValue = smerovi_naslov[SelectedUcenik._smer]._smer;
 
             //fill OcenkiView
-            //List<string> predmeti = SearchSTpredmeti(Ucenici[brojDn]._smer);
             List<string> predmeti = UserKlas._p._smerovi[Ucenici[brojDn]._smer].GetCeliPredmeti(Ucenici[brojDn]._jazik , Ucenici[brojDn]._izborni , UserKlas._p._smerovi);
             for (int i = 0; i < predmeti.Count; i++)
             {
@@ -357,11 +339,11 @@ namespace Frontend
                 Ocenkibox[0].Focus();
             }
 
-            LoadProektnaAktivnost();
 
             OpravdaniTxt.Text = SelectedUcenik._opravdani.ToString();
             NeopravdaniTxt.Text = SelectedUcenik._neopravdani.ToString();
 
+            LoadProektnaAktivnost();
             LoadExtraPolinja(brojDn);
 
             CanWork = true;

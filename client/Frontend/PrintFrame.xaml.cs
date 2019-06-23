@@ -53,27 +53,6 @@ namespace Frontend
             }
         }
 
-        private Bitmap InsertText(string text, string imageFilePath)
-        {
-
-            PointF firstLocation = new PointF(900, 050);
-
-            //string imageFilePath = @"C:\Users\lukaj\OneDrive\Desktop";
-            Bitmap bitmap = (Bitmap)System.Drawing.Image.FromFile(imageFilePath);// + @"\bk.png");//load the image file
-
-            using (Graphics graphics = Graphics.FromImage(bitmap))
-            {
-                using (Font arialFont = new Font("Arial", 50, System.Drawing.FontStyle.Bold))
-                {
-                    graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
-                    graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                    graphics.DrawString(text, arialFont, SystemBrushes.WindowText, firstLocation);
-                }
-            }
-
-            //bitmap.Save(imageFilePath+ @"\bk2.jpeg");
-            return bitmap;
-        }
 
       private void Menu_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -137,7 +116,7 @@ namespace Frontend
             Main.Content = HomePage;
         }
 
-        private void Btn_edinecnoprint_MouseUp(object sender, MouseButtonEventArgs e)
+        private void Btn_edinecnoprint_Clicked(object sender, RoutedEventArgs e)
         {
             int offsetx, offsety;
             offsetx = int.Parse(X_offset.Text);
@@ -160,7 +139,7 @@ namespace Frontend
             }
         }
 
-        private void Btn_celprint_MouseUp(object sender, MouseButtonEventArgs e)
+        private void Btn_celprint_Clicked(object sender, RoutedEventArgs e)
         {
             int offsetx, offsety;
             offsetx = int.Parse(X_offset.Text);

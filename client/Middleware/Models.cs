@@ -480,7 +480,6 @@ namespace Middleware
                 if (izbp != null && izbp != "") izbctr = int.Parse(izbp);
                 else izbctr = -1;
 
-                //izbctr = 1;
                 if (izbctr != -1) izboren = Smerovi["Изборни Предмети"]._predmeti[izbctr];
             }
 
