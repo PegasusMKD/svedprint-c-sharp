@@ -168,7 +168,23 @@ namespace Frontend
             switch (Menu.SelectedIndex)
             {
                 case 0:
-                    Middleware.Print.PrintSveditelstva(Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+                     //Middleware.Print.PrintSveditelstva(Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+
+                    
+                    for (int i = 0; i < Home_Page.ucenici.Count(); i+=5)
+                    {
+
+                        List<Ucenik> uceniks = new List<Ucenik>();
+                        for (int j = 0; j < 5; j++)
+                        {
+                            uceniks.Add(Home_Page.ucenici[i+j]);
+                            if (i + j == Home_Page.ucenici.Count()-1) break;
+                        }
+                        Middleware.Print.PrintSveditelstva(uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+
+                    }
+                    
+
                     break;
                 case 1:
                     Middleware.Print.PrintGlavnaKniga(Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);

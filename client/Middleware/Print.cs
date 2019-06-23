@@ -428,7 +428,8 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._prezime);
                 sw.Write(delimiter);
-                sw.Write(u._tatko);
+                if (u._tatko == " ") sw.Write("// //");
+                else sw.Write(u._tatko);
                 sw.Write(delimiter);
                 sw.Write(u._majka);
                 sw.Write(delimiter);
@@ -494,7 +495,7 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(klasen._direktor);
                 sw.Write(delimiter);
-                sw.Write(u._pedagoski_merki);
+                //sw.Write(u._pedagoski_merki);
                 sw.Write(delimiter);
                 string[] db = klasen._delovoden_broj.Split('-');
                 string[] paralelka_godina = klasen._paralelka.Split('-');
