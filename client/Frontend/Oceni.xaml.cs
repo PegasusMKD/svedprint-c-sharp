@@ -423,7 +423,7 @@ namespace Frontend
                     string str ="";
                     for(int x=0;x<Proektnictr;x++)
                     {
-                        str += CB.SelectedValue + ",Реализирал;";
+                        str += CB.SelectedValue + ",реализирал;";
                     }
                     Ucenici[Br]._proektni = str;
                     PreValue = Ucenici[Br]._proektni.Split(';')[i].Split(',');
@@ -437,7 +437,7 @@ namespace Frontend
             checkST.Orientation = Orientation.Horizontal;
             checkST.HorizontalAlignment = HorizontalAlignment.Center;
 
-            Label lb = SettingsDesign.CreateLabel("Реализирал", 22, "Segoe UI");
+            Label lb = SettingsDesign.CreateLabel("реализирал", 22, "Segoe UI");
             lb.FontWeight = FontWeights.Normal;
             lb.HorizontalAlignment = HorizontalAlignment.Left;
             lb.VerticalAlignment = VerticalAlignment.Center;
@@ -446,7 +446,7 @@ namespace Frontend
             CheckBox Check = new CheckBox();
             Check.HorizontalAlignment = HorizontalAlignment.Right;
             Check.VerticalAlignment = VerticalAlignment.Top;
-            if(PreValue[1] == "Реализирал")Check.IsChecked = true;
+            if(PreValue[1].ToLower() == "реализирал")Check.IsChecked = true;
             Check.RenderTransform = new ScaleTransform(2.5, 2.5);
             realiziranoProektni.Add(Check);
             Check.Tag = i.ToString();
