@@ -518,10 +518,12 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(klasen._odobreno_sveditelstvo);
                 //sw.Write("14.06.2019"); // <------ HARDCODED
-
+                sw.Write(delimiter);
+                // BELESKI
 
                 sw.Write("\"");
                 sw.Write($";\"{offsetx}{delimiter}{offsety}\"");
+
 
                 if (!failed)
                 {
