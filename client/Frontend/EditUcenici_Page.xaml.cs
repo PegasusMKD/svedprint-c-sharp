@@ -63,7 +63,7 @@ namespace Frontend
             polinja.Add(new Pole("Родител (Татко)", RequestParameters.tatko, new string[] { "Име Презиме" }));
             polinja.Add(new Pole("Родител (Мајка)", RequestParameters.majka, new string[] { "Име Презиме" }));
             polinja.Add(new Pole("По кој пат ја учи годината", RequestParameters.pat_polaga, new string[] { "прв пат" , "втор пат" , "трет пат" }));
-            polinja.Add(new Pole("Дали е положена годината", RequestParameters.polozhil, new string[] { "Положил" , "Не Положил" }));
+            polinja.Add(new Pole("Дали е положена годината", RequestParameters.polozhil, new string[] { "завршил" , "не завршил" }));
            // polinja.Add(new Pole("Поведение", RequestParameters.povedenie, new string[] { "Примeрно" , "Добро" , "Задоволително" }));
            // polinja.Add(new Pole("Педагошки мерки", RequestParameters.pedagoshki_merki, new string[] { "1", "2", "3" , "4" }));
             polinja.Add(new Pole("Претходна година", RequestParameters.prethodna_godina, new string[] { "I", "II", "III" , "IV"}));
