@@ -112,11 +112,14 @@ namespace Middleware
             }
         }
 
-        public static void GetCarsav()
+        public static void GetCarsav(string carsav_type)
         {
             // 1. Request do serverot da mi vrati najrecent excel
             // 2. Da se zapise requestot vo file
             // https://stackoverflow.com/questions/2934295/c-sharp-save-a-file-from-a-http-request
+
+            string uri = $"https://{settings.Default.DB_HOST}{settings.Default.DB_PORT}/{settings.Default.DB_BRANCH}/{carsav_type}/";
+
         }
     }
 
@@ -133,6 +136,8 @@ namespace Middleware
         public const string UpdateSmer = "smer";
         public const string UpdateUcenik = "ucenik";
         public const string UpdateUchilishte = "uchilishte";
+        public const string GetKlasCarsav = "carsav";
+        public const string GetFullCarsav = "fullcarsav";
     }
     
     public class RequestParameters

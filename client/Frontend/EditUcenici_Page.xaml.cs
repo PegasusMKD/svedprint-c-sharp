@@ -68,7 +68,8 @@ namespace Frontend
            // polinja.Add(new Pole("Педагошки мерки", RequestParameters.pedagoshki_merki, new string[] { "1", "2", "3" , "4" }));
             polinja.Add(new Pole("Претходна година", RequestParameters.prethodna_godina, new string[] { "I", "II", "III" , "IV"}));
             polinja.Add(new Pole("Претходно училиште", RequestParameters.prethodno_uchilishte, new string[] { "СУГС - Раде Јовчевски Корчагин" }));
-            polinja.Add(new Pole("Претходен успех", RequestParameters.prethoden_uspeh, new string[] { "5.00" }));
+            polinja.Add(new Pole("Претходен успех", RequestParameters.prethoden_uspeh, new string[] { "Одличен" , "Многу добар" , "Добар", "Доволен"}));
+
            // polinja.Add(new Pole("Проектна Активност 1", RequestParameters.proektni, PApredmeti));
           //  polinja.Add(new Pole("Проектна Активност 2", RequestParameters.proektni, PApredmeti));
 
@@ -271,11 +272,11 @@ namespace Frontend
             switch (answer)
             {
                 case "000":
-                    return "Успесшно зачувување на ученикот";
+                    return "Успешно зачувување на ученикот";
                 case "123":
                     return "Паралелката нема ученици";
                 case "502":
-                    return "Не постои ученикот,ве молиме креирајте го";
+                    return "Не постои ученикот, ве молиме креирајте го";
                 case "107":
                     return "Сервисот не е достапен, ве молиме исконтактирајте ги админите";
                 default:

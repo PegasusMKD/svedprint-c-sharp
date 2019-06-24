@@ -559,7 +559,9 @@ namespace Frontend
             CanWork = false;
             int br = int.Parse(BrojDn_label.Content.ToString());
             br--;
-            Smer NovSmer = UserKlas._p._smerovi.Values.ToArray()[combobox_smer.SelectedIndex];
+
+            var x = UserKlas._p.GetSmerovi().Values.ToList();
+            Smer NovSmer = x[combobox_smer.SelectedIndex];
 
             Ucenici[br].ChangeSmer(NovSmer,UserKlas._token);
 
