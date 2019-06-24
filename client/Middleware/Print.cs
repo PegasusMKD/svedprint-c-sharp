@@ -284,7 +284,8 @@ namespace Middleware
                 sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_god[1]}/{u._broj - failed_ctr}");
 
                 sw.Write(delimiter);
-                sw.Write(klasen._ime + (klasen._srednoIme != "" ? " " + klasen._srednoIme : "") + " " + klasen._prezime);
+                //sw.Write(klasen._ime + (klasen._srednoIme != "" ? $" {klasen._srednoIme}-" : " ") + klasen._prezime);
+                sw.Write($"{klasen._ime} {(string.IsNullOrEmpty(klasen._srednoIme) ? "" : $"{klasen._srednoIme}-")}{klasen._prezime}");
                 sw.Write(delimiter);
                 sw.Write(klasen._direktor);
                 sw.Write(delimiter);
@@ -496,14 +497,7 @@ namespace Middleware
                 sw.Write($"{rimskoDict.Keys.ToArray()[idx]} - {rimskoDict.Values.ToArray()[idx]}");
 
                 sw.Write(delimiter);
-                if (klasen._srednoIme != "")
-                {
-                    sw.Write($"{klasen._ime} {klasen._srednoIme}-{klasen._prezime}");
-                }
-                else
-                {
-                    sw.Write($"{klasen._ime} {klasen._prezime}");
-                }
+                sw.Write($"{klasen._ime} {(string.IsNullOrEmpty(klasen._srednoIme) ? "" : $"{klasen._srednoIme}-")}{klasen._prezime}");
                 sw.Write(delimiter);
                 sw.Write(klasen._direktor);
                 sw.Write(delimiter);
