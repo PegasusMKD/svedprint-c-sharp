@@ -261,8 +261,22 @@ namespace Middleware
                 string[] db = klasen._delovoden_broj.Split('-');
                 string[] paralelka_god = klasen._paralelka.Split('-');
                 var val = int.Parse(db[1]) + int.Parse(year_dictionary[paralelka_god[0]]) - 1;
+
+                List<string> real = u._proektni.Split(';').ToList().ConvertAll(x => x.Split(',')[1].ToLower()).ConvertAll(
+                x =>
+                {
+                    if (x == "реализирал")
+                    {
+                        return "1";
+                    }
+                    else
+                    {
+                        return "0";
+                    }
+                });
+
                 bool failed = false;
-                if (!u.CheckPass() || !"пз".Contains(u._polozhil.ToLower()[0]))
+                if (!u.CheckPass() || !"пз".Contains(u._polozhil.ToLower()[0]) || real.Contains("0"))
                 {
                     failed_ctr++;
                     failed = true;
@@ -282,15 +296,13 @@ namespace Middleware
                 sw.Write(';');
 
                 List<string> proektni_list = new List<string>();
-                string[] v = u._proektni.Split(';');
-
-                foreach (var x in v)
+                foreach (var x in u._proektni.Split(';'))
                 {
                     //proektni_list.Add(String.Join("/",x.Split(','))); // zoso kompliciranje
                     proektni_list.Add(x.Replace(',', '/'));
 
                 }
-
+                
                 sw.Write(String.Join(delimiter, proektni_list));
 
                 sw.Write("\"");
@@ -501,7 +513,7 @@ namespace Middleware
                 string[] paralelka_godina = klasen._paralelka.Split('-');
                 var val = int.Parse(db[1]) + int.Parse(year_dictionary[paralelka_godina[0]]) - 1;
                 bool failed = false;
-                if(!u.CheckPass() || !"пз".Contains(u._polozhil.ToLower()[0]))
+                if(!u.CheckPass() || !"пз".Contains(u._polozhil.ToLower()[0]) || tmppoloz.Contains("0"))
                 {
                     failed_ctr++;
                     failed = true;
