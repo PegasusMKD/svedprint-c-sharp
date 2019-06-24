@@ -468,8 +468,9 @@ namespace Middleware
                 // ne znam zosto, ama jazici kaj nekoi e x;y; - ima visok ; na kraj sto go buni kodot
                 if (jazici != null && jazici != "" && (jazici.Length == 3 || jazici.Length == 4))
                 {
-                    i = int.Parse(jazici.Split(';')[0]);
-                    j = int.Parse(jazici.Split(';')[1]);
+                    var arr = jazici.Split(new char[] { ';', ':' }); // hardcoded
+                    i = int.Parse(arr[0]);
+                    j = int.Parse(arr[1]);
                 }
                 sj = Smerovi["Странски Јазици"]._predmeti;
             }
