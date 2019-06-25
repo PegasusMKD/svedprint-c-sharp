@@ -512,7 +512,15 @@ namespace Middleware
                     failed_ctr++;
                     failed = true;
                 }
-                sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_godina[1]}/{u._broj-failed_ctr}");
+                if (!u.CheckPass())
+                {
+                    // se otpisal
+                    failed = false;
+                }
+                else
+                {
+                    sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_godina[1]}/{u._broj - failed_ctr}");
+                }
                 //sw.Write(u._delovoden_broj);
                 //sw.Write("08-07/16/2"); // <----- HARDCODED
                 sw.Write(delimiter);
