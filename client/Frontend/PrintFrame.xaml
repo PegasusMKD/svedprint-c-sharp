@@ -23,7 +23,7 @@
             <Image HorizontalAlignment="Right" Margin="0,5" VerticalAlignment="Top" Source="settings.png"/>
         </Grid>
         <Grid Margin="0,0,0,0" Background="#FF4B84C3" Grid.Column="1">
-            <Label x:Name="Title" Content="Сведителство" FontSize="48" FontFamily="Arial Black" Foreground="White" VerticalAlignment="Center" Margin="0" HorizontalAlignment="Center"/>
+            <Label x:Name="Title" Content="Свидетелство" FontSize="48" FontFamily="Arial Black" Foreground="White" VerticalAlignment="Center" Margin="0" HorizontalAlignment="Center"/>
         </Grid>
         <ListView Name ="Menu" Background="#FFF1F3CE" BorderThickness="1,1,1,2" BorderBrush="#FFF1F3CE" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Row="1" SelectionChanged="Menu_SelectionChanged"/>
         <Grid Grid.Row="1" Grid.Column="1" Background="#FF3E4959">
