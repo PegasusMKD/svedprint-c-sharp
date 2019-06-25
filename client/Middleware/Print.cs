@@ -223,7 +223,7 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write((klasen._godina + 1).ToString());
                 sw.Write(delimiter);
-                sw.Write(u._pat_polaga.ToString());
+                sw.Write(u._pat_polaga.Split(' ')[0]); // fix
                 sw.Write(delimiter);
 
                 // paralelka, povedenie, opravdani, neopravdani, tip, smer
@@ -472,7 +472,7 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._prethodno_uchilishte);
                 sw.Write(delimiter);
-                sw.Write(u._pat_polaga);
+                sw.Write(u._pat_polaga.Split(' ')[0]); // fix
                 sw.Write(delimiter);
 
                 sw.Write(u._tip); // <------
