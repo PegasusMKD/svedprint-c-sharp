@@ -19,9 +19,9 @@ namespace Middleware
         static string tmpFolder = Path.GetTempPath() + @"pics\";
         static List<PrintQueueItem> printQueue;
         static int currentPage;
-        public static void PrintSveditelstva(List<Ucenik> ucenici, Klasen klasen, int printerChoice, int offsetx, int offsety)
+        public static void PrintSveditelstva(List<Ucenik> siteUcenici, List<Ucenik> ucenici, Klasen klasen, int printerChoice, int offsetx, int offsety)
         {
-            List<string> data = InitSveditelstvo(ucenici, klasen, offsetx, offsety);
+            List<string> data = InitSveditelstvo(siteUcenici, ucenici, klasen, offsetx, offsety);
             string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
             PrintDialog printDialog = new PrintDialog();
             PrintDocument pd = new PrintDocument();
@@ -95,9 +95,9 @@ namespace Middleware
             g.Dispose();
         }
 
-        public static void PreviewSveditelstvo(Ucenik u, Klasen k)
+        public static void PreviewSveditelstvo(List<Ucenik> siteUcenici, Ucenik u, Klasen k)
         {
-            List<string> data = InitSveditelstvo(new List<Ucenik>() { u }, k, 0, 0);
+            List<string> data = InitSveditelstvo(siteUcenici, new List<Ucenik>() { u }, k, 0, 0);
             string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
 
             data.Insert(0, "\"sveditelstvo\""); // mozno e da e "sveditelstva"
@@ -117,9 +117,9 @@ namespace Middleware
             File.Move($"{tmpFolder}front-0.jpg", $"{tmpFolder}front-prev.jpg");
             File.Move($"{tmpFolder}back-0.jpg", $"{tmpFolder}back-prev.jpg");
         }
-        public static void PreviewGlavnaKniga(Ucenik u, Klasen k)
+        public static void PreviewGlavnaKniga(List<Ucenik> siteUcenici, Ucenik u, Klasen k)
         {
-            List<string> data = InitGlavnaKniga(new List<Ucenik>() { u }, k, 0, 0);
+            List<string> data = InitGlavnaKniga(siteUcenici, new List<Ucenik>() { u }, k, 0, 0);
             string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
 
             data.Insert(0, "\"glavna\""); // mozno e da e "sveditelstva"
@@ -170,14 +170,24 @@ namespace Middleware
             {"III","3"},
             {"IV","4"}
         };
-        public static List<string> InitSveditelstvo(List<Ucenik> ucenici, Klasen klasen, int offsetx, int offsety)
+        public static List<string> InitSveditelstvo(List<Ucenik> siteUcenici, List<Ucenik> ucenici, Klasen klasen, int offsetx, int offsety)
         {
             StringWriter sw = new StringWriter();
             List<string> l = new List<string>();
             string delimiter = "|";
-            int failed_ctr = 0;
+
+            int n = siteUcenici.Count;
+            int[] failed_offset = new int[n];
+            bool[] failed_arr = new bool[n];
+
+            // i = 0
+            var result = didFail(siteUcenici[0], GetPolozilList(siteUcenici[0]));
+            failed_offset[0] = result.offset;
+            failed_arr[0] = result.did_fail;
+
             foreach (Ucenik u in ucenici)
             {
+                int current_idx = siteUcenici.IndexOf(u);
                 //Addition of Pazzio
                 if (!u.CheckPass())
                 {
@@ -261,27 +271,9 @@ namespace Middleware
                 string[] db = klasen._delovoden_broj.Split('-');
                 string[] paralelka_god = klasen._paralelka.Split('-');
                 var val = int.Parse(db[1]) + int.Parse(year_dictionary[paralelka_god[0]]) - 1;
-
-                List<string> real = u._proektni.Split(';').ToList().ConvertAll(x => x.Split(',')[1].ToLower()).ConvertAll(
-                x =>
-                {
-                    if (x == "реализирал")
-                    {
-                        return "1";
-                    }
-                    else
-                    {
-                        return "0";
-                    }
-                });
-
-                bool failed = false;
-                if (!u.CheckPass() || !"пз".Contains(u._polozhil.ToLower()[0]) || real.Contains("0"))
-                {
-                    failed_ctr++;
-                    failed = true;
-                }
-                sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_god[1]}/{u._broj - failed_ctr}");
+                
+                if (!failed_arr[current_idx])
+                    sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_god[1]}/{u._broj - failed_offset[current_idx]}");
 
                 sw.Write(delimiter);
                 //sw.Write(klasen._ime + (klasen._srednoIme != "" ? $" {klasen._srednoIme}-" : " ") + klasen._prezime);
@@ -309,15 +301,15 @@ namespace Middleware
                 sw.Write("\"");
                 sw.Write($";\"{offsetx}{delimiter}{offsety}\"");
 
-                if (!failed) {
+                if (!failed_arr[current_idx]) {
                     l.Add(sw.ToString());
                 }
             }
             return l;
         }
-        public static void PrintGlavnaKniga(List<Ucenik> ucenici, Klasen klasen, int printerChoice, int offsetx, int offsety)
+        public static void PrintGlavnaKniga(List<Ucenik> siteUcenici, List<Ucenik> ucenici, Klasen klasen, int printerChoice, int offsetx, int offsety)
         {
-            List<string> data = InitGlavnaKniga(ucenici, klasen, offsetx, offsety);
+            List<string> data = InitGlavnaKniga(siteUcenici, ucenici, klasen, offsetx, offsety);
             string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
             PrintDialog printDialog = new PrintDialog();
             PrintDocument pd = new PrintDocument();
@@ -372,21 +364,41 @@ namespace Middleware
                 pd.Dispose();
             }
         }
-        public static List<string> InitGlavnaKniga(List<Ucenik> ucenici, Klasen klasen, int offsetx, int offsety)
+
+
+
+        public static List<string> InitGlavnaKniga(List<Ucenik> siteUcenici, List<Ucenik> ucenici, Klasen klasen, int offsetx, int offsety)
         {
             // https://raw.githubusercontent.com/darijan2002/ps/ps/gk/sample_params.txt?token=ADAAZQMNTPXEEBZ7LCUYXD245FMAC
             StringWriter sw = new StringWriter();
             List<string> l = new List<string>();
             string delimiter = "|";
-            failed_ctr = 0;
+
+            int n = siteUcenici.Count;
+            int[] failed_offset = new int[n];
+            bool[] failed_arr = new bool[n];
+
+            // i = 0
+            var result = didFail(siteUcenici[0], GetPolozilList(siteUcenici[0]));
+            failed_offset[0] = result.offset;
+            failed_arr[0] = result.did_fail;
+
+            for(int i = 1; i < n; i++)
+            {
+                result = didFail(siteUcenici[i], GetPolozilList(siteUcenici[i]));
+                failed_arr[i] = result.did_fail;
+                failed_offset[i] = failed_offset[i - 1] + result.offset;
+            }
+
             foreach (Ucenik u in ucenici)
             {
+                int current_idx = siteUcenici.IndexOf(u);
                 sw.GetStringBuilder().Clear();
                 List<string> tmparr = new List<string>();
 
                 // predmeti
                 tmparr.Clear();
-                tmparr.AddRange(klasen._p._smerovi[u._smer].GetCeliPredmeti(u._jazik , u._izborni, klasen._p._smerovi));
+                tmparr.AddRange(klasen._p._smerovi[u._smer].GetCeliPredmeti(u._jazik, u._izborni, klasen._p._smerovi));
                 while (tmparr.Count < 17)
                 {
                     tmparr.Add("NaN");
@@ -406,18 +418,7 @@ namespace Middleware
                 {
                     tmparr.Add("NaN");
                 }
-                var tmppoloz = u._proektni.Split(';').ToList().ConvertAll(x => x.Split(',')[1].ToLower());
-                tmppoloz = tmppoloz.ConvertAll(x =>
-                {
-                    if (x == "реализирал")
-                    {
-                        return "1";
-                    }
-                    else
-                    {
-                        return "0";
-                    }
-                });
+                List<string> tmppoloz = GetPolozilList(u);
                 tmparr.AddRange(tmppoloz);
                 while (tmparr.Count < 22)
                 {
@@ -467,7 +468,7 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._prethoden_uspeh);
                 sw.Write(delimiter);
-                sw.Write($"20{klasen._godina-1}/20{klasen._godina}");
+                sw.Write($"20{klasen._godina - 1}/20{klasen._godina}");
                 //sw.Write("1990/1991"); HARDCODED
                 sw.Write(delimiter);
                 sw.Write(u._prethodno_uchilishte);
@@ -487,7 +488,7 @@ namespace Middleware
                 sw.Write(delimiter);
 
                 //Koja e celta na ovaa godina? ne bi bilo isto so Split-ot odma pod nego?
-                sw.Write($"20{klasen._godina}/20{klasen._godina+1}"); // ucebna godina. bara kalendarska godina. nesto kako prethodna_uchebna ama ne prethodna tuku segasna
+                sw.Write($"20{klasen._godina}/20{klasen._godina + 1}"); // ucebna godina. bara kalendarska godina. nesto kako prethodna_uchebna ama ne prethodna tuku segasna
                 // workaround
 
                 //sw.Write("1990/1991");
@@ -506,21 +507,10 @@ namespace Middleware
                 string[] db = klasen._delovoden_broj.Split('-');
                 string[] paralelka_godina = klasen._paralelka.Split('-');
                 var val = int.Parse(db[1]) + int.Parse(year_dictionary[paralelka_godina[0]]) - 1;
-                bool failed = false;
-                if(!u.CheckPass() || !"пз".Contains(u._polozhil.ToLower()[0]) || tmppoloz.Contains("0"))
-                {
-                    failed_ctr++;
-                    failed = true;
-                }
-                if (!u.CheckPass())
-                {
-                    // se otpisal
-                    failed = false;
-                }
-                else
-                {
-                    sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_godina[1]}/{u._broj - failed_ctr}");
-                }
+                
+                if(!failed_arr[current_idx])
+                sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_godina[1]}/{u._broj - failed_offset[current_idx]}");
+
                 //sw.Write(u._delovoden_broj);
                 //sw.Write("08-07/16/2"); // <----- HARDCODED
                 sw.Write(delimiter);
@@ -533,12 +523,46 @@ namespace Middleware
                 sw.Write($";\"{offsetx}{delimiter}{offsety}\"");
 
 
-                if (!failed)
+                if (!failed_arr[current_idx])
                 {
                     l.Add(sw.ToString());
                 }
             }
             return l;
+        }
+
+        private static List<string> GetPolozilList(Ucenik u)
+        {
+            var tmppoloz = u._proektni.Split(';').ToList().ConvertAll(x => x.Split(',')[1].ToLower());
+            tmppoloz = tmppoloz.ConvertAll(x =>
+            {
+                if (x == "реализирал")
+                {
+                    return "1";
+                }
+                else
+                {
+                    return "0";
+                }
+            });
+            return tmppoloz;
+        }
+
+        private static (bool did_fail, int offset) didFail(Ucenik u, List<string> tmppoloz)
+        {
+            bool did_fail = false;
+            int offset = 0;
+            if (!u.CheckPass() || !"пз".Contains(u._polozhil.ToLower()[0]) || tmppoloz.Contains("0"))
+            {
+                offset = 1;
+                did_fail = true;
+            }
+            if (!u.CheckPass())
+            {
+                // se otpisal
+                did_fail = false;
+            }
+            return (did_fail, offset);
         }
 
         static readonly Dictionary<string, string> rimskoDict = new Dictionary<string, string>() {

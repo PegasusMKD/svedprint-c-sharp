@@ -152,10 +152,10 @@ namespace Frontend
             switch (Menu.SelectedIndex)
             {
                 case 0:
-                    Middleware.Print.PrintSveditelstva(uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+                    Middleware.Print.PrintSveditelstva(Home_Page.ucenici, uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
                     break;
                 case 1:
-                    Middleware.Print.PrintGlavnaKniga(uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+                    Middleware.Print.PrintGlavnaKniga(Home_Page.ucenici, uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
                     break;
             }
         }
@@ -180,14 +180,14 @@ namespace Frontend
                             uceniks.Add(Home_Page.ucenici[i+j]);
                             if (i + j == Home_Page.ucenici.Count()-1) break;
                         }
-                        Middleware.Print.PrintSveditelstva(uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+                        Middleware.Print.PrintSveditelstva(Home_Page.ucenici, uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
 
                     }
                     
 
                     break;
                 case 1:
-                    Middleware.Print.PrintGlavnaKniga(Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+                    Middleware.Print.PrintGlavnaKniga(Home_Page.ucenici, Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
                     break;
             }
         }
