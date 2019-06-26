@@ -342,7 +342,7 @@ namespace Middleware
             py.WaitForExit();
 
             printQueue = new List<PrintQueueItem>();
-
+            //return;
             int partition = 5;
             for (int part = 0; part < 9; part++)
             {
