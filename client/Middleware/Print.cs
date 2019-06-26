@@ -472,7 +472,7 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._prethodno_uchilishte);
                 sw.Write(delimiter);
-                sw.Write(u._pat_polaga.Split(' ')[0]); // fix
+                sw.Write(u._pat_polaga); // fix
                 sw.Write(delimiter);
 
                 sw.Write(u._tip); // <------
