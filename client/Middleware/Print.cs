@@ -219,9 +219,9 @@ namespace Middleware
                 // ime prezime na ucenik, ime prezime na roditel, DOB, naselba, opshtina, drzhava, drzhavjanstvo (hardcode)
                 sw.Write(u._ime + " " + u._prezime);
                 sw.Write(delimiter);
-                sw.Write(u._tatko);
+                sw.Write(u._srednoIme);
                 sw.Write(delimiter);
-                sw.Write(u._roden);
+                sw.Write(u._roden.Replace(',', '.'));
                 sw.Write(delimiter);
                 sw.Write($"{delimiter}{u._mesto_na_ragjanje}{delimiter}{klasen._drzava}"); // opstina
                 sw.Write(delimiter);
@@ -527,12 +527,13 @@ namespace Middleware
                 {
                     l.Add(sw.ToString());
                 }
-            }
+            }   
             return l;
         }
 
         private static List<string> GetPolozilList(Ucenik u)
         {
+            if (string.IsNullOrEmpty(u._proektni) || u._proektni == ";") return new List<string> { "0", "0" };
             var tmppoloz = u._proektni.Split(';').ToList().ConvertAll(x => x.Split(',')[1].ToLower());
             tmppoloz = tmppoloz.ConvertAll(x =>
             {
