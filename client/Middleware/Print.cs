@@ -473,7 +473,27 @@ namespace Middleware
                 sw.Write($"{rimskoDict.Keys.ToArray()[idx - 1]} - {rimskoDict.Values.ToArray()[idx - 1]}");
 
                 sw.Write(delimiter);
-                sw.Write(string.IsNullOrEmpty(u._prethoden_uspeh) || u._prethoden_uspeh == "5.00" ? "" : u._prethoden_uspeh);
+                //sw.Write(string.IsNullOrEmpty(u._prethoden_uspeh) || u._prethoden_uspeh == "5.00" ? "" : u._prethoden_uspeh);
+
+                decimal ocena;
+                bool worked = decimal.TryParse(u._prethoden_uspeh.Replace('.', ','), out ocena);
+                if (!worked)
+                {
+                    sw.Write(u._prethoden_uspeh);
+                } else {
+                    string[] ocena_zbor = new string[] { "", "Недоволен", "Доволен", "Добар", "Многу добар", "Одличен" };
+                    int rounded;
+                    if(ocena - Math.Floor(ocena) < Convert.ToDecimal(0.5))
+                    {
+                        rounded = Convert.ToInt32(Math.Floor(ocena));
+                    } else
+                    {
+                        rounded = Convert.ToInt32(Math.Ceiling(ocena));
+                    }
+                    int rounded2 = Convert.ToInt32(Math.Round(ocena));
+                    sw.Write(ocena_zbor[rounded]);
+                }
+
                 sw.Write(delimiter);
                 sw.Write($"20{klasen._godina - 1}/20{klasen._godina}");
                 //sw.Write("1990/1991"); HARDCODED
@@ -485,7 +505,18 @@ namespace Middleware
 
                 sw.Write(u._tip); // <------
                 sw.Write(delimiter);
-                sw.Write(klasen._p._smerovi[u._smer]._cel_smer);
+
+                string[] paralelka_godina = klasen._paralelka.Split('-');
+                if (int.Parse(year_dictionary[paralelka_godina[0]]) >= 3)
+                {
+                    sw.Write(klasen._p._smerovi[u._smer]._cel_smer);
+
+                }
+                else
+                {
+                    sw.Write("///");
+                }
+
                 sw.Write(delimiter);
                 sw.Write(u._povedenie);
                 sw.Write(delimiter);
@@ -512,7 +543,6 @@ namespace Middleware
                 //sw.Write(u._pedagoski_merki);
                 sw.Write(delimiter);
                 string[] db = klasen._delovoden_broj.Split('-');
-                string[] paralelka_godina = klasen._paralelka.Split('-');
                 var val = int.Parse(db[1]) + int.Parse(year_dictionary[paralelka_godina[0]]) - 1;
                 
                 if(!failed_arr[current_idx])
