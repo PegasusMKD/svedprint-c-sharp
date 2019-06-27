@@ -546,7 +546,13 @@ namespace Middleware
                 var val = int.Parse(db[1]) + int.Parse(year_dictionary[paralelka_godina[0]]) - 1;
                 
                 if(!failed_arr[current_idx])
-                sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_godina[1]}/{u._broj - failed_offset[current_idx]}");
+                {
+                    if ((current_idx == 0 && failed_offset[current_idx] == 0) ||
+                        (current_idx > 0 && failed_offset[current_idx] == failed_offset[current_idx-1]))
+                    {
+                        sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_godina[1]}/{u._broj - failed_offset[current_idx]}");
+                    }
+                }
 
                 //sw.Write(u._delovoden_broj);
                 //sw.Write("08-07/16/2"); // <----- HARDCODED
