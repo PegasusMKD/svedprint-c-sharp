@@ -185,15 +185,22 @@ namespace Middleware
             failed_offset[0] = result.offset;
             failed_arr[0] = result.did_fail;
 
+            for (int i = 1; i < n; i++)
+            {
+                result = didFail(siteUcenici[i], GetPolozilList(siteUcenici[i]));
+                failed_arr[i] = result.did_fail;
+                failed_offset[i] = failed_offset[i - 1] + result.offset;
+            }
+
             foreach (Ucenik u in ucenici)
             {
                 int current_idx = siteUcenici.IndexOf(u);
-                //Addition of Pazzio
-                if (!u.CheckPass())
-                {
-                    Console.Write("Не положил или фали оценка!");
-                    continue;
-                }
+                ////Addition of Pazzio
+                //if (!u.CheckPass())
+                //{
+                //    Console.Write("Не положил или фали оценка!");
+                //    continue;
+                //}
                 sw.GetStringBuilder().Clear();
 
                 sw.Write("\"" + String.Join("/", klasen._p._smerovi[u._smer].GetCeliPredmeti(u._jazik, u._izborni, klasen._p._smerovi)) + "\"");
@@ -301,7 +308,7 @@ namespace Middleware
                 sw.Write("\"");
                 sw.Write($";\"{offsetx}{delimiter}{offsety}\"");
 
-                if (!failed_arr[current_idx]) {
+                if (current_idx == 0 ? failed_offset[0] == 0 : failed_offset[current_idx] == failed_offset[current_idx-1]) {
                     l.Add(sw.ToString());
                 }
             }
