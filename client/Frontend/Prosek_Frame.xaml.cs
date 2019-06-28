@@ -98,7 +98,7 @@ namespace Frontend
 
                 for (int i = 0; i <ucenik._oceni.Count && i < PredmetiOdSmer.Count; i++)
                 {
-                    if (string.IsNullOrEmpty(PredmetiOdSmer[i])) continue;
+                    if (string.IsNullOrWhiteSpace(PredmetiOdSmer[i])) continue;
                     if (PredmetiProsek.ContainsKey(PredmetiOdSmer[i]))
                     {
                         // PredmetiProsek[PredmetiOdSmer[i]] = PredmetiProsek[PredmetiOdSmer[i]] + " " + ucenik._oceni[i].ToString();

@@ -570,7 +570,7 @@ namespace Middleware
                 { RequestParameters.smer, NovSmer._smer }
             }, RequestScopes.GetPredmetiSmer);
             List<string> Lpredmeti = new List<string>();
-            if (predmeti.Count > 0 && !string.IsNullOrEmpty(predmeti[0]["predmeti"]))
+            if (predmeti.Count > 0 && !string.IsNullOrWhiteSpace(predmeti[0]["predmeti"]))
             {
                 Lpredmeti = predmeti[0]["predmeti"].Split(',').ToList();
             }

@@ -284,7 +284,7 @@ namespace Middleware
 
                 sw.Write(delimiter);
                 //sw.Write(klasen._ime + (klasen._srednoIme != "" ? $" {klasen._srednoIme}-" : " ") + klasen._prezime);
-                sw.Write($"{klasen._ime} {(string.IsNullOrEmpty(klasen._srednoIme) ? "" : $"{klasen._srednoIme}-")}{klasen._prezime}");
+                sw.Write($"{klasen._ime} {(string.IsNullOrWhiteSpace(klasen._srednoIme) ? "" : $"{klasen._srednoIme}-")}{klasen._prezime}");
                 sw.Write(delimiter);
                 sw.Write(klasen._direktor);
                 sw.Write(delimiter);
@@ -536,7 +536,7 @@ namespace Middleware
                 sw.Write($"{rimskoDict.Keys.ToArray()[idx]} - {rimskoDict.Values.ToArray()[idx]}");
 
                 sw.Write(delimiter);
-                sw.Write($"{klasen._ime} {(string.IsNullOrEmpty(klasen._srednoIme) ? "" : $"{klasen._srednoIme}-")}{klasen._prezime}");
+                sw.Write($"{klasen._ime} {(string.IsNullOrWhiteSpace(klasen._srednoIme) ? "" : $"{klasen._srednoIme}-")}{klasen._prezime}");
                 sw.Write(delimiter);
                 sw.Write(klasen._direktor);
                 sw.Write(delimiter);
@@ -576,7 +576,7 @@ namespace Middleware
 
         private static List<string> GetPolozilList(Ucenik u)
         {
-            if (string.IsNullOrEmpty(u._proektni) || u._proektni == ";") return new List<string> { "0", "0" };
+            if (string.IsNullOrWhiteSpace(u._proektni) || u._proektni == ";") return new List<string> { "0", "0" };
             var tmppoloz = u._proektni.Split(';').ToList().ConvertAll(x => x.Split(',')[1].ToLower());
             tmppoloz = tmppoloz.ConvertAll(x =>
             {
