@@ -261,7 +261,7 @@ namespace Middleware
                 }
                 else
                 {
-                    sw.Write("");
+                    sw.Write("//////");
                 }
                 sw.Write(delimiter);
 
@@ -577,6 +577,7 @@ namespace Middleware
         private static List<string> GetPolozilList(Ucenik u)
         {
             if (string.IsNullOrWhiteSpace(u._proektni) || u._proektni == ";") return new List<string> { "0", "0" };
+            if (u._proektni[u._proektni.Length - 1] == ';') u._proektni = u._proektni.Remove(u._proektni.Length - 1);
             var tmppoloz = u._proektni.Split(';').ToList().ConvertAll(x => x.Split(',')[1].ToLower());
             tmppoloz = tmppoloz.ConvertAll(x =>
             {
