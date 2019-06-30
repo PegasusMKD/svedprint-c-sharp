@@ -209,6 +209,12 @@ namespace Middleware
         public const string duplicate_ctr = "ctr";
         public const string glavna_kniga = "glavna_kniga";
         public const string drzava = "drzava";
+
+        // gk_diploma
+        public const string eksterni = "eksterni";
+        public const string interni = "interni";
+        public const string percentilen = "percentilen";
+        public const string delovoden_predmeti = "delovoden_predmeti";
     }
 
     class RequestConverter : JsonConverter<Request>
