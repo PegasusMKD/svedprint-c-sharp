@@ -620,9 +620,9 @@ namespace Middleware
             { "IV", "четврта"}
         };
 
-        public static void PrintGkDiploma(List<Ucenik> ucenici, Klasen klasen, int printerChoice)
+        public static void PrintGkDiploma(List<Ucenik> siteUcenici, List<Ucenik> ucenici, Klasen klasen, int printerChoice, int offsetx, int offsety)
         {
-            List<string> data = InitGkDiploma(ucenici, klasen);
+            List<string> data = InitGkDiploma(siteUcenici, ucenici, klasen, offsetx, offsety);
             string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
             PrintDialog printDialog = new PrintDialog();
             PrintDocument pd = new PrintDocument();
@@ -632,12 +632,12 @@ namespace Middleware
 
             pd.DefaultPageSettings.PaperSize = pd.PrinterSettings.PaperSizes.Cast<PaperSize>().First<PaperSize>(size => size.Kind == PaperKind.A3);
             pd.OriginAtMargins = false;
-            pd.DefaultPageSettings.Landscape = false;
+            pd.DefaultPageSettings.Landscape = true;
 
-            data.Insert(0, "\"dipl\""); // mozno e da e "sveditelstva"
+            data.Insert(0, "\"gk_dipl\"");
             string outparam = String.Join("?", data);
 
-            string pyscript = rootFolder + @"\print.exe";
+            string pyscript = rootFolder + "\\print.exe";
             Process py = new Process();
             py.StartInfo.FileName = new Uri(pyscript).AbsolutePath;
             py.StartInfo.UseShellExecute = false;
@@ -646,19 +646,40 @@ namespace Middleware
             py.Start();
             py.WaitForExit();
 
-            for (int i = 0; i < data.Count; i++)
-            {
-                pd.PrintPage += (sender, args) =>
-                {
-                    args.Graphics.DrawImage(System.Drawing.Image.FromFile($"{tmpFolder}dipl-{i}.jpg"), args.PageBounds);
-                    pd.DocumentName = $"{tmpFolder}dipl-{i}.jpg";
-                };
-                pd.Print();
-            }
+            printQueue = new List<PrintQueueItem>();
 
-            ClearTmpFolder();
+            //return;
+            int partition = 5;
+            for (int part = 0; part < 9; part++)
+            {
+                if (partition * part > data.Count - 1) break;
+                printQueue.Clear();
+                for (int i = partition * part; i < Math.Min(data.Count - 1, partition * (part + 1)); i++)
+                {
+                    PrintQueueItem x = new PrintQueueItem();
+                    x.sides = new System.Drawing.Image[1];
+                    x.sides[0] = System.Drawing.Image.FromFile(new Uri($"{tmpFolder}gk_dipl-{i}.jpg").AbsolutePath);
+
+                    printQueue.Add(x);
+                }
+
+                currentPage = 0;
+                maxSides = 1;
+                pd.PrintPage += new PrintPageEventHandler(onPrintPage);
+
+                for (int i = partition * part; i < Math.Min(data.Count - 1, partition * (part + 1)); i++)
+                {
+                    currentSide = 0;
+                    pd.Print();
+                    currentPage++;
+                }
+
+                printQueue.ForEach(x => x.sides.ToList().ForEach(job => job.Dispose()));
+                pd.Dispose();
+            }
         }
-        public static List<string> InitGkDiploma(List<Ucenik> ucenici, Klasen klasen)
+
+        public static List<string> InitGkDiploma(List<Ucenik> ucenici, List<Ucenik> ucenici1, Klasen klasen, int offsetx, int offsety)
         {
             StringWriter sw = new StringWriter();
             List<string> l = new List<string>();
