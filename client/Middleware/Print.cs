@@ -413,6 +413,13 @@ namespace Middleware
                     tmparr.Add("NaN");
                 }
                 tmparr.AddRange(u._proektni.Split(';').ToList().ConvertAll(x => x.Split(',')[0]));
+                if(tmparr.Contains("Култура за заштита мир и толеранција") || tmparr.Contains("Култура за заштита"))
+                {
+                    // vaka e ama so da se prai
+                    var xxzx = tmparr.FindIndex(x => x == "Култура за заштита мир и толеранција");
+                    if (xxzx == -1) tmparr.FindIndex(x => x == "Култура за заштита");
+                    tmparr[xxzx] = "Култура за заштита, мир и толеранција";
+                }
                 while (tmparr.Count < 22)
                 {
                     tmparr.Add("NaN");
