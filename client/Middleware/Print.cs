@@ -141,7 +141,7 @@ namespace Middleware
         }
         public static void PreviewGkDiploma(Ucenik u, Klasen k)
         {
-            List<string> data = InitGkDiploma(new List<Ucenik>() { u }, k);
+            List<string> data = new List<string>(); // InitGkDiploma(new List<Ucenik>() { u }, k);
             string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
 
             data.Insert(0, "\"dipl\""); // mozno e da e "sveditelstva"
@@ -329,7 +329,7 @@ namespace Middleware
             pd.OriginAtMargins = false;
             pd.DefaultPageSettings.Landscape = false;
 
-            data.Insert(0, "\"glavna\""); // mozno e da e "sveditelstva"
+            data.Insert(0, "\"glavna\"");
             string outparam = String.Join("?", data);
 
             string pyscript = rootFolder + "\\print.exe";
@@ -451,7 +451,7 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._prezime);
                 sw.Write(delimiter);
-                if (u._tatko == " ") sw.Write("// //");
+                if (string.IsNullOrWhiteSpace(u._tatko)) sw.Write("// //");
                 else sw.Write(u._tatko);
                 sw.Write(delimiter);
                 sw.Write(u._majka);
@@ -563,6 +563,15 @@ namespace Middleware
                 //sw.Write("14.06.2019"); // <------ HARDCODED
                 sw.Write(delimiter);
                 // BELESKI
+                tmparr.Clear();
+
+                sw.Write("\";\"");
+
+                for(int i = 0; i < u._oceni.Count; i++)
+                {
+                    tmparr.Add("0");
+                }
+                sw.Write(string.Join(" ", tmparr));
 
                 sw.Write("\"");
                 sw.Write($";\"{offsetx}{delimiter}{offsety}\"");
@@ -728,7 +737,7 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write("//////////"); // hardcoded
                 sw.Write(delimiter);
-                sw.Write(u._prethoden_delovoden); // hardcoded
+                // sw.Write(u._prethoden_delovoden); // hardcoded
                 sw.Write(delimiter);
 
                 // opsht uspeh, uchebna godina(nezz dali segashna ili prethodna)(prethodna treba), klasen, direktor
