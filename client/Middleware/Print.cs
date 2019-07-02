@@ -281,8 +281,8 @@ namespace Middleware
                 //sw.Write(u._
                 sw.Write(klasen._grad);
                 sw.Write(delimiter);
-                //sw.Write(klasen._odobreno_sveditelstvo);
-                sw.Write("28.06.2019");
+                sw.Write(klasen._odobreno_sveditelstvo);
+                //sw.Write("28.06.2019");
                 sw.Write(delimiter);
                 //sw.Write(klasen._delovoden_broj + '-' + year_dictionary[paralelka_godina] + '/' + klasen._paralelka.Split('-')[1] + '/' + ctr_passable.ToString());
 
@@ -290,10 +290,10 @@ namespace Middleware
                 string[] paralelka_god = klasen._paralelka.Split('-');
                 var val = int.Parse(db[1]) + int.Parse(year_dictionary[paralelka_god[0]]) - 1;
 
-                //if (!failed_arr[current_idx])
-                //    sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_god[1]}/{u._broj - failed_offset[current_idx]}")
+                if (!failed_arr[current_idx])
+                    sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_god[1]}/{u._broj - failed_offset[current_idx]}")
 
-                sw.Write("08-12/5");
+                //sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_god[1]}/26");
 
                 sw.Write(delimiter);
                 //sw.Write(klasen._ime + (klasen._srednoIme != "" ? $" {klasen._srednoIme}-" : " ") + klasen._prezime);
@@ -572,15 +572,15 @@ namespace Middleware
                     if ((current_idx == 0 && failed_offset[current_idx] == 0) ||
                         (current_idx > 0 && failed_offset[current_idx] == failed_offset[current_idx-1]))
                     {
-                        // sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_godina[1]}/{u._broj - failed_offset[current_idx]}");
+                        sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_godina[1]}/{u._broj - failed_offset[current_idx]}");
                     }
                 }
 
-                sw.Write("08-12/15");
-                
+                //sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_godina[1]}/26");
+
                 sw.Write(delimiter);
-                //sw.Write(klasen._odobreno_sveditelstvo);
-                sw.Write("28.06.2019");
+                sw.Write(klasen._odobreno_sveditelstvo);
+                //sw.Write("28.06.2019");
                 sw.Write(delimiter);
                 // BELESKI
                 tmparr.Clear();
