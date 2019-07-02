@@ -86,10 +86,13 @@ namespace Middleware
         public string _percentilen { get; set; }
         [JsonProperty(RequestParameters.delovoden_predmeti)] // format - "delrb1 delbr2 delbr3"
         public string _delovoden_predmeti { get; set; }
+        [JsonProperty(RequestParameters.polagal)]
+        public string _polagal { get; set; } // array with ' ' delimiter
+
         
 
         public Ucenik(string ime, string srednoIme, string prezime, List<int> oceni, string smer, int broj, string roden, string mesto_na_zhiveenje, string mesto_na_ragjanje, string povedenie, int opravdani, int neopravdani, string tip, string pat_polaga, string tatko, string majka, string gender, string maturska, string izborni, string proektni, string merki, string prethodna_godina, string prethoden_uspeh, string prethodno_uchilishte, string delovoden_broj, string datum_sveditelstvo, string polozhil, string prethodna_uchebna, string pedagoshki_merki, string drzavjanstvo, string pat_polaga_ispit, string ispiten, int duplicate_ctr,
-            string jazik, string jazik_ocena)
+            string jazik, string jazik_ocena, string polagal)
         { //string majkino,
             _ime = ime ?? "";
             _srednoIme = srednoIme ?? "";
@@ -136,6 +139,7 @@ namespace Middleware
             //Dodatoci od Pazzio
             _jazik = jazik ?? "";
             _jazik_ocena = jazik_ocena ?? "";
+            _polagal = polagal ?? "";
         }
 
         public Ucenik() { }
@@ -221,6 +225,7 @@ namespace Middleware
             bool success = valuePairs.TryGetValue(RequestParameters.prethodna_uchebna, out outvar);
             _prethodna_uchebna = success ? outvar : "";
             _drzavjanstvo = valuePairs[RequestParameters.drzavjanstvo] ?? "";
+            _polagal = valuePairs[RequestParameters.polagal] ?? "";
         }
 
         public string UpdateUcenikData(Dictionary<string, string> UpdatedData, Dictionary<string, string> OrigData, string token)
