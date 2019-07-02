@@ -215,6 +215,7 @@ namespace Middleware
         public const string interni = "interni";
         public const string percentilen = "percentilen";
         public const string delovoden_predmeti = "delovoden_predmeti";
+        public const string polagal= "polagal";
     }
 
     class RequestConverter : JsonConverter<Request>

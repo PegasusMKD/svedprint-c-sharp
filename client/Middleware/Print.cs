@@ -331,7 +331,7 @@ namespace Middleware
 
             data.Insert(0, "\"glavna\"");
             string outparam = String.Join("?", data);
-
+            //28.06.2019
             string pyscript = rootFolder + "\\print.exe";
             Process py = new Process();
             py.StartInfo.FileName = new Uri(pyscript).AbsolutePath;
@@ -575,11 +575,12 @@ namespace Middleware
 
                 sw.Write("\";\"");
 
-                for(int i = 0; i < u._oceni.Count; i++)
-                {
-                    tmparr.Add("0");
-                }
-                sw.Write(string.Join(" ", tmparr));
+                sw.Write(u._polagal);
+                //for(int i = 0; i < u._oceni.Count; i++)
+                //{
+                //    tmparr.Add("0");
+                //}
+                //sw.Write(string.Join(" ", tmparr));
 
                 sw.Write("\"");
                 sw.Write($";\"{offsetx}{delimiter}{offsety}\"");
