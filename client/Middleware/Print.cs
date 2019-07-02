@@ -461,7 +461,8 @@ namespace Middleware
                 if (string.IsNullOrWhiteSpace(u._tatko)) sw.Write("// //");
                 else sw.Write(u._tatko);
                 sw.Write(delimiter);
-                sw.Write(u._majka);
+                if (string.IsNullOrWhiteSpace(u._majka) || u._majka[0] == '/') sw.Write("/// ///");
+                else sw.Write(u._majka);
                 sw.Write(delimiter);
                 sw.Write(u._roden); // <------
                 sw.Write(delimiter);
