@@ -330,12 +330,17 @@ namespace Middleware
         public bool CheckPass()
         {
             bool checker = true;
-            foreach (int i in _oceni)
+            int n = _oceni.Count;
+            var polagal_oceni = _polagal.Split(' ');
+            for(int i = 0; i < n; i++)
             {
-                if (i == 0 || i == 1)
+                if(_oceni[i] == 1)
                 {
-                    checker = false;
-                    break;
+                    if(polagal_oceni[i] == "0")
+                    {
+                        checker = false;
+                        break;
+                    }
                 }
             }
             return checker;
