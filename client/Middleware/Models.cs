@@ -477,8 +477,9 @@ namespace Middleware
                 List<MaturskoPole> MaturskiPolinja = new List<MaturskoPole>();
                 for (int i = 2; i < Polinja.Length; i += 2)
                 {
-                    string defaultvrednost = "";
+                    string defaultvrednost = "    ";
                     if (DefaultDic.ContainsKey(Polinja[i])) defaultvrednost = DefaultDic[Polinja[i]];
+
                     MaturskiPolinja.Add(new MaturskoPole(Polinja[i], defaultvrednost, Polinja[i + 1]));
                 }
 
@@ -819,9 +820,9 @@ namespace Middleware
             Ime = ime;
             MozniPredmeti = moznipredmeti;
 
-            if (MozniPredmeti.Length > 0) IzbranPredmet = moznipredmeti[0];
             if (izbranPredmet != "") IzbranPredmet = izbranPredmet;
-
+            if (MozniPredmeti.Length > 0 && IzbranPredmet == "") IzbranPredmet = moznipredmeti[0];
+            
             //MaturskiPolinja
             if (maturskipolinja == null)
             {
