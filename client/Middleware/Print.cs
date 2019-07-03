@@ -819,7 +819,7 @@ namespace Middleware
                 sw.Write(";");
 
                 // percentile
-                sw.Write("\"" + String.Join(",", u._maturski.ConvertAll(x => x.percentilen.ToString("0:N2"))) + "\"");
+                sw.Write("\"" + String.Join(",", u._maturski.ConvertAll(x => x.percentilen.ToString("00.00").Replace(',', '.'))) + "\"");
 
                 l.Add(sw.ToString());
             }
@@ -933,70 +933,62 @@ namespace Middleware
             {
                 sw.GetStringBuilder().Clear();
 
-                // predmeti
-                sw.Write("\"" + String.Join("/", u._maturska.Split(',').Select(x => x.Split(':')[0])) + "\"");
-                sw.Write(";");
-
-                // oceni
-                sw.Write("\"" + String.Join(" ", u._maturska.Split(',').Select(x => x.Split(':')[1])) + "\"");
-                sw.Write(";");
-
-                // delovoden broj,reden broj(?), Ime na uchenik, Prezime na Uchenik, Datum na ragjanje, Mesto na ragjanje, opshtina, drzhava, drzhavjanstvo
                 sw.Write("\"");
-                sw.Write(u._delovoden_broj);
+                
+                // eksterni
+                sw.Write(string.Join("|", u._maturski.GetRange(0,3)
+                    .ConvertAll(x => $"{x.predmet}/{x.ocena}/{x.percentilen.ToString("00.00").Replace(',', '.')}")));
+
+                sw.Write("@");
+
+                // interni
+                sw.Write(string.Join("|", u._maturski.GetRange(3,u._maturski.Count-4 /* tri eksterni i edna proektna */)
+                    .ConvertAll(x => $"{x.predmet}/{x.ocena}/00.00")));
+                
+                sw.Write("@");
+
+                // proektna
+                sw.Write(string.Join("|", $"{u._maturski[u._maturski.Count - 1].predmet}/{u._maturski[u._maturski.Count - 1].ocena}/00.00"));
+
+                sw.Write("\";");
+
+                // "ime na uchilishte|mesto na uchilishte|glavna kniga|datum so momentalnata godina(mozhe i 00.00.2019)|ime na uchenik|
+                // datum na ragjanje|mesto na ragjanje|drzhava|tip na obrazovanie|cel smer|delovoden broj na diploma|ime na klasen|
+                // ime na direktor|akt broj|akt datum|ministerstvo
+                sw.Write("\"");
+                sw.Write(klasen._ucilishte);
                 sw.Write(delimiter);
-                sw.Write(u._broj); // mozno e da bide 1,2,3,4,5...
+                sw.Write(klasen._grad);
+                sw.Write(delimiter);
+                sw.Write(klasen._glavna_kniga);
+                sw.Write(delimiter);
+                sw.Write(DateTime.Now.Date.ToShortDateString());
                 sw.Write(delimiter);
                 sw.Write(u._ime);
-                sw.Write(delimiter);
-                sw.Write(u._prezime);
                 sw.Write(delimiter);
                 sw.Write(u._roden);
                 sw.Write(delimiter);
                 sw.Write(u._mesto_na_ragjanje);
                 sw.Write(delimiter);
-                sw.Write(u._mesto_na_zhiveenje);
-                sw.Write(delimiter);
-                sw.Write(u._drzavjanstvo);
-                sw.Write(delimiter);
-
-                // Ime i prezime na staratel, ispiten rok, po koj pat polaga, kakov tip obrazovanie, koj smer, //////////, delovoden broj na prethodno sveditelstvo (?)
-                sw.Write($"{(u._srednoIme == u._tatko.Split(' ')[0] ? u._tatko : u._majka)}");
-                sw.Write(delimiter);
-                sw.Write(u._ispiten);
-                sw.Write(delimiter);
-                sw.Write(u._pat_polaga);
+                sw.Write(u._mesto_na_zhiveenje.Split(',')[2]);
                 sw.Write(delimiter);
                 sw.Write(u._tip);
                 sw.Write(delimiter);
                 sw.Write(klasen._p._smerovi[u._smer]._cel_smer);
                 sw.Write(delimiter);
-                sw.Write("//////////"); // hardcoded
+                //sw.Write(u._delovoden_diploma);
                 sw.Write(delimiter);
-                // sw.Write(u._prethoden_delovoden); // hardcoded
+                sw.Write(klasen._ime);
                 sw.Write(delimiter);
+                sw.Write(klasen._direktor.Split(' ')[0]);
+                sw.Write(delimiter);
+                sw.Write(klasen._akt);
+                sw.Write(delimiter);
+                sw.Write(klasen._akt_godina);
+                sw.Write(delimiter);
+                sw.Write(klasen._ministerstvo);
 
-                // opsht uspeh, uchebna godina(nezz dali segashna ili prethodna)(prethodna treba), direktor, klasen
-                sw.Write(string.Format("{0:N2}", u._oceni.Average())); // testing
-                sw.Write(delimiter);
-                sw.Write(u._prethodna_godina);
-                sw.Write(delimiter);
-                sw.Write(klasen._direktor);
-                sw.Write(delimiter);
-                sw.Write($"{klasen._ime} {(string.IsNullOrWhiteSpace(klasen._srednoIme) ? "" : $"{klasen._srednoIme}-")}{klasen._prezime}");
-                sw.Write("\"");
-                sw.Write(";");
-
-                // datum na polaganje
-                sw.Write("\"" + String.Join(",", u._maturski.ConvertAll(x => x.datum.Replace(',', '.'))) + "\"");
-                sw.Write(";");
-
-                // delovoden broj
-                sw.Write("\"" + String.Join(",", u._maturski.ConvertAll(x => x.delovoden)) + "\"");
-                sw.Write(";");
-
-                // percentile
-                sw.Write("\"" + String.Join(",", u._maturski.ConvertAll(x => x.percentilen.ToString("0:N2"))) + "\"");
+                sw.Write($"\";\"{offsetx}{delimiter}{offsety}\"");
 
                 l.Add(sw.ToString());
             }
