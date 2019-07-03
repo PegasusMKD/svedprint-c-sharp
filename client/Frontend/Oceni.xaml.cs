@@ -73,6 +73,7 @@ namespace Frontend
 
             CanWork = true;
 
+
         }
 
         private void izborniSeletionChanged(object sender, SelectionChangedEventArgs e)
@@ -345,6 +346,7 @@ namespace Frontend
 
             LoadProektnaAktivnost();
             LoadExtraPolinja(brojDn);
+            LoadMaturskiPanel();
 
             CanWork = true;
         }
@@ -588,5 +590,154 @@ namespace Frontend
             Main.Content = new Settings(Main,loginPage);
         }
 
+
+        private void LoadMaturskiPanel()
+        {
+            MSt_1.Children.Clear();
+            MSt_2.Children.Clear();
+            proektna_zadaca.Children.Clear();
+
+            List<Middleware.MaturskiPredmet> Predmeti = Ucenici[Br].MaturskiPredmeti;
+
+            int PredmetCtr = 0;
+            foreach(Middleware.MaturskiPredmet Predmet in Predmeti)
+            {
+                StackPanel st = new StackPanel();
+
+                //Title
+                st.Children.Add(SettingsDesign.ContentBorder(Predmet.Ime));
+
+                //ComboBox
+                ComboBox CB = SettingsDesign.CreateComboBox(PredmetCtr.ToString(), Predmet.MozniPredmeti);
+                CB.SelectionChanged += MaturskiPredmetCB_SelectionChanged;
+
+                if(Predmet.Ime != "Proektna") st.Children.Add(CB);
+
+                List<Middleware.MaturskoPole> MaturskiPolinja = Predmet.MaturskiPolinja;
+
+                int PoleCtr = 0;
+                foreach (Middleware.MaturskoPole Pole in MaturskiPolinja)
+                {
+                    //Ime na Pole
+                    Border MaturskoPoleIme = SettingsDesign.ContentBorder(Pole.Ime);
+                    MaturskoPoleIme.HorizontalAlignment = HorizontalAlignment.Left;
+                    MaturskoPoleIme.Margin = new Thickness(5,0,5,5);
+
+                    //Odgovor
+                    TextBox MaturskoPoleTxt = SettingsDesign.ContentTextBox(Pole.GetVrednost());
+                    MaturskoPoleTxt.HorizontalAlignment = HorizontalAlignment.Right;
+                    MaturskoPoleTxt.Margin = new Thickness(0, 0, 0, 10);
+                    MaturskoPoleTxt.FontSize = 30;
+                    MaturskoPoleTxt.Tag = PredmetCtr.ToString() + "|" + PoleCtr.ToString();
+                    MaturskoPoleTxt.TextChanged += MaturskoPole_TextChanged;
+
+                    //StackPanel
+                    StackPanel dp = new StackPanel();
+                    dp.Margin = new Thickness(20,5,25,0);
+                    dp.Orientation = Orientation.Horizontal;
+
+                    dp.Children.Add(MaturskoPoleIme);
+                    dp.Children.Add(MaturskoPoleTxt);
+
+                    st.Children.Add(dp);
+                    st.Children.Add(SettingsDesign.UnderTextBorder());
+
+                    PoleCtr++;
+                }
+
+                if (Predmet.Ime != "Proektna")
+                    if (PredmetCtr % 2 == 0) MSt_1.Children.Add(st);
+                    else MSt_2.Children.Add(st);
+                else proektna_zadaca.Children.Add(st);
+                PredmetCtr++;
+            }
+
+        }
+
+        private void MaturskiPredmetCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox CB = (ComboBox)sender;
+            int PredmetCtr = int.Parse(CB.Tag.ToString());
+
+            Ucenici[Br].MaturskiPredmeti[PredmetCtr].IzbranPredmet = CB.SelectedValue.ToString();
+        }
+
+        private void MaturskoPole_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox tx = (TextBox)sender;
+            string Tag = tx.Tag.ToString();
+
+            int PredmetCtr = int.Parse(Tag.Split('|')[0]);
+            int PoleCtr = int.Parse(Tag.Split('|')[1]);
+
+            Ucenici[Br].MaturskiPredmeti[PredmetCtr].MaturskiPolinja[PoleCtr].SetVrednost(tx.Text);
+            Console.WriteLine(Ucenici[Br].MaturskiPredmeti[PredmetCtr].GetOutParam());
+        }
+    }
+
+    public class MaturskiPredmet
+    {
+        public string Ime;
+        public string IzbranPredmet = "";
+        public string[] MozniPredmeti;
+        public List<MaturskoPole> MaturskiPolinja = new List<MaturskoPole>();
+
+        public MaturskiPredmet(string ime , string[] moznipredmeti)
+        {
+            Ime = ime;
+            MozniPredmeti = moznipredmeti;
+
+            if (MozniPredmeti.Length > 0) IzbranPredmet = moznipredmeti[0];
+
+            //MaturskiPolinja
+            MaturskiPolinja.Add(new MaturskoPole("Ocenka", "5"));
+            if(ime != "Interen")
+            MaturskiPolinja.Add(new MaturskoPole("Percentiran", "5,0"));
+            MaturskiPolinja.Add(new MaturskoPole("Datum", "01.01.2004"));
+            MaturskiPolinja.Add(new MaturskoPole("delovoden", "2/5"));
+        }
+
+        public string GetOutParam()
+        {
+            string rez = Ime;
+            string Delimetar = "|";
+            rez += Delimetar;
+            rez += IzbranPredmet;
+            rez += Delimetar;
+            foreach(MaturskoPole Pole in MaturskiPolinja)
+            {
+                rez += Pole.Ime;
+                rez += Delimetar;
+                rez += Pole.GetVrednost();
+                rez += Delimetar;
+            }
+
+            return rez;
+        }
+    }
+
+    public class MaturskoPole
+    {
+        public string Ime;
+        public string Vrednost = "";
+        public string DefaultVrednost;
+
+        public MaturskoPole(string ime , string defaultvrednost)
+        {
+            Ime = ime;
+            DefaultVrednost = defaultvrednost;
+        }
+
+        public string GetVrednost()
+        {
+            if (Vrednost == "") return DefaultVrednost;
+            else return Vrednost;
+        }
+
+        public void SetVrednost(string vred)
+        {
+            if (vred == "") return;
+            else Vrednost = vred;
+        }
     }
 }

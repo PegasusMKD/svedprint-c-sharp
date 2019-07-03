@@ -81,6 +81,8 @@ namespace Middleware
         [JsonProperty(RequestParameters.jazik_ocena)]
         public string _jazik_ocena { get; set; }
 
+
+
         /* vaka nekako treba da lici release verzija na constructor
          * treba da frla exception ako fali nekoj podatok vo baza
         
@@ -211,6 +213,8 @@ namespace Middleware
             }, RequestScopes.UpdateUcenik);
         }
 
+        public List<MaturskiPredmet> MaturskiPredmeti = new List<MaturskiPredmet>();
+
         public Ucenik(Dictionary<string, string> valuePairs)
         {
             _ime = valuePairs[RequestParameters.ime] ?? "";
@@ -236,7 +240,7 @@ namespace Middleware
             _tip = valuePairs[RequestParameters.tip] ?? "";
             _pat_polaga = valuePairs[RequestParameters.pat_polaga] ?? "";
             _pat_polaga_ispit = valuePairs[RequestParameters.pat_polaga_ispit] ?? "";
-            _ispiten = valuePairs[RequestParameters.ispiten] ?? ""; 
+            _ispiten = valuePairs[RequestParameters.ispiten] ?? "";
             _prethoden_delovoden = valuePairs[RequestParameters.prethoden_delovoden] ?? "";
             _tatko = valuePairs[RequestParameters.tatko] ?? "";
             _majka = valuePairs[RequestParameters.majka] ?? "";
@@ -258,7 +262,11 @@ namespace Middleware
             _prethodna_uchebna = success ? outvar : "";
             _drzavjanstvo = valuePairs[RequestParameters.drzavjanstvo] ?? "";
             // _majkino = valuePairs[RequestParameters.majkino] ?? "";
+
+            //MaturskiPredmeti
+            LoadMaturski();
         }
+
 
         public string UpdateUcenikData(Dictionary<string, string> UpdatedData, Dictionary<string, string> OrigData, string token)
         {
@@ -319,26 +327,26 @@ namespace Middleware
             return rez;
         }
 
-        public Dictionary<string,string> GetPolinja ()
+        public Dictionary<string, string> GetPolinja()
         {
             Dictionary<string, string> polinja = new Dictionary<string, string>();
-            polinja.Add(RequestParameters.ime , _ime);
-            polinja.Add(RequestParameters.prezime , _prezime);
+            polinja.Add(RequestParameters.ime, _ime);
+            polinja.Add(RequestParameters.prezime, _prezime);
             polinja.Add(RequestParameters.srednoIme, _srednoIme);
-            polinja.Add(RequestParameters.smer, _smer );
+            polinja.Add(RequestParameters.smer, _smer);
             polinja.Add(RequestParameters.tatko, _tatko);
-            polinja.Add(RequestParameters.majka, _majka );
-            polinja.Add(RequestParameters.broj, _broj.ToString() );
-            polinja.Add(RequestParameters.gender,_gender);
-            polinja.Add(RequestParameters.roden , _roden );
-            polinja.Add(RequestParameters.mesto_na_ragjanje , _mesto_na_ragjanje);
-            polinja.Add(RequestParameters.mesto_na_zhiveenje , _mesto_na_zhiveenje);
-            polinja.Add(RequestParameters.pat_polaga , _pat_polaga);
-            polinja.Add(RequestParameters.polozhil  , _polozhil);
+            polinja.Add(RequestParameters.majka, _majka);
+            polinja.Add(RequestParameters.broj, _broj.ToString());
+            polinja.Add(RequestParameters.gender, _gender);
+            polinja.Add(RequestParameters.roden, _roden);
+            polinja.Add(RequestParameters.mesto_na_ragjanje, _mesto_na_ragjanje);
+            polinja.Add(RequestParameters.mesto_na_zhiveenje, _mesto_na_zhiveenje);
+            polinja.Add(RequestParameters.pat_polaga, _pat_polaga);
+            polinja.Add(RequestParameters.polozhil, _polozhil);
             polinja.Add(RequestParameters.povedenie, _povedenie);
-            polinja.Add(RequestParameters.opravdani , _opravdani.ToString() );
-            polinja.Add(RequestParameters.neopravdani , _neopravdani.ToString());
-            polinja.Add(RequestParameters.proektni , _proektni);
+            polinja.Add(RequestParameters.opravdani, _opravdani.ToString());
+            polinja.Add(RequestParameters.neopravdani, _neopravdani.ToString());
+            polinja.Add(RequestParameters.proektni, _proektni);
             polinja.Add(RequestParameters.pedagoshki_merki, _pedagoski_merki);
             polinja.Add(RequestParameters.prethodna_godina, _prethodna_godina);
             polinja.Add(RequestParameters.prethodno_uchilishte, _prethodno_uchilishte);
@@ -390,7 +398,7 @@ namespace Middleware
             return s;
         }
 
-        public void UpdateProektni(int i , string cb_pole, bool Isrealised, string token)
+        public void UpdateProektni(int i, string cb_pole, bool Isrealised, string token)
         {
 
             string realizirano;
@@ -413,6 +421,21 @@ namespace Middleware
             UpdateUcenik(RequestParameters.oceni, string.Join(" ", _oceni), Token);
         }
 
+        public void UpdateMaturska(string Token)
+        {
+            string UpdateStr = "";
+            string Delimetar = "&";
+            foreach (MaturskiPredmet Predmet in MaturskiPredmeti)
+            {
+                UpdateStr += Predmet.GetOutParam();
+                UpdateStr += Delimetar;
+            }
+
+            UpdateStr = UpdateStr.Substring(0, UpdateStr.Length - 1);
+
+            UpdateUcenik(RequestParameters.maturska, UpdateStr, Token);
+        }
+
         public string UpdateUcenik(string UpdateParametar, string value, string Token)
         {
             return Requests.UpdateData(new Dictionary<string, string>() {
@@ -431,7 +454,44 @@ namespace Middleware
 
             UpdateUcenik(RequestParameters.new_smer, NovSmer._smer, token);
         }
+
+        private void LoadMaturski()//Eksteren1|Makedonski|Ocenka|5|Percentiran|00.0|Datum|01.01.2004|delovoden|2/5|&Eksteren2|Makedonski|Ocenka|5|Percentiran|20.00|Datum|01.01.2004|delovoden|2/5|
+        {
+            _maturska = "Eksteren1|Makedonski|Ocenka|5|Percentiran|00.0|Datum|01.01.2004|delovoden|2/5&Eksteren2|Makedonski|Ocenka|5|Percentiran|20.00|Datum|01.01.2004|delovoden|2/5";
+            if (_maturska == null || _maturska == "")
+            {
+                MaturskiPredmeti.Add(new MaturskiPredmet("Eksteren1", new string[] { "Makedonski", "Matematika" }, null));
+                MaturskiPredmeti.Add(new MaturskiPredmet("Eksteren2", new string[] { "Makedonski", "Matematika" }, null));
+                MaturskiPredmeti.Add(new MaturskiPredmet("Eksteren3", new string[] { "Makedonski", "Matematika" }, null));
+                MaturskiPredmeti.Add(new MaturskiPredmet("Interen", new string[] { "Biologija", "Matematika" }, null));
+                MaturskiPredmeti.Add(new MaturskiPredmet("Proektna", new string[] { }, null));
+                return;
+            }
+
+            string[] Predmeti = _maturska.Split('&');
+
+            foreach (string Predmet in Predmeti)
+            {
+                string[] Polinja = Predmet.Split('|');
+
+                List<MaturskoPole> MaturskiPolinja = new List<MaturskoPole>();
+                for (int i = 2; i < Polinja.Length; i += 2)
+                {
+                    string defaultvrednost = "";
+                    if (DefaultDic.ContainsKey(Polinja[i])) defaultvrednost = DefaultDic[Polinja[i]];
+                    MaturskiPolinja.Add(new MaturskoPole(Polinja[i], defaultvrednost, Polinja[i + 1]));
+                }
+
+                MaturskiPredmeti.Add(new MaturskiPredmet(Polinja[0], new string[] { }, MaturskiPolinja, Polinja[1]));
+            }
+        }
+
+        Dictionary<string, string> DefaultDic = new Dictionary<string, string>()
+        { {"Ocenka", "5" }  , { "Percentiran" , "0.00" } , { "Datum" , "0.0.2002"} };
+
     }
+
+
 
     public class Smer
     {
@@ -441,7 +501,7 @@ namespace Middleware
         public string _smer { get; set; }
         [JsonProperty(RequestParameters.cel_smer)]
         public string _cel_smer { get; set; }
-        int[] jaziciPos = new int[] { -1 , -1 };
+        int[] jaziciPos = new int[] { -1, -1 };
 
         public Smer(List<string> predmeti, string smer, string cel_smer)
         {
@@ -459,9 +519,9 @@ namespace Middleware
 
         public Smer() { }
 
-        public List<string> GetCeliPredmeti(string jazici, string izbp , Dictionary<string , Smer > Smerovi)
+        public List<string> GetCeliPredmeti(string jazici, string izbp, Dictionary<string, Smer> Smerovi)
         {
-            int i = 0, j = 0 , izbctr = 0;
+            int i = 0, j = 0, izbctr = 0;
             List<string> sj = new List<string>();
             if (Smerovi.Keys.Contains("Странски Јазици"))
             {
@@ -475,7 +535,7 @@ namespace Middleware
             else sj.Add("");
 
             string izboren = "";
-            if(Smerovi["Изборни Предмети"]._predmeti.Count > 0)
+            if (Smerovi["Изборни Предмети"]._predmeti.Count > 0)
             {
                 if (izbp != null && izbp != "") izbctr = int.Parse(izbp);
                 else izbctr = -1;
@@ -499,7 +559,7 @@ namespace Middleware
             else
             {
                 predmeti = _predmeti;
-                predmeti[jaziciPos[0]] = sj[i]; 
+                predmeti[jaziciPos[0]] = sj[i];
                 predmeti[jaziciPos[1]] = sj[j];
             }
             return predmeti;
@@ -595,12 +655,12 @@ namespace Middleware
             }, RequestScopes.UpdateSmer);
         }
 
-        public Dictionary<string,Smer> GetSmerovi()
+        public Dictionary<string, Smer> GetSmerovi()
         {
             Dictionary<string, Smer> rez = new Dictionary<string, Smer>();
-            foreach(KeyValuePair<string,Smer> x in _smerovi )
+            foreach (KeyValuePair<string, Smer> x in _smerovi)
             {
-                if (x.Key != "ПА" && x.Key != "Странски Јазици" && x.Key != "Изборни Предмети") rez.Add(x.Key,x.Value);
+                if (x.Key != "ПА" && x.Key != "Странски Јазици" && x.Key != "Изборни Предмети") rez.Add(x.Key, x.Value);
             }
             return rez;
         }
@@ -676,7 +736,7 @@ namespace Middleware
 
         public void SetSmeroviPredmeti(string token)
         {
-            List<string> Smerovi = new List<string>(); 
+            List<string> Smerovi = new List<string>();
             if (_p == null)
             {
                 _p = new Paralelka(_paralelka, new List<Ucenik>(), new Dictionary<string, Smer>());
@@ -687,12 +747,12 @@ namespace Middleware
                 Smerovi = _p._smerovi.Keys.ToList();
             }
 
-            Smerovi = LoadDefaultSmerovi(Smerovi , token);
-            if( Smerovi.Count > 0) GetSmerPredmeti(Smerovi);
+            Smerovi = LoadDefaultSmerovi(Smerovi, token);
+            if (Smerovi.Count > 0) GetSmerPredmeti(Smerovi);
         }
 
-        
-        private List<string> LoadDefaultSmerovi(List<string> Smerovi , string token)
+
+        private List<string> LoadDefaultSmerovi(List<string> Smerovi, string token)
         {
             if (!Smerovi.Contains("ПА")) _p.AddSmer(new Smer("ПА", "цел смер"), token);
             if (!Smerovi.Contains("Странски Јазици")) _p.AddSmer(new Smer("Странски Јазици", "цел смер"), token);
@@ -747,5 +807,81 @@ namespace Middleware
         public const string UPDATE = "updating";
     }
 
+    public class MaturskiPredmet
+    {
+        public string Ime;
+        public string IzbranPredmet = "";
+        public string[] MozniPredmeti;
+        public List<MaturskoPole> MaturskiPolinja = new List<MaturskoPole>();
 
+        public MaturskiPredmet(string ime, string[] moznipredmeti, List<MaturskoPole> maturskipolinja , string izbranPredmet = "")
+        {
+            Ime = ime;
+            MozniPredmeti = moznipredmeti;
+
+            if (MozniPredmeti.Length > 0) IzbranPredmet = moznipredmeti[0];
+            if (izbranPredmet != "") IzbranPredmet = izbranPredmet;
+
+            //MaturskiPolinja
+            if (maturskipolinja == null)
+            {
+                if (ime == "Proektna")
+                    MaturskiPolinja.Add(new MaturskoPole("Ime", "Ime na Proektna"));
+
+                MaturskiPolinja.Add(new MaturskoPole("Ocenka", "5"));
+                if (ime != "Interen" && ime != "Proektna")
+                    MaturskiPolinja.Add(new MaturskoPole("Percentiran", "00.00"));
+                MaturskiPolinja.Add(new MaturskoPole("Datum", "01.01.2004"));
+                MaturskiPolinja.Add(new MaturskoPole("delovoden", "2/5"));
+            }
+            else MaturskiPolinja = maturskipolinja;
+        }
+
+        public string GetOutParam()
+        {
+            string rez = Ime;
+            string Delimetar = "|";
+            rez += Delimetar;
+            rez += IzbranPredmet;
+            rez += Delimetar;
+            foreach (MaturskoPole Pole in MaturskiPolinja)
+            {
+                rez += Pole.Ime;
+                rez += Delimetar;
+                rez += Pole.GetVrednost();
+                rez += Delimetar;
+            }
+
+            rez = rez.Substring(0, rez.Length -1);
+
+            return rez;
+        }
+    }
+
+    public class MaturskoPole
+    {
+        public string Ime;
+        public string Vrednost = "";
+        public string DefaultVrednost;
+
+        public MaturskoPole(string ime, string defaultvrednost , string vrednost = "")
+        {
+            Ime = ime;
+            DefaultVrednost = defaultvrednost;
+            if (vrednost != "") Vrednost = vrednost;
+        }
+
+        public string GetVrednost()
+        {
+            if (Vrednost == "") return DefaultVrednost;
+            else return Vrednost;
+        }
+
+        public void SetVrednost(string vred)
+        {
+            if (vred == "") return;
+            else Vrednost = vred;
+        }
+
+    }
 }
