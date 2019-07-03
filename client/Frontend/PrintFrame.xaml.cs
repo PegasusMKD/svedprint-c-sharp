@@ -43,7 +43,7 @@ namespace Frontend
             }
         }
 
-        string[] Menuitems = { "Свидетелство", "Главна Книга", "Постапки" };
+        string[] Menuitems = { "Свидетелство", "Главна книга", "Главна книга за диплома", "Постапки" };
         private void LoadListView()
         {
 
@@ -73,11 +73,6 @@ namespace Frontend
 
             //bitmap.Save(imageFilePath+ @"\bk2.jpeg");
             return bitmap;
-        }
-
-      private void Menu_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
         }
 
         private DockPanel MenuDP(string Name, int brojDn)
@@ -152,10 +147,13 @@ namespace Frontend
             switch (Menu.SelectedIndex)
             {
                 case 0:
-                    Middleware.Print.PrintSveditelstva(Home_Page.ucenici, uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+                    Print.PrintSveditelstva(Home_Page.ucenici, uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
                     break;
                 case 1:
-                    Middleware.Print.PrintGlavnaKniga(Home_Page.ucenici, uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+                    Print.PrintGlavnaKniga(Home_Page.ucenici, uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+                    break;
+                case 2:
+                    Print.PrintGkDiploma(uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
                     break;
             }
         }
@@ -180,14 +178,17 @@ namespace Frontend
                             uceniks.Add(Home_Page.ucenici[i+j]);
                             if (i + j == Home_Page.ucenici.Count()-1) break;
                         }
-                        Middleware.Print.PrintSveditelstva(Home_Page.ucenici, uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+                        Print.PrintSveditelstva(Home_Page.ucenici, uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
 
                     }
                     
 
                     break;
                 case 1:
-                    Middleware.Print.PrintGlavnaKniga(Home_Page.ucenici, Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+                    Print.PrintGlavnaKniga(Home_Page.ucenici, Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+                    break;
+                case 2:
+                    Print.PrintGkDiploma(Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
                     break;
             }
         }

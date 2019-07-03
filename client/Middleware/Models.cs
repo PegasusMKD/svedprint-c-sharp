@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Middleware
@@ -89,7 +90,44 @@ namespace Middleware
         [JsonProperty(RequestParameters.polagal)]
         public string _polagal { get; set; } // array with ' ' delimiter
 
+        /// <summary>
+        /// prvite 3 se eksternite, poslednata e proektnata i site izmegju se internite
+        /// </summary>
+        public List<(string predmet, int ocena, decimal percentilen, string datum, string delovoden)> _maturski { get; set; }
         
+        public string MaturskiToString()
+        {
+            using(var sw = new StringWriter())
+            {
+                sw.Write(string.Join(":", _maturski.ConvertAll(x => x.predmet)));
+                sw.Write("|");
+                sw.Write(string.Join(":",_maturski.ConvertAll(x => $"{x.ocena};{x.percentilen.ToString("0:N2")};{x.datum};{x.delovoden}")));
+
+                return sw.ToString();
+            }
+        }
+
+        public void SetMaturski(string val)
+        {
+            if(_maturski == null)
+            {
+                _maturski = new List<(string predmet, int ocena, decimal percentilen, string datum, string delovoden)>();
+            }
+            _maturski.Clear();
+            var x = val.Split('|');
+            var y = x[1].Split(':');
+
+            var pred = x[0].Split(':');
+            var ocen = y.ToList().ConvertAll(q => int.Parse(q.Split(';')[0]));
+            var perc = y.ToList().ConvertAll(q => decimal.Parse(q.Split(';')[1]));
+            var datum = y.ToList().ConvertAll(q => q.Split(';')[2]);
+            var delov = y.ToList().ConvertAll(q => q.Split(';')[3]);
+
+            for(int i = 0; i < y.Length; i++)
+            {
+                _maturski.Add((pred[i], ocen[i], perc[i], datum[i], delov[i]));
+            }
+        }
 
         public Ucenik(string ime, string srednoIme, string prezime, List<int> oceni, string smer, int broj, string roden, string mesto_na_zhiveenje, string mesto_na_ragjanje, string povedenie, int opravdani, int neopravdani, string tip, string pat_polaga, string tatko, string majka, string gender, string maturska, string izborni, string proektni, string merki, string prethodna_godina, string prethoden_uspeh, string prethodno_uchilishte, string delovoden_broj, string datum_sveditelstvo, string polozhil, string prethodna_uchebna, string pedagoshki_merki, string drzavjanstvo, string pat_polaga_ispit, string ispiten, int duplicate_ctr,
             string jazik, string jazik_ocena, string polagal)
@@ -114,6 +152,7 @@ namespace Middleware
             _gender = gender ?? "";
             //Predmet, ocena, datum na polaganje, mozhebi 
             _maturska = maturska ?? "";
+            SetMaturski(maturska);
             //Treba da e lista, kako e vo sushtina e Predmet,dali polozhil;predmet,dali go polozhil...
             _izborni = izborni ?? "";
             _proektni = proektni ?? "";
@@ -140,6 +179,8 @@ namespace Middleware
             _jazik = jazik ?? "";
             _jazik_ocena = jazik_ocena ?? "";
             _polagal = polagal ?? "";
+
+            _maturski = new List<(string predmet, int ocena, decimal percentilen)>();
         }
 
         public Ucenik() { }
@@ -210,6 +251,7 @@ namespace Middleware
             _majka = valuePairs[RequestParameters.majka] ?? "";
             _gender = valuePairs[RequestParameters.gender] ?? "";
             _maturska = valuePairs[RequestParameters.maturska] ?? "";
+            SetMaturski(_maturska);
             _izborni = valuePairs[RequestParameters.izborni] ?? "";
             _proektni = valuePairs[RequestParameters.proektni] ?? "";
             _prethodna_godina = valuePairs[RequestParameters.prethodna_godina] ?? "";

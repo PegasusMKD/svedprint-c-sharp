@@ -82,7 +82,6 @@ namespace Middleware
 
         static int currentSide;
         static int maxSides;
-        private static int failed_ctr;
 
         private static void onPrintPage(object sender, PrintPageEventArgs e)
         {
@@ -291,7 +290,7 @@ namespace Middleware
                 var val = int.Parse(db[1]) + int.Parse(year_dictionary[paralelka_god[0]]) - 1;
 
                 if (!failed_arr[current_idx])
-                    sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_god[1]}/{u._broj - failed_offset[current_idx]}")
+                    sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_god[1]}/{u._broj - failed_offset[current_idx]}");
 
                 //sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_god[1]}/26");
 
@@ -650,9 +649,9 @@ namespace Middleware
             { "IV", "четврта"}
         };
 
-        public static void PrintGkDiploma(List<Ucenik> siteUcenici, List<Ucenik> ucenici, Klasen klasen, int printerChoice, int offsetx, int offsety)
+        public static void PrintGkDiploma(List<Ucenik> ucenici, Klasen klasen, int printerChoice, int offsetx, int offsety)
         {
-            List<string> data = InitGkDiploma(siteUcenici, ucenici, klasen, offsetx, offsety);
+            List<string> data = InitGkDiploma(ucenici, klasen, offsetx, offsety);
             string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
             PrintDialog printDialog = new PrintDialog();
             PrintDocument pd = new PrintDocument();
@@ -709,12 +708,51 @@ namespace Middleware
             }
         }
 
-        public static List<string> InitGkDiploma(List<Ucenik> ucenici, List<Ucenik> ucenici1, Klasen klasen, int offsetx, int offsety)
+        public static List<string> InitGkDiploma(List<Ucenik> ucenici, Klasen klasen, int offsetx, int offsety)
         {
             StringWriter sw = new StringWriter();
             List<string> l = new List<string>();
-            string delimiter = ",";
-            foreach (Ucenik u in ucenici)
+            string delimiter = "|";
+            
+            var ToPrint = new List<Ucenik>();
+
+            // nepolagaci
+            ToPrint.AddRange(ucenici.Where(x => !x._oceni.Contains(1)));
+
+            // polagaci
+            ToPrint.AddRange(ucenici.Where(x => !ToPrint.Contains(x)));
+
+            string[] paralelka_godina = klasen._paralelka.Split('-');
+            string[] db = klasen._delovoden_broj.Split('-');
+            var val = int.Parse(db[1]) + int.Parse(year_dictionary[paralelka_godina[0]]) - 1;
+
+            int ctr = 1;
+            for (int i = 0; i < ToPrint.Count; i++)
+            {
+                if (!ToPrint[i]._oceni.Contains(0))
+                {
+                    ToPrint[i]._delovoden_broj = $"{db[0]}-{val.ToString("D2")}/{paralelka_godina[1]}/{ctr++}";
+                }
+            }
+
+            ToPrint.Sort(delegate (Ucenik u1, Ucenik u2)
+            {
+                if(u1._delovoden_broj == "")
+                {
+                    if(u2._delovoden_broj == "")
+                    {
+                        return u1._broj.CompareTo(u2._broj);
+                    }
+                    return 1;
+                }
+                if(u2._delovoden_broj == "")
+                {
+                    return -1;
+                }
+                return int.Parse(u1._delovoden_broj.Split('/')[2]).CompareTo(int.Parse(u2._delovoden_broj.Split('/')[2]));
+            });
+
+            foreach (Ucenik u in ToPrint)
             {
                 sw.GetStringBuilder().Clear();
 
@@ -730,7 +768,7 @@ namespace Middleware
                 sw.Write("\"");
                 sw.Write(u._delovoden_broj);
                 sw.Write(delimiter);
-                sw.Write(u._broj); // hardcoded
+                sw.Write(u._broj); // mozno e da bide 1,2,3,4,5...
                 sw.Write(delimiter);
                 sw.Write(u._ime);
                 sw.Write(delimiter);
@@ -738,7 +776,7 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._roden);
                 sw.Write(delimiter);
-                sw.Write(u._mesto_na_ragjanje); // hardcoded
+                sw.Write(u._mesto_na_ragjanje);
                 sw.Write(delimiter);
                 sw.Write(u._mesto_na_zhiveenje);
                 sw.Write(delimiter);
@@ -746,49 +784,42 @@ namespace Middleware
                 sw.Write(delimiter);
 
                 // Ime i prezime na staratel, ispiten rok, po koj pat polaga, kakov tip obrazovanie, koj smer, //////////, delovoden broj na prethodno sveditelstvo (?)
-                sw.Write($"{u._tatko} {u._prezime}");
+                sw.Write($"{(u._srednoIme == u._tatko.Split(' ')[0] ? u._tatko : u._majka)}");
                 sw.Write(delimiter);
-                sw.Write(u._ispiten); // hardcoded
+                sw.Write(u._ispiten);
                 sw.Write(delimiter);
-                sw.Write(u._pat_polaga); // hardcoded //
+                sw.Write(u._pat_polaga);
                 sw.Write(delimiter);
                 sw.Write(u._tip);
                 sw.Write(delimiter);
-                sw.Write(u._smer);
+                sw.Write(klasen._p._smerovi[u._smer]._cel_smer);
                 sw.Write(delimiter);
                 sw.Write("//////////"); // hardcoded
                 sw.Write(delimiter);
                 // sw.Write(u._prethoden_delovoden); // hardcoded
                 sw.Write(delimiter);
 
-                // opsht uspeh, uchebna godina(nezz dali segashna ili prethodna)(prethodna treba), klasen, direktor
+                // opsht uspeh, uchebna godina(nezz dali segashna ili prethodna)(prethodna treba), direktor, klasen
                 sw.Write(string.Format("{0:N2}", u._oceni.Average())); // testing
                 sw.Write(delimiter);
                 sw.Write(u._prethodna_godina);
                 sw.Write(delimiter);
-                if (klasen._srednoIme != "")
-                {
-                    sw.Write($"{klasen._ime} {klasen._srednoIme}-{klasen._prezime}");
-                }
-                else
-                {
-                    sw.Write($"{klasen._ime} {klasen._prezime}");
-                }
-                sw.Write(delimiter);
                 sw.Write(klasen._direktor);
+                sw.Write(delimiter);
+                sw.Write($"{klasen._ime} {(string.IsNullOrWhiteSpace(klasen._srednoIme) ? "" : $"{klasen._srednoIme}-")}{klasen._prezime}");
                 sw.Write("\"");
                 sw.Write(";");
-
+                
                 // datum na polaganje
-                sw.Write("\"" + String.Join("/", u._maturska.Split(',').Select(x => x.Split(':')[3])) + "\"");
+                sw.Write("\"" + String.Join(",", u._maturski.ConvertAll(x => x.datum.Replace(',', '.'))) + "\"");
                 sw.Write(";");
 
                 // delovoden broj
-                sw.Write("\"" + String.Join("/", u._maturska.Split(',').Select(x => x.Split(':')[4])) + "\"");
+                sw.Write("\"" + String.Join(",", u._maturski.ConvertAll(x => x.delovoden)) + "\"");
                 sw.Write(";");
 
                 // percentile
-                sw.Write("\"" + String.Join("/", u._maturska.Split(',').Select(x => x.Split(':')[2])) + "\"");
+                sw.Write("\"" + String.Join(",", u._maturski.ConvertAll(x => x.percentilen.ToString("0:N2"))) + "\"");
 
                 l.Add(sw.ToString());
             }
