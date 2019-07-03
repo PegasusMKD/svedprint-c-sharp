@@ -660,6 +660,7 @@ namespace Frontend
             int PredmetCtr = int.Parse(CB.Tag.ToString());
 
             Ucenici[Br].MaturskiPredmeti[PredmetCtr].IzbranPredmet = CB.SelectedValue.ToString();
+            Ucenici[Br].UpdateMaturska(UserKlas._token);
         }
 
         private void MaturskoPole_TextChanged(object sender, TextChangedEventArgs e)
@@ -671,6 +672,7 @@ namespace Frontend
             int PoleCtr = int.Parse(Tag.Split('|')[1]);
 
             Ucenici[Br].MaturskiPredmeti[PredmetCtr].MaturskiPolinja[PoleCtr].SetVrednost(tx.Text);
+            Ucenici[Br].UpdateMaturska(UserKlas._token);
             Console.WriteLine(Ucenici[Br].MaturskiPredmeti[PredmetCtr].GetOutParam());
         }
     }

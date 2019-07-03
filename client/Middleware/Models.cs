@@ -434,6 +434,7 @@ namespace Middleware
             UpdateStr = UpdateStr.Substring(0, UpdateStr.Length - 1);
 
             UpdateUcenik(RequestParameters.maturska, UpdateStr, Token);
+            _maturska = UpdateStr;
         }
 
         public string UpdateUcenik(string UpdateParametar, string value, string Token)
@@ -457,7 +458,7 @@ namespace Middleware
 
         private void LoadMaturski()//Eksteren1|Makedonski|Ocenka|5|Percentiran|00.0|Datum|01.01.2004|delovoden|2/5|&Eksteren2|Makedonski|Ocenka|5|Percentiran|20.00|Datum|01.01.2004|delovoden|2/5|
         {
-            _maturska = "Eksteren1|Makedonski|Ocenka|5|Percentiran|00.0|Datum|01.01.2004|delovoden|2/5&Eksteren2|Makedonski|Ocenka|5|Percentiran|20.00|Datum|01.01.2004|delovoden|2/5";
+            //_maturska = "Eksteren1|Makedonski|Ocenka|5|Percentiran||Datum|01.01.2004|delovoden|2/5&Eksteren2|Makedonski|Ocenka|5|Percentiran|20.00|Datum|01.01.2004|delovoden|2/5";
             if (_maturska == null || _maturska == "")
             {
                 MaturskiPredmeti.Add(new MaturskiPredmet("Eksteren1", new string[] { "Makedonski", "Matematika" }, null));
