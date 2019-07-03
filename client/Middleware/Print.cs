@@ -964,7 +964,7 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(DateTime.Now.Date.ToShortDateString());
                 sw.Write(delimiter);
-                sw.Write(u._ime);
+                sw.Write($"{u._ime} {u._prezime}");
                 sw.Write(delimiter);
                 sw.Write(u._roden);
                 sw.Write(delimiter);
@@ -978,9 +978,9 @@ namespace Middleware
                 sw.Write(delimiter);
                 //sw.Write(u._delovoden_diploma);
                 sw.Write(delimiter);
-                sw.Write(klasen._ime);
+                sw.Write($"{klasen._ime} {(string.IsNullOrWhiteSpace(klasen._srednoIme) ? "" : $"{klasen._srednoIme}-")}{klasen._prezime}");
                 sw.Write(delimiter);
-                sw.Write(klasen._direktor.Split(' ')[0]);
+                sw.Write(klasen._direktor);
                 sw.Write(delimiter);
                 sw.Write(klasen._akt);
                 sw.Write(delimiter);
