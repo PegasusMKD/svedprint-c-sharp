@@ -97,14 +97,13 @@ namespace Middleware
         
         public string MaturskiToString()
         {
+            string ret;
             using(var sw = new StringWriter())
             {
-                sw.Write(string.Join(":", _maturski.ConvertAll(x => x.predmet)));
-                sw.Write("|");
-                sw.Write(string.Join(":",_maturski.ConvertAll(x => $"{x.ocena};{x.percentilen.ToString("0:N2")};{x.datum};{x.delovoden}")));
-
-                return sw.ToString();
+                sw.Write(string.Join("&", _maturski.ConvertAll(x => $"{x.predmet}|{x.ocena}|{x.percentilen.ToString("00.00").Replace(',', '.')}|{x.datum}|{x.delovoden}")));
+                ret = sw.ToString();
             }
+            return ret;
         }
 
         public void SetMaturski(string val)
@@ -114,18 +113,11 @@ namespace Middleware
                 _maturski = new List<(string predmet, int ocena, decimal percentilen, string datum, string delovoden)>();
             }
             _maturski.Clear();
-            var x = val.Split('|');
-            var y = x[1].Split(':');
-
-            var pred = x[0].Split(':');
-            var ocen = y.ToList().ConvertAll(q => int.Parse(q.Split(';')[0]));
-            var perc = y.ToList().ConvertAll(q => decimal.Parse(q.Split(';')[1]));
-            var datum = y.ToList().ConvertAll(q => q.Split(';')[2]);
-            var delov = y.ToList().ConvertAll(q => q.Split(';')[3]);
-
-            for(int i = 0; i < y.Length; i++)
+            var x = val.Split('&');
+            foreach(var k in x)
             {
-                _maturski.Add((pred[i], ocen[i], perc[i], datum[i], delov[i]));
+                var data = k.Split('|');
+                _maturski.Add((data[0], int.Parse(data[1]), decimal.Parse(data[2]), data[3], data[4]));
             }
         }
 
@@ -179,8 +171,6 @@ namespace Middleware
             _jazik = jazik ?? "";
             _jazik_ocena = jazik_ocena ?? "";
             _polagal = polagal ?? "";
-
-            _maturski = new List<(string predmet, int ocena, decimal percentilen)>();
         }
 
         public Ucenik() { }
