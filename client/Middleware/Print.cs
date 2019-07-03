@@ -825,6 +825,185 @@ namespace Middleware
             }
             return l;
         }
+
+        public static void PrintDiploma(List<Ucenik> ucenici, Klasen klasen, int printerChoice, int offsetx, int offsety)
+        {
+            List<string> data = InitDiploma(ucenici, klasen, offsetx, offsety);
+            string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
+            PrintDialog printDialog = new PrintDialog();
+            PrintDocument pd = new PrintDocument();
+
+            // PrinterSettings.InstalledPrinters - lista na printeri
+            pd.PrinterSettings.PrinterName = PrinterSettings.InstalledPrinters[printerChoice];
+
+            pd.DefaultPageSettings.PaperSize = pd.PrinterSettings.PaperSizes.Cast<PaperSize>().First<PaperSize>(size => size.Kind == PaperKind.A3);
+            pd.OriginAtMargins = false;
+            pd.DefaultPageSettings.Landscape = true;
+
+            data.Insert(0, "\"dipl\"");
+            string outparam = String.Join("?", data);
+
+            string pyscript = rootFolder + "\\print.exe";
+            Process py = new Process();
+            py.StartInfo.FileName = new Uri(pyscript).AbsolutePath;
+            py.StartInfo.UseShellExecute = false;
+            py.StartInfo.Arguments = outparam;
+            py.StartInfo.CreateNoWindow = true;
+            py.Start();
+            py.WaitForExit();
+
+            printQueue = new List<PrintQueueItem>();
+
+            //return;
+            int partition = 5;
+            for (int part = 0; part < 9; part++)
+            {
+                if (partition * part > data.Count - 1) break;
+                printQueue.Clear();
+                for (int i = partition * part; i < Math.Min(data.Count - 1, partition * (part + 1)); i++)
+                {
+                    PrintQueueItem x = new PrintQueueItem();
+                    x.sides = new System.Drawing.Image[1];
+                    x.sides[0] = System.Drawing.Image.FromFile(new Uri($"{tmpFolder}dipl-{i}.jpg").AbsolutePath);
+
+                    printQueue.Add(x);
+                }
+
+                currentPage = 0;
+                maxSides = 1;
+                pd.PrintPage += new PrintPageEventHandler(onPrintPage);
+
+                for (int i = partition * part; i < Math.Min(data.Count - 1, partition * (part + 1)); i++)
+                {
+                    currentSide = 0;
+                    pd.Print();
+                    currentPage++;
+                }
+
+                printQueue.ForEach(x => x.sides.ToList().ForEach(job => job.Dispose()));
+                pd.Dispose();
+            }
+        }
+
+        public static List<string> InitDiploma(List<Ucenik> ucenici, Klasen klasen, int offsetx, int offsety)
+        {
+            StringWriter sw = new StringWriter();
+            List<string> l = new List<string>();
+            string delimiter = "|";
+
+            var ToPrint = new List<Ucenik>();
+
+            // nepolagaci
+            ToPrint.AddRange(ucenici.Where(x => !x._oceni.Contains(1)));
+
+            // polagaci
+            ToPrint.AddRange(ucenici.Where(x => !ToPrint.Contains(x)));
+
+            string[] paralelka_godina = klasen._paralelka.Split('-');
+            string[] db = klasen._delovoden_broj.Split('-');
+            var val = int.Parse(db[1]) + int.Parse(year_dictionary[paralelka_godina[0]]) - 1;
+
+            int ctr = 1;
+            for (int i = 0; i < ToPrint.Count; i++)
+            {
+                if (!ToPrint[i]._oceni.Contains(0))
+                {
+                    ToPrint[i]._delovoden_broj = $"{db[0]}-{val.ToString("D2")}/{paralelka_godina[1]}/{ctr++}";
+                }
+            }
+
+            ToPrint.Sort(delegate (Ucenik u1, Ucenik u2)
+            {
+                if (u1._delovoden_broj == "")
+                {
+                    if (u2._delovoden_broj == "")
+                    {
+                        return u1._broj.CompareTo(u2._broj);
+                    }
+                    return 1;
+                }
+                if (u2._delovoden_broj == "")
+                {
+                    return -1;
+                }
+                return int.Parse(u1._delovoden_broj.Split('/')[2]).CompareTo(int.Parse(u2._delovoden_broj.Split('/')[2]));
+            });
+
+            foreach (Ucenik u in ToPrint)
+            {
+                sw.GetStringBuilder().Clear();
+
+                // predmeti
+                sw.Write("\"" + String.Join("/", u._maturska.Split(',').Select(x => x.Split(':')[0])) + "\"");
+                sw.Write(";");
+
+                // oceni
+                sw.Write("\"" + String.Join(" ", u._maturska.Split(',').Select(x => x.Split(':')[1])) + "\"");
+                sw.Write(";");
+
+                // delovoden broj,reden broj(?), Ime na uchenik, Prezime na Uchenik, Datum na ragjanje, Mesto na ragjanje, opshtina, drzhava, drzhavjanstvo
+                sw.Write("\"");
+                sw.Write(u._delovoden_broj);
+                sw.Write(delimiter);
+                sw.Write(u._broj); // mozno e da bide 1,2,3,4,5...
+                sw.Write(delimiter);
+                sw.Write(u._ime);
+                sw.Write(delimiter);
+                sw.Write(u._prezime);
+                sw.Write(delimiter);
+                sw.Write(u._roden);
+                sw.Write(delimiter);
+                sw.Write(u._mesto_na_ragjanje);
+                sw.Write(delimiter);
+                sw.Write(u._mesto_na_zhiveenje);
+                sw.Write(delimiter);
+                sw.Write(u._drzavjanstvo);
+                sw.Write(delimiter);
+
+                // Ime i prezime na staratel, ispiten rok, po koj pat polaga, kakov tip obrazovanie, koj smer, //////////, delovoden broj na prethodno sveditelstvo (?)
+                sw.Write($"{(u._srednoIme == u._tatko.Split(' ')[0] ? u._tatko : u._majka)}");
+                sw.Write(delimiter);
+                sw.Write(u._ispiten);
+                sw.Write(delimiter);
+                sw.Write(u._pat_polaga);
+                sw.Write(delimiter);
+                sw.Write(u._tip);
+                sw.Write(delimiter);
+                sw.Write(klasen._p._smerovi[u._smer]._cel_smer);
+                sw.Write(delimiter);
+                sw.Write("//////////"); // hardcoded
+                sw.Write(delimiter);
+                // sw.Write(u._prethoden_delovoden); // hardcoded
+                sw.Write(delimiter);
+
+                // opsht uspeh, uchebna godina(nezz dali segashna ili prethodna)(prethodna treba), direktor, klasen
+                sw.Write(string.Format("{0:N2}", u._oceni.Average())); // testing
+                sw.Write(delimiter);
+                sw.Write(u._prethodna_godina);
+                sw.Write(delimiter);
+                sw.Write(klasen._direktor);
+                sw.Write(delimiter);
+                sw.Write($"{klasen._ime} {(string.IsNullOrWhiteSpace(klasen._srednoIme) ? "" : $"{klasen._srednoIme}-")}{klasen._prezime}");
+                sw.Write("\"");
+                sw.Write(";");
+
+                // datum na polaganje
+                sw.Write("\"" + String.Join(",", u._maturski.ConvertAll(x => x.datum.Replace(',', '.'))) + "\"");
+                sw.Write(";");
+
+                // delovoden broj
+                sw.Write("\"" + String.Join(",", u._maturski.ConvertAll(x => x.delovoden)) + "\"");
+                sw.Write(";");
+
+                // percentile
+                sw.Write("\"" + String.Join(",", u._maturski.ConvertAll(x => x.percentilen.ToString("0:N2"))) + "\"");
+
+                l.Add(sw.ToString());
+            }
+            return l;
+        }
+
+
         public static void PrintCarsav(int printerChoice) // TODO: testing
         {
             // Requests.GetCarsav();
