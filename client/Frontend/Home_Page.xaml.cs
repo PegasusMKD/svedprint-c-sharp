@@ -40,6 +40,10 @@ namespace Frontend
             SortUcenici();
             KlasenKlasa.SetSmeroviPredmeti(KlasenKlasa._token);
 
+            foreach(Ucenik ucenik in ucenici)
+            {
+                ucenik.LoadMaturski(KlasenKlasa);
+            }
         }
 
         private void SortUcenici()

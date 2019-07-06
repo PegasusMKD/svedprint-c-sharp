@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
+
 namespace Middleware
 {
     public class Ucenik
@@ -268,7 +269,7 @@ namespace Middleware
             // _majkino = valuePairs[RequestParameters.majkino] ?? "";
 
             //MaturskiPredmeti
-            LoadMaturski();
+            //LoadMaturski();
         }
 
 
@@ -465,40 +466,68 @@ namespace Middleware
             UpdateUcenik(RequestParameters.new_smer, NovSmer._smer, token);
         }
 
-        private void LoadMaturski()//Eksteren1|Makedonski|Ocenka|5|Percentiran|00.0|Datum|01.01.2004|delovoden|2/5|&Eksteren2|Makedonski|Ocenka|5|Percentiran|20.00|Datum|01.01.2004|delovoden|2/5|
+        public void LoadMaturski(Klasen UserKlas)//Eksteren1|Makedonski|Ocenka|5|Percentiran|00.0|Datum|01.01.2004|delovoden|2/5|&Eksteren2|Makedonski|Ocenka|5|Percentiran|20.00|Datum|01.01.2004|delovoden|2/5|
         {
             //_maturska = "Eksteren1|Makedonski|Ocenka|5|Percentiran||Datum|01.01.2004|delovoden|2/5&Eksteren2|Makedonski|Ocenka|5|Percentiran|20.00|Datum|01.01.2004|delovoden|2/5";
+            List<string> _predmeti = new List<string> { };
+
+            if (UserKlas._p._smerovi.Keys.Contains("Матурски Предмети")) _predmeti = UserKlas._p._smerovi["Матурски Предмети"]._predmeti;
+
             if (_maturska == null || _maturska == "")
             {
-                MaturskiPredmeti.Add(new MaturskiPredmet("Eksteren1", new string[] { "Makedonski", "Matematika" }, null));
-                MaturskiPredmeti.Add(new MaturskiPredmet("Eksteren2", new string[] { "Makedonski", "Matematika" }, null));
-                MaturskiPredmeti.Add(new MaturskiPredmet("Eksteren3", new string[] { "Makedonski", "Matematika" }, null));
-                MaturskiPredmeti.Add(new MaturskiPredmet("Interen", new string[] { "Biologija", "Matematika" }, null));
+                MaturskiPredmeti.Add(new MaturskiPredmet("Eksteren1", _predmeti.ToArray(), null));
+                MaturskiPredmeti.Add(new MaturskiPredmet("Eksteren2", _predmeti.ToArray(), null));
+                MaturskiPredmeti.Add(new MaturskiPredmet("Eksteren3", _predmeti.ToArray(), null));
+                MaturskiPredmeti.Add(new MaturskiPredmet("Interen", _predmeti.ToArray(), null));
                 MaturskiPredmeti.Add(new MaturskiPredmet("Proektna", new string[] { }, null));
                 return;
             }
 
-            string[] Predmeti = _maturska.Split('&');
 
-            foreach (string Predmet in Predmeti)
+            string[] predmeti = _maturska.Split('&');
+            int naming_counter = 0;
+            List<string> possible_naming = new List<string>() { "Екстерен Предмет 1", "Ектерен Предмет 2", "Екстерен Предмет 3", "Интерен Предмет", "Проектна задача" };
+            List<string> possible_fields = new List<string>() { "Име", "Оценка", "Перцентилен", "Датум", "Деловоден број" };
+            List<string> possible_values = new List<string>() { "Име на предмет", "Добиена оценка", "Перцентилен ранг", "Датум на полагање", "Деловоден број на                                                 записник" };
+            foreach (string predmet in predmeti)
             {
-                string[] Polinja = Predmet.Split('|');
+                string[] fields = predmet.Split('|');
 
                 List<MaturskoPole> MaturskiPolinja = new List<MaturskoPole>();
-                for (int i = 2; i < Polinja.Length; i += 2)
+                int counter = 0;
+                foreach (string field in fields)
                 {
-                    string defaultvrednost = "    ";
-                    if (DefaultDic.ContainsKey(Polinja[i])) defaultvrednost = DefaultDic[Polinja[i]];
-
-                    MaturskiPolinja.Add(new MaturskoPole(Polinja[i], defaultvrednost, Polinja[i + 1]));
+                    MaturskiPolinja.Add(new MaturskoPole(possible_fields[counter], possible_values[counter], field));
+                    counter++;
                 }
+                MaturskiPredmeti.Add(new MaturskiPredmet(possible_naming[naming_counter], _predmeti.ToArray(), MaturskiPolinja, fields[0]));
 
-                MaturskiPredmeti.Add(new MaturskiPredmet(Polinja[0], new string[] { }, MaturskiPolinja, Polinja[1]));
+                naming_counter++;
+
             }
         }
 
-        Dictionary<string, string> DefaultDic = new Dictionary<string, string>()
-        { {"Ocenka", "5" }  , { "Percentiran" , "0.00" } , { "Datum" , "0.0.2002"} };
+        //    string[] Predmeti = _maturska.Split('&');
+
+        //    foreach (string Predmet in Predmeti)
+        //    {
+        //        string[] Polinja = Predmet.Split('|');
+
+        //        List<MaturskoPole> MaturskiPolinja = new List<MaturskoPole>();
+        //        for (int i = 2; i < Polinja.Length; i += 2)
+        //        {
+        //            string defaultvrednost = "    ";
+        //            if (DefaultDic.ContainsKey(Polinja[i])) defaultvrednost = DefaultDic[Polinja[i]];
+
+        //            MaturskiPolinja.Add(new MaturskoPole(Polinja[i], defaultvrednost, Polinja[i + 1]));
+        //        }
+
+        //        MaturskiPredmeti.Add(new MaturskiPredmet(Polinja[0], new string[] { }, MaturskiPolinja, Polinja[1]));
+        //    }
+        //}
+
+        //Dictionary<string, string> DefaultDic = new Dictionary<string, string>()
+        //{ {"Ocenka", "5" }  , { "Percentiran" , "0.00" } , { "Datum" , "0.0.2002"} };
 
     }
 
