@@ -653,9 +653,9 @@ namespace Middleware
             { "IV", "четврта"}
         };
 
-        public static void PrintGkDiploma(List<Ucenik> ucenici, Klasen klasen, int printerChoice, int offsetx, int offsety)
+        public static void PrintGkDiploma(List<Ucenik> siteUcenici, List<Ucenik> ucenici, Klasen klasen, int printerChoice, int offsetx, int offsety)
         {
-            List<string> data = InitGkDiploma(ucenici, klasen, offsetx, offsety);
+            List<string> data = InitGkDiploma(siteUcenici, ucenici, klasen, offsetx, offsety);
             string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
             PrintDialog printDialog = new PrintDialog();
             PrintDocument pd = new PrintDocument();
@@ -712,7 +712,7 @@ namespace Middleware
             }
         }
 
-        public static List<string> InitGkDiploma(List<Ucenik> ucenici, Klasen klasen, int offsetx, int offsety)
+        public static List<string> InitGkDiploma(List<Ucenik> siteUcenici, List<Ucenik> ucenici, Klasen klasen, int offsetx, int offsety)
         {
             StringWriter sw = new StringWriter();
             List<string> l = new List<string>();
@@ -721,10 +721,10 @@ namespace Middleware
             var ToPrint = new List<Ucenik>();
 
             // nepolagaci
-            ToPrint.AddRange(ucenici.Where(x => !x._oceni.Contains(1)));
+            ToPrint.AddRange(siteUcenici.Where(x => !x._oceni.Contains(1)));
 
             // polagaci
-            ToPrint.AddRange(ucenici.Where(x => !ToPrint.Contains(x)));
+            ToPrint.AddRange(siteUcenici.Where(x => !ToPrint.Contains(x)));
 
             string[] paralelka_godina = klasen._paralelka.Split('-');
             string[] db = klasen._delovoden_broj.Split('-');
@@ -756,7 +756,7 @@ namespace Middleware
                 return int.Parse(u1._delovoden_broj.Split('/')[2]).CompareTo(int.Parse(u2._delovoden_broj.Split('/')[2]));
             });
 
-            foreach (Ucenik u in ToPrint)
+            foreach (Ucenik u in ToPrint.Where(x => ucenici.ConvertAll(z => z._broj).Contains(x._broj)))
             {
                 sw.GetStringBuilder().Clear();
 
@@ -830,9 +830,9 @@ namespace Middleware
             return l;
         }
 
-        public static void PrintDiploma(List<Ucenik> ucenici, Klasen klasen, int printerChoice, int offsetx, int offsety)
+        public static void PrintDiploma(List<Ucenik> siteUcenici, List<Ucenik> ucenici, Klasen klasen, int printerChoice, int offsetx, int offsety)
         {
-            List<string> data = InitDiploma(ucenici, klasen, offsetx, offsety);
+            List<string> data = InitDiploma(siteUcenici, ucenici, klasen, offsetx, offsety);
             string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
             PrintDialog printDialog = new PrintDialog();
             PrintDocument pd = new PrintDocument();
@@ -889,7 +889,7 @@ namespace Middleware
             }
         }
 
-        public static List<string> InitDiploma(List<Ucenik> ucenici, Klasen klasen, int offsetx, int offsety)
+        public static List<string> InitDiploma(List<Ucenik> siteUcenici, List<Ucenik> ucenici, Klasen klasen, int offsetx, int offsety)
         {
             StringWriter sw = new StringWriter();
             List<string> l = new List<string>();
@@ -898,10 +898,10 @@ namespace Middleware
             var ToPrint = new List<Ucenik>();
 
             // nepolagaci
-            ToPrint.AddRange(ucenici.Where(x => !x._oceni.Contains(1)));
+            ToPrint.AddRange(siteUcenici.Where(x => !x._oceni.Contains(1)));
 
             // polagaci
-            ToPrint.AddRange(ucenici.Where(x => !ToPrint.Contains(x)));
+            ToPrint.AddRange(siteUcenici.Where(x => !ToPrint.Contains(x)));
 
             string[] paralelka_godina = klasen._paralelka.Split('-');
             string[] db = klasen._delovoden_broj.Split('-');
@@ -933,7 +933,7 @@ namespace Middleware
                 return int.Parse(u1._delovoden_broj.Split('/')[2]).CompareTo(int.Parse(u2._delovoden_broj.Split('/')[2]));
             });
 
-            foreach (Ucenik u in ToPrint)
+            foreach (Ucenik u in ToPrint.Where(x => ucenici.ConvertAll(z => z._broj).Contains(x._broj)))
             {
                 sw.GetStringBuilder().Clear();
 

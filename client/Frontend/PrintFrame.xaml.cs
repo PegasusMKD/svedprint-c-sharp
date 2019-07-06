@@ -137,10 +137,10 @@ namespace Frontend
                     Print.PrintGlavnaKniga(Home_Page.ucenici, uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
                     break;
                 case 2:
-                    Print.PrintGkDiploma(uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+                    Print.PrintGkDiploma(Home_Page.ucenici, uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
                     break;
                 case 3:
-                    Print.PrintDiploma(uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+                    Print.PrintDiploma(Home_Page.ucenici, uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
                     break;
             }
         }
@@ -175,10 +175,10 @@ namespace Frontend
                     Print.PrintGlavnaKniga(Home_Page.ucenici, Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
                     break;
                 case 2:
-                    Print.PrintDiploma(Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+                    Print.PrintDiploma(Home_Page.ucenici, Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
                     break;
                 case 3:
-                    Print.PrintDiploma(Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+                    Print.PrintDiploma(Home_Page.ucenici, Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
                     break;
             }
         }
