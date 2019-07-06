@@ -39,6 +39,10 @@ namespace Frontend
             ucenici = result.ConvertAll(x => new Ucenik(x));
             SortUcenici();
             KlasenKlasa.SetSmeroviPredmeti(KlasenKlasa._token);
+            foreach(Ucenik ucenik in ucenici)
+            {
+                ucenik.LoadMaturski(KlasenKlasa);
+            }
           
         }
 
