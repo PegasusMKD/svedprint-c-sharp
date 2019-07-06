@@ -108,6 +108,11 @@ namespace Middleware
 
         public void SetMaturski(string val)
         {
+            if(string.IsNullOrWhiteSpace(val))
+            {
+                _maturski = new List<(string predmet, int ocena, decimal percentilen, string datum, string delovoden)>();
+                return;
+            }
             if(_maturski == null)
             {
                 _maturski = new List<(string predmet, int ocena, decimal percentilen, string datum, string delovoden)>();

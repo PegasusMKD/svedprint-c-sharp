@@ -209,9 +209,9 @@ namespace Middleware
                 // oceni
                 var ocenki = u._oceni;
                 var polagal = u._polagal.Split(' ');
-                for(int i = 0; i < polagal.Length; i++)
+                for (int i = 0; i < polagal.Length; i++)
                 {
-                    if(polagal[i] != "0")
+                    if (polagal[i] != "0")
                     {
                         ocenki[i] = int.Parse(polagal[i]);
                     }
@@ -314,14 +314,15 @@ namespace Middleware
                     proektni_list.Add(x.Replace(',', '/'));
 
                 }
-                
+
                 sw.Write(String.Join(delimiter, proektni_list));
 
                 sw.Write("\"");
                 sw.Write($";\"{offsetx}{delimiter}{offsety}\"");
 
                 //if (current_idx == 0 ? failed_offset[0] == 0 : failed_offset[current_idx] == failed_offset[current_idx-1]) {
-                if (!failed_arr[current_idx]) { 
+                if (!failed_arr[current_idx])
+                {
                     l.Add(sw.ToString());
                 }
             }
@@ -361,7 +362,7 @@ namespace Middleware
             {
                 if (partition * part > data.Count - 1) break;
                 printQueue.Clear();
-                for (int i = partition*part; i < Math.Min(data.Count - 1, partition*(part+1)); i++)
+                for (int i = partition * part; i < Math.Min(data.Count - 1, partition * (part + 1)); i++)
                 {
                     PrintQueueItem x = new PrintQueueItem();
                     x.sides = new System.Drawing.Image[1];
@@ -374,7 +375,7 @@ namespace Middleware
                 maxSides = 1;
                 pd.PrintPage += new PrintPageEventHandler(onPrintPage);
 
-                for (int i = partition*part; i < Math.Min(data.Count - 1, partition * (part + 1)); i++)
+                for (int i = partition * part; i < Math.Min(data.Count - 1, partition * (part + 1)); i++)
                 {
                     currentSide = 0;
                     pd.Print();
@@ -404,7 +405,7 @@ namespace Middleware
             failed_offset[0] = result.offset;
             failed_arr[0] = result.did_fail;
 
-            for(int i = 1; i < n; i++)
+            for (int i = 1; i < n; i++)
             {
                 result = didFail(siteUcenici[i], GetPolozilList(siteUcenici[i]));
                 failed_arr[i] = result.did_fail;
@@ -425,7 +426,7 @@ namespace Middleware
                     tmparr.Add("NaN");
                 }
                 tmparr.AddRange(u._proektni.Split(';').ToList().ConvertAll(x => x.Split(',')[0]));
-                if(tmparr.Contains("Култура за заштита мир и толеранција") || tmparr.Contains("Култура за заштита"))
+                if (tmparr.Contains("Култура за заштита мир и толеранција") || tmparr.Contains("Култура за заштита"))
                 {
                     // vaka e ama so da se prai
                     var xxzx = tmparr.FindIndex(x => x == "Култура за заштита мир и толеранција");
@@ -502,13 +503,16 @@ namespace Middleware
                 if (!worked)
                 {
                     sw.Write(u._prethoden_uspeh);
-                } else {
+                }
+                else
+                {
                     string[] ocena_zbor = new string[] { "", "Недоволен", "Доволен", "Добар", "Многу добар", "Одличен" };
                     int rounded;
-                    if(ocena - Math.Floor(ocena) < Convert.ToDecimal(0.5))
+                    if (ocena - Math.Floor(ocena) < Convert.ToDecimal(0.5))
                     {
                         rounded = Convert.ToInt32(Math.Floor(ocena));
-                    } else
+                    }
+                    else
                     {
                         rounded = Convert.ToInt32(Math.Ceiling(ocena));
                     }
@@ -565,11 +569,11 @@ namespace Middleware
                 sw.Write(delimiter);
                 string[] db = klasen._delovoden_broj.Split('-');
                 var val = int.Parse(db[1]) + int.Parse(year_dictionary[paralelka_godina[0]]) - 1;
-                
-                if(!failed_arr[current_idx])
+
+                if (!failed_arr[current_idx])
                 {
                     if ((current_idx == 0 && failed_offset[current_idx] == 0) ||
-                        (current_idx > 0 && failed_offset[current_idx] == failed_offset[current_idx-1]))
+                        (current_idx > 0 && failed_offset[current_idx] == failed_offset[current_idx - 1]))
                     {
                         sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_godina[1]}/{u._broj - failed_offset[current_idx]}");
                     }
@@ -601,7 +605,7 @@ namespace Middleware
                 {
                     l.Add(sw.ToString());
                 }
-            }   
+            }
             return l;
         }
 
@@ -713,7 +717,7 @@ namespace Middleware
             StringWriter sw = new StringWriter();
             List<string> l = new List<string>();
             string delimiter = "|";
-            
+
             var ToPrint = new List<Ucenik>();
 
             // nepolagaci
@@ -737,15 +741,15 @@ namespace Middleware
 
             ToPrint.Sort(delegate (Ucenik u1, Ucenik u2)
             {
-                if(u1._delovoden_broj == "")
+                if (u1._delovoden_broj == "")
                 {
-                    if(u2._delovoden_broj == "")
+                    if (u2._delovoden_broj == "")
                     {
                         return u1._broj.CompareTo(u2._broj);
                     }
                     return 1;
                 }
-                if(u2._delovoden_broj == "")
+                if (u2._delovoden_broj == "")
                 {
                     return -1;
                 }
@@ -809,7 +813,7 @@ namespace Middleware
                 sw.Write($"{klasen._ime} {(string.IsNullOrWhiteSpace(klasen._srednoIme) ? "" : $"{klasen._srednoIme}-")}{klasen._prezime}");
                 sw.Write("\"");
                 sw.Write(";");
-                
+
                 // datum na polaganje
                 sw.Write("\"" + String.Join(",", u._maturski.ConvertAll(x => x.datum.Replace(',', '.'))) + "\"");
                 sw.Write(";");
@@ -934,17 +938,17 @@ namespace Middleware
                 sw.GetStringBuilder().Clear();
 
                 sw.Write("\"");
-                
+
                 // eksterni
-                sw.Write(string.Join("|", u._maturski.GetRange(0,3)
+                sw.Write(string.Join("|", u._maturski.GetRange(0, 3)
                     .ConvertAll(x => $"{x.predmet}/{x.ocena}/{x.percentilen.ToString("00.00").Replace(',', '.')}")));
 
                 sw.Write("@");
 
                 // interni
-                sw.Write(string.Join("|", u._maturski.GetRange(3,u._maturski.Count-4 /* tri eksterni i edna proektna */)
+                sw.Write(string.Join("|", u._maturski.GetRange(3, u._maturski.Count - 4 /* tri eksterni i edna proektna */)
                     .ConvertAll(x => $"{x.predmet}/{x.ocena}/00.00")));
-                
+
                 sw.Write("@");
 
                 // proektna
