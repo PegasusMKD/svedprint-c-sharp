@@ -154,7 +154,7 @@
                         <ColumnDefinition Width="157*"/>
                     </Grid.ColumnDefinitions>
                 </Grid>
-                <StackPanel Name="ExtraPolinjaPanel" Visibility="Collapsed">
+                <StackPanel Name="ExtraPolinjaPanel" Visibility="Visible"> <!-- zoso bese collapsed ne znam -->
                     <StackPanel>
                         <Border Height="50" Margin="20,20,20,0" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" Grid.ColumnSpan="2">
                             <Label Content="Проектни активности" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
@@ -219,7 +219,7 @@
                         </StackPanel>
                     </Grid>
                 </StackPanel>
-                <StackPanel Name="MaturskiPanel" Visibility="Visible">
+                <StackPanel Name="MaturskiPanel" Visibility="Collapsed"> <!-- mislam deka treba vaka -->
                     <Border Height="50" Margin="20,20,20,0" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" Grid.ColumnSpan="2">
                         <Label Content="Матурски предмети" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
                     </Border>

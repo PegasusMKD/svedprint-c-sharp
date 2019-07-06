@@ -558,12 +558,16 @@ namespace Middleware
 
             List<string> predmeti = new List<string>();
 
-            int ctr = 0;
-            foreach (string predmet in _predmeti)
+            if(jaziciPos[0] >= 0 && jaziciPos[1] >= 0) {
+                foreach (string predmet in _predmeti)
+                {
+                    predmeti = _predmeti;
+                    predmeti[jaziciPos[0]] = sj[i];
+                    predmeti[jaziciPos[1]] = sj[j];
+                }
+            } else
             {
                 predmeti = _predmeti;
-                predmeti[jaziciPos[0]] = sj[i];
-                predmeti[jaziciPos[1]] = sj[j];
             }
             return predmeti;
         }
