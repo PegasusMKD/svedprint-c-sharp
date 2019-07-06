@@ -76,5 +76,12 @@ namespace Frontend
            // CB.Resources.Add(SystemColors.WindowBrushKey, Brushes.Yellow);
             return CB;
         }
+
+        public static Border ContentBorder(string LabelContent) //TitlePole
+        {
+            Border bd = CreateBorder(50, 20, 20, 10, "#FFED6A3E");
+            bd.Child = CreateLabel(LabelContent, 28, "Arial");
+            return bd;
+        }
     }
 }

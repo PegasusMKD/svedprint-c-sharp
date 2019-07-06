@@ -154,7 +154,7 @@
                         <ColumnDefinition Width="157*"/>
                     </Grid.ColumnDefinitions>
                 </Grid>
-                <StackPanel Name="ExtraPolinjaPanel">
+                <StackPanel Name="ExtraPolinjaPanel" Visibility="Collapsed">
                     <StackPanel>
                         <Border Height="50" Margin="20,20,20,0" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" Grid.ColumnSpan="2">
                             <Label Content="Проектни активности" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
@@ -199,7 +199,7 @@
                                 <Border Height="50" Margin="20,20,20,0" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" Grid.ColumnSpan="2">
                                     <Label Content="Изборен предмет" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
                                 </Border>
-                                <ComboBox Name="IzborenPredmetCB"  Background="{x:Null}" Margin="38,20,38,0" FontSize="24" VerticalAlignment="Top" Height="38" Style="{DynamicResource ComboBoxStyle2}">
+                                <ComboBox Name="IzborenPredmetCB"  Background="{x:Null}" Margin="38,20,38,0" FontSize="24" VerticalAlignment="Top" Height="38">
                                 </ComboBox>
                             </StackPanel>
                         </StackPanel>
@@ -219,7 +219,7 @@
                         </StackPanel>
                     </Grid>
                 </StackPanel>
-                <StackPanel Name="MaturskiPanel" Visibility="Collapsed">
+                <StackPanel Name="MaturskiPanel" Visibility="Visible">
                     <Border Height="50" Margin="20,20,20,0" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" Grid.ColumnSpan="2">
                         <Label Content="Матурски предмети" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
                     </Border>
@@ -228,38 +228,15 @@
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0">
-                            <Border Height="50" Margin="20" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" >
-                                <Label Content="1. екстерен предмет" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="28" FontFamily="Arial" FontWeight="Bold"/>
-                            </Border>
-                            <ComboBox Name="MaturskiPredmet_1"  Background="{x:Null}" Margin="38,0" FontSize="24" VerticalAlignment="Top" Height="38" Style="{DynamicResource ComboBoxStyle2}">
-                            </ComboBox>
-                            <Border Height="50" Margin="20" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" >
-                                <Label Content="3. екстерен предмет" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="28" FontFamily="Arial" FontWeight="Bold"/>
-                            </Border>
-                            <ComboBox Name="MaturskiPredmet_3"  Background="{x:Null}" Margin="38,0" FontSize="24" VerticalAlignment="Top" Height="38" Style="{DynamicResource ComboBoxStyle2}">
-                            </ComboBox>
-
+                        <StackPanel Grid.Column="0" Name="MSt_1">
+                           
                         </StackPanel>
-                        <StackPanel Grid.Column="1">
-                            <Border Height="50" Margin="20" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" >
-                                <Label Content="2. екстерен предмет" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="28" FontFamily="Arial" FontWeight="Bold"/>
-                            </Border>
-                            <ComboBox Name="MaturskiPredmet_2"  Background="{x:Null}" Margin="38,0" FontSize="24" VerticalAlignment="Top" Height="38" Style="{DynamicResource ComboBoxStyle2}">
-                            </ComboBox>
-                            <Border Height="50" Margin="20" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" >
-                                <Label Content="Интерен предмет" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="28" FontFamily="Arial" FontWeight="Bold"/>
-                            </Border>
-                            <ComboBox Name="MaturskiPredmet_4"  Background="{x:Null}" Margin="38,0" FontSize="24" VerticalAlignment="Top" Height="38" Style="{DynamicResource ComboBoxStyle2}">
-                            </ComboBox>
+                        <StackPanel Grid.Column="1" Name="MSt_2" >
+
                         </StackPanel>
                     </Grid>
                     <StackPanel Name="proektna_zadaca">
-                        <Border Height="50" Margin="20,20,20,5" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" >
-                            <Label Content="Проектна задача" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="28" FontFamily="Arial" FontWeight="Bold"/>
-                        </Border>
-                        <TextBox Margin="30,0,30,1" FontSize="24" Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="1,1,1,0" Foreground="White" SelectionBrush="{x:Null}"></TextBox>
-                        <Border Height="10" Margin="25,0,25,10" VerticalAlignment="Center" Background="White" BorderThickness="2" CornerRadius="5"/>
+                        
                     </StackPanel>
                 </StackPanel>
             </StackPanel>

@@ -27,13 +27,13 @@ namespace Frontend
 
             InjectServerLabel();
         }
-        
+
         private void InjectServerLabel()
         {
             ServerLabel.Foreground = new SolidColorBrush(Colors.SlateGray);
             ServerLabel.Content = $"Server branch: {Login.ServerBranch}";
         }
-        
+
         private void Login_Btn_Click(object sender, RoutedEventArgs e)
         {
             login();
@@ -41,8 +41,6 @@ namespace Frontend
 
         private void login()
         {
-            //Username_txt.Text = "Анкица_Миленковска";
-            //Password_txt.Text = "An4e592";
             Klasen temp = Login.LoginWithCred(Username_txt.Text, Password_txt.Text);
 
             if (temp._ime != null && temp._ime != "002" && temp._ime != string.Empty)
@@ -66,7 +64,7 @@ namespace Frontend
 
         private void AlertTimer_Tick(object sender, EventArgs e)
         {
-           AlertPanel.Visibility = Visibility.Hidden;
+            AlertPanel.Visibility = Visibility.Hidden;
             AlertTimer.Stop();
         }
 
@@ -90,7 +88,7 @@ namespace Frontend
 
         private void Password_txt_GotFocus(object sender, RoutedEventArgs e)
         {
-            if(Password_txt.Text == "Лозинка") RemoveText(sender);
+            if (Password_txt.Text == "Лозинка") RemoveText(sender);
         }
 
         private void RemoveText(object sender)
@@ -100,9 +98,9 @@ namespace Frontend
 
         private void Password_txt_LostFocus(object sender, RoutedEventArgs e)
         {
-            if(Password_txt.Text == "") AddText(sender, "Лозинка");
+            if (Password_txt.Text == "") AddText(sender, "Лозинка");
         }
-       
+
         private void Login_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -110,6 +108,6 @@ namespace Frontend
                 login();
             }
         }
-        
+
     }
 }

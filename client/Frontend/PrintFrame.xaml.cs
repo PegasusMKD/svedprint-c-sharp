@@ -53,6 +53,12 @@ namespace Frontend
             }
         }
 
+
+        private void Menu_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
         private DockPanel MenuDP(string Name, int brojDn)
         {
             DockPanel st = new DockPanel();
@@ -110,7 +116,7 @@ namespace Frontend
             Main.Content = HomePage;
         }
 
-        private void Btn_edinecnoprint_MouseUp(object sender, MouseButtonEventArgs e)
+        private void Btn_edinecnoprint_Clicked(object sender, RoutedEventArgs e)
         {
             int offsetx, offsety;
             offsetx = int.Parse(X_offset.Text);
@@ -139,7 +145,7 @@ namespace Frontend
             }
         }
 
-        private void Btn_celprint_MouseUp(object sender, MouseButtonEventArgs e)
+        private void Btn_celprint_Clicked(object sender, RoutedEventArgs e)
         {
             int offsetx, offsety;
             offsetx = int.Parse(X_offset.Text);
@@ -147,22 +153,22 @@ namespace Frontend
             switch (Menu.SelectedIndex)
             {
                 case 0:
-                     //Middleware.Print.PrintSveditelstva(Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+                    //Middleware.Print.PrintSveditelstva(Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
 
-                    
-                    for (int i = 0; i < Home_Page.ucenici.Count(); i+=5)
+
+                    for (int i = 0; i < Home_Page.ucenici.Count(); i += 5)
                     {
 
                         List<Ucenik> uceniks = new List<Ucenik>();
                         for (int j = 0; j < 5; j++)
                         {
-                            uceniks.Add(Home_Page.ucenici[i+j]);
-                            if (i + j == Home_Page.ucenici.Count()-1) break;
+                            uceniks.Add(Home_Page.ucenici[i + j]);
+                            if (i + j == Home_Page.ucenici.Count() - 1) break;
                         }
                         Print.PrintSveditelstva(Home_Page.ucenici, uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
 
                     }
-                    
+
 
                     break;
                 case 1:

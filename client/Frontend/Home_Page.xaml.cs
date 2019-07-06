@@ -22,7 +22,7 @@ namespace Frontend
         public static List<Dictionary<string, string>> result;
         public static Dictionary<string, Smer> smerovi;
 
-        public Home_Page(Frame m ,  Page loginpage , Klasen Klasen)
+        public Home_Page(Frame m, Page loginpage, Klasen Klasen)
         {
             InitializeComponent();
             Main = m;
@@ -33,7 +33,7 @@ namespace Frontend
 
 
             result = Requests.GetData(new Dictionary<string, string>() {
-                {RequestParameters.token, Klasen._token } 
+                {RequestParameters.token, Klasen._token }
             }, RequestScopes.GetParalelka);
 
             ucenici = result.ConvertAll(x => new Ucenik(x));
@@ -45,7 +45,7 @@ namespace Frontend
         private void SortUcenici()
         {
             var ordered = ucenici.OrderBy(x => x._broj);
-            
+
             ucenici = ordered.ToList();
         }
 
