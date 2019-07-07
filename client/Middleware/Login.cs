@@ -13,7 +13,7 @@ namespace Middleware
     public class Login
     {
         private static readonly HttpClient http = new HttpClient();
-        public static Klasen LoginWithCred(string username, string password)
+        public static async System.Threading.Tasks.Task<Klasen> LoginWithCredAsync(string username, string password)
         {
             string uri = $"https://{settings.Default.DB_HOST}{settings.Default.DB_PORT}/{settings.Default.DB_BRANCH}/login/";
             //string uri = string.Format(@"https://{0}{1}/stable/login/", settings.Default.DB_HOST, settings.Default.DB_PORT);
@@ -34,7 +34,7 @@ namespace Middleware
                     writer.Write(loginJson);
                 }
 
-                var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+                var httpResponse = (HttpWebResponse) await httpRequest.GetResponseAsync();
                 var responseJson = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
 
                 // Console.WriteLine(JToken.Parse(responseJson).ToString(Formatting.Indented));

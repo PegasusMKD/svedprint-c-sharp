@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -194,7 +195,7 @@ namespace Frontend
             return (BrojDn + 1).ToString();
         }
 
-        private void SaveBtnClicked(object sender, MouseButtonEventArgs e)
+        private async void SaveBtnClicked(object sender, MouseButtonEventArgs e)
         {
             if (BrojDn > Ucenici.Count)
             {
@@ -212,10 +213,10 @@ namespace Frontend
                 polinja.Add(new Pole("Јазици", RequestParameters.jazik, new string[] { "0:1" }));
                 polinja.Add(new Pole("Изборен Предмет 1", RequestParameters.izborni, new string[] { "0"}));
             }
-            Save();
+            await Save();
         }
 
-        private void Save()
+        private async Task Save()
         {
             Dictionary<string, string> tx = new Dictionary<string, string>();
             Dictionary<string, string> OrigData = new Dictionary<string, string>();
@@ -232,7 +233,7 @@ namespace Frontend
                         if (Ucenici[i - 1]._broj == i)
                         {
                             Ucenici[i - 1]._broj = BrojDn+1;
-                            Ucenici[i - 1].UpdateUcenik(RequestParameters.broj, (BrojDn + 1).ToString(),UserKlas._token);
+                            await Ucenici[i - 1].UpdateUcenik(RequestParameters.broj, (BrojDn + 1).ToString(), UserKlas._token);
                         }
                         Ucenici[BrojDn]._broj = i;
                     }
@@ -245,7 +246,7 @@ namespace Frontend
             OrigData["prezime"] = Ucenici[BrojDn]._prezime;
             OrigData["srednoIme"] = Ucenici[BrojDn]._srednoIme;
             OrigData["broj"] = BrojDn.ToString();
-            MessageBox.Show(Output(Ucenici[BrojDn].UpdateUcenikData(tx, OrigData, UserKlas._token)));
+            MessageBox.Show(Output(await Ucenici[BrojDn].UpdateUcenikData(tx, OrigData, UserKlas._token)));
 
             SortUcenici();
         }
@@ -313,14 +314,14 @@ namespace Frontend
             Refresh();
         }
 
-        private void DeleteUcenikImgClicked(object sender, MouseButtonEventArgs e)
+        private async void DeleteUcenikImgClicked(object sender, MouseButtonEventArgs e)
         {
             if (BrojDn >= Ucenici.Count)
             {
                 MessageBox.Show("Ученикот со тој број не постои");
                 return;
             }
-            Ucenici[BrojDn].DeleteUcenik(UserKlas._token);
+            await Ucenici[BrojDn].DeleteUcenik(UserKlas._token);
             Ucenici.RemoveAt(BrojDn);
             SortUcenici();
             Refresh();

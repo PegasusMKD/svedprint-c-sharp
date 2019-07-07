@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+using System.Threading.Tasks;
 
 namespace Middleware
 {
@@ -209,9 +209,9 @@ namespace Middleware
             }, RequestScopes.AddUcenici);
         }
 
-        public void DeleteUcenik(string token)
+        public async Task DeleteUcenik(string token)
         {
-            Requests.UpdateData(new Dictionary<string, string>()
+            await Requests.UpdateDataAsync(new Dictionary<string, string>()
             {
                 { RequestParameters.token , token} , { RequestParameters.action , RequestParameters.delete } , { RequestParameters.ime , _ime } , {RequestParameters.prezime , _prezime } ,  {RequestParameters.srednoIme , _srednoIme}  , {RequestParameters.duplicate_ctr, _duplicate_ctr.ToString()}
             }, RequestScopes.UpdateUcenik);
@@ -273,7 +273,7 @@ namespace Middleware
         }
 
 
-        public string UpdateUcenikData(Dictionary<string, string> UpdatedData, Dictionary<string, string> OrigData, string token)
+        public async Task<string> UpdateUcenikData(Dictionary<string, string> UpdatedData, Dictionary<string, string> OrigData, string token)
         {
             Dictionary<string, string> queryParams = new Dictionary<string, string>(UpdatedData);
             queryParams[nameof(token)] = token;
@@ -298,7 +298,7 @@ namespace Middleware
                 queryParams["new_broj_vo_dnevnik"] = queryParams["broj"];
                 queryParams["broj"] = OrigData["broj"];
             }
-            string rez = Requests.UpdateData(queryParams, "ucenik");
+            string rez = await Requests.UpdateDataAsync(queryParams, "ucenik");
             this._ime = UpdatedData["ime"];
             this._prezime = UpdatedData["prezime"];
             this._srednoIme = UpdatedData["srednoIme"];
@@ -408,7 +408,7 @@ namespace Middleware
             return s;
         }
 
-        public void UpdateProektni(int i, string cb_pole, bool Isrealised, string token)
+        public async Task UpdateProektniAsync(int i, string cb_pole, bool Isrealised, string token)
         {
 
             string realizirano;
@@ -421,17 +421,17 @@ namespace Middleware
             // rez = rez.Substring(0, rez.Length - 1);
 
 
-            UpdateUcenik(RequestParameters.proektni, rez, token);
+            await UpdateUcenik(RequestParameters.proektni, rez, token);
             _proektni = rez;
         }
 
-        public void UpdateUcenikOceni(string Token)
+        public async Task UpdateUcenikOceniAsync(string Token)
         {
             //UpdateUcenik(br, RequestParameters.oceni, OceniToString(), Token);
-            UpdateUcenik(RequestParameters.oceni, string.Join(" ", _oceni), Token);
+            await UpdateUcenik(RequestParameters.oceni, string.Join(" ", _oceni), Token);
         }
 
-        public void UpdateMaturska(string Token)
+        public async Task UpdateMaturska(string Token)
         {
             string UpdateStr = "";
             string Delimetar = "&";
@@ -443,18 +443,18 @@ namespace Middleware
 
             UpdateStr = UpdateStr.Substring(0, UpdateStr.Length - 1);
 
-            UpdateUcenik(RequestParameters.maturska, UpdateStr, Token);
+            await UpdateUcenik(RequestParameters.maturska, UpdateStr, Token);
             _maturska = UpdateStr;
         }
 
-        public string UpdateUcenik(string UpdateParametar, string value, string Token)
+        public async Task<string> UpdateUcenik(string UpdateParametar, string value, string Token)
         {
-            return Requests.UpdateData(new Dictionary<string, string>() {
+            return await Requests.UpdateDataAsync(new Dictionary<string, string>() {
             { RequestParameters.token , Token} , { RequestParameters.ime , _ime } , {RequestParameters.prezime , _prezime } ,  {RequestParameters.srednoIme , _srednoIme}  , { UpdateParametar, value }, {RequestParameters.duplicate_ctr, _duplicate_ctr.ToString()}
             }, RequestScopes.UpdateUcenik);
         }
 
-        public void ChangeSmer(Smer NovSmer, string token)
+        public async Task ChangeSmerAsync(Smer NovSmer, string token)
         {
             _smer = NovSmer._smer;
             _oceni.Clear();
@@ -463,7 +463,7 @@ namespace Middleware
                 _oceni.Add(0);
             }
 
-            UpdateUcenik(RequestParameters.new_smer, NovSmer._smer, token);
+            await UpdateUcenik(RequestParameters.new_smer, NovSmer._smer, token);
         }
 
         public void LoadMaturski(Klasen UserKlas)//Eksteren1|Makedonski|Ocenka|5|Percentiran|00.0|Datum|01.01.2004|delovoden|2/5|&Eksteren2|Makedonski|Ocenka|5|Percentiran|20.00|Datum|01.01.2004|delovoden|2/5|
@@ -601,36 +601,36 @@ namespace Middleware
             return predmeti;
         }
 
-        public void AddPredmet(string NovPredmet, String token)
+        public async Task AddPredmetAsync(string NovPredmet, String token)
         {
             _predmeti.Add(NovPredmet);
-            UpdateSmer(token);
+            await UpdateSmerAsync(token);
         }
 
-        public void UpdatePredmet(int ctr, string UpdatePredmet, string token)
+        public async Task UpdatePredmetAsync(int ctr, string UpdatePredmet, string token)
         {
             _predmeti[ctr] = UpdatePredmet;
-            UpdateSmer(token);
+            await UpdateSmerAsync(token);
         }
 
-        public void RemovePredmet(int i, String token)
+        public async Task RemovePredmetAsync(int i, String token)
         {
             _predmeti.RemoveAt(i);
-            UpdateSmer(token);
+            await UpdateSmerAsync(token);
         }
 
-        private void UpdateSmer(string token)
+        private async Task UpdateSmerAsync(string token)
         {
             var res = string.Join(",", _predmeti);
-            Requests.UpdateData(new Dictionary<string, string>() {
+            await Requests.UpdateDataAsync(new Dictionary<string, string>() {
             { RequestParameters.smer , _smer}, { RequestParameters.token , token } , { RequestParameters.predmeti, res}
             }, RequestScopes.UpdateSmer);
 
         }
 
-        public void RemoveSmer(string token)
+        public async Task RemoveSmer(string token)
         {
-            Requests.UpdateData(new Dictionary<string, string>()
+            await Requests.UpdateDataAsync(new Dictionary<string, string>()
             {
                 { RequestParameters.token , token} , { RequestParameters.action , RequestParameters.delete } , { RequestParameters.smer , _smer }
             }, RequestScopes.UpdateSmer);

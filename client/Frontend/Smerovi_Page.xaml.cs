@@ -112,7 +112,7 @@ namespace Frontend
             TextBox tx = (TextBox)sender;
             int SmerCtr = int.Parse(tx.Name.Substring(1).Split('s')[0]);
             int PredmetCtr = int.Parse(tx.Name.Substring(1).Split('s')[1]);
-            UserKlas._p._smerovi[UserKlas._p._smerovi.Keys.ElementAt(SmerCtr)].UpdatePredmet(PredmetCtr, tx.Text, UserKlas._token);
+            UserKlas._p._smerovi[UserKlas._p._smerovi.Keys.ElementAt(SmerCtr)].UpdatePredmetAsync(PredmetCtr, tx.Text, UserKlas._token);
             UpdateVar();
         }
 
@@ -183,11 +183,11 @@ namespace Frontend
                 if (Ucenik._smer == toBeChanged)
                 {
                     Ucenik._oceni.Add(1);
-                    Ucenik.UpdateUcenikOceni(UserKlas._token);
+                    Ucenik.UpdateUcenikOceniAsync(UserKlas._token);
                 }
                 ctr++;
             }
-            UserKlas._p._smerovi[toBeChanged].AddPredmet(DodajPredmeti[j].Text, UserKlas._token);
+            UserKlas._p._smerovi[toBeChanged].AddPredmetAsync(DodajPredmeti[j].Text, UserKlas._token);
             UpdateVar();
             GetData();
         }
@@ -208,11 +208,11 @@ namespace Frontend
                 if (Ucenik._smer == toBeChanged)
                 {
                     if (Ucenik._oceni.Count > j) Ucenik._oceni.RemoveAt(j);
-                    Ucenik.UpdateUcenikOceni(UserKlas._token);
+                    Ucenik.UpdateUcenikOceniAsync(UserKlas._token);
                 }
                 ctr++;
             }
-            UserKlas._p._smerovi[toBeChanged].RemovePredmet(j, UserKlas._token);
+            UserKlas._p._smerovi[toBeChanged].RemovePredmetAsync(j, UserKlas._token);
             UpdateVar();
             GetData();
         }
@@ -270,7 +270,7 @@ namespace Frontend
             {
                 if (ucenik._smer == smer)
                 {
-                    ucenik.ChangeSmer(NovSmer, UserKlas._token);
+                    ucenik.ChangeSmerAsync(NovSmer, UserKlas._token);
                 }
                 ctr++;
             }

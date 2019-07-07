@@ -76,23 +76,23 @@ namespace Frontend
 
         }
 
-        private void izborniSeletionChanged(object sender, SelectionChangedEventArgs e)
+        private async void izborniSeletionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (!CanWork) return;
             CanWork = false;
             string str = IzborenPredmetCB.SelectedIndex.ToString();
-            Ucenici[Br].UpdateUcenik(RequestParameters.izborni, IzborenPredmetCB.SelectedIndex.ToString(), UserKlas._token);
+            await Ucenici[Br].UpdateUcenik(RequestParameters.izborni, IzborenPredmetCB.SelectedIndex.ToString(), UserKlas._token);
             Ucenici[Br]._izborni = str;
 
             FillOcenki(Br);
         }
 
-        private void SJ_1_CB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void SJ_1_CB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (!CanWork) return;
             CanWork = false;    
             string str = SJ_1_CB.SelectedIndex.ToString() + ";" + SJ_2_CB.SelectedIndex.ToString();
-            Ucenici[Br].UpdateUcenik(RequestParameters.jazik, str, UserKlas._token);
+            await Ucenici[Br].UpdateUcenik(RequestParameters.jazik, str, UserKlas._token);
             Ucenici[Br]._jazik = str;
 
             FillOcenki(Br);
@@ -122,34 +122,34 @@ namespace Frontend
 
         }
 
-        private void PedagoskiMerkiCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void PedagoskiMerkiCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox cb = (ComboBox)sender;
             if (cb.SelectedIndex == -1) return;
-            Ucenici[Br].UpdateUcenik(RequestParameters.pedagoshki_merki , cb.SelectedValue.ToString() , UserKlas._token);
+            await Ucenici[Br].UpdateUcenik(RequestParameters.pedagoshki_merki, cb.SelectedValue.ToString(), UserKlas._token);
             Ucenici[Br]._pedagoski_merki = cb.SelectedValue.ToString();
         }
 
-        private void PovedenieCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void PovedenieCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox cb = (ComboBox)sender;
             if (cb.SelectedIndex == -1) return;
-            Ucenici[Br].UpdateUcenik(RequestParameters.povedenie, cb.SelectedValue.ToString(), UserKlas._token);
+            await Ucenici[Br].UpdateUcenik(RequestParameters.povedenie, cb.SelectedValue.ToString(), UserKlas._token);
             Ucenici[Br]._povedenie = cb.SelectedValue.ToString();
         }
 
-        private void NeopravdaniTxt_TextChanged(object sender, TextChangedEventArgs e)
+        private async void NeopravdaniTxt_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (!int.TryParse(NeopravdaniTxt.Text, out int n)) return;
             Ucenici[Br]._neopravdani = int.Parse(NeopravdaniTxt.Text);
-            Ucenici[Br].UpdateUcenik(RequestParameters.neopravdani, Ucenici[Br]._neopravdani.ToString(), UserKlas._token);
+            await Ucenici[Br].UpdateUcenik(RequestParameters.neopravdani, Ucenici[Br]._neopravdani.ToString(), UserKlas._token);
         }
 
-        private void OpravdaniTxt_TextChanged(object sender, TextChangedEventArgs e)
+        private async void OpravdaniTxt_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (!int.TryParse(OpravdaniTxt.Text, out int n)) return;
             Ucenici[Br]._opravdani = int.Parse(OpravdaniTxt.Text);
-            Ucenici[Br].UpdateUcenik(RequestParameters.opravdani, Ucenici[Br]._opravdani.ToString() , UserKlas._token);
+            await Ucenici[Br].UpdateUcenik(RequestParameters.opravdani, Ucenici[Br]._opravdani.ToString(), UserKlas._token);
         }
 
         private void LoadListView()
@@ -443,27 +443,27 @@ namespace Frontend
 
         }
 
-        private void Check_Unchecked(object sender, RoutedEventArgs e)
+        private async void Check_Unchecked(object sender, RoutedEventArgs e)
         {
             int i = int.Parse(((CheckBox)sender).Tag.ToString());
             string PreValue = Ucenici[Br]._proektni.Split(';')[i].Split(',')[0];
-            Ucenici[Br].UpdateProektni(i, PreValue, false, UserKlas._token);
+            await Ucenici[Br].UpdateProektniAsync(i, PreValue, false, UserKlas._token);
         }
 
-        private void Check_Checked(object sender, RoutedEventArgs e)
+        private async void Check_Checked(object sender, RoutedEventArgs e)
         {
             int i = int.Parse(((CheckBox)sender).Tag.ToString());
             string PreValue = Ucenici[Br]._proektni.Split(';')[i].Split(',')[0];
-            Ucenici[Br].UpdateProektni(i, PreValue, true, UserKlas._token);
+            await Ucenici[Br].UpdateProektniAsync(i, PreValue, true, UserKlas._token);
         }
 
-        private void CB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void CB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int i = int.Parse(((ComboBox)sender).Tag.ToString());
-            Ucenici[Br].UpdateProektni(i , ((ComboBox)sender).SelectedValue.ToString() , realiziranoProektni[i].IsChecked.Value , UserKlas._token);
+            await Ucenici[Br].UpdateProektniAsync(i, ((ComboBox)sender).SelectedValue.ToString(), realiziranoProektni[i].IsChecked.Value, UserKlas._token);
         }
 
-        private void OcenkiBox_Text_Changed(object sender, EventArgs e)
+        private async void OcenkiBox_Text_Changed(object sender, EventArgs e)
         {
             TextBox tx = (TextBox)sender;
 
@@ -482,7 +482,7 @@ namespace Frontend
             //update
             int br = int.Parse(BrojDn_label.Content.ToString());
             Ucenici[br-1]._oceni = Array.ConvertAll(Ocenkibox.ToArray(), x => int.Parse(x.Text)).ToList();
-            Ucenici[br - 1].UpdateUcenikOceni(UserKlas._token);
+            await Ucenici[br - 1].UpdateUcenikOceniAsync(UserKlas._token);
 
             //Menu
             Prosek_out.Content = Ucenici[br - 1].prosek();
@@ -536,7 +536,7 @@ namespace Frontend
             }
         }
 
-        private void Combobox_Smer_SelectionChanged(object sender,SelectionChangedEventArgs e)
+        private async void Combobox_Smer_SelectionChanged(object sender,SelectionChangedEventArgs e)
         {
             if (!CanWork) return;
 
@@ -547,7 +547,7 @@ namespace Frontend
             var x = UserKlas._p.GetSmerovi().Values.ToList();
             Smer NovSmer = x[combobox_smer.SelectedIndex];
 
-            Ucenici[br].ChangeSmer(NovSmer,UserKlas._token);
+            await Ucenici[br].ChangeSmerAsync(NovSmer, UserKlas._token);
 
             LoadOcenkiView(br);
             Load_stranski_jazici(br);
@@ -656,16 +656,16 @@ namespace Frontend
 
         }
 
-        private void MaturskiPredmetCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void MaturskiPredmetCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox CB = (ComboBox)sender;
             int PredmetCtr = int.Parse(CB.Tag.ToString());
 
             Ucenici[Br].MaturskiPredmeti[PredmetCtr].IzbranPredmet = CB.SelectedValue.ToString();
-            Ucenici[Br].UpdateMaturska(UserKlas._token);
+            await Ucenici[Br].UpdateMaturska(UserKlas._token);
         }
 
-        private void MaturskoPole_TextChanged(object sender, TextChangedEventArgs e)
+        private async void MaturskoPole_TextChanged(object sender, TextChangedEventArgs e)
         {
             TextBox tx = (TextBox)sender;
             string Tag = tx.Tag.ToString();
@@ -674,7 +674,7 @@ namespace Frontend
             int PoleCtr = int.Parse(Tag.Split('|')[1]);
 
             Ucenici[Br].MaturskiPredmeti[PredmetCtr].MaturskiPolinja[PoleCtr].SetVrednost(tx.Text);
-            Ucenici[Br].UpdateMaturska(UserKlas._token);
+            await Ucenici[Br].UpdateMaturska(UserKlas._token);
             Console.WriteLine(Ucenici[Br].MaturskiPredmeti[PredmetCtr].GetOutParam());
         }
     }

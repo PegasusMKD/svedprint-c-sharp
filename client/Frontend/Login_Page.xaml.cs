@@ -2,6 +2,7 @@
 using Middleware;
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -34,14 +35,14 @@ namespace Frontend
             ServerLabel.Content = $"Server branch: {Login.ServerBranch}";
         }
 
-        private void Login_Btn_Click(object sender, RoutedEventArgs e)
+        private async void Login_Btn_Click(object sender, RoutedEventArgs e)
         {
-            login();
+            await login();
         }
 
-        private void login()
+        private async Task login()
         {
-            Klasen temp = Login.LoginWithCred(Username_txt.Text, Password_txt.Text);
+            Klasen temp = await Login.LoginWithCredAsync(Username_txt.Text, Password_txt.Text);
 
             if (temp._ime != null && temp._ime != "002" && temp._ime != string.Empty)
             {
@@ -101,11 +102,11 @@ namespace Frontend
             if (Password_txt.Text == "") AddText(sender, "Лозинка");
         }
 
-        private void Login_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        private async void Login_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                login();
+                await login();
             }
         }
 

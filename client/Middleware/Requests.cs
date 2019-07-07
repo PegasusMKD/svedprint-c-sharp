@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace Middleware
@@ -84,7 +85,7 @@ namespace Middleware
             }
         }
 
-        public static string UpdateData(Dictionary<string, string> queryParams, string scope)
+        public static async Task<string> UpdateDataAsync(Dictionary<string, string> queryParams, string scope)
         {
             try
             {
@@ -95,13 +96,13 @@ namespace Middleware
                 var httpRequest = (HttpWebRequest)WebRequest.Create(uri);
                 httpRequest.Method = @"POST";
                 httpRequest.ContentType = @"application/json";
-                using (var writer = new StreamWriter(httpRequest.GetRequestStream()))
+                using (var writer = new StreamWriter(await httpRequest.GetRequestStreamAsync()))
                 {
                     writer.Write(json);
                 }
 
-                var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
-                var responseJson = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
+                var httpResponse = (HttpWebResponse)await httpRequest.GetResponseAsync();
+                var responseJson = await new StreamReader(httpResponse.GetResponseStream()).ReadToEndAsync();
 
                 return responseJson.ToString();
             }
