@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -44,8 +47,8 @@ namespace Middleware
             py.StartInfo.Arguments = outparam;
             py.StartInfo.CreateNoWindow = true;
             py.Start();
-            py.WaitForExit();
-
+            py.WaitForExit();        
+            
             printQueue = new List<PrintQueueItem>();
 
             //return;
@@ -761,16 +764,27 @@ namespace Middleware
                 sw.GetStringBuilder().Clear();
 
                 // predmeti
-                sw.Write("\"" + String.Join("/", u._maturska.Split(',').Select(x => x.Split(':')[0])) + "\"");
+                //sw.Write("\"" + String.Join("/", u._maturska.Split(',').Select(x => x.Split(':')[0])) + "\"");
                 sw.Write(";");
 
                 // oceni
-                sw.Write("\"" + String.Join(" ", u._maturska.Split(',').Select(x => x.Split(':')[1])) + "\"");
+                //sw.Write("\"" + String.Join(" ", u._maturska.Split(',').Select(x => x.Split(':')[1])) + "\"");
                 sw.Write(";");
-
+                
                 // delovoden broj,reden broj(?), Ime na uchenik, Prezime na Uchenik, Datum na ragjanje, Mesto na ragjanje, opshtina, drzhava, drzhavjanstvo
                 sw.Write("\"");
-                sw.Write(u._delovoden_broj);
+                var task = Task.Run<string>(() => {
+                    return Requests.GetDelovoden(new Dictionary<string, string>
+                    {
+                        { RequestParameters.token, klasen._token },
+                        { RequestParameters.ime,  u._ime },
+                        { RequestParameters.srednoIme, u._srednoIme },
+                        { RequestParameters.prezime, u._prezime },
+                        { RequestParameters.duplicate_ctr, u._duplicate_ctr.ToString() }
+                    });
+                }
+                );
+                sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_godina[1]}/{task.Result}");
                 sw.Write(delimiter);
                 sw.Write(u._broj); // mozno e da bide 1,2,3,4,5...
                 sw.Write(delimiter);

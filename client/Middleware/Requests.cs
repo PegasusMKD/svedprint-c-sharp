@@ -98,13 +98,42 @@ namespace Middleware
                 httpRequest.ContentType = @"application/json";
                 using (var writer = new StreamWriter(await httpRequest.GetRequestStreamAsync()))
                 {
-                    writer.Write(json);
+                    await writer.WriteAsync(json);
                 }
 
                 var httpResponse = (HttpWebResponse)await httpRequest.GetResponseAsync();
                 var responseJson = await new StreamReader(httpResponse.GetResponseStream()).ReadToEndAsync();
 
                 return responseJson.ToString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                return "107";
+            }
+        }
+
+        public static string GetDelovoden(Dictionary<string, string> queryParams)
+        {
+            try
+            {
+                string json = JsonConvert.SerializeObject(queryParams);
+                string uri = $"https://{settings.Default.DB_HOST}{settings.Default.DB_PORT}/{settings.Default.DB_BRANCH}/get_delovoden/";
+                var httpRequest = (HttpWebRequest)WebRequest.Create(uri);
+                httpRequest.Method = @"POST";
+                httpRequest.ContentType = @"application/json";
+                using (var writer = new StreamWriter(httpRequest.GetRequestStream()))
+                {
+                    writer.Write(json);
+                }
+
+                var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+                var responseJson = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
+
+                var zz = JToken.FromObject(JsonConvert.DeserializeObject(responseJson));
+                int k = zz.First.First.Value<int>();
+
+                return k.ToString();
             }
             catch (Exception ex)
             {
@@ -218,6 +247,8 @@ namespace Middleware
         public const string delovoden_predmeti = "delovoden_predmeti";
         public const string polagal= "polagal";
     }
+
+
 
     class RequestConverter : JsonConverter<Request>
     {

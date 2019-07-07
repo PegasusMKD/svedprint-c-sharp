@@ -46,8 +46,16 @@ namespace Frontend
         string[] Menuitems = { "Свидетелство", "Главна книга", "Главна книга за диплома", "Диплома" };
         private void LoadListView()
         {
-
-            for (int i = 0; i < Menuitems.Length; i++)
+            // ne treba da gi dava opciite za diplomi za tie sto ne se cetvrta
+            int n;
+            if(Home_Page.KlasenKlasa._paralelka.Split('-')[0] == "IV")
+            {
+                n = 4;
+            } else
+            {
+                n = 2;
+            }
+            for (int i = 0; i < n; i++)
             {
                 Menu.Items.Add(MenuDP(Menuitems[i], i));
             }
@@ -144,7 +152,7 @@ namespace Frontend
                     break;
             }
         }
-
+        
         private void Btn_celprint_Clicked(object sender, RoutedEventArgs e)
         {
             int offsetx, offsety;
@@ -165,7 +173,6 @@ namespace Frontend
                     //        uceniks.Add(Home_Page.ucenici[i + j]);
                     //        if (i + j == Home_Page.ucenici.Count() - 1) break;
                     //    }
-                    
                     // hmmm
                         Print.PrintSveditelstva(Home_Page.ucenici, /*uceniks*/ Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
                     //}
@@ -176,7 +183,7 @@ namespace Frontend
                     Print.PrintGlavnaKniga(Home_Page.ucenici, Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
                     break;
                 case 2:
-                    Print.PrintDiploma(Home_Page.ucenici, Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+                    Print.PrintGkDiploma(Home_Page.ucenici, Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
                     break;
                 case 3:
                     Print.PrintDiploma(Home_Page.ucenici, Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);

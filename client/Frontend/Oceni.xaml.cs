@@ -396,7 +396,7 @@ namespace Frontend
             CB.FontSize = 24;
             CB.VerticalAlignment = VerticalAlignment.Top;
             CB.Height = 38;
-            CB.Style = (Style)FindResource("ComboBoxStyle2");
+            // CB.Style = (Style)FindResource("ComboBoxStyle2");
             CB.Tag = i.ToString();
             if (UserKlas._p._smerovi.ContainsKey("ПА"))
             {
