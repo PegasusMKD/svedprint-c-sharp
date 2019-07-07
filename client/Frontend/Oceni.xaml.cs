@@ -611,7 +611,7 @@ namespace Frontend
                 ComboBox CB = SettingsDesign.CreateComboBox(PredmetCtr.ToString(), Predmet.MozniPredmeti);
                 CB.SelectionChanged += MaturskiPredmetCB_SelectionChanged;
 
-                if(Predmet.Ime != "Proektna") st.Children.Add(CB);
+                if(Predmet.Ime != "Проектна задача") st.Children.Add(CB);
 
                 List<Middleware.MaturskoPole> MaturskiPolinja = Predmet.MaturskiPolinja;
 
@@ -619,6 +619,9 @@ namespace Frontend
                 foreach (Middleware.MaturskoPole Pole in MaturskiPolinja)
                 {
                     //Ime na Pole
+                    if (Predmet.Ime == "Интерен Предмет" && Pole.Ime == "Перцентилен") continue;
+                    if (Predmet.Ime == "Проектна задача" && Pole.Ime == "Перцентилен") continue;
+
                     Border MaturskoPoleIme = SettingsDesign.ContentBorder(Pole.Ime);
                     MaturskoPoleIme.HorizontalAlignment = HorizontalAlignment.Left;
                     MaturskoPoleIme.Margin = new Thickness(5,0,5,5);
@@ -644,8 +647,8 @@ namespace Frontend
 
                     PoleCtr++;
                 }
-
-                if (Predmet.Ime != "Proektna")
+                
+                if (Predmet.Ime != "Проектна задача")
                     if (PredmetCtr % 2 == 0) MSt_1.Children.Add(st);
                     else MSt_2.Children.Add(st);
                 else proektna_zadaca.Children.Add(st);
@@ -658,7 +661,7 @@ namespace Frontend
         {
             ComboBox CB = (ComboBox)sender;
             int PredmetCtr = int.Parse(CB.Tag.ToString());
-
+            Console.WriteLine(PredmetCtr);
             Ucenici[Br].MaturskiPredmeti[PredmetCtr].IzbranPredmet = CB.SelectedValue.ToString();
             Ucenici[Br].UpdateMaturska(UserKlas._token);
         }
