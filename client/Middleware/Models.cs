@@ -437,7 +437,7 @@ namespace Middleware
             string Delimetar = "&";
             foreach (MaturskiPredmet Predmet in MaturskiPredmeti)
             {
-                UpdateStr += Predmet.GetOutParam();
+                UpdateStr += Predmet.GetOutParam(Predmet.Ime);
                 UpdateStr += Delimetar;
             }
 
@@ -475,11 +475,11 @@ namespace Middleware
 
             if (_maturska == null || _maturska == "")
             {
-                MaturskiPredmeti.Add(new MaturskiPredmet("Eksteren1", _predmeti.ToArray(), null));
-                MaturskiPredmeti.Add(new MaturskiPredmet("Eksteren2", _predmeti.ToArray(), null));
-                MaturskiPredmeti.Add(new MaturskiPredmet("Eksteren3", _predmeti.ToArray(), null));
-                MaturskiPredmeti.Add(new MaturskiPredmet("Interen", _predmeti.ToArray(), null));
-                MaturskiPredmeti.Add(new MaturskiPredmet("Proektna", new string[] { }, null));
+                MaturskiPredmeti.Add(new MaturskiPredmet("Екстерен Предмет 1", _predmeti.ToArray(), null));
+                MaturskiPredmeti.Add(new MaturskiPredmet("Ектерен Предмет 2", _predmeti.ToArray(), null));
+                MaturskiPredmeti.Add(new MaturskiPredmet("Екстерен Предмет 3", _predmeti.ToArray(), null));
+                MaturskiPredmeti.Add(new MaturskiPredmet("Интерен Предмет", _predmeti.ToArray(), null));
+                MaturskiPredmeti.Add(new MaturskiPredmet("Проектна задача", new string[] { }, null));
                 return;
             }
 
@@ -487,21 +487,25 @@ namespace Middleware
             string[] predmeti = _maturska.Split('&');
             int naming_counter = 0;
             List<string> possible_naming = new List<string>() { "Екстерен Предмет 1", "Ектерен Предмет 2", "Екстерен Предмет 3", "Интерен Предмет", "Проектна задача" };
-            List<string> possible_fields = new List<string>() { "Име", "Оценка", "Перцентилен", "Датум", "Деловоден број" };
-            List<string> possible_values = new List<string>() { "Име на предмет", "Добиена оценка", "Перцентилен ранг", "Датум на полагање", "Деловоден број на                                                 записник" };
+            List<string> possible_fields = new List<string>() { "Име", "Оценка", "Перцентилен ранг", "Датум", "Деловоден број" };
+            List<string> possible_values = new List<string>() { "Име на предмет", "Добиена оценка", "Перцентилен ранг", "Датум на полагање", "Деловоден број на записник" };
+
             foreach (string predmet in predmeti)
             {
                 string[] fields = predmet.Split('|');
 
                 List<MaturskoPole> MaturskiPolinja = new List<MaturskoPole>();
                 int counter = 0;
-                foreach (string field in fields)
-                {
+                foreach(string field in fields)
+                { 
                     MaturskiPolinja.Add(new MaturskoPole(possible_fields[counter], possible_values[counter], field));
                     counter++;
                 }
-                MaturskiPredmeti.Add(new MaturskiPredmet(possible_naming[naming_counter], _predmeti.ToArray(), MaturskiPolinja, fields[0]));
+                if(fields[0].ToString() != "")
+                Console.WriteLine(fields[0]);
 
+                MaturskiPredmeti.Add(new MaturskiPredmet(possible_naming[naming_counter], _predmeti.ToArray(), MaturskiPolinja, fields[0].ToString()));
+                
                 naming_counter++;
 
             }
@@ -527,7 +531,7 @@ namespace Middleware
         //}
 
         //Dictionary<string, string> DefaultDic = new Dictionary<string, string>()
-        //{ {"Ocenka", "5" }  , { "Percentiran" , "0.00" } , { "Datum" , "0.0.2002"} };
+        //{ {"", "5" }  , { "Percentiran" , "0.00" } , { "Datum" , "0.0.2002"} };
 
     }
 
@@ -861,29 +865,29 @@ namespace Middleware
             //MaturskiPolinja
             if (maturskipolinja == null)
             {
-                if (ime == "Proektna")
-                    MaturskiPolinja.Add(new MaturskoPole("Ime", "Ime na Proektna"));
+                if (ime == "Проектна задача")
+                    MaturskiPolinja.Add(new MaturskoPole("Тема на проектната", "Име на проектна"));
 
-                MaturskiPolinja.Add(new MaturskoPole("Ocenka", "5"));
-                if (ime != "Interen" && ime != "Proektna")
-                    MaturskiPolinja.Add(new MaturskoPole("Percentiran", "00.00"));
-                MaturskiPolinja.Add(new MaturskoPole("Datum", "01.01.2004"));
-                MaturskiPolinja.Add(new MaturskoPole("delovoden", "2/5"));
+                MaturskiPolinja.Add(new MaturskoPole("Оценка", "5"));
+                MaturskiPolinja.Add(new MaturskoPole("Перцентилен ранг", "00.00"));
+                MaturskiPolinja.Add(new MaturskoPole("Датум на полагање", "01.01.2004"));
+                MaturskiPolinja.Add(new MaturskoPole("Деловоден број", "2/5"));
             }
             else MaturskiPolinja = maturskipolinja;
         }
 
-        public string GetOutParam()
+        public string GetOutParam(string Predmet)
         {
-            string rez = Ime;
+            string rez = "";
             string Delimetar = "|";
-            rez += Delimetar;
-            rez += IzbranPredmet;
-            rez += Delimetar;
+            if (Predmet != "Проектна задача")
+            {
+                rez += IzbranPredmet;
+                rez += Delimetar;
+            }
             foreach (MaturskoPole Pole in MaturskiPolinja)
             {
-                rez += Pole.Ime;
-                rez += Delimetar;
+                Console.WriteLine(Pole.Ime);
                 rez += Pole.GetVrednost();
                 rez += Delimetar;
             }

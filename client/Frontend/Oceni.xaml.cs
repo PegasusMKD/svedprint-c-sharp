@@ -20,7 +20,7 @@ namespace Frontend
         Klasen UserKlas;
         bool CanWork = false;
 
-        Dictionary<string,Smer> smerovi;
+        Dictionary<string, Smer> smerovi;
         List<Dictionary<string, string>> result;
         private static Dictionary<string, Smer> smerovi_naslov = new Dictionary<string, Smer>();
 
@@ -90,7 +90,7 @@ namespace Frontend
         private async void SJ_1_CB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (!CanWork) return;
-            CanWork = false;    
+            CanWork = false;
             string str = SJ_1_CB.SelectedIndex.ToString() + ";" + SJ_2_CB.SelectedIndex.ToString();
             await Ucenici[Br].UpdateUcenik(RequestParameters.jazik, str, UserKlas._token);
             Ucenici[Br]._jazik = str;
@@ -103,8 +103,8 @@ namespace Frontend
             CanWork = false;
             if (UserKlas._p._smerovi.Keys.Contains("Странски Јазици"))
             {
-                if(SJ_1_CB.Items.Count==0) SJ_1_CB.ItemsSource = UserKlas._p._smerovi["Странски Јазици"]._predmeti;
-                if(SJ_2_CB.Items.Count==0) SJ_2_CB.ItemsSource = UserKlas._p._smerovi["Странски Јазици"]._predmeti;
+                if (SJ_1_CB.Items.Count == 0) SJ_1_CB.ItemsSource = UserKlas._p._smerovi["Странски Јазици"]._predmeti;
+                if (SJ_2_CB.Items.Count == 0) SJ_2_CB.ItemsSource = UserKlas._p._smerovi["Странски Јазици"]._predmeti;
                 if (Ucenici[BrojDn]._jazik != null && Ucenici[BrojDn]._jazik != "" && Ucenici[BrojDn]._jazik.Length > 2)
                 {
                     string[] jazici = Ucenici[BrojDn]._jazik.Split(new char[]{ ';',':'}); // hardcoded
@@ -183,7 +183,7 @@ namespace Frontend
 
             st.MouseUp += new MouseButtonEventHandler((sender, e) => MenuItemClicked(sender, e, brojDn));
             st.MouseEnter += new MouseEventHandler(MenuItemMouseEnter);
-            st.MouseLeave += new MouseEventHandler(MenuItemMouseLeave); 
+            st.MouseLeave += new MouseEventHandler(MenuItemMouseLeave);
 
             return st;
         }
@@ -309,7 +309,7 @@ namespace Frontend
                 if (last != -2) break;
 
             }
-        
+
         }
 
         int Br;
@@ -326,7 +326,7 @@ namespace Frontend
             combobox_smer.SelectedValue = smerovi_naslov[SelectedUcenik._smer]._smer;
 
             //fill OcenkiView
-            List<string> predmeti = UserKlas._p._smerovi[Ucenici[brojDn]._smer].GetCeliPredmeti(Ucenici[brojDn]._jazik , Ucenici[brojDn]._izborni , UserKlas._p._smerovi);
+            List<string> predmeti = UserKlas._p._smerovi[Ucenici[brojDn]._smer].GetCeliPredmeti(Ucenici[brojDn]._jazik, Ucenici[brojDn]._izborni, UserKlas._p._smerovi);
             for (int i = 0; i < predmeti.Count; i++)
             {
                 if (i < SelectedUcenik._oceni.Count) Ocenkibox[i].Text = SelectedUcenik._oceni[i].ToString();//5 5 5 5 5 5 5 5
@@ -353,8 +353,8 @@ namespace Frontend
 
         private void LoadExtraPolinja(int br)
         {
-            CanWork = false;    
-            if(Ucenici[br]._izborni != null && Ucenici[br]._izborni != "") IzborenPredmetCB.SelectedIndex = int.Parse(Ucenici[br]._izborni);
+            CanWork = false;
+            if (Ucenici[br]._izborni != null && Ucenici[br]._izborni != "") IzborenPredmetCB.SelectedIndex = int.Parse(Ucenici[br]._izborni);
             PovedenieCB.SelectedValue = Ucenici[br]._povedenie;
             PedagoskiMerkiCB.SelectedValue = Ucenici[br]._pedagoski_merki;
             if (PovedenieCB.SelectedIndex == -1) PovedenieCB.SelectedIndex = 0;
@@ -371,7 +371,7 @@ namespace Frontend
 
             for (int i = 0; i < Proektnictr; i++)
             {
-                if(i % 2 ==0)
+                if (i % 2 == 0)
                 {
                     st1.Children.Add(ProektnaPanel(i));
                 }
@@ -383,10 +383,10 @@ namespace Frontend
         }
 
         List<CheckBox> realiziranoProektni = new List<CheckBox>();
-        private StackPanel ProektnaPanel (int i)
+        private StackPanel ProektnaPanel(int i)
         {
             string[] PreValue = null;
-            if (Ucenici[Br]._proektni != null &&  Ucenici[Br]._proektni.Length > 0) PreValue = Ucenici[Br]._proektni.Split(';')[i].Split(',');
+            if (Ucenici[Br]._proektni != null && Ucenici[Br]._proektni.Length > 0) PreValue = Ucenici[Br]._proektni.Split(';')[i].Split(',');
 
             StackPanel MainST = new StackPanel();
 
@@ -404,8 +404,8 @@ namespace Frontend
                 if (PreValue == null)
                 {
                     CB.SelectedIndex = 0;
-                    string str ="";
-                    for(int x=0;x<Proektnictr;x++)
+                    string str = "";
+                    for (int x = 0; x < Proektnictr; x++)
                     {
                         str += CB.SelectedValue + ",реализирал;";
                     }
@@ -584,12 +584,12 @@ namespace Frontend
 
         private void Back_Print(object sender, MouseButtonEventArgs e)
         {
-            Main.Content = new PrintFrame(Main,loginPage);
+            Main.Content = new PrintFrame(Main, loginPage);
         }
 
         private void Back_Settings(object sender, MouseButtonEventArgs e)
         {
-            Main.Content = new Settings(Main,loginPage);
+            Main.Content = new Settings(Main, loginPage);
         }
 
 
@@ -602,18 +602,20 @@ namespace Frontend
             List<Middleware.MaturskiPredmet> Predmeti = Ucenici[Br].MaturskiPredmeti;
 
             int PredmetCtr = 0;
-            foreach(Middleware.MaturskiPredmet Predmet in Predmeti)
+            foreach (Middleware.MaturskiPredmet Predmet in Predmeti)
             {
                 StackPanel st = new StackPanel();
 
                 //Title
                 st.Children.Add(SettingsDesign.ContentBorder(Predmet.Ime));
-
                 //ComboBox
                 ComboBox CB = SettingsDesign.CreateComboBox(PredmetCtr.ToString(), Predmet.MozniPredmeti);
+                CB.SelectedValue += Ucenici[Br].MaturskiPredmeti[PredmetCtr].IzbranPredmet;
                 CB.SelectionChanged += MaturskiPredmetCB_SelectionChanged;
 
-                if(Predmet.Ime != "Proektna") st.Children.Add(CB);
+
+
+                if (Predmet.Ime != "Проектна задача") st.Children.Add(CB);
 
                 List<Middleware.MaturskoPole> MaturskiPolinja = Predmet.MaturskiPolinja;
 
@@ -621,9 +623,14 @@ namespace Frontend
                 foreach (Middleware.MaturskoPole Pole in MaturskiPolinja)
                 {
                     //Ime na Pole
+                    if (Predmet.Ime == "Интерен Предмет" && Pole.Ime == "Перцентилен ранг") continue;
+                    if (Predmet.Ime == "Проектна задача" && Pole.Ime == "Перцентилен ранг") continue;
+                    if (Pole.Ime == "Име" && Predmet.Ime != "Проектна задача") continue;
+                    //if (Pole.Vrednost != "") 
+
                     Border MaturskoPoleIme = SettingsDesign.ContentBorder(Pole.Ime);
                     MaturskoPoleIme.HorizontalAlignment = HorizontalAlignment.Left;
-                    MaturskoPoleIme.Margin = new Thickness(5,0,5,5);
+                    MaturskoPoleIme.Margin = new Thickness(5, 0, 5, 5);
 
                     //Odgovor
                     TextBox MaturskoPoleTxt = SettingsDesign.ContentTextBox(Pole.GetVrednost());
@@ -635,7 +642,7 @@ namespace Frontend
 
                     //StackPanel
                     StackPanel dp = new StackPanel();
-                    dp.Margin = new Thickness(20,5,25,0);
+                    dp.Margin = new Thickness(20, 5, 25, 0);
                     dp.Orientation = Orientation.Horizontal;
 
                     dp.Children.Add(MaturskoPoleIme);
@@ -647,7 +654,7 @@ namespace Frontend
                     PoleCtr++;
                 }
 
-                if (Predmet.Ime != "Proektna")
+                if (Predmet.Ime != "Проектна задача")
                     if (PredmetCtr % 2 == 0) MSt_1.Children.Add(st);
                     else MSt_2.Children.Add(st);
                 else proektna_zadaca.Children.Add(st);
@@ -660,7 +667,7 @@ namespace Frontend
         {
             ComboBox CB = (ComboBox)sender;
             int PredmetCtr = int.Parse(CB.Tag.ToString());
-
+            Console.WriteLine(PredmetCtr);
             Ucenici[Br].MaturskiPredmeti[PredmetCtr].IzbranPredmet = CB.SelectedValue.ToString();
             await Ucenici[Br].UpdateMaturska(UserKlas._token);
         }
@@ -675,73 +682,74 @@ namespace Frontend
 
             Ucenici[Br].MaturskiPredmeti[PredmetCtr].MaturskiPolinja[PoleCtr].SetVrednost(tx.Text);
             await Ucenici[Br].UpdateMaturska(UserKlas._token);
-            Console.WriteLine(Ucenici[Br].MaturskiPredmeti[PredmetCtr].GetOutParam());
-        }
-    }
-
-    public class MaturskiPredmet
-    {
-        public string Ime;
-        public string IzbranPredmet = "";
-        public string[] MozniPredmeti;
-        public List<MaturskoPole> MaturskiPolinja = new List<MaturskoPole>();
-
-        public MaturskiPredmet(string ime , string[] moznipredmeti)
-        {
-            Ime = ime;
-            MozniPredmeti = moznipredmeti;
-
-            if (MozniPredmeti.Length > 0) IzbranPredmet = moznipredmeti[0];
-
-            //MaturskiPolinja
-            MaturskiPolinja.Add(new MaturskoPole("Ocenka", "5"));
-            if(ime != "Interen")
-            MaturskiPolinja.Add(new MaturskoPole("Percentiran", "5,0"));
-            MaturskiPolinja.Add(new MaturskoPole("Datum", "01.01.2004"));
-            MaturskiPolinja.Add(new MaturskoPole("delovoden", "2/5"));
-        }
-
-        public string GetOutParam()
-        {
-            string rez = Ime;
-            string Delimetar = "|";
-            rez += Delimetar;
-            rez += IzbranPredmet;
-            rez += Delimetar;
-            foreach(MaturskoPole Pole in MaturskiPolinja)
-            {
-                rez += Pole.Ime;
-                rez += Delimetar;
-                rez += Pole.GetVrednost();
-                rez += Delimetar;
-            }
-
-            return rez;
-        }
-    }
-
-    public class MaturskoPole
-    {
-        public string Ime;
-        public string Vrednost = "";
-        public string DefaultVrednost;
-
-        public MaturskoPole(string ime , string defaultvrednost)
-        {
-            Ime = ime;
-            DefaultVrednost = defaultvrednost;
-        }
-
-        public string GetVrednost()
-        {
-            if (Vrednost == "") return DefaultVrednost;
-            else return Vrednost;
-        }
-
-        public void SetVrednost(string vred)
-        {
-            if (vred == "") return;
-            else Vrednost = vred;
+            //Console.WriteLine(Ucenici[Br].MaturskiPredmeti[PredmetCtr].GetOutParam());
         }
     }
 }
+
+    //public class MaturskiPredmet
+    //{
+    //    public string Ime;
+    //    public string IzbranPredmet = "";
+    //    public string[] MozniPredmeti;
+    //    public List<MaturskoPole> MaturskiPolinja = new List<MaturskoPole>();
+
+    //    public MaturskiPredmet(string ime , string[] moznipredmeti)
+    //    {
+    //        Ime = ime;
+    //        MozniPredmeti = moznipredmeti;
+
+    //        if (MozniPredmeti.Length > 0) IzbranPredmet = moznipredmeti[0];
+
+    //        //MaturskiPolinja
+    //        MaturskiPolinja.Add(new MaturskoPole("Ocenka", "5"));
+    //        if(ime != "Interen")
+    //        MaturskiPolinja.Add(new MaturskoPole("Percentiran", "5,0"));
+    //        MaturskiPolinja.Add(new MaturskoPole("Datum", "01.01.2004"));
+    //        MaturskiPolinja.Add(new MaturskoPole("delovoden", "2/5"));
+    //    }
+
+    //    public string GetOutParam()
+    //    {
+    //        string rez = Ime;
+    //        string Delimetar = "|";
+    //        rez += Delimetar;
+    //        rez += IzbranPredmet;
+    //        rez += Delimetar;
+    //        foreach(MaturskoPole Pole in MaturskiPolinja)
+    //        {
+    //            rez += Pole.Ime;
+    //            rez += Delimetar;
+    //            rez += Pole.GetVrednost();
+    //            rez += Delimetar;
+    //        }
+
+    //        return rez;
+    //    }
+    //}
+
+//    public class MaturskoPole
+//    {
+//        public string Ime;
+//        public string Vrednost = "";
+//        public string DefaultVrednost;
+
+//        public MaturskoPole(string ime , string defaultvrednost)
+//        {
+//            Ime = ime;
+//            DefaultVrednost = defaultvrednost;
+//        }
+
+//        public string GetVrednost()
+//        {
+//            if (Vrednost == "") return DefaultVrednost;
+//            else return Vrednost;
+//        }
+
+//        public void SetVrednost(string vred)
+//        {
+//            if (vred == "") return;
+//            else Vrednost = vred;
+//        }
+//    }
+//}
