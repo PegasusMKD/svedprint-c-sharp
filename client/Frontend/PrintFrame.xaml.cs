@@ -156,18 +156,19 @@ namespace Frontend
                     //Middleware.Print.PrintSveditelstva(Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
 
 
-                    for (int i = 0; i < Home_Page.ucenici.Count(); i += 5)
-                    {
+                    //for (int i = 0; i < Home_Page.ucenici.Count(); i += 5)
+                    //{
 
-                        List<Ucenik> uceniks = new List<Ucenik>();
-                        for (int j = 0; j < 5; j++)
-                        {
-                            uceniks.Add(Home_Page.ucenici[i + j]);
-                            if (i + j == Home_Page.ucenici.Count() - 1) break;
-                        }
-                        Print.PrintSveditelstva(Home_Page.ucenici, uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
-
-                    }
+                    //    List<Ucenik> uceniks = new List<Ucenik>();
+                    //    for (int j = 0; j < 5; j++)
+                    //    {
+                    //        uceniks.Add(Home_Page.ucenici[i + j]);
+                    //        if (i + j == Home_Page.ucenici.Count() - 1) break;
+                    //    }
+                    
+                    // hmmm
+                        Print.PrintSveditelstva(Home_Page.ucenici, /*uceniks*/ Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+                    //}
 
 
                     break;

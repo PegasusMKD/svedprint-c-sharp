@@ -49,8 +49,8 @@ namespace Middleware
             printQueue = new List<PrintQueueItem>();
 
             //return;
-            int partition = 5;
-            for (int part = 0; part < 9; part++)
+            int partition = 3; // test
+            for (int part = 0; part < 15; part++)
             {
                 if (partition * part > data.Count - 1) break;
                 printQueue.Clear();

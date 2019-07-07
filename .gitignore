@@ -335,3 +335,4 @@ ASALocalRun/
 /client/UnitTest
 /client/Middleware/script_args
 /client/Middleware/json_dump
+client/ps.code-workspace
