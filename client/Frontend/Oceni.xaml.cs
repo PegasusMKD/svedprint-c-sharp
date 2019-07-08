@@ -623,9 +623,21 @@ namespace Frontend
                 foreach (Middleware.MaturskoPole Pole in MaturskiPolinja)
                 {
                     //Ime na Pole
-                    if (Predmet.Ime == "Интерен Предмет" && Pole.Ime == "Перцентилен ранг") continue;
-                    if (Predmet.Ime == "Проектна задача" && Pole.Ime == "Перцентилен ранг") continue;
-                    if (Pole.Ime == "Име" && Predmet.Ime != "Проектна задача") continue;
+                    if (Predmet.Ime == "Интерен Предмет" && Pole.Ime == "Перцентилен ранг")
+                    {
+                        PoleCtr++;
+                        continue;
+                    }
+                    if (Predmet.Ime == "Проектна задача" && Pole.Ime == "Перцентилен ранг")
+                    {
+                        PoleCtr++;
+                        continue;
+                    }
+                    if (Pole.Ime == "Име" && Predmet.Ime != "Проектна задача")
+                    {
+                        PoleCtr++;
+                        continue;
+                    }
                     //if (Pole.Vrednost != "") 
 
                     Border MaturskoPoleIme = SettingsDesign.ContentBorder(Pole.Ime);
@@ -680,9 +692,9 @@ namespace Frontend
             int PredmetCtr = int.Parse(Tag.Split('|')[0]);
             int PoleCtr = int.Parse(Tag.Split('|')[1]);
 
-            PoleCtr++;
-            if (PredmetCtr == 3 && PoleCtr > 0) PoleCtr++;
-            else if (PredmetCtr == 4 && PoleCtr > 1) PoleCtr++;
+            //PoleCtr++;
+            //if (PredmetCtr == 3 && PoleCtr > 0) PoleCtr++;
+            //else if (PredmetCtr == 4 && PoleCtr > 1) PoleCtr++;
             Ucenici[Br].MaturskiPredmeti[PredmetCtr].MaturskiPolinja[PoleCtr].SetVrednost(tx.Text);
             await Ucenici[Br].UpdateMaturska(UserKlas._token);
             //Console.WriteLine(Ucenici[Br].MaturskiPredmeti[PredmetCtr].GetOutParam());

@@ -1069,7 +1069,7 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write("36/1"); // hardcoded
                 sw.Write(delimiter);
-                sw.Write(DateTime.Now.Date.ToShortDateString());
+                sw.Write(DateTime.Now.Date.ToString("dd.MM.yyyy"));
                 sw.Write(delimiter);
                 sw.Write($"{u._ime} {u._prezime}");
                 sw.Write(delimiter);
