@@ -246,6 +246,7 @@ namespace Middleware
         public const string percentilen = "percentilen";
         public const string delovoden_predmeti = "delovoden_predmeti";
         public const string polagal= "polagal";
+        public const string polozhil_matura = "polozhil_matura";
     }
 
 

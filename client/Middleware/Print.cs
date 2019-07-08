@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -47,15 +45,19 @@ namespace Middleware
             py.StartInfo.Arguments = outparam;
             py.StartInfo.CreateNoWindow = true;
             py.Start();
-            py.WaitForExit();        
-            
+            py.WaitForExit();
+
             printQueue = new List<PrintQueueItem>();
 
             //return;
             int partition = 3; // test
             for (int part = 0; part < 15; part++)
             {
-                if (partition * part > data.Count - 1) break;
+                if (partition * part > data.Count - 1)
+                {
+                    break;
+                }
+
                 printQueue.Clear();
                 for (int i = partition * part; i < Math.Min(data.Count - 1, partition * (part + 1)); i++)
                 {
@@ -293,7 +295,9 @@ namespace Middleware
                 var val = int.Parse(db[1]) + int.Parse(year_dictionary[paralelka_god[0]]) - 1;
 
                 if (!failed_arr[current_idx])
+                {
                     sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_god[1]}/{u._broj - failed_offset[current_idx]}");
+                }
 
                 //sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_god[1]}/26");
 
@@ -363,7 +367,11 @@ namespace Middleware
             int partition = 5;
             for (int part = 0; part < 9; part++)
             {
-                if (partition * part > data.Count - 1) break;
+                if (partition * part > data.Count - 1)
+                {
+                    break;
+                }
+
                 printQueue.Clear();
                 for (int i = partition * part; i < Math.Min(data.Count - 1, partition * (part + 1)); i++)
                 {
@@ -433,7 +441,11 @@ namespace Middleware
                 {
                     // vaka e ama so da se prai
                     var xxzx = tmparr.FindIndex(x => x == "Култура за заштита мир и толеранција");
-                    if (xxzx == -1) tmparr.FindIndex(x => x == "Култура за заштита");
+                    if (xxzx == -1)
+                    {
+                        tmparr.FindIndex(x => x == "Култура за заштита");
+                    }
+
                     tmparr[xxzx] = "Култура за заштита, мир и толеранција";
                 }
                 while (tmparr.Count < 22)
@@ -474,11 +486,25 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._prezime);
                 sw.Write(delimiter);
-                if (string.IsNullOrWhiteSpace(u._tatko)) sw.Write("// //");
-                else sw.Write(u._tatko);
+                if (string.IsNullOrWhiteSpace(u._tatko))
+                {
+                    sw.Write("// //");
+                }
+                else
+                {
+                    sw.Write(u._tatko);
+                }
+
                 sw.Write(delimiter);
-                if (string.IsNullOrWhiteSpace(u._majka) || u._majka[0] == '/') sw.Write("/// ///");
-                else sw.Write(u._majka);
+                if (string.IsNullOrWhiteSpace(u._majka) || u._majka[0] == '/')
+                {
+                    sw.Write("/// ///");
+                }
+                else
+                {
+                    sw.Write(u._majka);
+                }
+
                 sw.Write(delimiter);
                 sw.Write(u._roden); // <------
                 sw.Write(delimiter);
@@ -614,8 +640,16 @@ namespace Middleware
 
         private static List<string> GetPolozilList(Ucenik u)
         {
-            if (string.IsNullOrWhiteSpace(u._proektni) || u._proektni == ";") return new List<string> { "0", "0" };
-            if (u._proektni[u._proektni.Length - 1] == ';') u._proektni = u._proektni.Remove(u._proektni.Length - 1);
+            if (string.IsNullOrWhiteSpace(u._proektni) || u._proektni == ";")
+            {
+                return new List<string> { "0", "0" };
+            }
+
+            if (u._proektni[u._proektni.Length - 1] == ';')
+            {
+                u._proektni = u._proektni.Remove(u._proektni.Length - 1);
+            }
+
             var tmppoloz = u._proektni.Split(';').ToList().ConvertAll(x => x.Split(',')[1].ToLower());
             tmppoloz = tmppoloz.ConvertAll(x =>
             {
@@ -688,7 +722,11 @@ namespace Middleware
             int partition = 5;
             for (int part = 0; part < 9; part++)
             {
-                if (partition * part > data.Count - 1) break;
+                if (partition * part > data.Count - 1)
+                {
+                    break;
+                }
+
                 printQueue.Clear();
                 for (int i = partition * part; i < Math.Min(data.Count - 1, partition * (part + 1)); i++)
                 {
@@ -764,27 +802,16 @@ namespace Middleware
                 sw.GetStringBuilder().Clear();
 
                 // predmeti
-                //sw.Write("\"" + String.Join("/", u._maturska.Split(',').Select(x => x.Split(':')[0])) + "\"");
+                sw.Write("\"" + String.Join("/", u._maturska.Split('&').Select(x => x.Split('|')[0])) + "\"");
                 sw.Write(";");
 
                 // oceni
-                //sw.Write("\"" + String.Join(" ", u._maturska.Split(',').Select(x => x.Split(':')[1])) + "\"");
+                sw.Write("\"" + String.Join(" ", u._maturska.Split('&').Select(x => x.Split('|')[1])) + "\"");
                 sw.Write(";");
-                
+
                 // delovoden broj,reden broj(?), Ime na uchenik, Prezime na Uchenik, Datum na ragjanje, Mesto na ragjanje, opshtina, drzhava, drzhavjanstvo
                 sw.Write("\"");
-                var task = Task.Run<string>(() => {
-                    return Requests.GetDelovoden(new Dictionary<string, string>
-                    {
-                        { RequestParameters.token, klasen._token },
-                        { RequestParameters.ime,  u._ime },
-                        { RequestParameters.srednoIme, u._srednoIme },
-                        { RequestParameters.prezime, u._prezime },
-                        { RequestParameters.duplicate_ctr, u._duplicate_ctr.ToString() }
-                    });
-                }
-                );
-                sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_godina[1]}/{task.Result}");
+                sw.Write(klasen._glavna_kniga);
                 sw.Write(delimiter);
                 sw.Write(u._broj); // mozno e da bide 1,2,3,4,5...
                 sw.Write(delimiter);
@@ -795,8 +822,9 @@ namespace Middleware
                 sw.Write(u._roden);
                 sw.Write(delimiter);
                 sw.Write(u._mesto_na_ragjanje);
+                sw.Write(delimiter); // opstina
                 sw.Write(delimiter);
-                sw.Write(u._mesto_na_zhiveenje);
+                sw.Write(klasen._drzava);
                 sw.Write(delimiter);
                 sw.Write(u._drzavjanstvo);
                 sw.Write(delimiter);
@@ -806,7 +834,7 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._ispiten);
                 sw.Write(delimiter);
-                sw.Write(u._pat_polaga);
+                sw.Write(u._pat_polaga_ispit);
                 sw.Write(delimiter);
                 sw.Write(u._tip);
                 sw.Write(delimiter);
@@ -814,13 +842,61 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write("//////////"); // hardcoded
                 sw.Write(delimiter);
-                // sw.Write(u._prethoden_delovoden); // hardcoded
+                sw.Write(ToPrint.FirstOrDefault(x => x._broj == u._broj)._delovoden_broj);
+                sw.Write(delimiter);
+                sw.Write(klasen._odobreno_sveditelstvo);
                 sw.Write(delimiter);
 
                 // opsht uspeh, uchebna godina(nezz dali segashna ili prethodna)(prethodna treba), direktor, klasen
-                sw.Write(string.Format("{0:N2}", u._oceni.Average())); // testing
+                // sw.Write(string.Format("{0:N2}", u._oceni.Average())); // testing
+
+                decimal ocena;
+                bool worked = decimal.TryParse(u._oceni.Average().ToString().Replace('.', ','), out ocena);
+                if (!worked)
+                {
+                    sw.Write(u._prethoden_uspeh);
+                }
+                else
+                {
+                    string[] ocena_zbor = new string[] { "", "Недоволен", "Доволен", "Добар", "Многу добар", "Одличен" };
+                    int rounded;
+                    if (ocena - Math.Floor(ocena) < Convert.ToDecimal(0.5))
+                    {
+                        rounded = Convert.ToInt32(Math.Floor(ocena));
+                    }
+                    else
+                    {
+                        rounded = Convert.ToInt32(Math.Ceiling(ocena));
+                    }
+                    int rounded2 = Convert.ToInt32(Math.Round(ocena));
+                    sw.Write(ocena_zbor[rounded]);
+                }
+
                 sw.Write(delimiter);
-                sw.Write(u._prethodna_godina);
+                sw.Write($"20{klasen._godina - 1}/20{klasen._godina}");
+                sw.Write(delimiter);
+                sw.Write("државната"); // hardcoded
+                sw.Write(delimiter);
+                sw.Write(u._polozhil_matura);
+                sw.Write(delimiter);
+                sw.Write("државна"); // hardcoded
+                sw.Write(delimiter);
+                var task = Task.Run<string>(() =>
+                {
+                    return Requests.GetDelovoden(new Dictionary<string, string>
+                    {
+                        { RequestParameters.token, klasen._token },
+                        { RequestParameters.ime,  u._ime },
+                        { RequestParameters.srednoIme, u._srednoIme },
+                        { RequestParameters.prezime, u._prezime },
+                        { RequestParameters.duplicate_ctr, u._duplicate_ctr.ToString() }
+                    });
+                }
+               );
+                sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_godina[1]}/{task.Result}");
+                //return new List<string>();
+                sw.Write(delimiter);
+                sw.Write("12.12.2020"); // hardcoded
                 sw.Write(delimiter);
                 sw.Write(klasen._direktor);
                 sw.Write(delimiter);
@@ -829,15 +905,15 @@ namespace Middleware
                 sw.Write(";");
 
                 // datum na polaganje
-                sw.Write("\"" + String.Join(",", u._maturski.ConvertAll(x => x.datum.Replace(',', '.'))) + "\"");
+                sw.Write("\"" + String.Join("|", u._maturska.Split('&').Select(x => x.Split('|')[3])) + "\"");
                 sw.Write(";");
 
                 // delovoden broj
-                sw.Write("\"" + String.Join(",", u._maturski.ConvertAll(x => x.delovoden)) + "\"");
+                sw.Write("\"" + String.Join("|", u._maturska.Split('&').Select(x => x.Split('|')[4])) + "\"");
                 sw.Write(";");
 
                 // percentile
-                sw.Write("\"" + String.Join(",", u._maturski.ConvertAll(x => x.percentilen.ToString("00.00").Replace(',', '.'))) + "\"");
+                sw.Write("\"" + String.Join("|", u._maturska.Split('&').Select(x => x.Split('|')[2])) + "\"");
 
                 l.Add(sw.ToString());
             }
@@ -876,7 +952,11 @@ namespace Middleware
             int partition = 5;
             for (int part = 0; part < 9; part++)
             {
-                if (partition * part > data.Count - 1) break;
+                if (partition * part > data.Count - 1)
+                {
+                    break;
+                }
+
                 printQueue.Clear();
                 for (int i = partition * part; i < Math.Min(data.Count - 1, partition * (part + 1)); i++)
                 {
@@ -988,13 +1068,27 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(u._mesto_na_ragjanje);
                 sw.Write(delimiter);
-                sw.Write(u._mesto_na_zhiveenje.Split(',')[2]);
+                sw.Write(klasen._drzava);
                 sw.Write(delimiter);
                 sw.Write(u._tip);
                 sw.Write(delimiter);
-                sw.Write(klasen._p._smerovi[u._smer]._cel_smer);
+                sw.Write(klasen._p._smerovi[u._smer]._cel_smer.Trim());
                 sw.Write(delimiter);
-                //sw.Write(u._delovoden_diploma);
+                var task = Task.Run<string>(() =>
+                {
+                    return Requests.GetDelovoden(new Dictionary<string, string>
+                    {
+                        { RequestParameters.token, klasen._token },
+                        { RequestParameters.ime,  u._ime },
+                        { RequestParameters.srednoIme, u._srednoIme },
+                        { RequestParameters.prezime, u._prezime },
+                        { RequestParameters.duplicate_ctr, u._duplicate_ctr.ToString() }
+                    });
+                }
+               );
+                sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_godina[1]}/{task.Result}");
+                sw.Write(delimiter);
+                sw.Write("14.04.2014"); // hardcoded
                 sw.Write(delimiter);
                 sw.Write($"{klasen._ime} {(string.IsNullOrWhiteSpace(klasen._srednoIme) ? "" : $"{klasen._srednoIme}-")}{klasen._prezime}");
                 sw.Write(delimiter);

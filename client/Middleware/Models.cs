@@ -90,6 +90,8 @@ namespace Middleware
         public string _delovoden_predmeti { get; set; }
         [JsonProperty(RequestParameters.polagal)]
         public string _polagal { get; set; } // array with ' ' delimiter
+        [JsonProperty(RequestParameters.polozhil_matura)]
+        public string _polozhil_matura { get; set; }
 
         /// <summary>
         /// prvite 3 se eksternite, poslednata e proektnata i site izmegju se internite
@@ -123,12 +125,12 @@ namespace Middleware
             foreach (var k in x)
             {
                 var data = k.Split('|');
-                _maturski.Add((data[0], int.Parse(data[1]), decimal.Parse(data[2]), data[3], data[4]));
+                _maturski.Add((data[0], int.Parse(data[1]), decimal.Parse(data[2].Replace('.', ',')), data[3], data[4]));
             }
         }
 
         public Ucenik(string ime, string srednoIme, string prezime, List<int> oceni, string smer, int broj, string roden, string mesto_na_zhiveenje, string mesto_na_ragjanje, string povedenie, int opravdani, int neopravdani, string tip, string pat_polaga, string tatko, string majka, string gender, string maturska, string izborni, string proektni, string merki, string prethodna_godina, string prethoden_uspeh, string prethodno_uchilishte, string delovoden_broj, string datum_sveditelstvo, string polozhil, string prethodna_uchebna, string pedagoshki_merki, string drzavjanstvo, string pat_polaga_ispit, string ispiten, int duplicate_ctr,
-            string jazik, string jazik_ocena, string polagal)
+            string jazik, string jazik_ocena, string polagal, string polozhil_matura)
         { //string majkino,
             _ime = ime ?? "";
             _srednoIme = srednoIme ?? "";
@@ -177,6 +179,7 @@ namespace Middleware
             _jazik = jazik ?? "";
             _jazik_ocena = jazik_ocena ?? "";
             _polagal = polagal ?? "";
+            _polozhil_matura = polozhil_matura ?? "";
         }
 
         public Ucenik() { }
@@ -266,10 +269,13 @@ namespace Middleware
             bool success = valuePairs.TryGetValue(RequestParameters.prethodna_uchebna, out outvar);
             _prethodna_uchebna = success ? outvar : "";
             _drzavjanstvo = valuePairs[RequestParameters.drzavjanstvo] ?? "";
+            _polozhil_matura = valuePairs[RequestParameters.polozhil_matura] ?? "";
             // _majkino = valuePairs[RequestParameters.majkino] ?? "";
 
             //MaturskiPredmeti
             //LoadMaturski();
+
+            
         }
 
 
@@ -434,17 +440,20 @@ namespace Middleware
         public async Task UpdateMaturska(string Token)
         {
             string UpdateStr = "";
+            var stringWriter = new StringWriter();
             string Delimetar = "&";
             foreach (MaturskiPredmet Predmet in MaturskiPredmeti)
             {
-                UpdateStr += Predmet.GetOutParam(Predmet.Ime);
-                UpdateStr += Delimetar;
+                stringWriter.Write(Predmet.GetOutParam(Predmet.Ime));
+                stringWriter.Write(Delimetar);
             }
-
-            UpdateStr = UpdateStr.Substring(0, UpdateStr.Length - 1);
+            
+            UpdateStr = stringWriter.ToString().Substring(0, UpdateStr.Length - 1);
 
             await UpdateUcenik(RequestParameters.maturska, UpdateStr, Token);
             _maturska = UpdateStr;
+
+            SetMaturski(_maturska);
         }
 
         public async Task<string> UpdateUcenik(string UpdateParametar, string value, string Token)
