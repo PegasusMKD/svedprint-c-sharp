@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Printing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -402,6 +404,9 @@ namespace Middleware
 
         public static List<string> InitGlavnaKniga(List<Ucenik> siteUcenici, List<Ucenik> ucenici, Klasen klasen, int offsetx, int offsety)
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("mk-MK");
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("mk-MK");
+
             // https://raw.githubusercontent.com/darijan2002/ps/ps/gk/sample_params.txt?token=ADAAZQMNTPXEEBZ7LCUYXD245FMAC
             StringWriter sw = new StringWriter();
             List<string> l = new List<string>();
@@ -528,7 +533,7 @@ namespace Middleware
                 //sw.Write(string.IsNullOrEmpty(u._prethoden_uspeh) || u._prethoden_uspeh == "5.00" ? "" : u._prethoden_uspeh);
 
                 decimal ocena;
-                bool worked = decimal.TryParse(u._prethoden_uspeh.Replace('.', ','), out ocena);
+                bool worked = decimal.TryParse(u._prethoden_uspeh.ToString(CultureInfo.GetCultureInfo("mk-MK")), out ocena);
                 if (!worked)
                 {
                     sw.Write(u._prethoden_uspeh);
@@ -755,6 +760,8 @@ namespace Middleware
 
         public static List<string> InitGkDiploma(List<Ucenik> siteUcenici, List<Ucenik> ucenici, Klasen klasen, int offsetx, int offsety)
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("mk-MK");
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("mk-MK");
             StringWriter sw = new StringWriter();
             List<string> l = new List<string>();
             string delimiter = "|";
@@ -854,7 +861,8 @@ namespace Middleware
                 // sw.Write(string.Format("{0:N2}", u._oceni.Average())); // testing
 
                 decimal ocena;
-                bool worked = decimal.TryParse(u._oceni.Average().ToString().Replace('.', ','), out ocena);
+                bool worked = decimal.TryParse(u._oceni.Average().ToString(CultureInfo.GetCultureInfo("mk-MK")), out ocena);
+                // Convert.ToDecimal(u._oceni.Average());
                 if (!worked)
                 {
                     sw.Write(u._prethoden_uspeh);
@@ -874,7 +882,6 @@ namespace Middleware
                     int rounded2 = Convert.ToInt32(Math.Round(ocena));
                     sw.Write(ocena_zbor[rounded]);
                 }
-
                 sw.Write(delimiter);
                 sw.Write($"20{klasen._godina}/20{klasen._godina + 1}");
                 sw.Write(delimiter);

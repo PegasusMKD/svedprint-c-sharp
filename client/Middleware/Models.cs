@@ -270,6 +270,7 @@ namespace Middleware
             _prethodna_uchebna = success ? outvar : "";
             _drzavjanstvo = valuePairs[RequestParameters.drzavjanstvo] ?? "";
             _polozhil_matura = valuePairs[RequestParameters.polozhil_matura] ?? "";
+            _polagal = valuePairs[RequestParameters.polagal] ?? "";
             // _majkino = valuePairs[RequestParameters.majkino] ?? "";
 
             //MaturskiPredmeti
