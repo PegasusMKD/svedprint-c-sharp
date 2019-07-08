@@ -680,6 +680,9 @@ namespace Frontend
             int PredmetCtr = int.Parse(Tag.Split('|')[0]);
             int PoleCtr = int.Parse(Tag.Split('|')[1]);
 
+            PoleCtr++;
+            if (PredmetCtr == 3 && PoleCtr > 0) PoleCtr++;
+            else if (PredmetCtr == 4 && PoleCtr > 1) PoleCtr++;
             Ucenici[Br].MaturskiPredmeti[PredmetCtr].MaturskiPolinja[PoleCtr].SetVrednost(tx.Text);
             await Ucenici[Br].UpdateMaturska(UserKlas._token);
             //Console.WriteLine(Ucenici[Br].MaturskiPredmeti[PredmetCtr].GetOutParam());

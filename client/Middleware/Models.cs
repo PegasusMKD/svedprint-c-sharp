@@ -442,13 +442,14 @@ namespace Middleware
             string UpdateStr = "";
             var stringWriter = new StringWriter();
             string Delimetar = "&";
+           // return;
             foreach (MaturskiPredmet Predmet in MaturskiPredmeti)
             {
                 stringWriter.Write(Predmet.GetOutParam(Predmet.Ime));
                 stringWriter.Write(Delimetar);
             }
             
-            UpdateStr = stringWriter.ToString().Substring(0, UpdateStr.Length - 1);
+            UpdateStr = stringWriter.ToString().Substring(0, stringWriter.ToString().Length - 1);
 
             await UpdateUcenik(RequestParameters.maturska, UpdateStr, Token);
             _maturska = UpdateStr;
@@ -496,17 +497,21 @@ namespace Middleware
             string[] predmeti = _maturska.Split('&');
             int naming_counter = 0;
             List<string> possible_naming = new List<string>() { "Екстерен Предмет 1", "Ектерен Предмет 2", "Екстерен Предмет 3", "Интерен Предмет", "Проектна задача" };
-            List<string> possible_fields = new List<string>() { "Име", "Оценка", "Перцентилен ранг", "Датум", "Деловоден број" };
-            List<string> possible_values = new List<string>() { "Име на предмет", "Добиена оценка", "Перцентилен ранг", "Датум на полагање", "Деловоден број на записник" };
+            List<string> possible_fields = new List<string>() { "Име", "Оценка", "Перцентилен ранг", "Датум", "Деловоден број" ,"Име на проектна"};
+            List<string> possible_values = new List<string>() { "Име на предмет", "Добиена оценка", "Перцентилен ранг", "Датум на полагање", "Деловоден број на записник","Тема на проектната" };
 
-            foreach (string predmet in predmeti)
+            for (int i=0;i<predmeti.Length;i++)
             {
+                string predmet = predmeti[i];
                 string[] fields = predmet.Split('|');
-
+             
                 List<MaturskoPole> MaturskiPolinja = new List<MaturskoPole>();
                 int counter = 0;
                 foreach(string field in fields)
-                { 
+                {
+                    if(counter==0 && i==predmeti.Length-1)
+                    MaturskiPolinja.Add(new MaturskoPole(possible_fields[5], possible_values[5], field));
+                    else
                     MaturskiPolinja.Add(new MaturskoPole(possible_fields[counter], possible_values[counter], field));
                     counter++;
                 }
@@ -876,10 +881,12 @@ namespace Middleware
             {
                 if (ime == "Проектна задача")
                     MaturskiPolinja.Add(new MaturskoPole("Тема на проектната", "Име на проектна"));
+                else
+                    MaturskiPolinja.Add(new MaturskoPole("Име", moznipredmeti[0].ToString()));
 
                 MaturskiPolinja.Add(new MaturskoPole("Оценка", "5"));
                 MaturskiPolinja.Add(new MaturskoPole("Перцентилен ранг", "00.00"));
-                MaturskiPolinja.Add(new MaturskoPole("Датум на полагање", "01.01.2004"));
+                MaturskiPolinja.Add(new MaturskoPole("Датум", "01.01.2004"));
                 MaturskiPolinja.Add(new MaturskoPole("Деловоден број", "2/5"));
             }
             else MaturskiPolinja = maturskipolinja;
@@ -889,6 +896,7 @@ namespace Middleware
         {
             string rez = "";
             string Delimetar = "|";
+            // hmm
             if (Predmet != "Проектна задача")
             {
                 rez += IzbranPredmet;
@@ -896,11 +904,14 @@ namespace Middleware
             }
             foreach (MaturskoPole Pole in MaturskiPolinja)
             {
-                Console.WriteLine(Pole.Ime);
-                rez += Pole.GetVrednost();
-                rez += Delimetar;
+                if(Pole.Ime != "Име")
+                {
+                    Console.WriteLine(Pole.Ime);
+                    rez += Pole.GetVrednost();
+                    rez += Delimetar;
+                }
             }
-
+            
             rez = rez.Substring(0, rez.Length - 1);
 
             return rez;

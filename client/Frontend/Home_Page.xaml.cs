@@ -1,11 +1,10 @@
-using System;
+using Middleware;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Middleware;
 
 namespace Frontend
 {
@@ -31,16 +30,19 @@ namespace Frontend
 
             SettingsImg.MouseLeftButtonDown += new MouseButtonEventHandler(SettingsImg_Clicked);
 
-
-            result = Requests.GetData(new Dictionary<string, string>() {
+            var getDataTask = Task.Run(() =>
+            {
+                return Requests.GetData(new Dictionary<string, string>() {
                 {RequestParameters.token, Klasen._token }
             }, RequestScopes.GetParalelka);
+            });
+            result = getDataTask.Result;
 
             ucenici = result.ConvertAll(x => new Ucenik(x));
             SortUcenici();
             KlasenKlasa.SetSmeroviPredmeti(KlasenKlasa._token);
 
-            foreach(Ucenik ucenik in ucenici)
+            foreach (Ucenik ucenik in ucenici)
             {
                 ucenik.LoadMaturski(KlasenKlasa);
             }
@@ -64,7 +66,10 @@ namespace Frontend
             { MessageBox.Show("Нема пополнето ученици"); return; }
             if (KlasenKlasa._p._smerovi.Count == 0)
             { MessageBox.Show("Нема Смерови"); return; }
-            else Main.Content = new Oceni(Main, this);
+            else
+            {
+                Main.Content = new Oceni(Main, this);
+            }
         }
 
         private void PrintImgClicked(object sender, MouseButtonEventArgs e)
