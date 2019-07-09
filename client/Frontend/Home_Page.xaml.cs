@@ -29,14 +29,10 @@ namespace Frontend
             KlasenKlasa = Klasen;
 
             SettingsImg.MouseLeftButtonDown += new MouseButtonEventHandler(SettingsImg_Clicked);
-
-            var getDataTask = Task.Run(() =>
-            {
-                return Requests.GetData(new Dictionary<string, string>() {
+            
+            result = Requests.GetData(new Dictionary<string, string>() {
                 {RequestParameters.token, Klasen._token }
             }, RequestScopes.GetParalelka);
-            });
-            result = getDataTask.Result;
 
             ucenici = result.ConvertAll(x => new Ucenik(x));
             SortUcenici();

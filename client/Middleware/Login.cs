@@ -15,7 +15,7 @@ namespace Middleware
         private static readonly HttpClient http = new HttpClient();
         public static async System.Threading.Tasks.Task<Klasen> LoginWithCredAsync(string username, string password)
         {
-            string uri = $"https://{settings.Default.DB_HOST}{settings.Default.DB_PORT}/{settings.Default.DB_BRANCH}/login/";
+            string uri = $"{settings.Default.DB_HTTP}://{settings.Default.DB_HOST}{settings.Default.DB_PORT}/{settings.Default.DB_BRANCH}/login/";
             //string uri = string.Format(@"https://{0}{1}/stable/login/", settings.Default.DB_HOST, settings.Default.DB_PORT);
             string loginJson = JsonConvert.SerializeObject(new Dictionary<string, string>()
             {
@@ -29,13 +29,13 @@ namespace Middleware
             Klasen klasen = new Klasen();
             try
             {
-                using (var writer = new StreamWriter(await httpRequest.GetRequestStreamAsync()))
+                using (var writer = new StreamWriter(httpRequest.GetRequestStream()))
                 {
-                    await writer.WriteAsync(loginJson);
+                    writer.Write(loginJson);
                 }
 
                 var httpResponse = (HttpWebResponse) await httpRequest.GetResponseAsync();
-                var responseJson = await new StreamReader(httpResponse.GetResponseStream()).ReadToEndAsync();
+                var responseJson = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
 
                 // Console.WriteLine(JToken.Parse(responseJson).ToString(Formatting.Indented));
                 

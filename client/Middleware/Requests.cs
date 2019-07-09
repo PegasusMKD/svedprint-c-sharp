@@ -22,7 +22,7 @@ namespace Middleware
                 Request request = new Request(type: RequestTypes.GET, scope: scope, queryParams: queryParams);
 
                 string json = JsonConvert.SerializeObject(request, new RequestConverter());
-                string uri = $"https://{settings.Default.DB_HOST}{settings.Default.DB_PORT}/{settings.Default.DB_BRANCH}/return/";
+                string uri = $"{settings.Default.DB_HTTP}://{settings.Default.DB_HOST}{settings.Default.DB_PORT}/{settings.Default.DB_BRANCH}/return/";
                 var httpRequest = (HttpWebRequest)WebRequest.Create(uri);
                 httpRequest.Method = @"POST";
                 httpRequest.ContentType = @"application/json";
@@ -66,7 +66,7 @@ namespace Middleware
                 Request request = new Request(type: RequestTypes.ADD, scope: scope, queryParams: queryParams);
 
                 string json = JsonConvert.SerializeObject(request, new RequestConverter());
-                string uri = $"https://{settings.Default.DB_HOST}{settings.Default.DB_PORT}/{settings.Default.DB_BRANCH}/setup/";
+                string uri = $"{settings.Default.DB_HTTP}://{settings.Default.DB_HOST}{settings.Default.DB_PORT}/{settings.Default.DB_BRANCH}/setup/";
                 var httpRequest = (HttpWebRequest)WebRequest.Create(uri);
                 httpRequest.Method = @"POST";
                 httpRequest.ContentType = @"application/json";
@@ -92,7 +92,7 @@ namespace Middleware
                 Request request = new Request(type: RequestTypes.UPDATE, scope: scope, queryParams: queryParams);
 
                 string json = JsonConvert.SerializeObject(request, new RequestConverter());
-                string uri = $"https://{settings.Default.DB_HOST}{settings.Default.DB_PORT}/{settings.Default.DB_BRANCH}/update/";
+                string uri = $"{settings.Default.DB_HTTP}://{settings.Default.DB_HOST}{settings.Default.DB_PORT}/{settings.Default.DB_BRANCH}/update/";
                 var httpRequest = (HttpWebRequest)WebRequest.Create(uri);
                 httpRequest.Method = @"POST";
                 httpRequest.ContentType = @"application/json";
@@ -118,7 +118,7 @@ namespace Middleware
             try
             {
                 string json = JsonConvert.SerializeObject(queryParams);
-                string uri = $"https://{settings.Default.DB_HOST}{settings.Default.DB_PORT}/{settings.Default.DB_BRANCH}/get_delovoden/";
+                string uri = $"{settings.Default.DB_HTTP}://{settings.Default.DB_HOST}{settings.Default.DB_PORT}/{settings.Default.DB_BRANCH}/get_delovoden/";
                 var httpRequest = (HttpWebRequest)WebRequest.Create(uri);
                 httpRequest.Method = @"POST";
                 httpRequest.ContentType = @"application/json";
@@ -148,7 +148,7 @@ namespace Middleware
             // 2. Da se zapise requestot vo file
             // https://stackoverflow.com/questions/2934295/c-sharp-save-a-file-from-a-http-request
 
-            string uri = $"https://{settings.Default.DB_HOST}{settings.Default.DB_PORT}/{settings.Default.DB_BRANCH}/{carsav_type}/";
+            string uri = $"{settings.Default.DB_HTTP}://{settings.Default.DB_HOST}{settings.Default.DB_PORT}/{settings.Default.DB_BRANCH}/{carsav_type}/";
 
         }
     }
