@@ -25,7 +25,7 @@ namespace Middleware {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("192.168.100.41")]
+        [global::System.Configuration.DefaultSettingValueAttribute("ocenki.herokuapp.com")]
         public string DB_HOST {
             get {
                 return ((string)(this["DB_HOST"]));
@@ -34,7 +34,7 @@ namespace Middleware {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(":8000")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string DB_PORT {
             get {
                 return ((string)(this["DB_PORT"]));
@@ -58,7 +58,7 @@ namespace Middleware {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https")]
         public string DB_HTTP {
             get {
                 return ((string)(this["DB_HTTP"]));
