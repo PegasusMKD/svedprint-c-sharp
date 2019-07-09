@@ -650,7 +650,8 @@ namespace Frontend
                     MaturskoPoleTxt.Margin = new Thickness(0, 0, 0, 10);
                     MaturskoPoleTxt.FontSize = 30;
                     MaturskoPoleTxt.Tag = PredmetCtr.ToString() + "|" + PoleCtr.ToString();
-                    MaturskoPoleTxt.TextChanged += MaturskoPole_TextChanged;
+                    // MaturskoPoleTxt.TextChanged += MaturskoPole_TextChanged;
+                    MaturskoPoleTxt.LostFocus += MaturskoPole_LostFocus;
 
                     //StackPanel
                     StackPanel dp = new StackPanel();
@@ -673,6 +674,22 @@ namespace Frontend
                 PredmetCtr++;
             }
 
+        }
+
+        private async void MaturskoPole_LostFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox tx = (TextBox)sender;
+            string Tag = tx.Tag.ToString();
+
+            int PredmetCtr = int.Parse(Tag.Split('|')[0]);
+            int PoleCtr = int.Parse(Tag.Split('|')[1]);
+
+            //PoleCtr++;
+            //if (PredmetCtr == 3 && PoleCtr > 0) PoleCtr++;
+            //else if (PredmetCtr == 4 && PoleCtr > 1) PoleCtr++;
+            Ucenici[Br].MaturskiPredmeti[PredmetCtr].MaturskiPolinja[PoleCtr].SetVrednost(tx.Text);
+            await Ucenici[Br].UpdateMaturska(UserKlas._token);
+            //Console.WriteLine(Ucenici[Br].MaturskiPredmeti[PredmetCtr].GetOutParam());
         }
 
         private async void MaturskiPredmetCB_SelectionChanged(object sender, SelectionChangedEventArgs e)

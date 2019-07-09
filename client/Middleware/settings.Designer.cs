@@ -55,5 +55,17 @@ namespace Middleware {
                 this["DB_BRANCH"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https")]
+        public string DB_HTTP {
+            get {
+                return ((string)(this["DB_HTTP"]));
+            }
+            set {
+                this["DB_HTTP"] = value;
+            }
+        }
     }
 }
