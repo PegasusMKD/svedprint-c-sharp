@@ -1,8 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Middleware
@@ -100,10 +102,14 @@ namespace Middleware
 
         public string MaturskiToString()
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("mk-MK");
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("mk-MK");
+
             string ret;
             using (var sw = new StringWriter())
             {
-                sw.Write(string.Join("&", _maturski.ConvertAll(x => $"{x.predmet}|{x.ocena}|{x.percentilen.ToString("00.00").Replace(',', '.')}|{x.datum}|{x.delovoden}")));
+                // ili tuka
+                sw.Write(string.Join("&", _maturski.ConvertAll(x => $"{x.predmet}|{x.ocena}|{x.percentilen.ToString(CultureInfo.GetCultureInfo("mk-MK"))}|{x.datum}|{x.delovoden}")));
                 ret = sw.ToString();
             }
             return ret;
@@ -111,6 +117,9 @@ namespace Middleware
 
         public void SetMaturski(string val)
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("mk-MK");
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("mk-MK");
+
             if (string.IsNullOrWhiteSpace(val))
             {
                 _maturski = new List<(string predmet, int ocena, decimal percentilen, string datum, string delovoden)>();
@@ -125,7 +134,8 @@ namespace Middleware
             foreach (var k in x)
             {
                 var data = k.Split('|');
-                _maturski.Add((data[0], int.Parse(data[1]), decimal.Parse(data[2].Replace('.', ',')), data[3], data[4]));
+                // zeza ili tuka
+                _maturski.Add((data[0], int.Parse(data[1]), decimal.Parse(data[2], CultureInfo.GetCultureInfo("mk-MK")), data[3], data[4]));
             }
         }
 
@@ -276,7 +286,7 @@ namespace Middleware
             //MaturskiPredmeti
             //LoadMaturski();
 
-            
+
         }
 
 
@@ -443,13 +453,13 @@ namespace Middleware
             string UpdateStr = "";
             var stringWriter = new StringWriter();
             string Delimetar = "&";
-           // return;
+            // return;
             foreach (MaturskiPredmet Predmet in MaturskiPredmeti)
             {
                 stringWriter.Write(Predmet.GetOutParam(Predmet.Ime));
                 stringWriter.Write(Delimetar);
             }
-            
+
             UpdateStr = stringWriter.ToString().Substring(0, stringWriter.ToString().Length - 1);
 
             await UpdateUcenik(RequestParameters.maturska, UpdateStr, Token);
@@ -498,29 +508,29 @@ namespace Middleware
             string[] predmeti = _maturska.Split('&');
             int naming_counter = 0;
             List<string> possible_naming = new List<string>() { "Екстерен Предмет 1", "Ектерен Предмет 2", "Екстерен Предмет 3", "Интерен Предмет", "Проектна задача" };
-            List<string> possible_fields = new List<string>() { "Име", "Оценка", "Перцентилен ранг", "Датум", "Деловоден број" ,"Име на проектна"};
-            List<string> possible_values = new List<string>() { "Име на предмет", "Добиена оценка", "Перцентилен ранг", "Датум на полагање", "Деловоден број на записник","Тема на проектната" };
+            List<string> possible_fields = new List<string>() { "Име", "Оценка", "Перцентилен ранг", "Датум", "Деловоден број", "Име на проектна" };
+            List<string> possible_values = new List<string>() { "Име на предмет", "Добиена оценка", "Перцентилен ранг", "Датум на полагање", "Деловоден број на записник", "Тема на проектната" };
 
-            for (int i=0;i<predmeti.Length;i++)
+            for (int i = 0; i < predmeti.Length; i++)
             {
                 string predmet = predmeti[i];
                 string[] fields = predmet.Split('|');
-             
+
                 List<MaturskoPole> MaturskiPolinja = new List<MaturskoPole>();
                 int counter = 0;
-                foreach(string field in fields)
+                foreach (string field in fields)
                 {
-                    if(counter==0 && i==predmeti.Length-1)
-                    MaturskiPolinja.Add(new MaturskoPole(possible_fields[5], possible_values[5], field));
+                    if (counter == 0 && i == predmeti.Length - 1)
+                        MaturskiPolinja.Add(new MaturskoPole(possible_fields[5], possible_values[5], field));
                     else
-                    MaturskiPolinja.Add(new MaturskoPole(possible_fields[counter], possible_values[counter], field));
+                        MaturskiPolinja.Add(new MaturskoPole(possible_fields[counter], possible_values[counter], field));
                     counter++;
                 }
-                if(fields[0].ToString() != "")
-                Console.WriteLine(fields[0]);
+                if (fields[0].ToString() != "")
+                    Console.WriteLine(fields[0]);
 
                 MaturskiPredmeti.Add(new MaturskiPredmet(possible_naming[naming_counter], _predmeti.ToArray(), MaturskiPolinja, fields[0].ToString()));
-                
+
                 naming_counter++;
 
             }
@@ -606,14 +616,16 @@ namespace Middleware
 
             List<string> predmeti = new List<string>();
 
-            if(jaziciPos[0] >= 0 && jaziciPos[1] >= 0) {
+            if (jaziciPos[0] >= 0 && jaziciPos[1] >= 0)
+            {
                 foreach (string predmet in _predmeti)
                 {
                     predmeti = _predmeti;
                     predmeti[jaziciPos[0]] = sj[i];
                     predmeti[jaziciPos[1]] = sj[j];
                 }
-            } else
+            }
+            else
             {
                 predmeti = _predmeti;
             }
@@ -905,14 +917,14 @@ namespace Middleware
             }
             foreach (MaturskoPole Pole in MaturskiPolinja)
             {
-                if(Pole.Ime != "Име")
+                if (Pole.Ime != "Име")
                 {
                     Console.WriteLine(Pole.Ime);
                     rez += Pole.GetVrednost();
                     rez += Delimetar;
                 }
             }
-            
+
             rez = rez.Substring(0, rez.Length - 1);
 
             return rez;
