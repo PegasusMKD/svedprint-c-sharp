@@ -117,8 +117,8 @@ namespace Middleware
 
         public void SetMaturski(string val)
         {
-            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("mk-MK");
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("mk-MK");
+            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
 
             if (string.IsNullOrWhiteSpace(val))
             {
@@ -135,7 +135,7 @@ namespace Middleware
             {
                 var data = k.Split('|');
                 // zeza ili tuka
-                _maturski.Add((data[0], int.Parse(data[1]), decimal.Parse(data[2], CultureInfo.GetCultureInfo("mk-MK")), data[3], data[4]));
+                _maturski.Add((data[0], int.Parse(data[1]), decimal.Parse(data[2], CultureInfo.GetCultureInfo("en-US")), data[3], data[4]));
             }
         }
 

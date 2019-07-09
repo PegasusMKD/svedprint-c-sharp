@@ -760,8 +760,8 @@ namespace Middleware
 
         public static List<string> InitGkDiploma(List<Ucenik> siteUcenici, List<Ucenik> ucenici, Klasen klasen, int offsetx, int offsety)
         {
-            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("mk-MK");
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("mk-MK");
+            //Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("mk-MK");
+            //Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("mk-MK");
             StringWriter sw = new StringWriter();
             List<string> l = new List<string>();
             string delimiter = "|";
@@ -861,7 +861,7 @@ namespace Middleware
                 // sw.Write(string.Format("{0:N2}", u._oceni.Average())); // testing
 
                 decimal ocena;
-                bool worked = decimal.TryParse(u._oceni.Average().ToString(CultureInfo.GetCultureInfo("mk-MK")), out ocena);
+                bool worked = decimal.TryParse(u._oceni.Average().ToString(), out ocena);
                 // Convert.ToDecimal(u._oceni.Average());
                 if (!worked)
                 {
@@ -999,8 +999,8 @@ namespace Middleware
 
         public static List<string> InitDiploma(List<Ucenik> siteUcenici, List<Ucenik> ucenici, Klasen klasen, int offsetx, int offsety)
         {
-            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("mk-MK");
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("mk-MK");
+            //Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("mk-MK");
+            //Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("mk-MK");
 
             StringWriter sw = new StringWriter();
             List<string> l = new List<string>();
@@ -1054,7 +1054,7 @@ namespace Middleware
 
                 // eksterni
                 sw.Write(string.Join("|", u._maturski.GetRange(0, 3)
-                    .ConvertAll(x => $"{x.predmet}/{x.ocena}/{x.percentilen.ToString(CultureInfo.GetCultureInfo("mk-MK"))}")));
+                    .ConvertAll(x => $"{x.predmet}/{x.ocena}/{x.percentilen.ToString(CultureInfo.GetCultureInfo("en-US"))}")));
 
                 sw.Write("@");
 

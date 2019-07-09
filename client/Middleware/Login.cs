@@ -29,13 +29,13 @@ namespace Middleware
             Klasen klasen = new Klasen();
             try
             {
-                using (var writer = new StreamWriter(await httpRequest.GetRequestStreamAsync()))
+                using (var writer = new StreamWriter(httpRequest.GetRequestStream()))
                 {
-                    await writer.WriteAsync(loginJson);
+                    writer.Write(loginJson);
                 }
 
                 var httpResponse = (HttpWebResponse) await httpRequest.GetResponseAsync();
-                var responseJson = await new StreamReader(httpResponse.GetResponseStream()).ReadToEndAsync();
+                var responseJson = new StreamReader(httpResponse.GetResponseStream()).ReadToEnd();
 
                 // Console.WriteLine(JToken.Parse(responseJson).ToString(Formatting.Indented));
                 
