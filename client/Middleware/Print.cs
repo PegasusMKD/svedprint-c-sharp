@@ -999,6 +999,9 @@ namespace Middleware
 
         public static List<string> InitDiploma(List<Ucenik> siteUcenici, List<Ucenik> ucenici, Klasen klasen, int offsetx, int offsety)
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("mk-MK");
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("mk-MK");
+
             StringWriter sw = new StringWriter();
             List<string> l = new List<string>();
             string delimiter = "|";
@@ -1051,7 +1054,7 @@ namespace Middleware
 
                 // eksterni
                 sw.Write(string.Join("|", u._maturski.GetRange(0, 3)
-                    .ConvertAll(x => $"{x.predmet}/{x.ocena}/{x.percentilen.ToString("00.00").Replace(',', '.')}")));
+                    .ConvertAll(x => $"{x.predmet}/{x.ocena}/{x.percentilen.ToString(CultureInfo.GetCultureInfo("mk-MK"))}")));
 
                 sw.Write("@");
 
