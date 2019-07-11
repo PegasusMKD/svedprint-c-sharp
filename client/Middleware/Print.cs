@@ -822,8 +822,8 @@ namespace Middleware
                 sw.Write("\"");
                 sw.Write("36/1-2019"); // hardcoded
                 sw.Write(delimiter);
-                task = delovoden(klasen, u);
-                sw.Write(task.Result); // mozno e da bide 1,2,3,4,5...
+                string delbr = delovoden(klasen, u);
+                sw.Write(delbr); // mozno e da bide 1,2,3,4,5...
                 sw.Write(delimiter);
                 sw.Write(u._ime);
                 sw.Write(delimiter);
@@ -891,7 +891,7 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write("државна"); // hardcoded
                 sw.Write(delimiter);
-                sw.Write($"{db[0]}-09/{task.Result}"); // hardcoded
+                sw.Write($"{db[0]}-09/{delbr}"); // hardcoded
                 //return new List<string>();
                 sw.Write(delimiter);
                 sw.Write("08.07.2019"); // hardcoded
@@ -918,20 +918,16 @@ namespace Middleware
             return l;
         }
 
-        private static Task<string> delovoden(Klasen klasen, Ucenik u)
+        private static string delovoden(Klasen klasen, Ucenik u)
         {
-            return Task.Run<string>(() =>
-            {
-                return Requests.GetDelovoden(new Dictionary<string, string>
-                    {
-                        { RequestParameters.token, klasen._token },
-                        { RequestParameters.ime,  u._ime },
-                        { RequestParameters.srednoIme, u._srednoIme },
-                        { RequestParameters.prezime, u._prezime },
-                        { RequestParameters.duplicate_ctr, u._duplicate_ctr.ToString() }
-                    });
-            }
-                           );
+            return Requests.GetDelovoden(new Dictionary<string, string>
+                {
+                    { RequestParameters.token, klasen._token },
+                    { RequestParameters.ime,  u._ime },
+                    { RequestParameters.srednoIme, u._srednoIme },
+                    { RequestParameters.prezime, u._prezime },
+                    { RequestParameters.duplicate_ctr, u._duplicate_ctr.ToString() }
+                });
         }
 
         public static void PrintDiploma(List<Ucenik> siteUcenici, List<Ucenik> ucenici, Klasen klasen, int printerChoice, int offsetx, int offsety)
@@ -1093,8 +1089,7 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(klasen._p._smerovi[u._smer]._cel_smer.Trim());
                 sw.Write(delimiter);
-                task = delovoden(klasen, u);
-                sw.Write($"{db[0]}-09/{task.Result}"); // hardcoded
+                sw.Write($"{db[0]}-09/{delovoden(klasen, u)}"); // hardcoded
                 sw.Write(delimiter);
                 sw.Write("08.07.2019"); // hardcoded
                 sw.Write(delimiter);
