@@ -38,7 +38,7 @@ namespace Middleware
             pd.PrinterSettings.Duplex = Duplex.Vertical;
 
             data.Insert(0, "\"sveditelstva\""); // mozno e da e "sveditelstva", "sveditelstvo"
-            string outparam = String.Join("?", data);
+            string outparam = String.Join("$", data);
 
             string pyscript = rootFolder + "\\print.exe";
             Process py = new Process();
@@ -108,7 +108,7 @@ namespace Middleware
             string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
 
             data.Insert(0, "\"sveditelstvo\""); // mozno e da e "sveditelstva"
-            string outparam = String.Join("?", data);
+            string outparam = String.Join("$", data);
 
             ClearTmpFolder();
 
@@ -130,7 +130,7 @@ namespace Middleware
             string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
 
             data.Insert(0, "\"glavna\""); // mozno e da e "sveditelstva"
-            string outparam = String.Join("?", data);
+            string outparam = String.Join("$", data);
 
             ClearTmpFolder();
 
@@ -151,7 +151,7 @@ namespace Middleware
             string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
 
             data.Insert(0, "\"dipl\""); // mozno e da e "sveditelstva"
-            string outparam = String.Join("?", data);
+            string outparam = String.Join("$", data);
 
             ClearTmpFolder();
 
@@ -352,7 +352,7 @@ namespace Middleware
             pd.DefaultPageSettings.Landscape = false;
 
             data.Insert(0, "\"glavna\"");
-            string outparam = String.Join("?", data);
+            string outparam = String.Join("$", data);
             //28.06.2019
             string pyscript = rootFolder + "\\print.exe";
             Process py = new Process();
@@ -710,7 +710,7 @@ namespace Middleware
             pd.DefaultPageSettings.Landscape = true;
 
             data.Insert(0, "\"gk_dipl\"");
-            string outparam = String.Join("?", data);
+            string outparam = String.Join("$", data);
 
             string pyscript = rootFolder + "\\print.exe";
             Process py = new Process();
@@ -808,6 +808,8 @@ namespace Middleware
 
             foreach (Ucenik u in ToPrint.Where(x => ucenici.ConvertAll(z => z._broj).Contains(x._broj)))
             {
+                if (u._polozhil_matura == "не положил") continue;
+
                 sw.GetStringBuilder().Clear();
 
                 // predmeti
@@ -894,7 +896,7 @@ namespace Middleware
                 sw.Write($"{db[0]}-09/{delbr}"); // hardcoded
                 //return new List<string>();
                 sw.Write(delimiter);
-                sw.Write("08.07.2019"); // hardcoded
+                sw.Write("15.07.2019"); // hardcoded bez prigovor:  08.07.2019
                 sw.Write(delimiter);
                 sw.Write(klasen._direktor);
                 sw.Write(delimiter);
@@ -945,7 +947,7 @@ namespace Middleware
             pd.DefaultPageSettings.Landscape = true;
 
             data.Insert(0, "\"dipl\"");
-            string outparam = String.Join("?", data);
+            string outparam = String.Join("$", data);
 
             string pyscript = rootFolder + "\\print.exe";
             Process py = new Process();
@@ -1044,6 +1046,9 @@ namespace Middleware
 
             foreach (Ucenik u in ToPrint.Where(x => ucenici.ConvertAll(z => z._broj).Contains(x._broj)))
             {
+                if (u._polozhil_matura == "не положил") continue;
+
+
                 sw.GetStringBuilder().Clear();
 
                 sw.Write("\"");
@@ -1091,7 +1096,7 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write($"{db[0]}-09/{delovoden(klasen, u)}"); // hardcoded
                 sw.Write(delimiter);
-                sw.Write("08.07.2019"); // hardcoded
+                sw.Write("15.07.2019"); // hardcoded  bez prigovor :   08.07.2019
                 sw.Write(delimiter);
                 sw.Write($"{klasen._ime} {(string.IsNullOrWhiteSpace(klasen._srednoIme) ? "" : $"{klasen._srednoIme}-")}{klasen._prezime}");
                 sw.Write(delimiter);
