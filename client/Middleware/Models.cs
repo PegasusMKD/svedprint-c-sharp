@@ -899,7 +899,7 @@ namespace Middleware
 
                 MaturskiPolinja.Add(new MaturskoPole("Оценка", "5"));
                 MaturskiPolinja.Add(new MaturskoPole("Перцентилен ранг", "00.00"));
-                MaturskiPolinja.Add(new MaturskoPole("Датум", "01.01.2004"));
+                MaturskiPolinja.Add(new MaturskoPole("Датум", $"01.06.{DateTime.Now.Year.ToString("0000")}"));
                 MaturskiPolinja.Add(new MaturskoPole("Деловоден број", "2/5"));
             }
             else MaturskiPolinja = maturskipolinja;
