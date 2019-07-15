@@ -687,6 +687,19 @@ namespace Frontend
             //PoleCtr++;
             //if (PredmetCtr == 3 && PoleCtr > 0) PoleCtr++;
             //else if (PredmetCtr == 4 && PoleCtr > 1) PoleCtr++;
+
+            // ime na pole e hardcoded, kje treba da se napravi enum
+            if(Ucenici[Br].MaturskiPredmeti[PredmetCtr].MaturskiPolinja[PoleCtr].Ime == "Перцентилен ранг")
+            {
+                decimal d;
+                var didSucceed = decimal.TryParse(tx.Text, out d);
+                if(!didSucceed)
+                {
+                    tx.Text = "00.00";
+                }
+                tx.Text = tx.Text.Replace(',', '.');
+            }
+
             Ucenici[Br].MaturskiPredmeti[PredmetCtr].MaturskiPolinja[PoleCtr].SetVrednost(tx.Text);
             await Ucenici[Br].UpdateMaturska(UserKlas._token);
             //Console.WriteLine(Ucenici[Br].MaturskiPredmeti[PredmetCtr].GetOutParam());
