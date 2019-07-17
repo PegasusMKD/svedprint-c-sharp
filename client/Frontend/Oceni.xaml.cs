@@ -605,6 +605,8 @@ namespace Frontend
             foreach (Middleware.MaturskiPredmet Predmet in Predmeti)
             {
                 StackPanel st = new StackPanel();
+                st.Width = double.NaN;
+                st.HorizontalAlignment = HorizontalAlignment.Stretch;
 
                 //Title
                 st.Children.Add(SettingsDesign.ContentBorder(Predmet.Ime));
@@ -641,22 +643,33 @@ namespace Frontend
                     //if (Pole.Vrednost != "") 
 
                     Border MaturskoPoleIme = SettingsDesign.ContentBorder(Pole.Ime);
-                    MaturskoPoleIme.HorizontalAlignment = HorizontalAlignment.Left;
+                    // MaturskoPoleIme.HorizontalAlignment = HorizontalAlignment.Left;
                     MaturskoPoleIme.Margin = new Thickness(5, 0, 5, 5);
+                    
 
                     //Odgovor
                     TextBox MaturskoPoleTxt = SettingsDesign.ContentTextBox(Pole.GetVrednost());
-                    MaturskoPoleTxt.HorizontalAlignment = HorizontalAlignment.Right;
+                    MaturskoPoleTxt.HorizontalAlignment = HorizontalAlignment.Stretch;
                     MaturskoPoleTxt.Margin = new Thickness(0, 0, 0, 10);
                     MaturskoPoleTxt.FontSize = 30;
                     MaturskoPoleTxt.Tag = PredmetCtr.ToString() + "|" + PoleCtr.ToString();
+                    // MaturskoPoleTxt.Width = double.NaN; // isto kako Width = Auto
                     // MaturskoPoleTxt.TextChanged += MaturskoPole_TextChanged;
                     MaturskoPoleTxt.LostFocus += MaturskoPole_LostFocus;
 
                     //StackPanel
-                    StackPanel dp = new StackPanel();
+                    // mislam deka DockPanel e podobra opcija
+                    DockPanel dp = new DockPanel();
+                    dp.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    // dp.Width = double.NaN; // Width = Auto
+
+                    dp.LastChildFill = true;
+
                     dp.Margin = new Thickness(20, 5, 25, 0);
-                    dp.Orientation = Orientation.Horizontal;
+                    // dp.Orientation = Orientation.Horizontal;
+
+                    DockPanel.SetDock(MaturskoPoleIme, Dock.Left);
+                    DockPanel.SetDock(MaturskoPoleTxt, Dock.Right);
 
                     dp.Children.Add(MaturskoPoleIme);
                     dp.Children.Add(MaturskoPoleTxt);

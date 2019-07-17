@@ -31,7 +31,6 @@ namespace Frontend
 
         private void InjectServerLabel()
         {
-            ServerLabel.Foreground = new SolidColorBrush(Colors.SlateGray);
             ServerLabel.Content = $"Server branch: {Login.ServerBranch}";
         }
 

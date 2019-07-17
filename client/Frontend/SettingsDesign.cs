@@ -17,6 +17,7 @@ namespace Frontend
             tx.HorizontalAlignment = HorizontalAlignment.Left;
             tx.Margin = new Thickness(30, 0, 0, 0);
             tx.Text = Text;
+            tx.CaretBrush = Brushes.White; // bel cursor
             return tx;
         }
 

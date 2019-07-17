@@ -6,22 +6,25 @@
       xmlns:local="clr-namespace:Frontend"
       mc:Ignorable="d" 
 	  d:DesignHeight="600" d:DesignWidth="900"
-      Title="Home_Page" Background="#FFF1F3CE">
+      Title="SvedPrint" Background="#FFF1F3CE">
 
-	<Grid Margin="10,0">
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="25*"/>
-			<ColumnDefinition Width="34*"/>
-			<ColumnDefinition Width="25*"/>
-		</Grid.ColumnDefinitions>
-		<Grid.RowDefinitions>
-			<RowDefinition/>
-		</Grid.RowDefinitions>
-		<Image Grid.Column="1" Source="MainIcon.png" Margin="30,0" MaxWidth="350" MaxHeight="350" MouseLeftButtonDown="MainImgClicked"/>
+    <DockPanel LastChildFill="True">
+        <TextBlock x:Name="usernameTextBlock" Text="{Binding userData}" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="0,0,15,15" Foreground="SlateGray"/>
+        <Grid Margin="10,0" DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="25*"/>
+                <ColumnDefinition Width="34*"/>
+                <ColumnDefinition Width="25*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Image Grid.Column="1" Source="MainIcon.png" Margin="30,0" MaxWidth="350" MaxHeight="350" MouseLeftButtonDown="MainImgClicked"/>
 
-		<Image Source="print.png" Margin="25,0,0,0" MaxWidth="280" MaxHeight="280" MouseLeftButtonDown="PrintImgClicked" />
+            <Image Source="print.png" Margin="25,0,0,0" MaxWidth="280" MaxHeight="280" MouseLeftButtonDown="PrintImgClicked" />
 
-		<Image Name ="SettingsImg" Source="settings.png" Margin="0,0,25,0" Grid.Column="2" MaxWidth="280" MaxHeight="280" />
+            <Image Name ="SettingsImg" Source="settings.png" Margin="0,0,25,0" Grid.Column="2" MaxWidth="280" MaxHeight="280" />
 
-	</Grid>
+        </Grid>
+    </DockPanel>
 </Page>

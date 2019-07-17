@@ -20,6 +20,7 @@ namespace Frontend
         public static List<Ucenik> ucenici;
         public static List<Dictionary<string, string>> result;
         public static Dictionary<string, Smer> smerovi;
+        public string userData { get; set; }
 
         public Home_Page(Frame m, Page loginpage, Klasen Klasen)
         {
@@ -27,6 +28,10 @@ namespace Frontend
             Main = m;
             loginPage = loginpage;
             KlasenKlasa = Klasen;
+
+            userData = $"{Klasen._ime} {(string.IsNullOrWhiteSpace(Klasen._srednoIme) ? "" : $"{Klasen._srednoIme}-")}{Klasen._prezime}, {Klasen._paralelka}";
+
+            DataContext = this;
 
             SettingsImg.MouseLeftButtonDown += new MouseButtonEventHandler(SettingsImg_Clicked);
 
