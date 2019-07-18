@@ -917,6 +917,17 @@ namespace Middleware
             }
             foreach (MaturskoPole Pole in MaturskiPolinja)
             {
+                if (Pole.Ime == "Перцентилен ранг")
+                {
+                    decimal d;
+                    var didSucceed = decimal.TryParse(Pole.GetVrednost(), out d);
+                    if (!didSucceed)
+                    {
+                        Pole.SetVrednost("00.00");
+                    }
+                    if (Pole.GetVrednost().Contains(","))
+                        Pole.SetVrednost(Pole.GetVrednost().Replace(',', '.'));
+                }
                 if (Pole.Ime != "Име")
                 {
                     Console.WriteLine(Pole.Ime);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Printing;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -10,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using Excel = Microsoft.Office.Interop.Excel;
+using System.Windows.Media;
 
 namespace Middleware
 {
@@ -804,8 +806,6 @@ namespace Middleware
                 return int.Parse(u1._delovoden_broj.Split('/')[2]).CompareTo(int.Parse(u2._delovoden_broj.Split('/')[2]));
             });
 
-            Task<string> task;
-
             foreach (Ucenik u in ToPrint.Where(x => ucenici.ConvertAll(z => z._broj).Contains(x._broj)))
             {
                 if (u._polozhil_matura == "не положил") continue;
@@ -939,13 +939,15 @@ namespace Middleware
             PrintDialog printDialog = new PrintDialog();
             PrintDocument pd = new PrintDocument();
 
+            var vis = new DrawingVisual();
+
             // PrinterSettings.InstalledPrinters - lista na printeri
             pd.PrinterSettings.PrinterName = PrinterSettings.InstalledPrinters[printerChoice];
 
-            pd.DefaultPageSettings.PaperSize = pd.PrinterSettings.PaperSizes.Cast<PaperSize>().First<PaperSize>(size => size.Kind == PaperKind.A3);
+            pd.DefaultPageSettings.PaperSize = pd.PrinterSettings.PaperSizes.Cast<PaperSize>().First(size => size.Kind == PaperKind.A3);
             pd.OriginAtMargins = false;
             pd.DefaultPageSettings.Landscape = true;
-
+            
             data.Insert(0, "\"dipl\"");
             string outparam = String.Join("$", data);
 
@@ -1096,7 +1098,8 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write($"{db[0]}-09/{delovoden(klasen, u)}"); // hardcoded
                 sw.Write(delimiter);
-                sw.Write("15.07.2019"); // hardcoded  bez prigovor :   08.07.2019
+                //sw.Write("15.07.2019"); // hardcoded  bez prigovor :   08.07.2019
+                sw.Write("08.07.2019"); // hardcoded  bez prigovor :   08.07.2019
                 sw.Write(delimiter);
                 sw.Write($"{klasen._ime} {(string.IsNullOrWhiteSpace(klasen._srednoIme) ? "" : $"{klasen._srednoIme}-")}{klasen._prezime}");
                 sw.Write(delimiter);
