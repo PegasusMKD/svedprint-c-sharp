@@ -8,77 +8,62 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Middleware
-{
-
-
+namespace AdminPanel.Middleware {
+    
+    
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.1.0.0")]
-    internal sealed partial class settings : global::System.Configuration.ApplicationSettingsBase
-    {
-
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0")]
+    internal sealed partial class settings : global::System.Configuration.ApplicationSettingsBase {
+        
         private static settings defaultInstance = ((settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new settings())));
-
-        public static settings Default
-        {
-            get
-            {
+        
+        public static settings Default {
+            get {
                 return defaultInstance;
             }
         }
-
+        
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("ocenki.herokuapp.com")]
-        public string DB_HOST
-        {
-            get
-            {
+        public string DB_HOST {
+            get {
                 return ((string)(this["DB_HOST"]));
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string DB_PORT
-        {
-            get
-            {
+        public string DB_PORT {
+            get {
                 return ((string)(this["DB_PORT"]));
             }
-            set
-            {
+            set {
                 this["DB_PORT"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("stable")]
-        public string DB_BRANCH
-        {
-            get
-            {
+        [global::System.Configuration.DefaultSettingValueAttribute("admin_stable")]
+        public string DB_BRANCH {
+            get {
                 return ((string)(this["DB_BRANCH"]));
             }
-            set
-            {
+            set {
                 this["DB_BRANCH"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("https")]
-        public string DB_HTTP
-        {
-            get
-            {
+        public string DB_HTTP {
+            get {
                 return ((string)(this["DB_HTTP"]));
             }
-            set
-            {
+            set {
                 this["DB_HTTP"] = value;
             }
         }
