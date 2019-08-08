@@ -81,6 +81,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Middleware\Login.cs" />
+    <Compile Include="Middleware\Models\Admin.cs" />
+    <Compile Include="Middleware\Models\Util.cs" />
     <Compile Include="Middleware\settings.Designer.cs">
       <DependentUpon>settings.settings</DependentUpon>
       <AutoGen>True</AutoGen>
