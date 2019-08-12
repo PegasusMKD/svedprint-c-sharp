@@ -6,73 +6,73 @@ using System.Threading.Tasks;
 
 namespace AdminPanel.Middleware.Models
 {
-    class JSONRequestParameters
+    public static class JSONRequestParameters
     {
-        public static readonly string Token = "token";
+        public const string Token = "token";
 
-        public class Admin
+        public static class Admin
         {
-            public static readonly string Username = "user";
-            public static readonly string UsernameUpdated = "username";
-            public static readonly string Password = "pass";
-            public static readonly string PasswordUpdated = "password";
-            public static readonly string PrintAllowed = "printAllowed";
-            public static readonly string Uchilishte = "uchilishte";
-            public static readonly string DelovodenBroj = "delovoden_broj";
-            public static readonly string OdobrenoSveditelstvo = "odobreno_sveditelstvo";
-            public static readonly string Ministerstvo = "ministerstvo";
-            public static readonly string GlavnaKniga = "glavna_kniga";
-            public static readonly string Akt = "akt";
-            public static readonly string AktGodina = "akt_godina";
-            public static readonly string Direktor = "direktor";
-            public static readonly string UchilishteUpdate = "name";
-            public static readonly string PrintAllowedUpdated = "action";
+            public const string Username = "user";
+            public const string UsernameUpdated = "username";
+            public const string Password = "pass";
+            public const string PasswordUpdated = "password";
+            public const string PrintAllowed = "printAllowed";
+            public const string Uchilishte = "uchilishte";
+            public const string DelovodenBroj = "delovoden_broj";
+            public const string OdobrenoSveditelstvo = "odobreno_sveditelstvo";
+            public const string Ministerstvo = "ministerstvo";
+            public const string GlavnaKniga = "glavna_kniga";
+            public const string Akt = "akt";
+            public const string AktGodina = "akt_godina";
+            public const string Direktor = "direktor";
+            public const string UchilishteUpdate = "name";
+            public const string PrintAllowedUpdated = "action";
         }
 
-        public class Klasen
+        public static class Klasen
         {
-            public static readonly string Ime = "first_name";
-            public static readonly string SrednoIme = "middle_name";
-            public static readonly string Prezime = "last_name";
-            public static readonly string Username = "username";
-            public static readonly string PasswordUpdated = "password";
-            public static readonly string Paralelka = "paralelka";
-            public static readonly string UsernameUpdated = "new_username";
-            public static readonly string Klas = "class";
+            public const string Ime = "first_name";
+            public const string SrednoIme = "middle_name";
+            public const string Prezime = "last_name";
+            public const string Username = "username";
+            public const string PasswordUpdated = "password";
+            public const string Paralelka = "paralelka";
+            public const string UsernameUpdated = "new_username";
+            public const string Klas = "class";
 
         }
 
-        public class Ucenik
+        public static class Ucenik
         {
-            public static readonly string Ime = "ime";
-            public static readonly string SrednoIme = "srednoIme";
-            public static readonly string Prezime = "prezime";
-            public static readonly string Paralelka = "paralelka";
-            public static readonly string Tatko = "tatko";
-            public static readonly string Majka = "majka";
-            public static readonly string Roden = "roden";
-            public static readonly string Smer = "smer";
-            public static readonly string CelSmer = "cel_smer";
-            public static readonly string Broj = "broj";
-            public static readonly string Pol = "gender";
-            public static readonly string PrethodnaGodina = "prethodna_godina";
-            public static readonly string PrethodenUspeh = "prethoden_uspeh";
-            public static readonly string Polozhil = "polozhil";
-            public static readonly string Counter = "ctr";
-            public static readonly string PolagalOceni = "polagal";
-            public static readonly string StudentsToUpdate = "students_to_update";
-            public static readonly string StudentsToUpdateIme = "name";
-            public static readonly string StudentsToUpdateSrednoIme = "middle_name";
-            public static readonly string StudentsToUpdatePrezime = "last_name";
+            public const string Ime = "ime";
+            public const string SrednoIme = "srednoIme";
+            public const string Prezime = "prezime";
+            public const string Paralelka = "paralelka";
+            public const string Tatko = "tatko";
+            public const string Majka = "majka";
+            public const string Roden = "roden";
+            public const string Smer = "smer";
+            public const string CelSmer = "cel_smer";
+            public const string Broj = "broj";
+            public const string Pol = "gender";
+            public const string PrethodnaGodina = "prethodna_godina";
+            public const string PrethodenUspeh = "prethoden_uspeh";
+            public const string Polozhil = "polozhil";
+            public const string Counter = "ctr";
+            public const string PolagalOceni = "polagal";
+            public const string StudentsToUpdate = "students_to_update";
+            public const string StudentsToUpdateIme = "name";
+            public const string StudentsToUpdateSrednoIme = "middle_name";
+            public const string StudentsToUpdatePrezime = "last_name";
             
         }
 
-        public class ErrorCodes
+        public static class ErrorCodes
         {
-            public static readonly string OK = "000";
-            public static readonly string FAIL = "809";
-            public static readonly string TRANSFER_INIT_OK = "005";
-            public static readonly string BACK_UP_FAIL = "302";
+            public const string OK = "000";
+            public const string FAIL = "809";
+            public const string TRANSFER_INIT_OK = "005";
+            public const string BACK_UP_FAIL = "302";
         }
     }
 }

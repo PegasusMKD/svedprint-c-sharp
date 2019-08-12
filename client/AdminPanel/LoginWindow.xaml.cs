@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using AdminPanel.Middleware.Models;
 
 namespace AdminPanel
 {
@@ -22,7 +23,7 @@ namespace AdminPanel
     /// </summary>
     public partial class LoginWindow : INotifyPropertyChanged
     {
-        private string _username, _password;
+        private string _username;
         public string Username
         {
             get => _username;
@@ -41,18 +42,7 @@ namespace AdminPanel
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "") =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        public string Password
-        {
-            get => _password;
-            set
-            {
-                if (value != _password)
-                {
-                    _password = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
+        
         public LoginWindow()
         {
             InitializeComponent();
@@ -61,7 +51,15 @@ namespace AdminPanel
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Debug.WriteLine($"{Username} - {Password}");
+            Debug.WriteLine($"{Username} - {password.Password}");
+            Admin a = new Admin(Username);
+            try
+            {
+                a.RetrieveData(password.Password);
+            } catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, Properties.ExceptionMessages.ErrorCaption, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

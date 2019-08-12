@@ -117,10 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="LoginRoute" xml:space="preserve">
-    <value>login/</value>
+  <data name="ErrorCaption" xml:space="preserve">
+    <value>Грешка!</value>
   </data>
-  <data name="ServerURI" xml:space="preserve">
-    <value>https://ocenki.herokuapp.com/main/admin_stable/</value>
+  <data name="MissingLoginInfoMessage" xml:space="preserve">
+    <value>Недостасува корисничко име или лозинка!</value>
   </data>
 </root>
