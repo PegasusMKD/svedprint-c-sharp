@@ -58,7 +58,13 @@ namespace AdminPanel
             } catch(Exception ex)
             {
                 MessageBox.Show(ex.Message, Properties.ExceptionMessages.ErrorCaption, MessageBoxButton.OK, MessageBoxImage.Error);
+                throw ex;
             }
+                MainWindow main = new MainWindow(a);
+                App.Current.MainWindow = main;
+                this.Close();
+                main.Show();
+            
         }
     }
 }
