@@ -78,11 +78,6 @@ namespace AdminPanel.Middleware.Controllers
                         throw new Exception(Properties.ExceptionMessages.GeneralError);
                 }
             }
-            else
-            {
-                throw new Exception(Properties.ExceptionMessages.Success);
-            }
-
         }
     }
 
