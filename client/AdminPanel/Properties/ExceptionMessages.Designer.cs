@@ -70,6 +70,15 @@ namespace AdminPanel.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Грешка во системот!.
+        /// </summary>
+        internal static string InvalidDataMessage {
+            get {
+                return ResourceManager.GetString("InvalidDataMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Недостасува корисничко име или лозинка!.
         /// </summary>
         internal static string MissingLoginInfoMessage {

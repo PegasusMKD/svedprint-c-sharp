@@ -85,13 +85,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Middleware\Controllers\Admin.cs" />
+    <Compile Include="Middleware\Models\Klasen.cs" />
     <Compile Include="Properties\ExceptionMessages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ExceptionMessages.resx</DependentUpon>
     </Compile>
     <Compile Include="Middleware\Controllers\Util.cs" />
-    <Compile Include="Middleware\Login.cs" />
     <Compile Include="Middleware\Models\Admin.cs" />
     <Compile Include="Middleware\Models\Uchilishte.cs" />
     <Compile Include="Middleware\Models\Util.cs" />

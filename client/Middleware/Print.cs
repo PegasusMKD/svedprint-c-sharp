@@ -1044,8 +1044,6 @@ namespace Middleware
                 return int.Parse(u1._delovoden_broj.Split('/')[2]).CompareTo(int.Parse(u2._delovoden_broj.Split('/')[2]));
             });
 
-            Task<string> task;
-
             foreach (Ucenik u in ToPrint.Where(x => ucenici.ConvertAll(z => z._broj).Contains(x._broj)))
             {
                 if (u._polozhil_matura == "не положил") continue;
