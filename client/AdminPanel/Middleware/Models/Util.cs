@@ -6,6 +6,25 @@ using System.Threading.Tasks;
 
 namespace AdminPanel.Middleware.Models
 {
+    public static class Util
+    {
+        public static void UpdateObject<TYPE>(TYPE source, TYPE dest, List<string> exclude_fields = null)
+        {
+            Type T = typeof(TYPE);
+
+            if (exclude_fields == null) exclude_fields = new List<string>();
+            var properties = T.GetProperties().Where(p => !exclude_fields.Contains(p.Name));
+
+            foreach (var p in properties)
+            {
+                var val = p.GetValue(source, null);
+                if (val != null)
+                {
+                    p.SetValue(dest, val, null);
+                }
+            }
+        }
+    }
     public static class JSONRequestParameters
     {
         public const string Token = "token";

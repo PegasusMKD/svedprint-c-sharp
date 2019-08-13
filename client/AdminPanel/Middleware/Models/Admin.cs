@@ -25,25 +25,17 @@ namespace AdminPanel.Middleware.Models
 
         public void RetrieveData(string password)
         {
-            if(string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(password))
             {
                 throw new Exception(Properties.ExceptionMessages.MissingLoginInfoMessage);
             }
             Admin tmp;
             Controllers.Admin.RetrieveData(this, password, out tmp);
-            
-            Type T = typeof(Admin);
-            var properties = T.GetProperties().Where(p => p.Name != "Username");
 
-            foreach (var p in properties)
-            {
-                var val = p.GetValue(tmp, null);
-                if(val != null)
-                {
-                    p.SetValue(this, val, null);
-                }
-            }
+            Util.UpdateObject<Models.Admin>(tmp, this, new List<string> { "Username" });
         }
+
+        
 
         public void UpdateData(string password)
         {
@@ -51,6 +43,9 @@ namespace AdminPanel.Middleware.Models
                 throw new Exception(Properties.ExceptionMessages.MissingLoginInfoMessage);
 
             Controllers.Admin.UpdateData(this,password);
+
+            //Util.UpdateObject<Models.Admin>(tmp, this);
+
 
         }
     }
