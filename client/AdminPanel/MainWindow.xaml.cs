@@ -25,6 +25,7 @@ namespace AdminPanel
     {
         private string _username;
         private Middleware.Models.Admin admin;
+        private Dictionary<string, List<Middleware.Models.Klasen>> users;
         public string Username
         {
             get => _username;
@@ -44,11 +45,12 @@ namespace AdminPanel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
 
-        public MainWindow(Middleware.Models.Admin admin)
+        public MainWindow(Middleware.Models.Admin admin,Dictionary<string,List<Middleware.Models.Klasen>> users)
         {
             InitializeComponent();
             DataContext = this;
             this.admin = admin;
+            this.users = users;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

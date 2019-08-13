@@ -57,16 +57,17 @@ namespace AdminPanel
                 a.GetData(password.Password);
                 var x = Middleware.Controllers.Klasen.RetrieveUsers(a);
 
-            } catch(Exception ex)
+
+                MainWindow main = new MainWindow(a,x);
+                App.Current.MainWindow = main;
+                main.Show();
+                this.Close();
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, Properties.ExceptionMessages.ErrorCaption, MessageBoxButton.OK, MessageBoxImage.Error);
-                throw ex;
             }
-                MainWindow main = new MainWindow(a);
-                App.Current.MainWindow = main;
-                this.Close();
-                main.Show();
-            
+                
         }
     }
 }
