@@ -70,6 +70,15 @@ namespace AdminPanel.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Неточна лозинка!.
+        /// </summary>
+        internal static string IncorrectPasswordMessage {
+            get {
+                return ResourceManager.GetString("IncorrectPasswordMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Грешка во системот!.
         /// </summary>
         internal static string InvalidDataMessage {
@@ -84,6 +93,15 @@ namespace AdminPanel.Properties {
         internal static string MissingLoginInfoMessage {
             get {
                 return ResourceManager.GetString("MissingLoginInfoMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Корисникот не постои!.
+        /// </summary>
+        internal static string UserNotFoundMessage {
+            get {
+                return ResourceManager.GetString("UserNotFoundMessage", resourceCulture);
             }
         }
     }

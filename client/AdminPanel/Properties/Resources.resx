@@ -121,6 +121,6 @@
     <value>login/</value>
   </data>
   <data name="ServerURI" xml:space="preserve">
-    <value>https://ocenki.herokuapp.com/main/admin_stable/</value>
+    <value>https://ocenki.herokuapp.com/admin_stable/</value>
   </data>
 </root>

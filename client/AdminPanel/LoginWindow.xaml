@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:AdminPanel"
         xmlns:resx="clr-namespace:AdminPanel.Properties"
         mc:Ignorable="d"
-        Title="LoginWindow" Height="300" Width="400" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Topmost="True">
+        Title="LoginWindow" Height="300" Width="400" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"><!--Topmost="True">-->
     <Grid Margin="20 20">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>

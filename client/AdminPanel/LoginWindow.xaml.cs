@@ -14,7 +14,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using AdminPanel.Middleware.Models;
 
 namespace AdminPanel
 {
@@ -52,7 +51,7 @@ namespace AdminPanel
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Debug.WriteLine($"{Username} - {password.Password}");
-            Admin a = new Admin(Username);
+            Middleware.Models.Admin a = new Middleware.Models.Admin(Username);
             try
             {
                 a.RetrieveData(password.Password);

@@ -70,7 +70,7 @@ namespace AdminPanel.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://ocenki.herokuapp.com/main/admin_stable/.
+        ///   Looks up a localized string similar to https://ocenki.herokuapp.com/admin_stable/.
         /// </summary>
         public static string ServerURI {
             get {

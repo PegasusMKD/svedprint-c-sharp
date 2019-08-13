@@ -86,6 +86,7 @@
   <ItemGroup>
     <Compile Include="Middleware\Controllers\Admin.cs" />
     <Compile Include="Middleware\Models\Klasen.cs" />
+    <Compile Include="Middleware\Models\Ucenik.cs" />
     <Compile Include="Properties\ExceptionMessages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
