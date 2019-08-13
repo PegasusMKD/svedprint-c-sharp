@@ -27,6 +27,10 @@ namespace AdminPanel.Middleware.Models
             public const string Direktor = "direktor";
             public const string UchilishteUpdate = "name";
             public const string PrintAllowedUpdated = "action";
+            public const string MozniDatiMatura = "possible_dates_matura";
+            public const string MozniDatiSveditelstva = "possible_dates_svidetelstva";
+            public const string DataMatura = "dateSelected_matura";
+            public const string DataSveditelstva = "dateSelected_svidetelstva";
         }
 
         public static class Klasen
@@ -39,7 +43,6 @@ namespace AdminPanel.Middleware.Models
             public const string Paralelka = "paralelka";
             public const string UsernameUpdated = "new_username";
             public const string Klas = "class";
-
         }
 
         public static class Ucenik

@@ -1,12 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using AdminPanel.Middleware;
-using System.Security;
-using System.Diagnostics;
 
 namespace AdminPanel.Middleware.Models
 {
@@ -23,14 +18,14 @@ namespace AdminPanel.Middleware.Models
 
         public Admin(string username = "") => Username = username;
 
-        public void RetrieveData(string password)
+        public void GetAdminData(string password)
         {
             if(string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(password))
             {
                 throw new Exception(Properties.ExceptionMessages.MissingLoginInfoMessage);
             }
             Admin tmp;
-            Controllers.Admin.RetrieveData(this, password, out tmp);
+            Controllers.Admin.RetrieveAdminData(this, password, out tmp);
             
             Type T = typeof(Admin);
             var properties = T.GetProperties().Where(p => p.Name != "Username");
@@ -43,6 +38,15 @@ namespace AdminPanel.Middleware.Models
                     p.SetValue(this, val, null);
                 }
             }
+        }
+        /// <summary>
+        /// dictionary od godina i lista od klasni za taa godina
+        /// </summary>
+        public Dictionary<string, List<Klasen>> GetUsers()
+        {
+            Dictionary<string, List<Klasen>> retval = Controllers.Admin.RetrieveUsers(this);
+
+            return new Dictionary<string, List<Klasen>>();
         }
     }
 }
