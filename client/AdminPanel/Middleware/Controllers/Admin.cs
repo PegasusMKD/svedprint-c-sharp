@@ -41,7 +41,7 @@ namespace AdminPanel.Middleware.Controllers
                 {JSONRequestParameters.Token, admin.Token }
             });
 
-            (string responseText, HttpStatusCode responseCode) response = Util.GetWebResponse(json);
+            (string responseText, HttpStatusCode responseCode) response = Util.GetWebResponse(json, Properties.Resources.RetrieveUsersRoute);
             if (string.IsNullOrWhiteSpace(response.responseText) || response.responseCode != HttpStatusCode.OK) throw new Exception(Properties.ExceptionMessages.InvalidDataMessage);
 
             try

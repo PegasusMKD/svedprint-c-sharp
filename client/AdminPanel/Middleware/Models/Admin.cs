@@ -56,7 +56,7 @@ namespace AdminPanel.Middleware.Models
 
         public void UpdateData(string password)
         {
-            if (string.IsNullOrWhiteSpace(Username) && string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(password))
                 throw new Exception(Properties.ExceptionMessages.MissingLoginInfoMessage);
 
             Controllers.Admin.UpdateData(this,password);
