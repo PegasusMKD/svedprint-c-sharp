@@ -44,9 +44,14 @@ namespace AdminPanel.Middleware.Models
         /// </summary>
         public Dictionary<string, List<Klasen>> GetUsers()
         {
-            Dictionary<string, List<Klasen>> retval = Controllers.Admin.RetrieveUsers(this);
-
-            return new Dictionary<string, List<Klasen>>();
+            try
+            {
+                Dictionary<string, List<Klasen>> retval = Controllers.Admin.RetrieveUsers(this);
+                return retval;
+            } catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

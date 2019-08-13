@@ -55,6 +55,7 @@ namespace AdminPanel
             try
             {
                 a.GetAdminData(password.Password);
+                var x = a.GetUsers();
             } catch(Exception ex)
             {
                 MessageBox.Show(ex.Message, Properties.ExceptionMessages.ErrorCaption, MessageBoxButton.OK, MessageBoxImage.Error);
