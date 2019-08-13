@@ -19,7 +19,7 @@ namespace AdminPanel.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class ExceptionMessages {
@@ -70,6 +70,15 @@ namespace AdminPanel.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Излезе некој проблем, ве молиме обидете се повторно!.
+        /// </summary>
+        internal static string GeneralError {
+            get {
+                return ResourceManager.GetString("GeneralError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Неточна лозинка!.
         /// </summary>
         internal static string IncorrectPasswordMessage {
@@ -93,6 +102,24 @@ namespace AdminPanel.Properties {
         internal static string MissingLoginInfoMessage {
             get {
                 return ResourceManager.GetString("MissingLoginInfoMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Фалат корисничко име или лозинка!.
+        /// </summary>
+        internal static string MissingUpdateInfoMessage {
+            get {
+                return ResourceManager.GetString("MissingUpdateInfoMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Успешно!.
+        /// </summary>
+        internal static string Success {
+            get {
+                return ResourceManager.GetString("Success", resourceCulture);
             }
         }
         

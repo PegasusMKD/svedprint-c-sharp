@@ -120,6 +120,9 @@
   <data name="ErrorCaption" xml:space="preserve">
     <value>Грешка!</value>
   </data>
+  <data name="GeneralError" xml:space="preserve">
+    <value>Излезе некој проблем, ве молиме обидете се повторно!</value>
+  </data>
   <data name="IncorrectPasswordMessage" xml:space="preserve">
     <value>Неточна лозинка!</value>
   </data>
@@ -128,6 +131,12 @@
   </data>
   <data name="MissingLoginInfoMessage" xml:space="preserve">
     <value>Недостасува корисничко име или лозинка!</value>
+  </data>
+  <data name="MissingUpdateInfoMessage" xml:space="preserve">
+    <value>Фалат корисничко име или лозинка!</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Успешно!</value>
   </data>
   <data name="UserNotFoundMessage" xml:space="preserve">
     <value>Корисникот не постои!</value>
