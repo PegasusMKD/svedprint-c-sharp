@@ -12,16 +12,16 @@ namespace AdminPanel.Middleware.Controllers
 {
     static class Admin
     {
-        public static void RetrieveData(Models.Admin admin, string password, out Models.Admin retval)
+        public static void RetrieveAdminData(Models.Admin admin, string password, out Models.Admin retval)
         {
             string json = JsonConvert.SerializeObject(new Dictionary<string, string>
             {
                 {JSONRequestParameters.Admin.Username, admin.Username},
                 {JSONRequestParameters.Admin.Password, password}
             });
-            
-            (string responseText, HttpStatusCode responseCode) response = Util.GetWebResponse(json,Properties.Resources.LoginRoute);
-            if (string.IsNullOrWhiteSpace(response.responseText)) throw new Exception(Properties.ExceptionMessages.InvalidDataMessage);
+
+            (string responseText, HttpStatusCode responseCode) response = Util.GetWebResponse(json, Properties.Resources.LoginRoute);
+            if (string.IsNullOrWhiteSpace(response.responseText) || response.responseCode != HttpStatusCode.OK) throw new Exception(Properties.ExceptionMessages.InvalidDataMessage);
 
             try
             {
@@ -31,6 +31,30 @@ namespace AdminPanel.Middleware.Controllers
                 retval = null;
                 throw ex;
             }
+        }
+
+        public static Dictionary<string, List<Klasen>> RetrieveUsers(Models.Admin admin)
+        {
+            Dictionary<string, List<Models.Klasen>> tmp;
+            string json = JsonConvert.SerializeObject(new Dictionary<string, string>
+            {
+                {JSONRequestParameters.Token, admin.Token }
+            });
+
+            (string responseText, HttpStatusCode responseCode) response = Util.GetWebResponse(json, Properties.Resources.RetrieveUsersRoute);
+            if (string.IsNullOrWhiteSpace(response.responseText) || response.responseCode != HttpStatusCode.OK) throw new Exception(Properties.ExceptionMessages.InvalidDataMessage);
+
+            try
+            {
+                tmp = JsonConvert.DeserializeObject<Dictionary<string, List<Klasen>>>(response.responseText);
+            }
+            catch (Exception ex)
+            {
+                tmp = null;
+                throw ex;
+            }
+
+            return tmp;
         }
 
         public static void UpdateData(Models.Admin admin, string password)
@@ -54,11 +78,6 @@ namespace AdminPanel.Middleware.Controllers
                         throw new Exception(Properties.ExceptionMessages.GeneralError);
                 }
             }
-            else
-            {
-                throw new Exception(Properties.ExceptionMessages.Success);
-            }
-
         }
     }
 

@@ -25,6 +25,13 @@ namespace AdminPanel.Middleware.Models
         public string AktGodina { get; set; }
         [JsonProperty(JSONRequestParameters.Admin.Direktor)]
         public string Direktor { get; set; }
-
+        [JsonProperty(JSONRequestParameters.Admin.MozniDatiMatura)]
+        public List<string> MozniDatiMatura { get; set; }
+        [JsonProperty(JSONRequestParameters.Admin.MozniDatiSveditelstva)]
+        public List<string> MozniDatiSveditelstva { get; set; }
+        [JsonProperty(JSONRequestParameters.Admin.DataMatura)]
+        public string DataMatura { get; set; }
+        [JsonProperty(JSONRequestParameters.Admin.DataSveditelstva)]
+        public string DataSveditelstva { get; set; }
     }
 }

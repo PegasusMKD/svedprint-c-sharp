@@ -1,12 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using AdminPanel.Middleware;
-using System.Security;
-using System.Diagnostics;
 
 namespace AdminPanel.Middleware.Models
 {
@@ -23,7 +18,7 @@ namespace AdminPanel.Middleware.Models
 
         public Admin(string username = "") => Username = username;
 
-        public void RetrieveData(string password)
+        public void GetAdminData(string password)
         {
             if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(password))
             {
@@ -39,7 +34,7 @@ namespace AdminPanel.Middleware.Models
 
         public void UpdateData(string password)
         {
-            if (string.IsNullOrWhiteSpace(Username) && string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(password))
                 throw new Exception(Properties.ExceptionMessages.MissingLoginInfoMessage);
 
             Controllers.Admin.UpdateData(this,password);

@@ -120,6 +120,9 @@
   <data name="LoginRoute" xml:space="preserve">
     <value>login/</value>
   </data>
+  <data name="RetrieveUsersRoute" xml:space="preserve">
+    <value>return_users/</value>
+  </data>
   <data name="ServerURI" xml:space="preserve">
     <value>https://ocenki.herokuapp.com/admin_stable/</value>
   </data>

@@ -54,7 +54,8 @@ namespace AdminPanel
             Middleware.Models.Admin a = new Middleware.Models.Admin(Username);
             try
             {
-                a.RetrieveData(password.Password);
+                a.GetAdminData(password.Password);
+                var x = a.GetUsers();
             } catch(Exception ex)
             {
                 MessageBox.Show(ex.Message, Properties.ExceptionMessages.ErrorCaption, MessageBoxButton.OK, MessageBoxImage.Error);
