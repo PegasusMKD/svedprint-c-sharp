@@ -18,7 +18,7 @@ namespace AdminPanel.Middleware.Models
 
         public Admin(string username = "") => Username = username;
 
-        public void GetAdminData(string password)
+        public void GetData(string password)
         {
             if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(password))
             {

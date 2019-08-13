@@ -12,7 +12,7 @@ namespace AdminPanel.Middleware.Controllers
 {
     static class Admin
     {
-        public static void RetrieveAdminData(Models.Admin admin, string password, out Models.Admin retval)
+        public static void RetrieveData(Models.Admin admin, string password, out Models.Admin retval)
         {
             string json = JsonConvert.SerializeObject(new Dictionary<string, string>
             {
@@ -33,30 +33,7 @@ namespace AdminPanel.Middleware.Controllers
             }
         }
 
-        public static Dictionary<string, List<Klasen>> RetrieveUsers(Models.Admin admin)
-        {
-            Dictionary<string, List<Models.Klasen>> tmp;
-            string json = JsonConvert.SerializeObject(new Dictionary<string, string>
-            {
-                {JSONRequestParameters.Token, admin.Token }
-            });
-
-            (string responseText, HttpStatusCode responseCode) response = Util.GetWebResponse(json, Properties.Resources.RetrieveUsersRoute);
-            if (string.IsNullOrWhiteSpace(response.responseText) || response.responseCode != HttpStatusCode.OK) throw new Exception(Properties.ExceptionMessages.InvalidDataMessage);
-
-            try
-            {
-                tmp = JsonConvert.DeserializeObject<Dictionary<string, List<Klasen>>>(response.responseText);
-            }
-            catch (Exception ex)
-            {
-                tmp = null;
-                throw ex;
-            }
-
-            return tmp;
-        }
-
+        
         public static void UpdateData(Models.Admin admin, string password)
         {
             var json = JsonConvert.SerializeObject(new Dictionary<string, string>
@@ -80,6 +57,7 @@ namespace AdminPanel.Middleware.Controllers
             }
         }
     }
+
 
     class AdminConverter : JsonConverter<Models.Admin>
     {
