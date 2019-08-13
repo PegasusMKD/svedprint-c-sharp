@@ -20,7 +20,7 @@ namespace AdminPanel.Middleware.Controllers
                 {JSONRequestParameters.Admin.Password, password}
             });
             
-            (string responseText, HttpStatusCode responseCode) response = Util.GetWebResponse(json);
+            (string responseText, HttpStatusCode responseCode) response = Util.GetWebResponse(json,Properties.Resources.LoginRoute);
             if (string.IsNullOrWhiteSpace(response.responseText)) throw new Exception(Properties.ExceptionMessages.InvalidDataMessage);
 
             try
@@ -31,6 +31,34 @@ namespace AdminPanel.Middleware.Controllers
                 retval = null;
                 throw ex;
             }
+        }
+
+        public static void UpdateData(Models.Admin admin, string password)
+        {
+            var json = JsonConvert.SerializeObject(new Dictionary<string, string>
+            {
+                {JSONRequestParameters.Token, admin.Token },
+                {JSONRequestParameters.Admin.UsernameUpdated, admin.Username },
+                {JSONRequestParameters.Admin.PasswordUpdated, password }
+            });
+
+            (string responseText, HttpStatusCode responseCode) response = Util.GetWebResponse(json, Properties.Resources.UpdateAdminRoute);
+
+            Dictionary<string, string> retval = JsonConvert.DeserializeObject<Dictionary<string, string>>(response.responseText);
+
+            if (retval["status_code"] != "000")
+            {
+                switch (retval["status_code"])
+                {
+                    case "016":
+                        throw new Exception(Properties.ExceptionMessages.GeneralError);
+                }
+            }
+            else
+            {
+                throw new Exception(Properties.ExceptionMessages.Success);
+            }
+
         }
     }
 
@@ -67,5 +95,7 @@ namespace AdminPanel.Middleware.Controllers
         {
             throw new NotImplementedException();
         }
+
+       
     }
 }

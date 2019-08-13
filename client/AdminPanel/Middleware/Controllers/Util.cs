@@ -12,9 +12,9 @@ namespace AdminPanel.Middleware.Controllers
 {
     static class Util
     {
-        public static (string responseText, HttpStatusCode responseCode) GetWebResponse(string payload)
+        public static (string responseText, HttpStatusCode responseCode) GetWebResponse(string payload, string route)
         {
-            HttpWebRequest request = WebRequest.CreateHttp(Properties.Resources.ServerURI + Properties.Resources.LoginRoute);
+            HttpWebRequest request = WebRequest.CreateHttp(Properties.Resources.ServerURI + route);
             request.Method = "POST";
             request.ContentType = "application/json";
 
