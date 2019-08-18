@@ -5,4 +5,6 @@
     <system:String x:Key="UsernameLabelText">Корисничко име</system:String>
     <system:String x:Key="PasswordLabelText">Лозинка</system:String>
     <system:String x:Key="LoginButtonText">Најави се</system:String>
+    <system:String x:Key="Build_Users_Button_Text">Build Users</system:String>
+    <system:String x:Key="UpdateUsersText">Update</system:String>
 </ResourceDictionary>

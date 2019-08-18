@@ -62,6 +62,7 @@ namespace AdminPanel.Middleware.Models
             public const string Paralelka = "paralelka";
             public const string UsernameUpdated = "new_username";
             public const string Klas = "class";
+            public const string UsersUpdate = "data";
         }
 
         public static class Ucenik
