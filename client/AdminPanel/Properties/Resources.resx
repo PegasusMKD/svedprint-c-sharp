@@ -120,6 +120,12 @@
   <data name="LoginRoute" xml:space="preserve">
     <value>login/</value>
   </data>
+  <data name="PrintChangeRoute" xml:space="preserve">
+    <value>print_change/</value>
+  </data>
+  <data name="RetrieveStudentsRoute" xml:space="preserve">
+    <value>get_all_students/</value>
+  </data>
   <data name="RetrieveUsersRoute" xml:space="preserve">
     <value>return_users/</value>
   </data>
@@ -128,5 +134,8 @@
   </data>
   <data name="UpdateAdminRoute" xml:space="preserve">
     <value>update_admin/</value>
+  </data>
+  <data name="UpdateUsersRoute" xml:space="preserve">
+    <value>update_users/</value>
   </data>
 </root>

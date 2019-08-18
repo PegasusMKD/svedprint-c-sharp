@@ -20,6 +20,7 @@
                 <PasswordBox x:Name="password" Padding="5"/>
                 <Border Margin="0 10"/>
                 <Button HorizontalAlignment="Right" Content="{StaticResource LoginButtonText}" Padding="10 2" Click="Button_Click"/>
+                <Button HorizontalAlignment="Center" Content="{StaticResource Build_Users_Button_Text}" Padding="10 2" Click="Build_Users"/>
             </StackPanel>
         </Border>
     </Grid>

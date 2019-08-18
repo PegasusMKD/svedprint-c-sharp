@@ -19,7 +19,7 @@ namespace AdminPanel.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
@@ -70,6 +70,24 @@ namespace AdminPanel.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to print_change/.
+        /// </summary>
+        public static string PrintChangeRoute {
+            get {
+                return ResourceManager.GetString("PrintChangeRoute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to get_all_students/.
+        /// </summary>
+        public static string RetrieveStudentsRoute {
+            get {
+                return ResourceManager.GetString("RetrieveStudentsRoute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to return_users/.
         /// </summary>
         public static string RetrieveUsersRoute {
@@ -93,6 +111,15 @@ namespace AdminPanel.Properties {
         public static string UpdateAdminRoute {
             get {
                 return ResourceManager.GetString("UpdateAdminRoute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to update_users/.
+        /// </summary>
+        public static string UpdateUsersRoute {
+            get {
+                return ResourceManager.GetString("UpdateUsersRoute", resourceCulture);
             }
         }
     }
