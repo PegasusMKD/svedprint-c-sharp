@@ -70,6 +70,15 @@ namespace AdminPanel.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to print_change/.
+        /// </summary>
+        public static string PrintChangeRoute {
+            get {
+                return ResourceManager.GetString("PrintChangeRoute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to return_users/.
         /// </summary>
         public static string RetrieveUsersRoute {
