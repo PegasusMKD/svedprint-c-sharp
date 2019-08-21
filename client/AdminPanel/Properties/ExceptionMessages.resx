@@ -135,9 +135,6 @@
   <data name="MissingUpdateInfoMessage" xml:space="preserve">
     <value>Фалат корисничко име или лозинка!</value>
   </data>
-  <data name="NotAdminMessage" xml:space="preserve">
-    <value>Ве молиме вклучете се од профилот на директорот или обидете се поново да се најавите!</value>
-  </data>
   <data name="Success" xml:space="preserve">
     <value>Успешно!</value>
   </data>

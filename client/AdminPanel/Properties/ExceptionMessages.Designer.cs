@@ -115,15 +115,6 @@ namespace AdminPanel.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ве молиме вклучете се од профилот на директорот или обидете се поново да се најавите!.
-        /// </summary>
-        internal static string NotAdminMessage {
-            get {
-                return ResourceManager.GetString("NotAdminMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Успешно!.
         /// </summary>
         internal static string Success {

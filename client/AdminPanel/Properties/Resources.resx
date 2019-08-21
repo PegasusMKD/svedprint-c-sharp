@@ -120,9 +120,6 @@
   <data name="LoginRoute" xml:space="preserve">
     <value>login/</value>
   </data>
-  <data name="PrintChangeRoute" xml:space="preserve">
-    <value>print_change/</value>
-  </data>
   <data name="RetrieveUsersRoute" xml:space="preserve">
     <value>return_users/</value>
   </data>

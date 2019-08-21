@@ -56,41 +56,6 @@ namespace AdminPanel.Middleware.Controllers
                 }
             }
         }
-        public static bool UpdatePrint(Models.Admin admin)
-        {
-            string action = String.Empty;
-
-            if (admin.IsPrintAllowed)
-            {
-                action = "deny";
-                admin.IsPrintAllowed = false;
-            }
-            else
-            {
-                action = "allow";
-                admin.IsPrintAllowed = true;
-            }
-
-            var json = JsonConvert.SerializeObject(new Dictionary<string, string>
-            {
-                {JSONRequestParameters.Token, admin.Token },
-                {JSONRequestParameters.Admin.PrintAllowedUpdated, action },
-            });
-
-            (string responseText, HttpStatusCode responseCode) response = Util.GetWebResponse(json, Properties.Resources.PrintChangeRoute);
-
-            Dictionary<string, string> retval = JsonConvert.DeserializeObject<Dictionary<string, string>>(response.responseText);
-
-            if (retval["status_code"] != "000")
-            {
-                switch (retval["status_code"])
-                {
-                    case "802":
-                        throw new Exception(Properties.ExceptionMessages.NotAdminMessage);
-                }
-            }
-            return true;
-        }
     }
 
 
