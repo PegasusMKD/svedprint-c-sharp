@@ -87,6 +87,7 @@ namespace AdminPanel.Middleware.Models
             public const string StudentsToUpdateIme = "name";
             public const string StudentsToUpdateSrednoIme = "middle_name";
             public const string StudentsToUpdatePrezime = "last_name";
+            public const string Godina = "godina";
 
         }
 
