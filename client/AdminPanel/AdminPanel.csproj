@@ -60,7 +60,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Middleware\Controllers\Ucenik.cs" />
     <Compile Include="UsersWindow.xaml.cs">
       <DependentUpon>UsersWindow.xaml</DependentUpon>
     </Compile>

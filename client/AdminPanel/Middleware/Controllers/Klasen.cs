@@ -48,12 +48,10 @@ namespace AdminPanel.Middleware.Controllers
                     Dictionary<string, string> tmp_dict = new Dictionary<string, string>() {
                         {JSONRequestParameters.Klasen.Username, user.UsernamePERMA}
                     };
-                    
-                    string _username = user.Username;
 
-                    if (_username != user.UsernamePERMA)
+                    if (user.Username != user.UsernamePERMA)
                     {
-                        user.UsernamePERMA = _username;
+                        user.UsernamePERMA = user.Username;
                     }
 
 

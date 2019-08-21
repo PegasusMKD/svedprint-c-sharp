@@ -33,7 +33,9 @@ namespace AdminPanel.Middleware.Models
         [JsonProperty(JSONRequestParameters.Klasen.Username)]
         public string Username { get; set; }
 
+        [JsonProperty(JSONRequestParameters.Klasen.Username)]
         public string UsernamePERMA { get; set; }
+
 
         [JsonProperty(JSONRequestParameters.Klasen.Klas)]
         public string Klas { get; set; }
@@ -43,8 +45,6 @@ namespace AdminPanel.Middleware.Models
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(string pair, [CallerMemberName] String propertyName = "")
         {
-
-
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
             if (!this.changed_properties.Contains(pair))
@@ -68,24 +68,18 @@ namespace AdminPanel.Middleware.Models
 
         public string UsernameBind
         {
-            get { return Username; }
+            get { return this.Username; }
             set
             {
                 if (value != this.Username)
                 {
-                    if ( UsernamePERMA == null)
-                    {
-                        UsernamePERMA = Username;
-                    }
-
                     this.Username = value;
                     NotifyPropertyChanged("Username");
                 }
             }
         }
 
-        public string PrezimeBind
-        {
+        public string PrezimeBind {
             get { return this.Prezime; }
             set
             {
@@ -96,6 +90,7 @@ namespace AdminPanel.Middleware.Models
                 }
             }
         }
+        
     }
 
 
