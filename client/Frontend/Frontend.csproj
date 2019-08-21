@@ -103,7 +103,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Data.cs" />
     <Compile Include="Home_Page.xaml.cs">
       <DependentUpon>Home_Page.xaml</DependentUpon>
     </Compile>

@@ -46,6 +46,9 @@ namespace AdminPanel
         {
             InitializeComponent();
             DataContext = this;
+
+            Username = (string)FindResource("UsernameLabelText");
+            
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
