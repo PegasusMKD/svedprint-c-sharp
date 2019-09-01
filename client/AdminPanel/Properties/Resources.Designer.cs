@@ -70,6 +70,15 @@ namespace AdminPanel.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to print_change/.
+        /// </summary>
+        public static string PrintChangeRoute {
+            get {
+                return ResourceManager.GetString("PrintChangeRoute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to return_users/.
         /// </summary>
         public static string RetrieveUsersRoute {
@@ -79,7 +88,7 @@ namespace AdminPanel.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://ocenki.herokuapp.com/admin_stable/.
+        ///   Looks up a localized string similar to http://127.0.0.1:8000/admin_stable/.
         /// </summary>
         public static string ServerURI {
             get {
