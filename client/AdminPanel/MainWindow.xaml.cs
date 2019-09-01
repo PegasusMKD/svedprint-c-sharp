@@ -69,16 +69,6 @@ namespace AdminPanel
                 MessageBox.Show(ex.Message, Properties.ExceptionMessages.ErrorCaption, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
-        private void Build_Users(object sender, RoutedEventArgs e)
-        {
-            UsersWindow main = new UsersWindow(this.admin,this.users);
-            App.Current.MainWindow = main;
-            main.Show();
-            this.Close();
-
-
-        }
     }
 }
 

@@ -960,41 +960,41 @@ namespace Middleware
             py.Start();
             py.WaitForExit();
 
-            //printQueue = new List<PrintQueueItem>();
+            printQueue = new List<PrintQueueItem>();
 
-            ////return;
-            //int partition = 5;
-            //for (int part = 0; part < 9; part++)
-            //{
-            //    if (partition * part > data.Count - 1)
-            //    {
-            //        break;
-            //    }
+            //return;
+            int partition = 5;
+            for (int part = 0; part < 9; part++)
+            {
+                if (partition * part > data.Count - 1)
+                {
+                    break;
+                }
 
-            //    printQueue.Clear();
-            //    for (int i = partition * part; i < Math.Min(data.Count - 1, partition * (part + 1)); i++)
-            //    {
-            //        PrintQueueItem x = new PrintQueueItem();
-            //        x.sides = new System.Drawing.Image[1];
-            //        x.sides[0] = System.Drawing.Image.FromFile(new Uri($"{tmpFolder}dipl-{i}.jpg").AbsolutePath);
+                printQueue.Clear();
+                for (int i = partition * part; i < Math.Min(data.Count - 1, partition * (part + 1)); i++)
+                {
+                    PrintQueueItem x = new PrintQueueItem();
+                    x.sides = new System.Drawing.Image[1];
+                    x.sides[0] = System.Drawing.Image.FromFile(new Uri($"{tmpFolder}dipl-{i}.jpg").AbsolutePath);
 
-            //        printQueue.Add(x);
-            //    }
+                    printQueue.Add(x);
+                }
 
-            //    currentPage = 0;
-            //    maxSides = 1;
-            //    pd.PrintPage += new PrintPageEventHandler(onPrintPage);
+                currentPage = 0;
+                maxSides = 1;
+                pd.PrintPage += new PrintPageEventHandler(onPrintPage);
 
-            //    for (int i = partition * part; i < Math.Min(data.Count - 1, partition * (part + 1)); i++)
-            //    {
-            //        currentSide = 0;
-            //        pd.Print();
-            //        currentPage++;
-            //    }
+                for (int i = partition * part; i < Math.Min(data.Count - 1, partition * (part + 1)); i++)
+                {
+                    currentSide = 0;
+                    pd.Print();
+                    currentPage++;
+                }
 
-            //    printQueue.ForEach(x => x.sides.ToList().ForEach(job => job.Dispose()));
-            //    pd.Dispose();
-            //}
+                printQueue.ForEach(x => x.sides.ToList().ForEach(job => job.Dispose()));
+                pd.Dispose();
+            }
         }
 
         public static List<string> InitDiploma(List<Ucenik> siteUcenici, List<Ucenik> ucenici, Klasen klasen, int offsetx, int offsety)
