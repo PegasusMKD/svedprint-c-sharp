@@ -289,8 +289,8 @@ namespace Middleware
                 //sw.Write(u._
                 sw.Write(klasen._grad);
                 sw.Write(delimiter);
-                sw.Write(klasen._odobreno_sveditelstvo);
-                //sw.Write("28.06.2019");
+                //sw.Write(klasen._odobreno_sveditelstvo);
+                sw.Write("22.08.2019");
                 sw.Write(delimiter);
                 //sw.Write(klasen._delovoden_broj + '-' + year_dictionary[paralelka_godina] + '/' + klasen._paralelka.Split('-')[1] + '/' + ctr_passable.ToString());
 
@@ -300,9 +300,9 @@ namespace Middleware
 
                 if (!failed_arr[current_idx])
                 {
-                    sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_god[1]}/{u._broj - failed_offset[current_idx]}");
+                    //sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_god[1]}/{u._broj - failed_offset[current_idx]}");
                 }
-
+                sw.Write("08-07/7/27");
                 //sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_god[1]}/26");
 
                 sw.Write(delimiter);
@@ -332,10 +332,10 @@ namespace Middleware
                 sw.Write($";\"{offsetx}{delimiter}{offsety}\"");
 
                 //if (current_idx == 0 ? failed_offset[0] == 0 : failed_offset[current_idx] == failed_offset[current_idx-1]) {
-                if (!failed_arr[current_idx])
-                {
+                //if (!failed_arr[current_idx])
+                //{
                     l.Add(sw.ToString());
-                }
+                //}
             }
             return l;
         }
@@ -614,12 +614,12 @@ namespace Middleware
                         sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_godina[1]}/{u._broj - failed_offset[current_idx]}");
                     }
                 }
-
+                sw.Write("08-07/7/27");
                 //sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_godina[1]}/26");
 
                 sw.Write(delimiter);
-                sw.Write(klasen._odobreno_sveditelstvo);
-                //sw.Write("28.06.2019");
+                //sw.Write(klasen._odobreno_sveditelstvo);
+                sw.Write("22.08.2019");
                 sw.Write(delimiter);
                 // BELESKI
                 tmparr.Clear();
@@ -637,10 +637,10 @@ namespace Middleware
                 sw.Write($";\"{offsetx}{delimiter}{offsety}\"");
 
 
-                if (!failed_arr[current_idx])
-                {
+                //if (!failed_arr[current_idx])
+                //{
                     l.Add(sw.ToString());
-                }
+                //}
             }
             return l;
         }
