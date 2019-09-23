@@ -11,9 +11,9 @@ namespace AdminPanel.Middleware.Controllers
 {
     class Ucenik
     {
-        public static List<Ucenik> RetrieveStudents(Models.Admin admin, string year)
+        public static List<Models.Ucenik> RetrieveStudents(Models.Admin admin, string year = "III")
         {
-            List<Ucenik> tmp;
+            List<Models.Ucenik> tmp;
             string json = JsonConvert.SerializeObject(new Dictionary<string, string>
             {
                 {JSONRequestParameters.Token, admin.Token },
@@ -25,7 +25,7 @@ namespace AdminPanel.Middleware.Controllers
 
             try
             {
-                tmp = JsonConvert.DeserializeObject<List<Ucenik>>(response.responseText);
+                tmp = JsonConvert.DeserializeObject<List<Models.Ucenik>>(response.responseText);
             }
             catch (Exception ex)
             {
@@ -35,7 +35,5 @@ namespace AdminPanel.Middleware.Controllers
 
             return tmp;
         }
-
-
     }
 }

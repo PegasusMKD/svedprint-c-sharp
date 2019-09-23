@@ -32,9 +32,14 @@ namespace AdminPanel
 
             this.users = users;
             this.admin = admin;
-            User.DataContext = users["IV"][0];
+            List<Klasen> siteklasni = new List<Klasen>();
+            foreach(var k in users.Values)
+            {
+                siteklasni.AddRange(k);
+            }
+            UsersList.ItemsSource = siteklasni;
 
-            DataContext = this;
+            // DataContext = this;
         }
 
         private void Update_Users(object sender, RoutedEventArgs e)

@@ -12,7 +12,7 @@ namespace Middleware {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.1.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0")]
     internal sealed partial class settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static settings defaultInstance = ((settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new settings())));
@@ -25,7 +25,7 @@ namespace Middleware {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("127.0.0.1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("ocenki.herokuapp.com")]
         public string DB_HOST {
             get {
                 return ((string)(this["DB_HOST"]));
@@ -34,7 +34,7 @@ namespace Middleware {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(":8000")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string DB_PORT {
             get {
                 return ((string)(this["DB_PORT"]));

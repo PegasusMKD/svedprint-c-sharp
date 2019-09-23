@@ -6,20 +6,31 @@
         xmlns:local="clr-namespace:AdminPanel"
         mc:Ignorable="d"
         Title="UsersWindow">
-    <Grid>
-        <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*"/>
-    </Grid.ColumnDefinitions>
-        <ScrollViewer Name="main_border" BorderThickness="1" BorderBrush="LightGray" VerticalAlignment="Center" Grid.Column="1" Padding="20 20">
+    <DockPanel LastChildFill="True">
+        <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Content="{StaticResource UpdateUsersText}" Padding="10 2" Click="Update_Users"/>
+        <ListView Name="UsersList" ScrollViewer.CanContentScroll="True">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Name="gridUser" Height="Auto" Width="Auto" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-            <DockPanel x:Name="User">
-                <TextBox  Text="{Binding Path=UsernameBind,Mode=TwoWay}"/>
-                <TextBox  Text="{Binding Path=PrezimeBind,Mode=TwoWay}"/>
-                <TextBox  Text="{Binding Path=SrednoImeBind,Mode=TwoWay}"/>
-                <!--<TextBox x:Name="User" Text="{Binding Path=UsernameBind,Mode=TwoWay}"/>-->
-                <!--<TextBox x:Name="User" Text="{Binding Path=UsernameBind,Mode=TwoWay}"/>-->
-            </DockPanel>
-        </ScrollViewer>
-        <Button HorizontalAlignment="Right" Content="{StaticResource UpdateUsersText}" Padding="10 2" Click="Update_Users"/>
-    </Grid>
+                        <Label Content="Username:" Target="{Binding ElementName=txtUsername}" Grid.Row="0" Grid.Column="0"/>
+                        <TextBox x:Name="txtUsername" Grid.Row="1" Grid.Column="0" Text="{Binding Path=UsernameBind,Mode=TwoWay}"/>
+                        <Label Content="LastName:" Target="{Binding ElementName=txtLastName}" Grid.Row="0" Grid.Column="1"/>
+                        <TextBox x:Name="txtLastName" Grid.Row="1" Grid.Column="1" Text="{Binding Path=PrezimeBind,Mode=TwoWay}"/>
+                        <Label Content="MiddleName:" Target="{Binding ElementName=txtMiddleName}" Grid.Row="0" Grid.Column="2"/>
+                        <TextBox x:Name="txtMiddleName" Grid.Row="1" Grid.Column="2" Text="{Binding Path=SrednoImeBind,Mode=TwoWay}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </DockPanel>
 </Window>
