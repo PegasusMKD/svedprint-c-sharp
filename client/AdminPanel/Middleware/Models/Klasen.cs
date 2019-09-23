@@ -19,9 +19,8 @@ namespace AdminPanel.Middleware.Models
             {"SrednoIme",JSONRequestParameters.Klasen.SrednoIme },
             {"Prezime",JSONRequestParameters.Klasen.Prezime },
             {"Username",JSONRequestParameters.Klasen.UsernameUpdated },
-            {"Klas",JSONRequestParameters.Klasen.Klas },
-    };
-
+            {"Klas",JSONRequestParameters.Klasen.Klas }
+        };
 
         [JsonProperty(JSONRequestParameters.Klasen.Ime)]
         public string Ime { get; set; }
@@ -38,13 +37,9 @@ namespace AdminPanel.Middleware.Models
         [JsonProperty(JSONRequestParameters.Klasen.Klas)]
         public string Klas { get; set; }
 
-
-
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(string pair, [CallerMemberName] String propertyName = "")
         {
-
-
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
             if (!this.changed_properties.Contains(pair))
@@ -73,7 +68,7 @@ namespace AdminPanel.Middleware.Models
             {
                 if (value != this.Username)
                 {
-                    if ( UsernamePERMA == null)
+                    if (UsernamePERMA == null)
                     {
                         UsernamePERMA = Username;
                     }
@@ -97,6 +92,4 @@ namespace AdminPanel.Middleware.Models
             }
         }
     }
-
-
 }

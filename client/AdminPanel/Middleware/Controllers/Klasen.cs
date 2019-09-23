@@ -26,6 +26,13 @@ namespace AdminPanel.Middleware.Controllers
             try
             {
                 tmp = JsonConvert.DeserializeObject<Dictionary<string, List<Models.Klasen>>>(response.responseText);
+                foreach(var list in tmp.Values)
+                { 
+                    foreach(var user in list)
+                    {
+                        user.UsernamePERMA = user.Username;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -48,24 +55,18 @@ namespace AdminPanel.Middleware.Controllers
                     Dictionary<string, string> tmp_dict = new Dictionary<string, string>() {
                         {JSONRequestParameters.Klasen.Username, user.UsernamePERMA}
                     };
-                    
-                    string _username = user.Username;
-
-                    if (_username != user.UsernamePERMA)
-                    {
-                        user.UsernamePERMA = _username;
-                    }
 
 
                     if (user.changed_properties.Count() != 0)
                     {
                         Type T = typeof(Models.Klasen);
 
+                        if (user.changed_properties.Contains("Username")) user.UsernamePERMA = user.Username;
                         var properties = T.GetProperties().Where(p => user.changed_properties.Contains(p.Name));
 
                         foreach (var p in properties)
                         {
-                            var val = p.GetValue(user, null);
+                            var val = p.GetValue(user);
                             if (val != null)
                             {
                                 tmp_dict[user.pairs[p.Name]] = val.ToString();
@@ -73,7 +74,7 @@ namespace AdminPanel.Middleware.Controllers
                         }
 
                         tmp.Add(tmp_dict);
-                        user.changed_properties = new List<string>();
+                        user.changed_properties.Clear();
                     }
                 }
             }
@@ -92,5 +93,5 @@ namespace AdminPanel.Middleware.Controllers
 
             return 0;
         }
-        }
     }
+}
