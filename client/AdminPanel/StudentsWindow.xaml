@@ -8,20 +8,13 @@
         Title="StudentsWindow">
     <DockPanel LastChildFill="True">
         <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Content="{StaticResource UpdateUsersText}" Padding="10 2"/>
-        <TextBox Name="txtSearch" DockPanel.Dock="Top" KeyUp="TxtSearch_Search" Text="TExt" Padding="5 2"/>
-        <ListView Name="StudentsList" ScrollViewer.CanContentScroll="True" ItemsSource="{Binding students}">
+        <TextBox Name="txtSearch" DockPanel.Dock="Top" TextChanged="TxtSearch_Search" Padding="5 2"/>
+        <ListView Name="StudentsList" ScrollViewer.CanContentScroll="True" ItemsSource="{Binding Path=students}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="name" Width="Auto" DisplayMemberBinding="{Binding Ime}"/>
                     <GridViewColumn Header="lastname" Width="Auto" DisplayMemberBinding="{Binding Prezime}"/>
                     <GridViewColumn Header="class" Width="Auto" DisplayMemberBinding="{Binding Paralelka}"/>
-                    <GridViewColumn Header="check">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>

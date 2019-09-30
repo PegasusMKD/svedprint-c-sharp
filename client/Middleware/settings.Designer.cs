@@ -58,7 +58,7 @@ namespace Middleware {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https")]
         public string DB_HTTP {
             get {
                 return ((string)(this["DB_HTTP"]));

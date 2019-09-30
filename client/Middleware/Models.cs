@@ -393,6 +393,7 @@ namespace Middleware
         {
             bool checker = true;
             int n = _oceni.Count;
+            if (string.IsNullOrWhiteSpace(_polagal)) return true;
             var polagal_oceni = _polagal.Split(' ');
             for (int i = 0; i < n; i++)
             {
@@ -595,7 +596,7 @@ namespace Middleware
             if (Smerovi.Keys.Contains("Странски Јазици"))
             {
                 // ne znam zosto, ama jazici kaj nekoi e x;y; - ima visok ; na kraj sto go buni kodot
-                if (jazici != null && jazici != "" && (jazici.Length == 3 || jazici.Length == 4))
+                if (!string.IsNullOrWhiteSpace(jazici) && (jazici.Length == 3 || jazici.Length == 4))
                 {
                     var arr = jazici.Split(new char[] { ';', ':' }); // hardcoded
                     i = int.Parse(arr[0]);
@@ -616,14 +617,14 @@ namespace Middleware
 
             List<string> predmeti = new List<string>();
 
+            // хардкодед треба фикс кодот е каша попара
+            jaziciPos[0] = 2;
+            jaziciPos[1] = 3;
             if (jaziciPos[0] >= 0 && jaziciPos[1] >= 0)
             {
-                foreach (string predmet in _predmeti)
-                {
-                    predmeti = _predmeti;
-                    predmeti[jaziciPos[0]] = sj[i];
-                    predmeti[jaziciPos[1]] = sj[j];
-                }
+                predmeti = _predmeti;
+                predmeti[jaziciPos[0]] = sj[i];
+                predmeti[jaziciPos[1]] = sj[j];
             }
             else
             {

@@ -36,29 +36,28 @@ namespace AdminPanel
             students = students.OrderBy(x => x.Paralelka).ThenBy(x => x.Broj).ToList();
             //students = students.OrderBy(x => int.Parse(x.Paralelka.Split('-')[1])).ToList();
             this.students = students;
-            l = students;
-            // StudentsList.ItemsSource = students;
+            StudentsList.ItemsSource = students;
+            
+            CollectionView collectionView = (CollectionView)CollectionViewSource.GetDefaultView(StudentsList.ItemsSource);
+            collectionView.Filter = (x) =>
+            {
+                if (String.IsNullOrEmpty(txtSearch.Text)) return true;
+                bool retval = false;
+                foreach (var txt in txtSearch.Text.Split(' '))
+                {
+                    retval |= (x as Ucenik).Ime.IndexOf(txt, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                        (x as Ucenik).Prezime.IndexOf(txt, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                        (x as Ucenik).Paralelka.IndexOf(txt, StringComparison.OrdinalIgnoreCase) >= 0;
+                }
+                return retval;
+            };
 
             DataContext = this;
         }
 
-        private void TxtSearch_Search(object sender, KeyEventArgs e)
+        private void TxtSearch_Search(object sender, TextChangedEventArgs e)
         {
-            // if (e.Key != Key.Enter) return;
-            if (string.IsNullOrWhiteSpace(txtSearch.Text))
-            {
-                StudentsList.ItemsSource = new List<Ucenik>(l);
-                return;
-            }
-            List<Ucenik> tmp = new List<Ucenik>();
-            foreach(var x in l)
-            {
-                if(x.Ime.ToLower().Contains(txtSearch.Text.ToLower()) || x.Prezime.ToLower().Contains(txtSearch.Text.ToLower()) || x.Paralelka.Contains(txtSearch.Text))
-                {
-                    tmp.Add(x);
-                }
-            }
-            StudentsList.ItemsSource = tmp;
+            CollectionViewSource.GetDefaultView(StudentsList.ItemsSource).Refresh();
         }
     }
 }

@@ -12,7 +12,7 @@
       <Value Profile="(Default)">main</Value>
     </Setting>
     <Setting Name="DB_HTTP" Type="System.String" Scope="User">
-      <Value Profile="(Default)">http</Value>
+      <Value Profile="(Default)">https</Value>
     </Setting>
   </Settings>
 </SettingsFile>

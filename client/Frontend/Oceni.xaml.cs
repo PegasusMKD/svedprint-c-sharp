@@ -105,7 +105,7 @@ namespace Frontend
             {
                 if (SJ_1_CB.Items.Count == 0) SJ_1_CB.ItemsSource = UserKlas._p._smerovi["Странски Јазици"]._predmeti;
                 if (SJ_2_CB.Items.Count == 0) SJ_2_CB.ItemsSource = UserKlas._p._smerovi["Странски Јазици"]._predmeti;
-                if (Ucenici[BrojDn]._jazik != null && Ucenici[BrojDn]._jazik != "" && Ucenici[BrojDn]._jazik.Length > 2)
+                if (!string.IsNullOrWhiteSpace(Ucenici[BrojDn]._jazik) && Ucenici[BrojDn]._jazik.Length > 2)
                 {
                     string[] jazici = Ucenici[BrojDn]._jazik.Split(new char[]{ ';',':'}); // hardcoded
                      SJ_1_CB.SelectedIndex = int.Parse(jazici[0]);

@@ -218,11 +218,14 @@ namespace Middleware
                 // oceni
                 var ocenki = u._oceni;
                 var polagal = u._polagal.Split(' ');
-                for (int i = 0; i < polagal.Length; i++)
+                if (!string.IsNullOrEmpty(u._polagal))
                 {
-                    if (polagal[i] != "0")
+                    for (int i = 0; i < polagal.Length; i++)
                     {
-                        ocenki[i] = int.Parse(polagal[i]);
+                        if (polagal[i] != "0")
+                        {
+                            ocenki[i] = int.Parse(polagal[i]);
+                        }
                     }
                 }
                 sw.Write("\"" + String.Join(" ", ocenki) + "\"");
@@ -290,7 +293,7 @@ namespace Middleware
                 sw.Write(klasen._grad);
                 sw.Write(delimiter);
                 //sw.Write(klasen._odobreno_sveditelstvo);
-                sw.Write("22.08.2019");
+                sw.Write("12.06.2019");
                 sw.Write(delimiter);
                 //sw.Write(klasen._delovoden_broj + '-' + year_dictionary[paralelka_godina] + '/' + klasen._paralelka.Split('-')[1] + '/' + ctr_passable.ToString());
 
@@ -302,7 +305,7 @@ namespace Middleware
                 {
                     //sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_god[1]}/{u._broj - failed_offset[current_idx]}");
                 }
-                sw.Write("08-07/7/27");
+                sw.Write("08-05/7/14");
                 //sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_god[1]}/26");
 
                 sw.Write(delimiter);
@@ -606,6 +609,7 @@ namespace Middleware
                 string[] db = klasen._delovoden_broj.Split('-');
                 var val = int.Parse(db[1]) + int.Parse(year_dictionary[paralelka_godina[0]]) - 1;
 
+                /* momentalno
                 if (!failed_arr[current_idx])
                 {
                     if ((current_idx == 0 && failed_offset[current_idx] == 0) ||
@@ -613,25 +617,29 @@ namespace Middleware
                     {
                         sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_godina[1]}/{u._broj - failed_offset[current_idx]}");
                     }
-                }
-                sw.Write("08-07/7/27");
+                } */
+                sw.Write("08-05/7/14");
                 //sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_godina[1]}/26");
 
                 sw.Write(delimiter);
                 //sw.Write(klasen._odobreno_sveditelstvo);
-                sw.Write("22.08.2019");
+                sw.Write("12.06.2019");
                 sw.Write(delimiter);
                 // BELESKI
                 tmparr.Clear();
 
                 sw.Write("\";\"");
 
-                sw.Write(u._polagal);
-                //for(int i = 0; i < u._oceni.Count; i++)
-                //{
-                //    tmparr.Add("0");
-                //}
-                //sw.Write(string.Join(" ", tmparr));
+                if (!string.IsNullOrWhiteSpace(u._polagal))
+                    sw.Write(u._polagal);
+                else
+                {
+                    for (int i = 0; i < u._oceni.Count; i++)
+                    {
+                        tmparr.Add("0");
+                    }
+                    sw.Write(string.Join(" ", tmparr));
+                }
 
                 sw.Write("\"");
                 sw.Write($";\"{offsetx}{delimiter}{offsety}\"");
