@@ -87,7 +87,13 @@ namespace AdminPanel
             App.Current.MainWindow = main;
             main.Show();
             this.Close();
+        }
 
+        private void Transfer_Year(object sender, RoutedEventArgs e)
+        {
+            bool retval = Middleware.Controllers.Global.TransferYear(admin);
+            if (retval) throw new Exception("Започна префрлувањето на учениците во следната учебна година.\n Проверете утре дали добро се извршила транзицијата.\n Доколку не се префрлиле, ве молиме исконтактирајте ги администраторите на системот, или девелоперите!");
+            else throw new Exception("Има некој проблем во системот, ве молиме обидете се подоцна, или исконтактирајте ги администраторите!");
 
         }
     }

@@ -7,11 +7,21 @@
         mc:Ignorable="d"
         Title="StudentsWindow">
     <DockPanel LastChildFill="True">
-        <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Content="{StaticResource UpdateUsersText}" Padding="10 2"/>
+        <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Content="{StaticResource UpdateUsersText}" Padding="10 2" Click="Update_Students"/>
+        <TextBox x:Name="txtClass" DockPanel.Dock="Bottom" Text="{Binding Path=ClassView,Mode=TwoWay}"/>
         <TextBox Name="txtSearch" DockPanel.Dock="Top" TextChanged="TxtSearch_Search" Padding="5 2"/>
         <ListView Name="StudentsList" ScrollViewer.CanContentScroll="True" ItemsSource="{Binding Path=students}">
             <ListView.View>
                 <GridView>
+                    
+                    <GridViewColumn>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding Path=transferClassView,Mode=TwoWay}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    
                     <GridViewColumn Header="name" Width="Auto" DisplayMemberBinding="{Binding Ime}"/>
                     <GridViewColumn Header="lastname" Width="Auto" DisplayMemberBinding="{Binding Prezime}"/>
                     <GridViewColumn Header="class" Width="Auto" DisplayMemberBinding="{Binding Paralelka}"/>

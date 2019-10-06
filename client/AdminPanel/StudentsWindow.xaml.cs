@@ -27,6 +27,8 @@ namespace AdminPanel
         Admin admin;
         public List<Ucenik> students { get; set; }
         private List<Ucenik> l;
+        public string Class = "";
+        public string ClassView { get { return Class; } set { if (value != Class) Class = value; } }
 
         public StudentsWindow(Admin admin, List<Ucenik> students)
         {
@@ -59,5 +61,11 @@ namespace AdminPanel
         {
             CollectionViewSource.GetDefaultView(StudentsList.ItemsSource).Refresh();
         }
+
+        private void Update_Students(object sender, RoutedEventArgs e)
+        {
+            Middleware.Controllers.Ucenik.TransferStudentsClasses(students, admin, Class);
+        }
+
     }
 }

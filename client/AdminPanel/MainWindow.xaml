@@ -22,7 +22,9 @@
                 <Button HorizontalAlignment="Right" Content="smeni user/pass" Padding="10 2" Click="Button_Click"/>
                 <Button HorizontalAlignment="Center" Content="{StaticResource Build_Users_Button_Text}" Padding="10 2" Click="Build_Users"/>
                 <Border Margin="2 5"/>
-                <Button HorizontalAlignment="Center" Content="{StaticResource Build_Students_Button_Text}" Padding="10 2" Click="Build_Students"/>
+                <Button HorizontalAlignment="Center" Content="{StaticResource Build_Students_Button_Text}" Padding="10 2" Click="Transfer_Year"/>
+                <Border Margin="2 5"/>
+                <Button HorizontalAlignment="Center" Content="{StaticResource Transfer_Year_Button_Text}" Padding="10 2" Click="Build_Students"/>
             </StackPanel>
         </Border>
     </Grid>

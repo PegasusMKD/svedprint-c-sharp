@@ -50,6 +50,7 @@ namespace AdminPanel.Middleware.Models
             public const string MozniDatiSveditelstva = "possible_dates_svidetelstva";
             public const string DataMatura = "dateSelected_matura";
             public const string DataSveditelstva = "dateSelected_svidetelstva";
+            public const string UchilishteImeUpdate = "name";
         }
 
         public static class Klasen
@@ -84,6 +85,7 @@ namespace AdminPanel.Middleware.Models
             public const string Counter = "ctr";
             public const string PolagalOceni = "polagal";
             public const string StudentsToUpdate = "students_to_update";
+            public const string StudentsForUpdate = "students_for_update";
             public const string StudentsToUpdateIme = "name";
             public const string StudentsToUpdateSrednoIme = "middle_name";
             public const string StudentsToUpdatePrezime = "last_name";

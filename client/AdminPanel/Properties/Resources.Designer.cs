@@ -97,7 +97,7 @@ namespace AdminPanel.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://ocenki.herokuapp.com/admin_stable/.
+        ///   Looks up a localized string similar to http://127.0.0.1:8000/admin_stable/.
         /// </summary>
         public static string ServerURI {
             get {
@@ -111,6 +111,15 @@ namespace AdminPanel.Properties {
         public static string UpdateAdminRoute {
             get {
                 return ResourceManager.GetString("UpdateAdminRoute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to set_different_class/.
+        /// </summary>
+        public static string UpdateStudentsClasses {
+            get {
+                return ResourceManager.GetString("UpdateStudentsClasses", resourceCulture);
             }
         }
         

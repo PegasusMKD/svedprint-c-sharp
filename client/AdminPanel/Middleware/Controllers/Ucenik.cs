@@ -35,5 +35,35 @@ namespace AdminPanel.Middleware.Controllers
 
             return tmp;
         }
+
+        public static void TransferStudentsClasses(List<Models.Ucenik> students, Models.Admin admin, string _class)
+        {
+            var students_for_transfer = from student in students where student.transferClass select student;
+            List<Dictionary<string,string>> transfering = new List<Dictionary<string, string>>();
+            foreach(Models.Ucenik student in students_for_transfer)
+            {
+
+                transfering.Add(new Dictionary<string, string>
+                {
+                    { "first_name",student.Ime},
+                    { "middle_name",student.SrednoIme},
+                    { "last_name",student.Prezime},
+                    { "ctr",student.Counter},
+                });
+
+                student.transferClass = false;
+                student.Paralelka = _class;
+            }
+            var json = JsonConvert.SerializeObject(new Dictionary<string, object>
+            {
+                {JSONRequestParameters.Token ,admin.Token},
+                {JSONRequestParameters.Ucenik.Paralelka, _class },
+                {JSONRequestParameters.Ucenik.StudentsForUpdate, transfering }
+            });
+
+            (string responseText, HttpStatusCode responseCode) response = Util.GetWebResponse(json, Properties.Resources.UpdateStudentsClasses);
+            if (string.IsNullOrWhiteSpace(response.responseText) || response.responseCode != HttpStatusCode.OK) throw new Exception(Properties.ExceptionMessages.InvalidDataMessage);
+
+        }
     }
 }
