@@ -36,6 +36,12 @@ namespace AdminPanel.Middleware.Controllers
             return tmp;
         }
 
+        /// <summary>
+        /// A Controller which updates the selected student's class
+        /// </summary>
+        /// <param name="students">List of students</param>
+        /// <param name="admin"></param>
+        /// <param name="_class">Name of the class they should be put into</param>
         public static void TransferStudentsClasses(List<Models.Ucenik> students, Models.Admin admin, string _class)
         {
             var students_for_transfer = from student in students where student.transferClass select student;

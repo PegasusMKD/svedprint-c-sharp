@@ -11,9 +11,14 @@ namespace AdminPanel.Middleware.Models
 {
     public class Uchilishte : INotifyPropertyChanged
     {
-
+        /// <summary>
+        /// An automagically updated list of changed values on the object
+        /// </summary>
         public List<string> changed_properties = new List<string>();
 
+        /// <summary>
+        /// Pairings of Middleware fields with their server-side counterparts
+        /// </summary>
         public Dictionary<string, string> pairs = new Dictionary<string, string>() {
             {"Ime",JSONRequestParameters.Admin.UchilishteImeUpdate },
             {"DelovodenBroj",JSONRequestParameters.Admin.DelovodenBroj },

@@ -89,6 +89,11 @@ namespace AdminPanel
             this.Close();
         }
 
+        /// <summary>
+        /// The Button function which activates the year transfer
+        /// <para>We should add some kind of a notification when he clicks the button</para>
+        /// <para>And ask him if he's sure about the transfer, And for them to stop using the software for the next 24 hours or so.</para>
+        /// </summary>
         private void Transfer_Year(object sender, RoutedEventArgs e)
         {
             bool retval = Middleware.Controllers.Global.TransferYear(admin);

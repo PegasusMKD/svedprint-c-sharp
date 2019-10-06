@@ -52,7 +52,6 @@ namespace AdminPanel.Middleware.Models
             public const string DataSveditelstva = "dateSelected_svidetelstva";
             public const string UchilishteImeUpdate = "name";
         }
-
         public static class Klasen
         {
             public const string Ime = "first_name";

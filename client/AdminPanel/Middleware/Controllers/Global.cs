@@ -9,9 +9,17 @@ using System.Threading.Tasks;
 
 namespace AdminPanel.Middleware.Controllers
 {
-
+    /// <summary>
+    /// <para>This class is for functions which are used only once,</para>
+    /// and it doesn't really fit into any certain model, nor is it a Utility which could be used multiple times
+    /// </summary>
     public class Global
     {
+        /// <summary>
+        /// A Controller which sets off the Threads for a new school year on the server-side
+        /// </summary>
+        /// <param name="admin"></param>
+        /// <returns>True if the threads were activated and a back up was made</returns>
         public static bool TransferYear(Models.Admin admin)
         {
             var json = JsonConvert.SerializeObject(new Dictionary<string, string>

@@ -27,6 +27,10 @@ namespace AdminPanel
         Admin admin;
         public List<Ucenik> students { get; set; }
         private List<Ucenik> l;
+        /// <summary>
+        /// Keeps track of the desired class
+        /// <para>Should be changed to an index of a list or something similar, instead of a TextBox</para>
+        /// </summary>
         public string Class = "";
         public string ClassView { get { return Class; } set { if (value != Class) Class = value; } }
 

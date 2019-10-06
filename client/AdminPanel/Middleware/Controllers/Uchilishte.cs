@@ -12,8 +12,13 @@ namespace AdminPanel.Middleware.Controllers
 {
     class Uchilishte
     {
+        ///<summary>
+        ///<para>Controller for updating the school server-side</para>
+        ///It uses the same technique as the one for the Klasen, with the changed_properties and so on
+        ///</summary>
         public static int UpdateSchool(Models.Admin admin,Models.Uchilishte school)
         {
+            
             Dictionary<string, object> tmp_dict = new Dictionary<string, object>()
             {
                 {JSONRequestParameters.Token, admin.Token },
