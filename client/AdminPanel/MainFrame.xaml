@@ -1,0 +1,44 @@
+﻿<Page x:Class="AdminPanel.MainFrame"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:AdminPanel"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="900"
+      Title="MainFrame" Background="#FFF1F3CE">
+
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0" Name="MenuPanel" >
+
+            <ListBox  Name="ListBox" ItemsSource="{Binding Items}" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" Foreground="{x:Null}">
+
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListBoxItem}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                    <ContentPresenter OpacityMask="{x:Null}" />
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+        </StackPanel>
+        <Frame Name="AdminMainFrame" Grid.Column="1">
+        </Frame>
+    </Grid>
+</Page>

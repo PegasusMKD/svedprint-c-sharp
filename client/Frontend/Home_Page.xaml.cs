@@ -55,6 +55,7 @@ namespace Frontend
             {
                 ucenik.LoadMaturski(KlasenKlasa);
             }
+
         }
 
         private void SortUcenici()

@@ -897,6 +897,7 @@ namespace Middleware
                 //return new List<string>();
                 sw.Write(delimiter);
                 sw.Write("15.07.2019"); // hardcoded bez prigovor:  08.07.2019
+                //sw.Write("26.08.2019");//polagac
                 sw.Write(delimiter);
                 sw.Write(klasen._direktor);
                 sw.Write(delimiter);
@@ -1096,7 +1097,7 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write($"{db[0]}-09/{delovoden(klasen, u)}"); // hardcoded
                 sw.Write(delimiter);
-                //sw.Write("15.07.2019"); // hardcoded  bez prigovor :   08.07.2019
+                //sw.Write("26.08.2019"); // hardcoded  bez prigovor :   08.07.2019
                 sw.Write("08.07.2019"); // hardcoded  bez prigovor :   08.07.2019
                 sw.Write(delimiter);
                 sw.Write($"{klasen._ime} {(string.IsNullOrWhiteSpace(klasen._srednoIme) ? "" : $"{klasen._srednoIme}-")}{klasen._prezime}");

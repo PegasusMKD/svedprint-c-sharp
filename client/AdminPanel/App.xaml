@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:AdminPanel"
              xmlns:resx="clr-namespace:AdminPanel.Properties"
-             StartupUri="LoginWindow.xaml">
+             StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

@@ -13,26 +13,30 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace AdminPanel
 {
     /// <summary>
-    /// Interaction logic for LoginWindow.xaml
+    /// Interaktionslogik für LoginFrame.xaml
     /// </summary>
-    public partial class LoginWindow : INotifyPropertyChanged
+    public partial class LoginFrame : Page , INotifyPropertyChanged
     {
         private string _username;
+        NavigationService ns;
         public string Username
         {
+
             get => _username;
             set
-            {
-                if(value != _username)
-                {
+            { 
+                if (value != _username)
+                { 
                     _username = value;
                     NotifyPropertyChanged();
                 }
+
             }
         }
 
@@ -41,36 +45,61 @@ namespace AdminPanel
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "") =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        
-        public LoginWindow()
+
+        public LoginFrame(NavigationService ns)
         {
             InitializeComponent();
             DataContext = this;
 
+            this.ns = ns;
+
             Username = (string)FindResource("UsernameLabelText");
-            
+            Pw_Label.Content = (string)FindResource("PasswordLabelText");
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+
+            ns.Navigate(new MainFrame(ns));
+            return;
             Debug.WriteLine($"{Username} - {password.Password}");
-            Middleware.Models.Admin a = new Middleware.Models.Admin(Username);
+            Middleware.Models.Admin AdminAccount = new Middleware.Models.Admin(Username);
             try
             {
-                a.GetData(password.Password);
-                var x = Middleware.Controllers.Klasen.RetrieveUsers(a);
+                AdminAccount.GetData(password.Password);
+                var KlasniData = Middleware.Controllers.Klasen.RetrieveUsers(AdminAccount);
 
 
-                MainWindow main = new MainWindow(a,x);
+                MainWindow main = new MainWindow();
                 App.Current.MainWindow = main;
                 main.Show();
-                this.Close();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, Properties.ExceptionMessages.ErrorCaption, MessageBoxButton.OK, MessageBoxImage.Error);
             }
-                
+
+        }
+
+        private void Pw_GotFocus(object sender, RoutedEventArgs e)
+        {
+            Pw_Label.Visibility = Visibility.Hidden;
+        }
+
+        private void Pw_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (password.Password == "") Pw_Label.Visibility = Visibility.Visible;
+        }
+
+        private void Username_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (Username == (string)FindResource("UsernameLabelText")) Username = string.Empty;
+        }
+
+        private void Username_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (username.Text == string.Empty) Username = (string)FindResource("UsernameLabelText");
         }
     }
 }

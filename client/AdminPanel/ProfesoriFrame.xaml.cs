@@ -1,9 +1,8 @@
-﻿using System;
+﻿using AdminPanel;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,20 +18,22 @@ using System.Windows.Shapes;
 namespace AdminPanel
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaktionslogik für ProfesoriFrame.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ProfesoriFrame : Page
     {
 
-        public MainWindow()
+        public ProfesoriFrame()
         {
-            InitializeComponent();
-            DataContext = this;
 
-            MainFrame.Navigate(new LoginFrame(MainFrame.NavigationService));
+            InitializeComponent();
+
+            //DataContext = new MenuViewModel();
         }
 
-     
-    }
-}
 
+    }
+
+
+
+}

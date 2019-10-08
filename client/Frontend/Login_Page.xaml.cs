@@ -1,5 +1,4 @@
-﻿using MainWindows;
-using Middleware;
+﻿using Middleware;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -13,7 +12,6 @@ namespace Frontend
     public partial class Login_Page : Page
     {
         Frame Main;
-        Data data;
         System.Windows.Threading.DispatcherTimer AlertTimer;
 
 
@@ -21,7 +19,6 @@ namespace Frontend
         {
             InitializeComponent();
             Main = m;
-            data = new Data();
             AlertTimer = new System.Windows.Threading.DispatcherTimer();
             AlertTimer.Tick += new EventHandler(AlertTimer_Tick);
             AlertTimer.Interval = new TimeSpan(0, 0, 5);
