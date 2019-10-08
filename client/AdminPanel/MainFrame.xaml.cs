@@ -40,7 +40,7 @@ namespace AdminPanel
                 return new List<NavItem>
                 {
                     new NavItem { Name = "Админ" , page = new AdminFrame()},
-                    new NavItem { Name = "Училиште" , page = new AdminFrame()},
+                    new NavItem { Name = "Училиште" , page = new UcilisteFrame()},
                     new NavItem { Name = "Професори" , page = new ProfesoriFrame()}
                 };
             }

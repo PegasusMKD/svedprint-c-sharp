@@ -58,30 +58,6 @@ namespace AdminPanel
 
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-            ns.Navigate(new MainFrame(ns));
-            return;
-            Debug.WriteLine($"{Username} - {password.Password}");
-            Middleware.Models.Admin AdminAccount = new Middleware.Models.Admin(Username);
-            try
-            {
-                AdminAccount.GetData(password.Password);
-                var KlasniData = Middleware.Controllers.Klasen.RetrieveUsers(AdminAccount);
-
-
-                MainWindow main = new MainWindow();
-                App.Current.MainWindow = main;
-                main.Show();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, Properties.ExceptionMessages.ErrorCaption, MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-
-        }
-
         private void Pw_GotFocus(object sender, RoutedEventArgs e)
         {
             Pw_Label.Visibility = Visibility.Hidden;
@@ -100,6 +76,11 @@ namespace AdminPanel
         private void Username_LostFocus(object sender, RoutedEventArgs e)
         {
             if (username.Text == string.Empty) Username = (string)FindResource("UsernameLabelText");
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            ns.Navigate(new MainFrame(ns));
         }
     }
 }

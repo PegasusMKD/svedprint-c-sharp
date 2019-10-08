@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace AdminPanel
 {
     /// <summary>
-    /// Interaktionslogik für ProfesoriFrame.xaml
+    /// Interaktionslogik für UcilisteFrame.xaml
     /// </summary>
-    public partial class ProfesoriFrame : Page
+    public partial class UcilisteFrame : Page
     {
-        public ProfesoriFrame()
+        public UcilisteFrame()
         {
             InitializeComponent();
         }

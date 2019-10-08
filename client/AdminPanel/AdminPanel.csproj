@@ -69,11 +69,8 @@
     <Compile Include="MainFrame.xaml.cs">
       <DependentUpon>MainFrame.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProfesoriFrame.xaml.cs">
-      <DependentUpon>ProfesoriFrame.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UsersWindow.xaml.cs">
-      <DependentUpon>UsersWindow.xaml</DependentUpon>
+    <Compile Include="UcilisteFrame.xaml.cs">
+      <DependentUpon>UcilisteFrame.xaml</DependentUpon>
     </Compile>
     <Page Include="AdminFrame.xaml">
       <SubType>Designer</SubType>
@@ -111,30 +108,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UsersWindow.xaml">
+    <Page Include="UcilisteFrame.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Middleware\Controllers\Admin.cs" />
-    <Compile Include="Middleware\Controllers\Klasen.cs" />
-    <Compile Include="Middleware\Models\Klasen.cs" />
-    <Compile Include="Middleware\Models\Ucenik.cs" />
+    <Compile Include="ProfesoriFrame.xaml.cs">
+      <DependentUpon>ProfesoriFrame.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\ExceptionMessages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ExceptionMessages.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Middleware\Controllers\Util.cs" />
-    <Compile Include="Middleware\Models\Admin.cs" />
-    <Compile Include="Middleware\Models\Uchilishte.cs" />
-    <Compile Include="Middleware\Models\Util.cs" />
-    <Compile Include="Middleware\settings.Designer.cs">
-      <DependentUpon>settings.settings</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -157,12 +143,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Resource Include="Middleware\settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>settings.Designer.cs</LastGenOutput>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <None Include="Middleware\packages.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

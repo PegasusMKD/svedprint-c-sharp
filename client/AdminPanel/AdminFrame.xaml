@@ -9,14 +9,9 @@
       Background="#3e5878"
       Title="AdminFrame">
 
-    <Grid >
-
-
-
         <UniformGrid Name ="Ugrid"  Columns="2" VerticalAlignment="Top">
             
 
         </UniformGrid>
 
-    </Grid>
 </Page>
