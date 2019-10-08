@@ -1,35 +1,20 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace AdminPanel.Middleware.Models
 {
-    public class Klasen : INotifyPropertyChanged
+    public class Klasen
     {
-
-        public List<string> changed_properties = new List<string>();
-
-        public Dictionary<string, string> pairs = new Dictionary<string, string>() {
-            {"Ime",JSONRequestParameters.Klasen.Ime },
-            {"SrednoIme",JSONRequestParameters.Klasen.SrednoIme },
-            {"Prezime",JSONRequestParameters.Klasen.Prezime },
-            {"Username",JSONRequestParameters.Klasen.UsernameUpdated },
-            {"Klas",JSONRequestParameters.Klasen.Klas },
-    };
-
-
         [JsonProperty(JSONRequestParameters.Klasen.Ime)]
         public string Ime { get; set; }
         [JsonProperty(JSONRequestParameters.Klasen.SrednoIme)]
         public string SrednoIme { get; set; }
         [JsonProperty(JSONRequestParameters.Klasen.Prezime)]
         public string Prezime { get; set; }
-
         [JsonProperty(JSONRequestParameters.Klasen.Username)]
         public string Username { get; set; }
 
@@ -39,6 +24,7 @@ namespace AdminPanel.Middleware.Models
 
         [JsonProperty(JSONRequestParameters.Klasen.Klas)]
         public string Klas { get; set; }
+    }
 
 
 
