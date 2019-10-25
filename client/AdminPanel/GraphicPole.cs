@@ -26,7 +26,12 @@ namespace AdminPanel
 
         public Pole()//Default Construktor
         {
-
+            
+        }
+        public Pole(int a)//test
+        {
+            Design DefaultPole = new Design(Title(), (UIElement)GetAnswerPole(), UnderBorder());
+            DefaultPole.GetPanel();
         }
         public Pole(string Name, string[] Question, string Parametar, string Type = null , string Answer = null)//Site Polinja
         {
@@ -57,7 +62,7 @@ namespace AdminPanel
             lbl.HorizontalContentAlignment = HorizontalAlignment.Center;
             lbl.FontFamily = new FontFamily("Arial");
             lbl.FontWeight = FontWeights.Bold;
-            if (Content.Length < 20) lbl.FontSize = 30.0;
+            if (Content.Length < 15) lbl.FontSize = 30.0;
             else lbl.FontSize = 30.0 / (Content.Length / 15);
             lbl.Foreground = (Brush)Application.Current.FindResource("TextColor");
             return lbl;
@@ -157,8 +162,6 @@ namespace AdminPanel
             cb.SelectionChanged += CB_SelectionChanged;
             return cb;
         }
-
-
         Viewbox GetCheckBox()
         {
             CheckBox Checkb = new CheckBox();
@@ -393,13 +396,62 @@ namespace AdminPanel
         //old code */
     }
 
-    class Pw_Pole
+    class Design
     {
-        Pole pole = new Pole("Лозинка", new string[] { "" }  , "Parametar" );
-        
-        StackPanel GetPole()
+        public Border Title;
+        public UIElement AnswerGrid;
+        public Border UnderBorder;        
+
+        public Design(Border title, UIElement answerGrid, Border underBorder)
         {
-            return pole.GetPole();
+            Title = title;
+            AnswerGrid = answerGrid;
+            UnderBorder = underBorder;
+        }
+
+        public Border CreateDefaultTitle()
+        {
+            Border bd = new Border();
+            bd.Height = 50.0;
+            bd.VerticalAlignment = VerticalAlignment.Top;
+            bd.Background = (Brush)Application.Current.FindResource("MenuItemColor");
+            bd.BorderThickness = new Thickness(2);
+            bd.CornerRadius = new CornerRadius(10);
+            bd.Child = CreateDefaultLabel("Name");
+            return bd;
+        }
+        public Label CreateDefaultLabel(string Content)
+        {
+            Label lbl = new Label();
+            lbl.Content = Content;
+            lbl.VerticalAlignment = VerticalAlignment.Center;
+            lbl.HorizontalContentAlignment = HorizontalAlignment.Center;
+            lbl.FontFamily = new FontFamily("Arial");
+            lbl.FontWeight = FontWeights.Bold;
+            if (Content.Length < 15) lbl.FontSize = 30.0;
+            else lbl.FontSize = 30.0 / (Content.Length / 15);
+            lbl.Foreground = (Brush)Application.Current.FindResource("TextColor");
+            return lbl;
+        }
+
+        public Border CreateDefaultUnderBorder()
+        {
+            Border bd = new Border();
+            bd.Height = 10;
+            bd.VerticalAlignment = VerticalAlignment.Center;
+            bd.Background = (Brush)Application.Current.FindResource("UnderBorderColor");
+            bd.BorderThickness = new Thickness(2);
+            bd.CornerRadius = new CornerRadius(5);
+            return bd;
+        }
+
+        public StackPanel GetPanel()
+        {
+            StackPanel Main = new StackPanel();
+            Main.Children.Add(Title);
+            Main.Children.Add(AnswerGrid);
+            Main.Children.Add(UnderBorder);
+            return Main;
         }
 
     }
