@@ -9,7 +9,7 @@
       Background="#3e5878"
       Title="UcilisteFrame">
 
-    <Grid>
+    <UniformGrid Name ="Ugrid" Columns="2" VerticalAlignment="Top">
         
-    </Grid>
+    </UniformGrid>
 </Page>

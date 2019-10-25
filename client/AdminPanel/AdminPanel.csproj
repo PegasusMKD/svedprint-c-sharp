@@ -63,6 +63,7 @@
     <Compile Include="AdminFrame.xaml.cs">
       <DependentUpon>AdminFrame.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GraphicPole.cs" />
     <Compile Include="LoginFrame.xaml.cs">
       <DependentUpon>LoginFrame.xaml</DependentUpon>
     </Compile>
