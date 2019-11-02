@@ -70,6 +70,16 @@
     <Compile Include="MainFrame.xaml.cs">
       <DependentUpon>MainFrame.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Middleware_\Controlls\Admin.cs" />
+    <Compile Include="Middleware_\Controlls\Klasen.cs" />
+    <Compile Include="Middleware_\Controlls\Util.cs" />
+    <Compile Include="Middleware_\Models\Admin.cs" />
+    <Compile Include="Middleware_\Models\Klasen.cs" />
+    <Compile Include="Middleware_\Models\Ucenik.cs" />
+    <Compile Include="Middleware_\Models\Uchilishte.cs" />
+    <Compile Include="Middleware_\Models\Util.cs" />
+    <Compile Include="Middleware_\settings.cs" />
+    <Compile Include="Middleware_\settings.Designer.cs" />
     <Compile Include="UcilisteFrame.xaml.cs">
       <DependentUpon>UcilisteFrame.xaml</DependentUpon>
     </Compile>
@@ -144,6 +154,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Middleware_\settings.settings" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
