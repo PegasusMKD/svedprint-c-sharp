@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -31,7 +32,7 @@ namespace AdminPanel
         public Pole(int a)//test
         {
             Design DefaultPole = new Design(Title(), (UIElement)GetAnswerPole(), UnderBorder());
-            DefaultPole.GetPanel();
+            //DefaultPole.GetPanel();
         }
         public Pole(string Name, string[] Question, string Parametar, string Type = null , string Answer = null)//Site Polinja
         {
@@ -402,14 +403,50 @@ namespace AdminPanel
         public UIElement AnswerGrid;
         public Border UnderBorder;        
 
-        public Design(Border title, UIElement answerGrid, Border underBorder)
+        public Design(Border title , UIElement answerGrid, Border underBorder)
         {
             Title = title;
             AnswerGrid = answerGrid;
             UnderBorder = underBorder;
         }
 
-        public Border CreateDefaultTitle()
+        public Design(string  Question, string PossibleAnswer)//DefaultPole
+        {
+            Title = CreateDefaultTitle(Question);
+            AnswerGrid = AnswerBox(PossibleAnswer);
+            UnderBorder = CreateDefaultUnderBorder();
+        }
+
+        public Design()
+        {
+
+        }
+
+        public StackPanel GetDesign()
+        {
+            StackPanel st = new StackPanel();
+            st.Children.Add(Title);
+            st.Children.Add(AnswerGrid);
+            st.Children.Add(UnderBorder);
+            return st;
+        }
+
+        public void SetTitle(Border title)
+        {
+            Title = title;
+        }
+
+        public void SetAnswerBox(Object AnswerBox)
+        {
+            this.AnswerGrid = (UIElement)AnswerBox;
+        }
+
+        public void SetUnderBorder(Border UnderBorder)
+        {
+            this.UnderBorder = UnderBorder;
+        }
+
+        public static Border CreateDefaultTitle(string Content)
         {
             Border bd = new Border();
             bd.Height = 50.0;
@@ -417,10 +454,10 @@ namespace AdminPanel
             bd.Background = (Brush)Application.Current.FindResource("MenuItemColor");
             bd.BorderThickness = new Thickness(2);
             bd.CornerRadius = new CornerRadius(10);
-            bd.Child = CreateDefaultLabel("Name");
+            bd.Child = CreateDefaultLabel(Content);
             return bd;
         }
-        public Label CreateDefaultLabel(string Content)
+        public static Label CreateDefaultLabel(string Content)
         {
             Label lbl = new Label();
             lbl.Content = Content;
@@ -434,7 +471,32 @@ namespace AdminPanel
             return lbl;
         }
 
-        public Border CreateDefaultUnderBorder()
+        public static TextBox AnswerBox(string Text,  int i = -1)
+        {
+            TextBox tx = new TextBox();
+            if (Text.Length < 15) tx.FontSize = 35.0;
+            else tx.FontSize = 35.0 / (Text.Length / 10);
+            tx.Background = Brushes.Transparent;
+            tx.Foreground = (Brush)Application.Current.FindResource("TextColor");
+            tx.HorizontalAlignment = HorizontalAlignment.Stretch;
+            tx.VerticalAlignment = VerticalAlignment.Center;
+            tx.BorderThickness = new Thickness(0);
+            tx.Margin = new Thickness(5);
+            tx.Text = Text;
+            tx.LostFocus += AnswerBox_LostFocus;
+            //Answer = tx.Text;
+            tx.Tag = i;
+            //AnswerPoleObject = tx;
+            return tx;
+        }
+
+        private static void AnswerBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox txt = (TextBox)(sender);
+            Console.WriteLine("Update {0}" , txt.Tag.ToString());
+        }
+
+        public static Border CreateDefaultUnderBorder()
         {
             Border bd = new Border();
             bd.Height = 10;
@@ -445,14 +507,159 @@ namespace AdminPanel
             return bd;
         }
 
-        public StackPanel GetPanel()
+
+
+        public static Image ImageBox(string ImagePath, int broj_na_predmet = 0)
         {
-            StackPanel Main = new StackPanel();
-            Main.Children.Add(Title);
-            Main.Children.Add(AnswerGrid);
-            Main.Children.Add(UnderBorder);
-            return Main;
+            Image img = new Image();
+            img.Height = 40.0;
+            img.HorizontalAlignment = HorizontalAlignment.Right;
+            BitmapImage ImageSource = new BitmapImage(new Uri(ImagePath, UriKind.Relative));
+            img.Source = ImageSource;
+            img.Tag = broj_na_predmet;
+            return img;
+        }
+    }
+
+
+    class DefaultPole
+    {
+        Design DesignPole;
+        public StackPanel GetPole()
+        {
+            return DesignPole.GetDesign();
+        }
+        public DefaultPole(string Question , string Answer)
+        {
+            DesignPole = new Design(null, null, Design.CreateDefaultUnderBorder());
+
+            DesignPole.SetTitle(Design.CreateDefaultTitle(Question));
+
+            TextBox AnswerBox = Design.AnswerBox(Answer);
+            AnswerBox.TextChanged += AnswerBox_TextChanged;
+
+            DesignPole.SetAnswerBox(AnswerBox);
+        }
+
+        private void AnswerBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var txt = (TextBox)(sender);
+            Console.WriteLine("Box {0} updated" , txt.Tag);
+        }
+    }
+
+    class PredmetiPole
+    {
+        Design DesignPole;
+
+        public PredmetiPole(string[] Predmeti , string  Smer)
+        {
+            DesignPole = new Design(Design.CreateDefaultTitle(Smer), null, Design.CreateDefaultUnderBorder());
+            DesignPole.SetAnswerBox(GetPredmeti(Predmeti));
+        }
+
+        public StackPanel GetPole()
+        {
+            return DesignPole.GetDesign();
+        }
+
+        StackPanel GetPredmeti(string[] Predmeti)
+        {
+            StackPanel st = new StackPanel();
+            st.VerticalAlignment = VerticalAlignment.Top;
+            int i = 0;
+            foreach (string answer in Predmeti)
+            {
+                st.Children.Add(AnswerBox_Predmeti(answer, i));
+                if (i++ < Predmeti.Length - 1) st.Children.Add(Design.CreateDefaultUnderBorder());
+            }
+            return st;
+        }
+
+        Grid AnswerBox_Predmeti(String Text, int broj_na_predmet)
+        {
+            Grid gd = new Grid();
+            gd.Children.Add(Design.AnswerBox(Text, broj_na_predmet));
+            gd.Children.Add(ImageBox( broj_na_predmet));
+            return gd;
+        }
+
+        Image ImageBox(int broj_na_predmet)
+        {
+            Image img = Design.ImageBox("Resources/Icons/x.png" , broj_na_predmet);
+            img.MouseLeftButtonDown += Img_Clicked;
+            img.Tag = broj_na_predmet;
+            return img;
+        }
+
+        private void Img_Clicked(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Image img = (Image)(sender);
+            Console.WriteLine("Delete {0}" , img.Tag.ToString());
+        }
+    }
+
+    class PasswordPole
+    {
+        Design DesignPole;
+        string Password;
+        TextBox tx;
+        int count = 0;
+        public StackPanel GetPole()
+        {
+            return DesignPole.GetDesign();
+        }
+
+        public PasswordPole(string Question, string Answer)
+        {
+            Password = Answer;
+            DesignPole = new Design(Design.CreateDefaultTitle(Question), GetPasswordBox(Question), Design.CreateDefaultUnderBorder());
+
+            DesignPole.SetTitle(Design.CreateDefaultTitle(Question));
+
+            TextBox AnswerBox = Design.AnswerBox(Answer);
+
+        }
+
+        Grid GetPasswordBox(string Answer)
+        {
+            Grid gd = new Grid();
+            tx = Design.AnswerBox(TurnIntoPW(Answer.Length));
+            tx.TextChanged += Tx_LostFocus;
+            gd.Children.Add(tx); //new Thickness(5, 5, 50, 5))
+            gd.Children.Add(ImageBox());
+            return gd;
+        }
+
+        private void Tx_LostFocus(object sender, RoutedEventArgs e)
+        {
+            var txt = (TextBox)(sender);
+            if (!txt.Text.Contains('*')) Password = txt.Text; 
+        }
+
+        Image ImageBox(int broj_na_predmet=-1)
+        {
+            Image img = Design.ImageBox("Resources/Icons/eye.png", broj_na_predmet);
+            img.MouseLeftButtonDown += Img_Clicked;
+            img.Tag = broj_na_predmet;
+            return img;
+        }
+
+        private void Img_Clicked(object sender, MouseButtonEventArgs e)
+        {
+            var img = (Image)(sender);
+            if (count == 0) tx.Text = Password;
+            else tx.Text = TurnIntoPW(Password.Length);
+            count = (count +1) % 2;
+
+            Console.WriteLine("Password Clicked");
+        }
+
+        string TurnIntoPW(int length)
+        {
+            return new string('*', length);
         }
 
     }
+
 }

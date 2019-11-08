@@ -34,6 +34,10 @@ namespace AdminPanel
             {
                 Ugrid.Children.Add(item.GetPole());
             }
+            // for(int i = 0; i<3;i++)Ugrid.Children.Add(new DefaultPole("Test " + i.ToString(), "Answer").GetPole());
+            Ugrid.Children.Add(new PredmetiPole(new string[] { "Makedonski", "Matematika", "Geografija" }, "PMA").GetPole());
+            Ugrid.Children.Add(new PasswordPole("Password","Password").GetPole());
+
         }
      
     }
