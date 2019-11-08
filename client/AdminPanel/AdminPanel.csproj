@@ -62,6 +62,7 @@
     </ApplicationDefinition>
     <Compile Include="Middleware\Controllers\Global.cs" />
     <Compile Include="Middleware\Controllers\Ucenik.cs" />
+    <Compile Include="Middleware\Controllers\Uchilishte.cs" />
     <Compile Include="StudentsWindow.xaml.cs">
       <DependentUpon>StudentsWindow.xaml</DependentUpon>
     </Compile>
