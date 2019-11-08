@@ -115,6 +115,15 @@ namespace AdminPanel.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Корисникот не е админ акаунт!.
+        /// </summary>
+        internal static string NotAdminMessage {
+            get {
+                return ResourceManager.GetString("NotAdminMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Успешно!.
         /// </summary>
         internal static string Success {
@@ -129,6 +138,15 @@ namespace AdminPanel.Properties {
         internal static string UserNotFoundMessage {
             get {
                 return ResourceManager.GetString("UserNotFoundMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string асд {
+            get {
+                return ResourceManager.GetString("асд", resourceCulture);
             }
         }
     }

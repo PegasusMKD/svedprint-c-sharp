@@ -60,6 +60,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Middleware\Controllers\Admin.cs" />
+    <Compile Include="Middleware\Controllers\Global.cs" />
+    <Compile Include="Middleware\Controllers\Klasen.cs" />
+    <Compile Include="Middleware\Controllers\Ucenik.cs" />
+    <Compile Include="Middleware\Controllers\Uchilishte.cs" />
+    <Compile Include="Middleware\Controllers\Util.cs" />
+    <Compile Include="Middleware\Models\Admin.cs" />
+    <Compile Include="Middleware\Models\Klasen.cs" />
+    <Compile Include="Middleware\Models\Ucenik.cs" />
+    <Compile Include="Middleware\Models\Uchilishte.cs" />
+    <Compile Include="Middleware\Models\Util.cs" />
+    <Compile Include="Middleware\settings.cs" />
+    <Compile Include="Middleware\settings.Designer.cs">
+      <DependentUpon>settings.cs</DependentUpon>
+    </Compile>
     <Compile Include="StudentsWindow.xaml.cs">
       <DependentUpon>StudentsWindow.xaml</DependentUpon>
     </Compile>
@@ -154,6 +169,8 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Middleware\packages.config" />
+    <None Include="Middleware\settings.settings" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

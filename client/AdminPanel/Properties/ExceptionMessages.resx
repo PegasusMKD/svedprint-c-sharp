@@ -135,10 +135,16 @@
   <data name="MissingUpdateInfoMessage" xml:space="preserve">
     <value>Фалат корисничко име или лозинка!</value>
   </data>
+  <data name="NotAdminMessage" xml:space="preserve">
+    <value>Корисникот не е админ акаунт!</value>
+  </data>
   <data name="Success" xml:space="preserve">
     <value>Успешно!</value>
   </data>
   <data name="UserNotFoundMessage" xml:space="preserve">
     <value>Корисникот не постои!</value>
+  </data>
+  <data name="асд" xml:space="preserve">
+    <value />
   </data>
 </root>
