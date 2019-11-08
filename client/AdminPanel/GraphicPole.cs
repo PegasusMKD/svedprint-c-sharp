@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AdminPanel.Middleware.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -24,11 +26,16 @@ namespace AdminPanel
         public string Parametar;
 
         object AnswerPoleObject;
+        
+        public object Model_object { get; set; }
 
-        public Pole()//Default Construktor
+        public Pole(ref object model_object)//Default Construktor
         {
-            
         }
+         public Pole()
+         {
+
+         }
         public Pole(int a)//test
         {
             Design DefaultPole = new Design(Title(), (UIElement)GetAnswerPole(), UnderBorder());
@@ -41,6 +48,17 @@ namespace AdminPanel
             this.Answer = Answer;
             this.Parametar = Parametar;
             this.Type = Type;
+        }
+
+        public Pole(string Name, string[] Question, string Parametar, ref object model_object, string Type = null, string Answer = null )//Site Polinja
+        {
+            this.Name = Name;
+            this.Question = Question;
+            this.Answer = Answer;
+            this.Parametar = Parametar;
+            this.Type = Type;
+            this.Model_object = model_object;
+            ((Klasen)Model_object).Username = "fdasasd";
         }
 
         Border Title()
@@ -100,18 +118,29 @@ namespace AdminPanel
             gd.Children.Add(ImageBox("Resources/Icons/x.png" , broj_na_predmet));
             return gd;
         }
-        TextBox AnswerBox(string Text, Thickness margin , int i = -1)
+        TextBox AnswerBox(string Text, Thickness margin, int i = -1)
         {
             TextBox tx = new TextBox();
             if (Text.Length < 15) tx.FontSize = 35.0;
-            else tx.FontSize = 35.0 / (Text.Length/10); 
+            else tx.FontSize = 35.0 / (Text.Length / 10);
             tx.Background = Brushes.Transparent;
             tx.Foreground = (Brush)Application.Current.FindResource("TextColor");
             tx.HorizontalAlignment = HorizontalAlignment.Stretch;
             tx.VerticalAlignment = VerticalAlignment.Center;
             tx.BorderThickness = new Thickness(0);
             tx.Margin = margin;
-            tx.Text = Text;
+            if (Parametar != "")
+            {
+                Binding myBind = new Binding();
+                myBind.Path = new PropertyPath(Parametar);
+                myBind.Source = Model_object;
+                myBind.Mode = BindingMode.TwoWay;
+
+                tx.SetBinding(TextBox.TextProperty, myBind);
+                //Console.WriteLine(klasen)
+            } 
+            else 
+             tx.Text = Text;
             tx.LostFocus += AnswerBox_LostFocus;
             Answer = tx.Text;
             tx.Tag = i;
@@ -214,15 +243,15 @@ namespace AdminPanel
         private void AnswerBox_LostFocus(object sender, RoutedEventArgs e)
         {
             TextBox tx = (TextBox)sender;
-            if (Check_if_String_Ok(tx.Text) != '1') return;
-            Answer = tx.Text;
-            Update();
+            //if (Check_if_String_Ok(tx.Text) != '1') return;
+            /// Answer = tx.Text;
+            //Middleware.Controllers.Klasen.UpdateUsers();
+
         }
         private void RadioBtn_Checked(object sender, RoutedEventArgs e)
         {
             RadioButton radioBtn = (RadioButton)sender;
             Answer = radioBtn.Content.ToString();
-            Update();
         }
         private void Predmeti_Del_Icon_Clicked(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
@@ -284,6 +313,7 @@ namespace AdminPanel
         private void Update()
         {
             Console.WriteLine("Update {0} - {1} - {2}" , Name ,Answer , Parametar);
+            //Middleware.Controllers.Klasen.UpdateUsers(this.admin, this.users);
             //UpdateData(Name, Answer, Parametar);
         }
 
