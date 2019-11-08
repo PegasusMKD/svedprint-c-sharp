@@ -50,6 +50,7 @@ namespace Middleware
                 }
             } catch (Exception ex)
             {
+                MessageBox.Show(ex.Message);
                 MessageBox.Show(ex.StackTrace);
             }
             return klasen;

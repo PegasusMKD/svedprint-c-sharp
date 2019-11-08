@@ -37,5 +37,12 @@ namespace AdminPanel.Middleware.Models
         public string Counter { get; set; }
         [JsonProperty(JSONRequestParameters.Ucenik.PolagalOceni)]
         public int[] PolagalOceni { get; set; }
+
+        /// <summary>
+        /// Property which keeps track whether this object was selected for a transfer with the checkbox
+        /// </summary>
+        public bool transferClass = false;
+
+        public bool transferClassView { get { return this.transferClass; } set { if (value != this.transferClass) this.transferClass = value; } }
     }
 }

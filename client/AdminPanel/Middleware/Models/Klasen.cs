@@ -11,6 +11,17 @@ namespace AdminPanel.Middleware.Models
 {
     public class Klasen
     {
+
+        public List<string> changed_properties = new List<string>();
+
+        public Dictionary<string, string> pairs = new Dictionary<string, string>() {
+            {"Ime",JSONRequestParameters.Klasen.Ime },
+            {"SrednoIme",JSONRequestParameters.Klasen.SrednoIme },
+            {"Prezime",JSONRequestParameters.Klasen.Prezime },
+            {"Username",JSONRequestParameters.Klasen.UsernameUpdated },
+            {"Klas",JSONRequestParameters.Klasen.Klas }
+        };
+
         [JsonProperty(JSONRequestParameters.Klasen.Ime)]
         public string Ime { get; set; }
         [JsonProperty(JSONRequestParameters.Klasen.SrednoIme)]
@@ -58,6 +69,11 @@ namespace AdminPanel.Middleware.Models
             {
                 if (value != this.Username)
                 {
+                    if (UsernamePERMA == null)
+                    {
+                        UsernamePERMA = Username;
+                    }
+
                     this.Username = value;
                     NotifyPropertyChanged("Username");
                 }
@@ -77,6 +93,4 @@ namespace AdminPanel.Middleware.Models
         }
         
     }
-
-
 }

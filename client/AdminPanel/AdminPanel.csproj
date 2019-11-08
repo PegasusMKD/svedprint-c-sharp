@@ -60,6 +60,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Middleware\Controllers\Global.cs" />
+    <Compile Include="Middleware\Controllers\Ucenik.cs" />
+    <Compile Include="Middleware\Controllers\Uchilishte.cs" />
+    <Compile Include="StudentsWindow.xaml.cs">
+      <DependentUpon>StudentsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UsersWindow.xaml.cs">
+      <DependentUpon>UsersWindow.xaml</DependentUpon>
     <Compile Include="AdminFrame.xaml.cs">
       <DependentUpon>AdminFrame.xaml</DependentUpon>
     </Compile>
@@ -118,6 +126,10 @@
     <Page Include="Resources\UIStrings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StudentsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UcilisteFrame.xaml">
       <SubType>Designer</SubType>

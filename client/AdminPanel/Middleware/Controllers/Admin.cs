@@ -64,7 +64,7 @@ namespace AdminPanel.Middleware.Controllers
         public override Models.Admin ReadJson(JsonReader reader, Type objectType, Models.Admin existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             Models.Admin admin = new Models.Admin();
-            admin.Uchilishte = new Uchilishte();
+            admin.Uchilishte = new Models.Uchilishte();
 
             JObject obj = JObject.Load(reader);
             if(obj.Properties().Where(x => x.Name == "status_code" && x.Value.Value<string>() != "000").Count() > 0)

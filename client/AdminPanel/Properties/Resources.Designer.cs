@@ -104,5 +104,23 @@ namespace AdminPanel.Properties {
                 return ResourceManager.GetString("UpdateAdminRoute", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to set_different_class/.
+        /// </summary>
+        public static string UpdateStudentsClasses {
+            get {
+                return ResourceManager.GetString("UpdateStudentsClasses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to update_users/.
+        /// </summary>
+        public static string UpdateUsersRoute {
+            get {
+                return ResourceManager.GetString("UpdateUsersRoute", resourceCulture);
+            }
+        }
     }
 }
