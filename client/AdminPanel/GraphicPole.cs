@@ -29,9 +29,17 @@ namespace AdminPanel
         
         public object Model_object { get; set; }
 
-        public Pole(ref object model_object)//Default Construktor
+        public Admin admin { get; set; }
+
+        public Pole(string Name, string binding,string[] question , ref object model_object)//Default Construktor
         {
+            this.Name = Name;
+            this.Parametar = binding;
+            this.Question = question;
+            this.Model_object = model_object;
         }
+
+
          public Pole()
          {
 
@@ -46,6 +54,17 @@ namespace AdminPanel
             this.Name = Name;
             this.Question = Question;
             this.Answer = Answer;
+            this.Parametar = Parametar;
+            this.Type = Type;
+        }
+
+        public Pole(string Name, string[] Question, string Parametar, Admin admin, object model_object, string Type = null, string Answer = null)//Site Polinja
+        {
+            this.Name = Name;
+            this.Question = Question;
+            this.Answer = Answer;
+            this.admin = admin;
+            this.Model_object = model_object;
             this.Parametar = Parametar;
             this.Type = Type;
         }
@@ -135,7 +154,6 @@ namespace AdminPanel
                 myBind.Path = new PropertyPath(Parametar);
                 myBind.Source = Model_object;
                 myBind.Mode = BindingMode.TwoWay;
-
                 tx.SetBinding(TextBox.TextProperty, myBind);
                 //Console.WriteLine(klasen)
             } 
@@ -243,6 +261,7 @@ namespace AdminPanel
         private void AnswerBox_LostFocus(object sender, RoutedEventArgs e)
         {
             TextBox tx = (TextBox)sender;
+            Middleware.Controllers.Admin.UpdateData((Admin)Model_object);
             //if (Check_if_String_Ok(tx.Text) != '1') return;
             /// Answer = tx.Text;
             //Middleware.Controllers.Klasen.UpdateUsers();

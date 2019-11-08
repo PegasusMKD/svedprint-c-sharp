@@ -35,10 +35,10 @@ namespace AdminPanel
 
 
             Klasen klasen = users["IV"][0];
-            DataContext = new AdminViewModel(klasen);
+            DataContext = new AdminViewModel(admin);
 
             //ListBox.ItemTemplate = new Pole().DT();
-            foreach (Pole item in new AdminViewModel(klasen).Items)
+            foreach (Pole item in new AdminViewModel(admin).Items)
             {
                 Ugrid.Children.Add(item.GetPole());
             }
@@ -57,22 +57,25 @@ namespace AdminPanel
 public class AdminViewModel
 {
     public Klasen Klasen;
+    public Admin admin;
+    public Dictionary<string, List<Klasen>> users;
     public List<Pole> Items
     {
         get
         {
             return new List<Pole>
                 {
-                   new Pole { Name = "Корисничко име" , Question = new string[] { "ime prezime" }, Model_object = Klasen, Parametar = "UsernameBind" },
-                        new Pole { Name = "Презиме" , Question = new string[] { "Password" } , Type="PW", Model_object = Klasen, Parametar = "PrezimeBind"},
-                        new Pole { Name = "Паралелка" , Question = new string[] { "True","False" } , Answer = "True", Model_object = Klasen, Parametar = "SrednoImeBind" },
+                   new Pole { Name = "Корисничко име" , Question = new string[] { "ime prezime" }, Model_object = admin, Parametar = "Username" },
+                        new Pole { Name = "Презиме" , Question = new string[] { "Password" } , Type="PW", Model_object = admin, Parametar = "Password" },
+                        new Pole { Name = "дозволено Принтање" , Question = new string[] { "True","False" } , Answer = "True", Model_object = admin, Parametar = "IsPrintAllowed"  },
                         //new Pole { Klasen = users["IV"][5]}
                 };
         }
     }
 
-    public AdminViewModel(Klasen klasen)
+    public AdminViewModel(Admin admin)
     {
-        this.Klasen = klasen;
+        this.admin = admin;
+        
     }
 }

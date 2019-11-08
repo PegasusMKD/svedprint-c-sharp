@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace AdminPanel.Middleware.Controllers
@@ -43,6 +44,12 @@ namespace AdminPanel.Middleware.Controllers
             }
 
             return (returnValue, responseCode);
+        }
+
+        public static Boolean isAlphaNumeric(string strToCheck)
+        {
+            Regex rg = new Regex(@"^[a-zA-Z0-9\s,]*$");
+            return rg.IsMatch(strToCheck);
         }
     }
 

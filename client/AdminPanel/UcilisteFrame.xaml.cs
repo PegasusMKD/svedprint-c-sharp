@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AdminPanel.Middleware.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,6 +34,9 @@ namespace AdminPanel
 
     public class UcilisteViewModel
     {
+
+        Admin admin;
+
         public List<Pole> Items
         {
             get

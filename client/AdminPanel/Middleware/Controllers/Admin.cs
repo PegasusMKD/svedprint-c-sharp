@@ -34,14 +34,16 @@ namespace AdminPanel.Middleware.Controllers
         }
 
         
-        public static void UpdateData(Models.Admin admin, string password)
+        public static void UpdateData(Models.Admin admin, string password="")
         {
-            var json = JsonConvert.SerializeObject(new Dictionary<string, string>
+            Dictionary<string, string> data = new Dictionary<string, string>
             {
                 {JSONRequestParameters.Token, admin.Token },
                 {JSONRequestParameters.Admin.UsernameUpdated, admin.Username },
-                {JSONRequestParameters.Admin.PasswordUpdated, password }
-            });
+            };
+            if (!string.IsNullOrWhiteSpace(password)) data.Add(JSONRequestParameters.Admin.PasswordUpdated, password);
+
+            var json = JsonConvert.SerializeObject(data);
 
             (string responseText, HttpStatusCode responseCode) response = Util.GetWebResponse(json, Properties.Resources.UpdateAdminRoute);
 
