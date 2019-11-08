@@ -80,7 +80,22 @@ namespace AdminPanel
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            ns.Navigate(new MainFrame(ns));
+            Debug.WriteLine($"{Username} - {password.Password}");
+            Middleware.Models.Admin a = new Middleware.Models.Admin(Username);
+            try
+            {
+                a.GetData(password.Password);
+                var x = Middleware.Controllers.Klasen.RetrieveUsers(a);
+
+
+                ns.Navigate(new MainFrame(ns, a , x));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, Properties.ExceptionMessages.ErrorCaption, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            
         }
     }
 }

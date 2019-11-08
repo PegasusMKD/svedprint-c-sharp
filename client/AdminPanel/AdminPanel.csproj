@@ -60,6 +60,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Class1.cs" />
     <Compile Include="Middleware\Controllers\Admin.cs" />
     <Compile Include="Middleware\Controllers\Global.cs" />
     <Compile Include="Middleware\Controllers\Klasen.cs" />
@@ -137,6 +138,10 @@
     <Page Include="UcilisteFrame.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UsersWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
