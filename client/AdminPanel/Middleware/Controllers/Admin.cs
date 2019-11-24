@@ -41,6 +41,9 @@ namespace AdminPanel.Middleware.Controllers
                 {JSONRequestParameters.Token, admin.Token },
                 {JSONRequestParameters.Admin.UsernameUpdated, admin.Username },
             };
+
+            admin.Username = "Test";
+
             if (!string.IsNullOrWhiteSpace(password)) data.Add(JSONRequestParameters.Admin.PasswordUpdated, password);
 
             var json = JsonConvert.SerializeObject(data);
@@ -61,16 +64,16 @@ namespace AdminPanel.Middleware.Controllers
         public static bool UpdatePrint(Models.Admin admin)
         {
             string action = String.Empty;
-
+            
             if (admin.IsPrintAllowed)
             {
-                action = "deny";
-                admin.IsPrintAllowed = false;
+                action = "allow";
+              //  admin.IsPrintAllowed = true;
             }
             else
             {
-                action = "allow";
-                admin.IsPrintAllowed = true;
+                action = "deny";
+               // admin.IsPrintAllowed = false;
             }
 
             var json = JsonConvert.SerializeObject(new Dictionary<string, string>

@@ -77,7 +77,6 @@ namespace AdminPanel
             this.Parametar = Parametar;
             this.Type = Type;
             this.Model_object = model_object;
-            ((Klasen)Model_object).Username = "fdasasd";
         }
 
         Border Title()
@@ -158,7 +157,8 @@ namespace AdminPanel
                 //Console.WriteLine(klasen)
             } 
             else 
-             tx.Text = Text;
+            tx.Text = Text;
+
             tx.LostFocus += AnswerBox_LostFocus;
             Answer = tx.Text;
             tx.Tag = i;
@@ -213,10 +213,24 @@ namespace AdminPanel
         Viewbox GetCheckBox()
         {
             CheckBox Checkb = new CheckBox();
-            Checkb.Checked += Checkb_CheckedChange;
-            Checkb.Unchecked += Checkb_CheckedChange;
+
+            if (Parametar != "")
+            {
+                Binding myBind = new Binding();
+                myBind.Path = new PropertyPath(Parametar);
+                myBind.Source = Model_object;
+                myBind.Mode = BindingMode.TwoWay;
+                Checkb.SetBinding(CheckBox.IsCheckedProperty, myBind);
+            }
+
             if (Answer == "True") Checkb.IsChecked = true;
             else Checkb.IsChecked = false;
+
+            Checkb.Checked += Checkb_CheckedChange;
+            Checkb.Unchecked += Checkb_CheckedChange;
+
+            Console.WriteLine(Type);
+            
 
             Viewbox vb = new Viewbox();
             vb.HorizontalAlignment = HorizontalAlignment.Center;
@@ -261,9 +275,9 @@ namespace AdminPanel
         private void AnswerBox_LostFocus(object sender, RoutedEventArgs e)
         {
             TextBox tx = (TextBox)sender;
-            Middleware.Controllers.Admin.UpdateData((Admin)Model_object);
+            Update();
             //if (Check_if_String_Ok(tx.Text) != '1') return;
-            /// Answer = tx.Text;
+            // Answer = tx.Text;
             //Middleware.Controllers.Klasen.UpdateUsers();
 
         }
@@ -280,7 +294,7 @@ namespace AdminPanel
         private void PW_AnswerIcon_Clicked(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             var img = (Image)(sender);
-            if(((TextBox)(AnswerPoleObject)).Text[0] !='*') Answer = ((TextBox)(AnswerPoleObject)).Text;
+            if((( (TextBox)(AnswerPoleObject)).Text.Length>0 ) && ((TextBox)(AnswerPoleObject)).Text[0] !='*') Answer = ((TextBox)(AnswerPoleObject)).Text;
             Console.WriteLine(img.Tag);
             if ((int)img.Tag == 0)
             {
@@ -295,6 +309,7 @@ namespace AdminPanel
         {
             var Btn = (CheckBox)(sender);
             Answer = Btn.IsChecked.ToString();
+            Middleware.Controllers.Admin.UpdatePrint((Admin)Model_object);
             Update();
         }
         private void CB_SelectionChanged(object sender, RoutedEventArgs e)
@@ -331,7 +346,9 @@ namespace AdminPanel
         }
         private void Update()
         {
-            Console.WriteLine("Update {0} - {1} - {2}" , Name ,Answer , Parametar);
+            //Middleware.Controllers.Admin.UpdateData((Admin)Model_object);
+            if(Type == "CheckBox")Console.WriteLine(((Admin)Model_object).IsPrintAllowed);
+            ///Console.WriteLine("Update {0} - {1} - {2}" , Name ,Answer , Parametar);
             //Middleware.Controllers.Klasen.UpdateUsers(this.admin, this.users);
             //UpdateData(Name, Answer, Parametar);
         }
