@@ -203,17 +203,10 @@ namespace AdminPanel
                 btn.Margin = new Thickness(20, 5, 20, 5);
                 btn.Content = answer;
                 btn.Tag = i++;
+                btn.Name = Parametar;
+                if(answer == Model_object.GetType().GetProperty(Parametar).GetValue(Model_object,null).ToString()) btn.IsChecked = true;
                 btn.Checked += RadioBtn_Checked;
                 dp.Children.Add(btn);
-            }
-
-            if (Parametar != "")
-            {
-                Binding myBind = new Binding();
-                myBind.Path = new PropertyPath(Parametar);
-                myBind.Source = Model_object;
-                myBind.Mode = BindingMode.TwoWay;
-                //Console.WriteLine(klasen)
             }
 
             vp.Child = dp;
@@ -305,6 +298,12 @@ namespace AdminPanel
         {
             RadioButton radioBtn = (RadioButton)sender;
             Answer = radioBtn.Content.ToString();
+            Model_object.GetType().GetProperty(Parametar).SetValue(Model_object, Answer);
+
+            if (Model_object.GetType() == typeof(Middleware.Models.Uchilishte))
+            {
+                Middleware.Controllers.Uchilishte.UpdateDates(admin, (Uchilishte)Model_object);
+            }
         }
         private void Predmeti_Del_Icon_Clicked(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {

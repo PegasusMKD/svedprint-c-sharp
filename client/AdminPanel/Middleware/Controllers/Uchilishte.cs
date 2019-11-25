@@ -52,5 +52,27 @@ namespace AdminPanel.Middleware.Controllers
 
             return 0;
         }
+
+        public static int UpdateDates(Models.Admin admin, Models.Uchilishte school)
+        {
+
+            Dictionary<string, object> tmp_dict = new Dictionary<string, object>()
+            {
+                {JSONRequestParameters.Token, admin.Token },
+                {JSONRequestParameters.Admin.DataMatura, school.DataMatura },
+                {JSONRequestParameters.Admin.DataSveditelstva, school.DataSveditelstva }
+
+            };
+
+
+            string json = JsonConvert.SerializeObject(tmp_dict);
+
+            (string responseText, HttpStatusCode responseCode) response = Util.GetWebResponse(json, Properties.Resources.UpdateDatesRoute);
+            if (string.IsNullOrWhiteSpace(response.responseText) || response.responseCode != HttpStatusCode.OK) throw new Exception(Properties.ExceptionMessages.InvalidDataMessage);
+
+
+            return 0;
+        }
+
     }
 }
