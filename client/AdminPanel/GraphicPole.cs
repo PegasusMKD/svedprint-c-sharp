@@ -312,6 +312,7 @@ namespace AdminPanel
             Middleware.Controllers.Admin.UpdatePrint((Admin)Model_object);
             Update();
         }
+        
         private void CB_SelectionChanged(object sender, RoutedEventArgs e)
         {
             var cb = (ComboBox)(sender);
