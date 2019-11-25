@@ -28,13 +28,12 @@ namespace AdminPanel
             this.admin = admin;
             this.users = users;
             //Admin admin;Dictionary<string, ListKlasen> > users;
-            MenuViewModel menu = new MenuViewModel(admin,users);
-            DataContext = menu;
 
-            AdminMainFrame.Navigate(menu.Items[0].page);
+            AdminMainFrame.Navigate(new AdminFrame(admin,users));
+
+            DataContext = new MenuViewModel {admin = admin , users = users };
 
             ListBox.ItemTemplate = new MenuGrid().GetDataTemplate(AdminMainFrame);
-
         }
 
        
@@ -78,27 +77,23 @@ namespace AdminPanel
     {
          public Admin admin;
         public Dictionary<string, List<Klasen>> users;
-        public List<NavItem> items;
 
-    public MenuViewModel(Admin admin, Dictionary<string, List<Klasen>> users)
-    {
-        this.admin = admin;
-        this.users = users;
-        this.items = new List<NavItem> {new NavItem { Name = "Админ" , page = new AdminFrame(admin , users)},
-                    new NavItem { Name = "Училиште" , page = new UcilisteFrame()},
-                    new NavItem { Name = "Професори" , page = new ProfesoriFrame()} };
-    }
     public List<NavItem> Items
-    {
-        get
         {
-            return items;
-        }
+            get
+            {
+                return new List<NavItem>
+                {
+                    new NavItem { Name = "Админ" , page = new AdminFrame(admin , users)},
+                    new NavItem { Name = "Училиште" , page = new UcilisteFrame(admin)},
+                    new NavItem { Name = "Професори" , page = new ProfesoriFrame()}
+                };
+            }
+        }  
+        
+
+    
     }
-
-
-
-}
 
     public class NavItem
     {

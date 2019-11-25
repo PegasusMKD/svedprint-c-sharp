@@ -31,16 +31,26 @@ namespace AdminPanel
 
         public Admin admin { get; set; }
 
-        public Pole(string Name, string binding,string[] question , ref object model_object)//Default Construktor
+        public Pole(string Name, string[] question , string binding, object model_object , string Type="")//Default Construktor
         {
             this.Name = Name;
             this.Parametar = binding;
             this.Question = question;
             this.Model_object = model_object;
+            this.Type = Type;
         }
 
+        public Pole(string Name, string[] question, string binding, object model_object, Admin admin , string Type = "")//so admin i users
+        {
+            this.Name = Name;
+            this.Parametar = binding;
+            this.Question = question;
+            this.Model_object = model_object;
+            this.admin = admin;
+            this.Type = Type;
+        }
 
-         public Pole()
+        public Pole()
          {
 
          }
@@ -69,7 +79,7 @@ namespace AdminPanel
             this.Type = Type;
         }
 
-        public Pole(string Name, string[] Question, string Parametar, ref object model_object, string Type = null, string Answer = null )//Site Polinja
+        public Pole(string Name, string Parametar, string[] Question, object model_object, string Type = null, string Answer = null )//Site Polinja
         {
             this.Name = Name;
             this.Question = Question;
@@ -156,8 +166,7 @@ namespace AdminPanel
                 tx.SetBinding(TextBox.TextProperty, myBind);
                 //Console.WriteLine(klasen)
             } 
-            else 
-            tx.Text = Text;
+            if(string.IsNullOrEmpty(tx.Text)) tx.Text = Text;
 
             tx.LostFocus += AnswerBox_LostFocus;
             Answer = tx.Text;
@@ -197,6 +206,16 @@ namespace AdminPanel
                 btn.Checked += RadioBtn_Checked;
                 dp.Children.Add(btn);
             }
+
+            if (Parametar != "")
+            {
+                Binding myBind = new Binding();
+                myBind.Path = new PropertyPath(Parametar);
+                myBind.Source = Model_object;
+                myBind.Mode = BindingMode.TwoWay;
+                //Console.WriteLine(klasen)
+            }
+
             vp.Child = dp;
             return vp;
         }
@@ -275,6 +294,7 @@ namespace AdminPanel
         private void AnswerBox_LostFocus(object sender, RoutedEventArgs e)
         {
             TextBox tx = (TextBox)sender;
+            Middleware.Controllers.Admin.UpdateData(admin);
             Update();
             //if (Check_if_String_Ok(tx.Text) != '1') return;
             // Answer = tx.Text;
@@ -309,10 +329,9 @@ namespace AdminPanel
         {
             var Btn = (CheckBox)(sender);
             Answer = Btn.IsChecked.ToString();
-            Middleware.Controllers.Admin.UpdatePrint((Admin)Model_object);
+            Middleware.Controllers.Admin.UpdateData((Admin)Model_object);
             Update();
         }
-        
         private void CB_SelectionChanged(object sender, RoutedEventArgs e)
         {
             var cb = (ComboBox)(sender);
@@ -348,8 +367,9 @@ namespace AdminPanel
         private void Update()
         {
             //Middleware.Controllers.Admin.UpdateData((Admin)Model_object);
-            if(Type == "CheckBox")Console.WriteLine(((Admin)Model_object).IsPrintAllowed);
-            ///Console.WriteLine("Update {0} - {1} - {2}" , Name ,Answer , Parametar);
+            //if(Type == "CheckBox")Console.WriteLine(((Admin)Model_object).IsPrintAllowed);
+
+            //Console.WriteLine("Update {0} - {1} - {2}" , Name ,Answer , Parametar);
             //Middleware.Controllers.Klasen.UpdateUsers(this.admin, this.users);
             //UpdateData(Name, Answer, Parametar);
         }
