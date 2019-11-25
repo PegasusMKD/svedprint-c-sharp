@@ -72,6 +72,8 @@ namespace AdminPanel
 
         private void ProfesoriFrame_MouseLeave(object sender, MouseEventArgs e)
         {
+            //Profesori[CB_Profesori.SelectedIndex].Polinja
+            //CB_Profesori_SelectionChanged(null, null);
             Middleware.Controllers.Klasen.UpdateUsers(admin, users);
         }
         

@@ -163,12 +163,14 @@ namespace AdminPanel
                 myBind.Path = new PropertyPath(Parametar);
                 myBind.Source = Model_object;
                 myBind.Mode = BindingMode.TwoWay;
+                myBind.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
                 tx.SetBinding(TextBox.TextProperty, myBind);
             } 
 
             if(string.IsNullOrEmpty(tx.Text)) tx.Text = Text;
 
-            tx.LostFocus += AnswerBox_LostFocus;
+            //tx.LostFocus += AnswerBox_LostFocus;
+            tx.TextChanged += AnswerBox_LostFocus;
             Answer = tx.Text;
             tx.Tag = i;
             AnswerPoleObject = tx;

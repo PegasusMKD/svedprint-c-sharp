@@ -119,9 +119,15 @@ namespace AdminPanel.Middleware.Models
                 if (value != this.Prezime)
                 {
                     this.Prezime = value;
-                    NotifyPropertyChanged("Prezime");
+                    PoleNPC("Prezime");
+
                 }
             }
+        }
+
+        public void PoleNPC(string pole)
+        {
+            NotifyPropertyChanged(pole);
         }
 
         public List<Pole> Polinja;
