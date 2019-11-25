@@ -20,6 +20,7 @@ namespace AdminPanel
                     Paralelki.Add(god + '-' + i.ToString());
                 }
             }
+            Paralelki.Add("Нема");
             return Paralelki;
         }
 
@@ -29,6 +30,7 @@ namespace AdminPanel
         List<Klasen> Profesori = new List<Klasen>();
 
         ComboBox ParalelkaCB;
+
         public ProfesoriFrame(Admin admin , Dictionary<string, List<Klasen>> users)
         {
             InitializeComponent();
@@ -53,34 +55,15 @@ namespace AdminPanel
         private void CB_Profesori_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Ugrid.Children.Clear();
-            ParalelkaCB.SelectedItem = Profesori[CB_Profesori.SelectedIndex].Klas;
 
-            if (Profesori[CB_Profesori.SelectedIndex].Polinja == null) Profesori[CB_Profesori.SelectedIndex].GetPolinja();
+            if (!string.IsNullOrEmpty(Profesori[CB_Profesori.SelectedIndex].Klas)) ParalelkaCB.SelectedItem = Profesori[CB_Profesori.SelectedIndex].Klas;
+            else ParalelkaCB.SelectedItem = "Нема";
 
+            if (Profesori[CB_Profesori.SelectedIndex].Polinja == null) Profesori[CB_Profesori.SelectedIndex].GetPolinja(users);
 
             foreach (Pole item in Profesori[CB_Profesori.SelectedIndex].Polinja)
             {
                 Ugrid.Children.Add(item.GetPole());
-            }
-        }
-    }
-
-    public class ProfesorViewModel
-    {
-        public List<Pole> Items
-        {
-            get
-            {
-                return new List<Pole>
-                {
-
-                    new Pole ("Корисничко име" , new string[] { "ime prezime" } , "parametar"),
-                    new Pole ( "Лозинка" ,  new string[] { "Password" } , "Password" , "PW"),
-                    new Pole ("Име" , new string[] { "Име" } , "parametar"  ),
-                    new Pole ("Презиме" , new string[] { "Презиме" } , "parametar"  ),
-                    //new Pole ("PMA" , new string[] { "mat" , "mak" , "ger" , "asdf" , "fdas" , "dfass"  } , "parametar" , "Predmeti" , "dfass" ),
-
-                };
             }
         }
     }

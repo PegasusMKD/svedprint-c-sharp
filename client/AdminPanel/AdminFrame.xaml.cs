@@ -33,20 +33,16 @@ namespace AdminPanel
             this.admin = admin;
             users = Users;
 
-
-            Klasen klasen = users["IV"][0];
             DataContext = new AdminViewModel(admin);
 
-            //ListBox.ItemTemplate = new Pole().DT();
             foreach (Pole item in new AdminViewModel(admin).Items)
             {
                 Ugrid.Children.Add(item.GetPole());
             }
             // for(int i = 0; i<3;i++)Ugrid.Children.Add(new DefaultPole("Test " + i.ToString(), "Answer").GetPole());
-            Ugrid.Children.Add(new PredmetiPole(new string[] { "Makedonski", "Matematika", "Geografija" }, "PMA").GetPole());
-            Ugrid.Children.Add(new PasswordPole("Password", "Password").GetPole());
+            //Ugrid.Children.Add(new PredmetiPole(new string[] { "Makedonski", "Matematika", "Geografija" }, "PMA").GetPole());
+            //Ugrid.Children.Add(new PasswordPole("Password", "Password").GetPole());
 
-            Console.WriteLine(klasen.Username);
         }
 
     }
