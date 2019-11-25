@@ -115,6 +115,15 @@ namespace AdminPanel.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to update_dates/.
+        /// </summary>
+        public static string UpdateDatesRoute {
+            get {
+                return ResourceManager.GetString("UpdateDatesRoute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to set_different_class/.
         /// </summary>
         public static string UpdateStudentsClasses {
