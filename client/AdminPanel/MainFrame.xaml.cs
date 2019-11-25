@@ -86,7 +86,7 @@ namespace AdminPanel
                 {
                     new NavItem { Name = "Админ" , page = new AdminFrame(admin , users)},
                     new NavItem { Name = "Училиште" , page = new UcilisteFrame(admin)},
-                    new NavItem { Name = "Професори" , page = new ProfesoriFrame()}
+                    new NavItem { Name = "Професори" , page = new ProfesoriFrame(admin,users)}
                 };
             }
         }  

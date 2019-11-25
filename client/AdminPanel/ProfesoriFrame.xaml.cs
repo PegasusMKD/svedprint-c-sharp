@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using AdminPanel.Middleware.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
 
@@ -22,35 +23,29 @@ namespace AdminPanel
             return Paralelki;
         }
 
-        List<ProfesoriInfo> PI;
-        List<Pole> Items;
+
+        public Admin admin;
+        public Dictionary<string, List<Klasen>> users;
+        List<Klasen> Profesori = new List<Klasen>();
+
         ComboBox ParalelkaCB;
-        public ProfesoriFrame()
+        public ProfesoriFrame(Admin admin , Dictionary<string, List<Klasen>> users)
         {
             InitializeComponent();
-            //CB_Paralelki.ItemsSource = GetParalelki().ToArray();
+
+            this.admin = admin;
+            this.users = users;
+
             Pole ParalelkiPole = new Pole("Paralelki", GetParalelki().ToArray(), "parametar", "Small");
             ParalelkaCB = ParalelkiPole.GetComboBox();
             ParalelkaST.Children.Add(ParalelkaCB);
 
-            PI = new List<ProfesoriInfo>();
-            PI.Add(new ProfesoriInfo("user1", "pw", "ime1", "prezime1", "I-5"));
-            PI.Add(new ProfesoriInfo("user2", "pw", "ime2", "prezime2", "II-1"));
-            PI.Add(new ProfesoriInfo("user3", "pw", "ime3", "prezime3", "III-4"));
-            PI.Add(new ProfesoriInfo("user4", "pw", "ime4", "prezime4", "IV-1"));
-            CB_Profesori.ItemsSource = PI.Select(x => x.getFullName());
+            foreach(List<Klasen> klasni in users.Values)
+            {
+                Profesori.AddRange(klasni);
+            }
 
-
-            Items = new List<Pole>
-                {
-
-                    new Pole ("Корисничко име" , new string[] { PI[0].Username } , "parametar"),
-                    new Pole ( "Лозинка" ,  new string[] { PI[0].Password } , "" , "PW"),
-                    new Pole ("Име" , new string[] { PI[0].Ime } , "parametar"  ),
-                    new Pole ("Презиме" , new string[] { PI[0].Prezime } , "parametar"  ),
-                    //new Pole ("PMA" , new string[] { "mat" , "mak" , "ger" , "asdf" , "fdas" , "dfass"  } , "parametar" , "Predmeti" , "dfass" ),
-
-                };
+            CB_Profesori.ItemsSource = Profesori.Select(x => x.Ime + " " + x.Prezime);
 
             CB_Profesori.SelectedIndex = 0;
         }
@@ -58,19 +53,12 @@ namespace AdminPanel
         private void CB_Profesori_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Ugrid.Children.Clear();
-            ParalelkaCB.SelectedItem = PI[CB_Profesori.SelectedIndex].Paralelka;
+            ParalelkaCB.SelectedItem = Profesori[CB_Profesori.SelectedIndex].Klas;
 
-            Items = new List<Pole>
-                {
+            if (Profesori[CB_Profesori.SelectedIndex].Polinja == null) Profesori[CB_Profesori.SelectedIndex].GetPolinja();
 
-                    new Pole ("Корисничко име" , new string[] { PI[CB_Profesori.SelectedIndex].Username } , "parametar"),
-                    new Pole ( "Лозинка" ,  new string[] { PI[CB_Profesori.SelectedIndex].Password } , "" , "PW"),
-                    new Pole ("Име" , new string[] { PI[CB_Profesori.SelectedIndex].Ime } , "parametar"  ),
-                    new Pole ("Презиме" , new string[] { PI[CB_Profesori.SelectedIndex].Prezime } , "parametar"  ),
-                    //new Pole ("PMA" , new string[] { "mat" , "mak" , "ger" , "asdf" , "fdas" , "dfass"  } , "parametar" , "Predmeti" , "dfass" ),
 
-                };
-            foreach (Pole item in Items)
+            foreach (Pole item in Profesori[CB_Profesori.SelectedIndex].Polinja)
             {
                 Ugrid.Children.Add(item.GetPole());
             }
@@ -94,29 +82,6 @@ namespace AdminPanel
 
                 };
             }
-        }
-    }
-
-    public class ProfesoriInfo
-    {
-        public string Username;
-        public string Password;
-        public string Ime;
-        public string Prezime;
-        public string Paralelka;
-
-        public ProfesoriInfo(string username, string password, string ime, string prezime, string paralelka)
-        {
-            Username = username;
-            Password = password;
-            Ime = ime;
-            Prezime = prezime;
-            Paralelka = paralelka;
-        }
-
-        public string getFullName()
-        {
-            return Ime + " " + Prezime;
         }
     }
 }
