@@ -303,10 +303,10 @@ namespace AdminPanel
             Answer = radioBtn.Content.ToString();
             Model_object.GetType().GetProperty(Parametar).SetValue(Model_object, Answer);
 
-            if (Model_object.GetType() == typeof(Middleware.Models.Uchilishte))
-            {
-                Middleware.Controllers.Uchilishte.UpdateDates(admin, (Uchilishte)Model_object);
-            }
+            //if (Model_object.GetType() == typeof(Middleware.Models.Uchilishte))
+            //{
+            //    Middleware.Controllers.Uchilishte.UpdateDates(admin, (Uchilishte)Model_object);
+            //}
         }
         private void Predmeti_Del_Icon_Clicked(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
@@ -331,7 +331,7 @@ namespace AdminPanel
         {
             var Btn = (CheckBox)(sender);
             Answer = Btn.IsChecked.ToString();
-            Middleware.Controllers.Admin.UpdateData((Admin)Model_object);
+            //Middleware.Controllers.Admin.UpdateData((Admin)Model_object);
             Update();
         }
         private void CB_SelectionChanged(object sender, RoutedEventArgs e)

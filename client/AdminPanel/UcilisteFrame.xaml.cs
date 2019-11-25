@@ -21,8 +21,10 @@ namespace AdminPanel
     /// </summary>
     public partial class UcilisteFrame : Page
     {
+        Middleware.Models.Admin admin;
         public UcilisteFrame(Admin admin)
         {
+            this.admin = admin;
             InitializeComponent();
 
 
@@ -30,6 +32,14 @@ namespace AdminPanel
             {
                 Ugrid.Children.Add(item.GetPole());
             }
+
+            this.MouseLeave += UcilisteFrame_MouseLeave;
+        }
+
+        private void UcilisteFrame_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Middleware.Controllers.Uchilishte.UpdateDates(admin, admin.Uchilishte);
+            Middleware.Controllers.Uchilishte.UpdateSchool(admin,admin.Uchilishte);
         }
     }
 

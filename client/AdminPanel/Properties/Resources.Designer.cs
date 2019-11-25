@@ -124,11 +124,29 @@ namespace AdminPanel.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to update_school/.
+        /// </summary>
+        public static string UpdateSchoolRoute {
+            get {
+                return ResourceManager.GetString("UpdateSchoolRoute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to set_different_class/.
         /// </summary>
         public static string UpdateStudentsClasses {
             get {
                 return ResourceManager.GetString("UpdateStudentsClasses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to transfer_students/.
+        /// </summary>
+        public static string UpdateStudentsTransferYearRoute {
+            get {
+                return ResourceManager.GetString("UpdateStudentsTransferYearRoute", resourceCulture);
             }
         }
         

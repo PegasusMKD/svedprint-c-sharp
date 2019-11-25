@@ -80,8 +80,8 @@ namespace AdminPanel.Middleware.Models
         public string PasswordBind
         {
             get {
-                if (Password != null) return this.Password;
-                else return "password";
+                if (this.Password != null) return this.Password;
+                else return "";
             }
             set
             {

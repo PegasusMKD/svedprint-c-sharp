@@ -27,7 +27,7 @@ namespace AdminPanel.Middleware.Controllers
 
             if (school.changed_properties.Count() != 0)
             {
-                Type T = typeof(Models.Klasen);
+                Type T = typeof(Models.Uchilishte);
 
                 var properties = T.GetProperties().Where(p => school.changed_properties.Contains(p.Name));
 
@@ -36,7 +36,7 @@ namespace AdminPanel.Middleware.Controllers
                     var val = p.GetValue(school);
                     if (val != null)
                     {
-                        tmp_dict[school.pairs[p.Name]] = val.ToString();
+                        tmp_dict[school.pairs[p.Name]] = val;
                     }
                 }
 
@@ -46,7 +46,7 @@ namespace AdminPanel.Middleware.Controllers
 
             string json = JsonConvert.SerializeObject(tmp_dict);
 
-            (string responseText, HttpStatusCode responseCode) response = Util.GetWebResponse(json, Properties.Resources.UpdateUsersRoute);
+            (string responseText, HttpStatusCode responseCode) response = Util.GetWebResponse(json, Properties.Resources.UpdateSchoolRoute);
             if (string.IsNullOrWhiteSpace(response.responseText) || response.responseCode != HttpStatusCode.OK) throw new Exception(Properties.ExceptionMessages.InvalidDataMessage);
 
 
@@ -55,6 +55,7 @@ namespace AdminPanel.Middleware.Controllers
 
         public static int UpdateDates(Models.Admin admin, Models.Uchilishte school)
         {
+            if (!(school.changed_properties.Contains("DataMatura") || school.changed_properties.Contains("DataSveditelstva"))) return -1;
 
             Dictionary<string, object> tmp_dict = new Dictionary<string, object>()
             {

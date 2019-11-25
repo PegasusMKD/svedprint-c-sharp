@@ -138,8 +138,14 @@
   <data name="UpdateDatesRoute" xml:space="preserve">
     <value>update_dates/</value>
   </data>
+  <data name="UpdateSchoolRoute" xml:space="preserve">
+    <value>update_school/</value>
+  </data>
   <data name="UpdateStudentsClasses" xml:space="preserve">
     <value>set_different_class/</value>
+  </data>
+  <data name="UpdateStudentsTransferYearRoute" xml:space="preserve">
+    <value>transfer_students/</value>
   </data>
   <data name="UpdateUsersRoute" xml:space="preserve">
     <value>update_users/</value>

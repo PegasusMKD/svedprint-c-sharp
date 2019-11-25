@@ -40,20 +40,41 @@ namespace AdminPanel
                 Ugrid.Children.Add(item.GetPole());
             }
 
-            ((Frame)(ns.Content)).MouseLeave += AdminFrame_MouseLeave;
-            // for(int i = 0; i<3;i++)Ugrid.Children.Add(new DefaultPole("Test " + i.ToString(), "Answer").GetPole());
-            //Ugrid.Children.Add(new PredmetiPole(new string[] { "Makedonski", "Matematika", "Geografija" }, "PMA").GetPole());
-            //Ugrid.Children.Add(new PasswordPole("Password", "Password").GetPole());
+            this.MouseLeave += AdminFrame_MouseLeave;
 
         }
 
         private void AdminFrame_MouseLeave(object sender, MouseEventArgs e)
         {
-            MessageBox.Show("afsddafssf");
+            //foreach(StackPanel sp in Ugrid.Children)
+            //{
+            //    foreach(Pole item in sp.Children)
+            //    {
+            //        if (item.Type == "PW")
+            //        {
+            //            Middleware.Controllers.Admin.UpdateData(admin, item.Answer.ToString());
+            //        }
+            //    }
+            //}
+
+            //Middleware.Controllers.Admin.UpdatePrint(admin);
+        }
+
+        /// <summary>
+        /// The Button function which activates the year transfer
+        /// <para>We should add some kind of a notification when he clicks the button</para>
+        /// <para>And ask him if he's sure about the transfer, And for them to stop using the software for the next 24 hours or so.</para>
+        /// </summary>
+        private void Transfer_Year(object sender, RoutedEventArgs e)
+        {
+            
+            bool retval = Middleware.Controllers.Global.TransferYear(admin);
+            if (retval) throw new Exception("Започна префрлувањето на учениците во следната учебна година.\n Проверете утре дали добро се извршила транзицијата.\n Доколку не се префрлиле, ве молиме исконтактирајте ги администраторите на системот, или девелоперите!");
+            else throw new Exception("Има некој проблем во системот, ве молиме обидете се подоцна, или исконтактирајте ги администраторите!");
+
         }
     }
 
-      
 }
 
 public class AdminViewModel
@@ -68,7 +89,7 @@ public class AdminViewModel
             return new List<Pole>
                 {
                    new Pole { Name = "Корисничко име" , Question = new string[] { admin.Username }, admin = admin, Parametar = "Username" },
-                   new Pole { Name = "Лозинка" , Question = new string[] { "Password" } , Type="PW", Model_object = admin, Parametar = "Password" },
+                   new Pole { Name = "Лозинка" , Question = new string[] { "" } , Type="PW", Model_object = admin, Parametar = "Password" },
                    new Pole { Name = "Дозволено Принтање" , Question = new string[] { "True","False" } , Answer = "True", Model_object = admin, Parametar = "IsPrintAllowed" , Type = "CheckBox" },
                         //new Pole { Klasen = users["IV"][5]}
                 };

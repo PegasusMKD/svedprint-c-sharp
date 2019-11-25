@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace AdminPanel
 {
@@ -50,6 +51,8 @@ namespace AdminPanel
             CB_Profesori.ItemsSource = Profesori.Select(x => x.Ime + " " + x.Prezime);
 
             CB_Profesori.SelectedIndex = 0;
+
+            this.MouseLeave += ProfesoriFrame_MouseLeave;
         }
 
         private void CB_Profesori_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -67,9 +70,15 @@ namespace AdminPanel
             }
         }
 
-        private void AddProfessor(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void ProfesoriFrame_MouseLeave(object sender, MouseEventArgs e)
         {
             Middleware.Controllers.Klasen.UpdateUsers(admin, users);
         }
+        
+        public void AddProfessor(object sender, MouseEventArgs e)
+        {
+
+        }
+
     }
 }

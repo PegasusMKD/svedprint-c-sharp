@@ -9,7 +9,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="DB_BRANCH" Type="System.String" Scope="User">
-      <Value Profile="(Default)">main</Value>
+      <Value Profile="(Default)">stable</Value>
     </Setting>
     <Setting Name="DB_HTTP" Type="System.String" Scope="User">
       <Value Profile="(Default)">https</Value>

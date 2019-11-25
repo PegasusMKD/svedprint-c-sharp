@@ -9,9 +9,12 @@
       Background="#3e5878"
       Title="AdminFrame">
 
+    
         <UniformGrid Name ="Ugrid"  Columns="2" VerticalAlignment="Top">
-            
+        <Border Height="66" Background="{StaticResource MenuItemColor}" CornerRadius="10" Margin="10,10,-290,10" MouseLeftButtonDown="Transfer_Year">
+            <Label Foreground="{StaticResource TextColor}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Префрлување во нова учебна година"/>
+        </Border>
 
-        </UniformGrid>
+    </UniformGrid>
 
 </Page>
