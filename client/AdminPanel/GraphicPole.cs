@@ -164,8 +164,8 @@ namespace AdminPanel
                 myBind.Source = Model_object;
                 myBind.Mode = BindingMode.TwoWay;
                 tx.SetBinding(TextBox.TextProperty, myBind);
-                //Console.WriteLine(klasen)
             } 
+
             if(string.IsNullOrEmpty(tx.Text)) tx.Text = Text;
 
             tx.LostFocus += AnswerBox_LostFocus;
@@ -212,6 +212,7 @@ namespace AdminPanel
             vp.Child = dp;
             return vp;
         }
+
         public ComboBox GetComboBox()
         {
             ComboBox cb = new ComboBox();
@@ -222,6 +223,7 @@ namespace AdminPanel
             cb.SelectionChanged += CB_SelectionChanged;
             return cb;
         }
+
         Viewbox GetCheckBox()
         {
             CheckBox Checkb = new CheckBox();
