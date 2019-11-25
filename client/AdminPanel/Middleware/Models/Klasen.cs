@@ -81,7 +81,7 @@ namespace AdminPanel.Middleware.Models
         {
             get {
                 if (Password != null) return this.Password;
-                else return String.Empty;
+                else return "password";
             }
             set
             {
@@ -130,10 +130,10 @@ namespace AdminPanel.Middleware.Models
 
            Polinja = new List<Pole>
                     {
-                        new Pole ("Корисничко име" , new string[] { Username } , "UsernameBind" , users),
-                        new Pole ("Лозинка" ,  new string[] { "password" } , "" , "PW"),
-                        new Pole ("Име" , new string[] { Ime } , "Ime"  , users),
-                        new Pole ("Презиме" , new string[] { PrezimeBind } , "PrezimeBind"  ,users ),
+                        new Pole ("Корисничко име" , new string[] { UsernameBind } , "UsernameBind" , this),
+                        new Pole ("Лозинка" ,  new string[] { PasswordBind } , "PasswordBind" , this, "PW"),
+                        new Pole ("Име" , new string[] { ImeBind } , "ImeBind"  , this),
+                        new Pole ("Презиме" , new string[] { PrezimeBind } , "PrezimeBind"  ,this ),
                         //new Pole ("PMA" , new string[] { "mat" , "mak" , "ger" , "asdf" , "fdas" , "dfass"  } , "parametar" , "Predmeti" , "dfass" ),
                     };
             return Polinja;

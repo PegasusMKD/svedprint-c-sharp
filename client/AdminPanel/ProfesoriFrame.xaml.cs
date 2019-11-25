@@ -66,5 +66,10 @@ namespace AdminPanel
                 Ugrid.Children.Add(item.GetPole());
             }
         }
+
+        private void AddProfessor(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Middleware.Controllers.Klasen.UpdateUsers(admin, users);
+        }
     }
 }

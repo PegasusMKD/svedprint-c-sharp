@@ -61,9 +61,9 @@ public class AdminViewModel
         {
             return new List<Pole>
                 {
-                   new Pole { Name = "Корисничко име" , Question = new string[] { "ime prezime" }, admin = admin, Parametar = "Username" },
+                   new Pole { Name = "Корисничко име" , Question = new string[] { admin.Username }, admin = admin, Parametar = "Username" },
                    new Pole { Name = "Лозинка" , Question = new string[] { "Password" } , Type="PW", Model_object = admin, Parametar = "Password" },
-                   new Pole { Name = "дозволено Принтање" , Question = new string[] { "True","False" } , Answer = "True", Model_object = admin, Parametar = "IsPrintAllowed" , Type = "CheckBox" },
+                   new Pole { Name = "Дозволено Принтање" , Question = new string[] { "True","False" } , Answer = "True", Model_object = admin, Parametar = "IsPrintAllowed" , Type = "CheckBox" },
                         //new Pole { Klasen = users["IV"][5]}
                 };
         }

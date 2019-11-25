@@ -14,7 +14,7 @@
             <StackPanel Margin="25,30,120,30">
                 <ComboBox Name="CB_Profesori" Margin="0,0,0,10" FontSize="35" SelectionChanged="CB_Profesori_SelectionChanged" />
                 <UniformGrid Columns="2">
-                    <Border Height="50" Background="{StaticResource  MenuItemColor}" CornerRadius="10" Margin="10">
+                    <Border Height="50" Background="{StaticResource  MenuItemColor}" CornerRadius="10" Margin="10" MouseLeftButtonDown="AddProfessor">
                         <Label Foreground="{StaticResource TextColor}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"> Додај професор</Label>
                     </Border>
                     <Border Height="50"  Background="{StaticResource  MenuItemColor}" CornerRadius="10" Margin="10" HorizontalAlignment="Stretch">
