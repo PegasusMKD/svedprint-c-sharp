@@ -287,6 +287,7 @@ namespace AdminPanel
         private void AnswerBox_LostFocus(object sender, RoutedEventArgs e)
         {
             TextBox tx = (TextBox)sender;
+            //Console.WriteLine(tx.Text);
             //Middleware.Controllers.Admin.UpdateData(admin);
             Update();
             //if (Check_if_String_Ok(tx.Text) != '1') return;

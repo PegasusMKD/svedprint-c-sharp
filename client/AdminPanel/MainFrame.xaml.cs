@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -18,9 +19,9 @@ namespace AdminPanel
     {
         NavigationService ns;
         Admin admin;
-        Dictionary<string,List<Middleware.Models.Klasen>> users;
+        Dictionary<string, List<Middleware.Models.Klasen>> users;
 
-        public MainFrame(NavigationService ns,Admin admin, Dictionary<string, List<Middleware.Models.Klasen>> users)
+        public MainFrame(NavigationService ns, Admin admin, Dictionary<string, List<Middleware.Models.Klasen>> users)
         {
             InitializeComponent();
 
@@ -29,14 +30,14 @@ namespace AdminPanel
             this.users = users;
             //Admin admin;Dictionary<string, ListKlasen> > users;
 
-            AdminMainFrame.Navigate(new AdminFrame(admin,users));
+            AdminMainFrame.Navigate(new AdminFrame(admin, users));
 
-            DataContext = new MenuViewModel {admin = admin , users = users };
+            DataContext = new MenuViewModel { admin = admin, users = users };
 
-            ListBox.ItemTemplate = new MenuGrid().GetDataTemplate(AdminMainFrame);
+            ListBox.ItemTemplate = new MenuGrid(admin,users).GetDataTemplate(AdminMainFrame);
         }
 
-       
+
 
         private void Build_Users(object sender, RoutedEventArgs e)
         {
@@ -71,14 +72,12 @@ namespace AdminPanel
         }
     }
 
-}
-
     public class MenuViewModel
     {
-         public Admin admin;
+        public Admin admin;
         public Dictionary<string, List<Klasen>> users;
 
-    public List<NavItem> Items
+        public List<NavItem> Items
         {
             get
             {
@@ -89,10 +88,7 @@ namespace AdminPanel
                     new NavItem { Name = "Професори" , page = new ProfesoriFrame(admin,users)}
                 };
             }
-        }  
-        
-
-    
+        }
     }
 
     public class NavItem
@@ -104,6 +100,16 @@ namespace AdminPanel
 
     public class MenuGrid
     {
+
+        public Admin admin;
+        public Dictionary<string, List<Klasen>> users;
+
+        public MenuGrid(Admin admin, Dictionary<string, List<Klasen>> users)
+        {
+            this.admin = admin;
+            this.users = users;
+        }
+
         FrameworkElementFactory MenuBorder(Frame frame)
         {
             var BorderFEF = new FrameworkElementFactory(typeof(Border));
@@ -142,6 +148,7 @@ namespace AdminPanel
 
 
         object PrevClickedMenuItem = null;
+
         public Border MenuItemBorder(string Text)
         {
             Border bd = new Border();
@@ -184,6 +191,18 @@ namespace AdminPanel
             }
 
             PrevClickedMenuItem = sender;
+
+            new Task(() => { Update(admin , users); }).Start();
+
         }
+
+        void Update(Admin admin, Dictionary<string, List<Klasen>> users)
+        {
+            Middleware.Controllers.Klasen.UpdateUsers(admin, users);
+            Middleware.Controllers.Uchilishte.UpdateDates(admin, admin.Uchilishte);
+            Middleware.Controllers.Admin.UpdateData(admin);
+            Middleware.Controllers.Admin.UpdatePrint(admin);
+        }
+    }
 }
 
