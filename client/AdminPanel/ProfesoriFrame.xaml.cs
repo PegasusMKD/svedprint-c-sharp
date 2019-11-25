@@ -75,7 +75,7 @@ namespace AdminPanel
                 {
 
                     new Pole ("Корисничко име" , new string[] { "ime prezime" } , "parametar"),
-                    new Pole ( "Лозинка" ,  new string[] { "Password" } , "" , "PW"),
+                    new Pole ( "Лозинка" ,  new string[] { "Password" } , "Password" , "PW"),
                     new Pole ("Име" , new string[] { "Име" } , "parametar"  ),
                     new Pole ("Презиме" , new string[] { "Презиме" } , "parametar"  ),
                     //new Pole ("PMA" , new string[] { "mat" , "mak" , "ger" , "asdf" , "fdas" , "dfass"  } , "parametar" , "Predmeti" , "dfass" ),

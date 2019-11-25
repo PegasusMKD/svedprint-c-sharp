@@ -19,7 +19,8 @@ namespace AdminPanel.Middleware.Models
             {"SrednoIme",JSONRequestParameters.Klasen.SrednoIme },
             {"Prezime",JSONRequestParameters.Klasen.Prezime },
             {"Username",JSONRequestParameters.Klasen.UsernameUpdated },
-            {"Klas",JSONRequestParameters.Klasen.Klas }
+            {"Klas",JSONRequestParameters.Klasen.Klas },
+            {"Password",JSONRequestParameters.Klasen.PasswordUpdated }
         };
 
         [JsonProperty(JSONRequestParameters.Klasen.Ime)]
@@ -31,6 +32,8 @@ namespace AdminPanel.Middleware.Models
 
         [JsonProperty(JSONRequestParameters.Klasen.Username)]
         public string Username { get; set; }
+
+        public string Password { get; set; }
 
         public string UsernamePERMA { get; set; }
 
@@ -57,6 +60,35 @@ namespace AdminPanel.Middleware.Models
                 {
                     this.SrednoIme = value;
                     NotifyPropertyChanged("SrednoIme");
+                }
+            }
+        }
+
+        public string ImeBind
+        {
+            get { return this.Ime; }
+            set
+            {
+                if (value != this.Ime)
+                {
+                    this.Ime = value;
+                    NotifyPropertyChanged("Ime");
+                }
+            }
+        }
+
+        public string PasswordBind
+        {
+            get {
+                if (Password != null) return this.Password;
+                else return String.Empty;
+            }
+            set
+            {
+                if (value != this.Password)
+                {
+                    this.Password = value;
+                    NotifyPropertyChanged("Password");
                 }
             }
         }
@@ -98,9 +130,9 @@ namespace AdminPanel.Middleware.Models
 
            Polinja = new List<Pole>
                     {
-                        new Pole ("Корисничко име" , new string[] { Username } , "UsernameBind"),
-                        new Pole ("Лозинка" ,  new string[] { "password" } , "" , "PW"),
-                        new Pole ("Име" , new string[] { Ime } , "Ime"  ),
+                        new Pole ("Корисничко име" , new string[] { UsernameBind } , "UsernameBind", this),
+                        new Pole ("Лозинка" ,  new string[] { PasswordBind } , "PasswordBind" , this, "PW"),
+                        new Pole ("Име" , new string[] { ImeBind } , "ImeBind", this ),
                         new Pole ("Презиме" , new string[] { PrezimeBind } , "PrezimeBind"  ),
                         //new Pole ("PMA" , new string[] { "mat" , "mak" , "ger" , "asdf" , "fdas" , "dfass"  } , "parametar" , "Predmeti" , "dfass" ),
                     };
