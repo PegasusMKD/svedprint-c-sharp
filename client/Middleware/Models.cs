@@ -616,10 +616,6 @@ namespace Middleware
             }
 
             List<string> predmeti = new List<string>();
-
-            // хардкодед треба фикс кодот е каша попара
-            jaziciPos[0] = 2;
-            jaziciPos[1] = 3;
             if (jaziciPos[0] >= 0 && jaziciPos[1] >= 0)
             {
                 predmeti = _predmeti;

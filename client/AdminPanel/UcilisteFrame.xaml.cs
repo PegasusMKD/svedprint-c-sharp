@@ -59,15 +59,15 @@ namespace AdminPanel
                 return new List<Pole>
                 {
 
-                    new Pole ("Име на Училиште" , new string[] { "СУГС Раде Јовчевски Корчагин" } , "ImeView" ,  admin.Uchilishte , admin ),
-                    new Pole ("Деловоден Број" , new string[] { "182/5" } , "DelovodenBrojView" , admin.Uchilishte  ),
-                    new Pole ("Датум на Одобрено Сведителство" , admin.Uchilishte.MozniDatiSveditelstvaView.ToArray() , "DataSveditelstvaView" , admin.Uchilishte , admin ),
-                    new Pole ("Име на министерство" , new string[] { "Министерство за образование" } , "MinisterstvoView" , admin.Uchilishte  , admin ),
+                    new Pole ("Име на училиште" , new string[] { "СУГС Раде Јовчевски Корчагин" } , "ImeView" ,  admin.Uchilishte , admin ),
+                    new Pole ("Директор" , new string[] { "Име Презиме" } , "DirektorView" , admin.Uchilishte  , admin ),
+                    new Pole ("Датум на дозволување/одобрување свидетелство" , admin.Uchilishte.MozniDatiSveditelstvaView.ToArray() , "DataSveditelstvaView" , admin.Uchilishte , admin ),
+                    new Pole ("Датум на дозволување/одобрување диплома" , admin.Uchilishte.MozniDatiMaturaView.ToArray() , "DataMaturaView" , admin.Uchilishte , admin ),
+                    new Pole ("Деловоден број" , new string[] { "182/5" } , "DelovodenBrojView" , admin.Uchilishte  ),
                     new Pole ("Број на главна книга" , new string[] { "55" } , "GlavnaKnigaView" , admin.Uchilishte , admin ),
-                    new Pole ("Дати Матура" , admin.Uchilishte.MozniDatiMaturaView.ToArray() , "DataMaturaView" , admin.Uchilishte , admin ),
                     new Pole ("Број на акт" , new string[] { "5" } , "AktView" , admin.Uchilishte , admin ),
-                    new Pole ("Година на дозволување на актот" , new string[] { "СУГС Раде Јовчевски Корчагин" } , "AktGodinaView" , admin.Uchilishte  , admin ),
-                    new Pole ("Директор" , new string[] { "Име Презиме" } , "DirektorView" , admin.Uchilishte  , admin )
+                    new Pole ("Година на дозволување/одобрување на актот" , new string[] { "СУГС Раде Јовчевски Корчагин" } , "AktGodinaView" , admin.Uchilishte  , admin ),
+                    new Pole ("Име на министерство" , new string[] { "Министерство за образование" } , "MinisterstvoView" , admin.Uchilishte  , admin )
                 };
             }
         }

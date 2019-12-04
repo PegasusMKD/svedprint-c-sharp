@@ -127,9 +127,9 @@ namespace AdminPanel.Middleware.Models
 
         public Klasen()
         {
-            this.Ime = "";
-            this.Prezime = "";
+            this.Ime = "Нов";
             this.SrednoIme = "";
+            this.Prezime = "Корисник";
             this.Username = "";
             this.Password = "";
         }
@@ -149,7 +149,7 @@ namespace AdminPanel.Middleware.Models
                         new Pole ("Корисничко име" , new string[] { UsernameBind } , "UsernameBind" , this),
                         new Pole ("Лозинка" ,  new string[] { PasswordBind } , "PasswordBind" , this, "PW"),
                         new Pole ("Име" , new string[] { ImeBind } , "ImeBind"  , this),
-                        new Pole ("Средно Име" , new string[] { SrednoImeBind } , "SrednoImeBind"  ,this ),
+                        new Pole ("Средно име" , new string[] { SrednoImeBind } , "SrednoImeBind"  ,this ),
                         new Pole ("Презиме" , new string[] { PrezimeBind } , "PrezimeBind"  ,this ),
                     };
             return Polinja;

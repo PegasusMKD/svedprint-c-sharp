@@ -51,10 +51,10 @@ namespace Frontend
             SortUcenici();
             KlasenKlasa.SetSmeroviPredmeti(KlasenKlasa._token);
             if(KlasenKlasa._paralelka.Split('-')[0] == "IV") {
-                //foreach (Ucenik ucenik in ucenici)
-                //{
-                //    ucenik.LoadMaturski(KlasenKlasa);
-                //}
+                foreach (Ucenik ucenik in ucenici)
+                {
+                    ucenik.LoadMaturski(KlasenKlasa);
+                }
             }
 
         }
