@@ -78,6 +78,9 @@
     <Compile Include="StudentsWindow.xaml.cs">
       <DependentUpon>StudentsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TransferStudentsFrame.xaml.cs">
+      <DependentUpon>TransferStudentsFrame.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UsersWindow.xaml.cs">
       <DependentUpon>UsersWindow.xaml</DependentUpon>
     </Compile>
@@ -133,6 +136,10 @@
     <Page Include="StudentsWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TransferStudentsFrame.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UcilisteFrame.xaml">
       <SubType>Designer</SubType>
