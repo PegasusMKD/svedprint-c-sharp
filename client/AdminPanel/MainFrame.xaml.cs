@@ -70,9 +70,12 @@ namespace AdminPanel
             {
                 this.admin = admin;
                 this.users = users;
-                this.items = new List<NavItem> { new NavItem { Name = "Админ" , page = new AdminFrame(admin , users)},
+                this.items = new List<NavItem> {
+                    new NavItem { Name = "Админ" , page = new AdminFrame(admin , users)},
                     new NavItem { Name = "Училиште" , page = new UcilisteFrame(admin)},
-                    new NavItem { Name = "Професори" , page = new ProfesoriFrame(admin,users)}};
+                    new NavItem { Name = "Професори" , page = new ProfesoriFrame(admin,users)},
+                    new NavItem { Name = "Ученици" , page = new TransferStudentsFrame(admin,users)}
+                };
             }
             public List<NavItem> Items { get { return this.items; } }
 
