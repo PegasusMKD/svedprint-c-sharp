@@ -42,7 +42,6 @@ namespace AdminPanel.Middleware.Controllers
                 {JSONRequestParameters.Admin.UsernameUpdated, admin.Username },
             };
 
-            admin.Username = "Test";
 
             if (!string.IsNullOrWhiteSpace(password)) data.Add(JSONRequestParameters.Admin.PasswordUpdated, password);
 

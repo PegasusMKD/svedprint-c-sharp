@@ -47,6 +47,7 @@ namespace AdminPanel
             {
                 Profesori.AddRange(klasni);
             }
+            Profesori.Add(new Klasen());
 
             CB_Profesori.ItemsSource = Profesori.Select(x => x.Ime + " " + x.Prezime);
 
@@ -77,10 +78,16 @@ namespace AdminPanel
             Middleware.Controllers.Klasen.UpdateUsers(admin, users);
         }
         
-        public void AddProfessor(object sender, MouseEventArgs e)
+        public void Add_Class_Head(object sender, MouseEventArgs e)
         {
-
+            Profesori.Add(new Klasen());
+            Klasen user = Profesori[CB_Profesori.SelectedIndex];
+            var ret = Middleware.Controllers.Klasen.CreateUser(admin,user);
+            if (ret != "-1") {
+                user.Klas = ret;
+                CB_Profesori.ItemsSource = Profesori.Select(x => x.Ime + " " + x.Prezime);
+                users[user.Klas.Split('-')[0]].Add(user);
+            }
         }
-
     }
 }

@@ -61,6 +61,15 @@ namespace AdminPanel.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to create_user/.
+        /// </summary>
+        public static string CreateUsersRoute {
+            get {
+                return ResourceManager.GetString("CreateUsersRoute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to login/.
         /// </summary>
         public static string LoginRoute {

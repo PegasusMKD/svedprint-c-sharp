@@ -93,5 +93,32 @@ namespace AdminPanel.Middleware.Controllers
 
             return 0;
         }
+
+        public static string CreateUser(Models.Admin admin, Models.Klasen klasen)
+        {
+            string json = JsonConvert.SerializeObject(new Dictionary<string, string>
+            {
+                {JSONRequestParameters.Token, admin.Token },
+                {JSONRequestParameters.Klasen.Ime, klasen.Ime },
+                {JSONRequestParameters.Klasen.SrednoIme, klasen.SrednoIme },
+                {JSONRequestParameters.Klasen.Prezime, klasen.Prezime },
+                {JSONRequestParameters.Klasen.Username, klasen.Username },
+                {JSONRequestParameters.Klasen.PasswordUpdated, klasen.Password }
+            });
+
+            (string responseText, HttpStatusCode responseCode) response = Util.GetWebResponse(json, Properties.Resources.CreateUsersRoute);
+            if (string.IsNullOrWhiteSpace(response.responseText) || response.responseCode != HttpStatusCode.OK) throw new Exception(Properties.ExceptionMessages.InvalidDataMessage);
+
+            try
+            {
+                Dictionary<string, string> tmp = JsonConvert.DeserializeObject<Dictionary<string, string>>(response.responseText);
+                if (tmp["status_code"] == "000") return tmp["paralelka"];
+                else return "-1";
+            }
+            catch
+            {
+                return "-1";
+            }
+        }
     }
 }

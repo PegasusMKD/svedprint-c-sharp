@@ -46,18 +46,11 @@ namespace AdminPanel
 
         private void AdminFrame_MouseLeave(object sender, MouseEventArgs e)
         {
-            //foreach(StackPanel sp in Ugrid.Children)
-            //{
-            //    foreach(Pole item in sp.Children)
-            //    {
-            //        if (item.Type == "PW")
-            //        {
-            //            Middleware.Controllers.Admin.UpdateData(admin, item.Answer.ToString());
-            //        }
-            //    }
-            //}
-
-            //Middleware.Controllers.Admin.UpdatePrint(admin);
+            //var pass = "";
+            var pass = ((((Ugrid.Children[1] as StackPanel).Children[1] as StackPanel).Children[0] as Grid).Children[0] as TextBox).Text;
+            
+            Middleware.Controllers.Admin.UpdateData(admin, pass);
+            Middleware.Controllers.Admin.UpdatePrint(admin);
         }
 
         /// <summary>
@@ -67,11 +60,25 @@ namespace AdminPanel
         /// </summary>
         private void Transfer_Year(object sender, RoutedEventArgs e)
         {
-            
-            bool retval = Middleware.Controllers.Global.TransferYear(admin);
-            if (retval) throw new Exception("Започна префрлувањето на учениците во следната учебна година.\n Проверете утре дали добро се извршила транзицијата.\n Доколку не се префрлиле, ве молиме исконтактирајте ги администраторите на системот, или девелоперите!");
-            else throw new Exception("Има некој проблем во системот, ве молиме обидете се подоцна, или исконтактирајте ги администраторите!");
+            try
+            {
+                if (MessageBox.Show("Дали сте сигурни дека сакате да се префрлат сите ученици една година погоре?\n" +
+                    "Тоа би значело:\n" +
+                    "    - Бришење на сите ученици во 4та година;\n" +
+                    "    - Ресетирање/Бришење на сите оцени, деловодни броеви и други информации кои се менуваат годишно;\n\n" +
+                    "Доколку сте сигурни и знаете дека никој не го користи софтверот од вашето училиште во моментот, притиснете на копчето \"Yes\", а доколку не, притиснете на копчето \"No\"!", "", MessageBoxButton.YesNo, MessageBoxImage.Exclamation, MessageBoxResult.No) == MessageBoxResult.No) return;
 
+                bool retval = Middleware.Controllers.Global.TransferYear(admin);
+                if (retval) MessageBox.Show(
+                    "Започна префрлувањето на учениците во следната учебна година.\n" +
+                    "Проверете утре дали добро се извршила транзицијата.\n" +
+                    "Доколку не се префрлиле, ве молиме исконтактирајте ги администраторите на системот, или девелоперите!", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                else throw new Exception("Има некој проблем во системот, ве молиме обидете се подоцна, или исконтактирајте ги администраторите!");
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 
@@ -88,7 +95,7 @@ public class AdminViewModel
         {
             return new List<Pole>
                 {
-                   new Pole { Name = "Корисничко име" , Question = new string[] { admin.Username }, admin = admin, Parametar = "Username" },
+                   new Pole { Name = "Корисничко име" , Question = new string[] { admin.Username }, admin = admin,Model_object=admin, Parametar = "Username" },
                    new Pole { Name = "Лозинка" , Question = new string[] { "" } , Type="PW", Model_object = admin, Parametar = "Password" },
                    new Pole { Name = "Дозволено Принтање" , Question = new string[] { "True","False" } , Answer = "True", Model_object = admin, Parametar = "IsPrintAllowed" , Type = "CheckBox" },
                         //new Pole { Klasen = users["IV"][5]}

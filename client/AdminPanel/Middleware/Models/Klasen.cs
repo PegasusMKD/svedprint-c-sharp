@@ -125,6 +125,16 @@ namespace AdminPanel.Middleware.Models
             }
         }
 
+        public Klasen()
+        {
+            this.Ime = "";
+            this.Prezime = "";
+            this.SrednoIme = "";
+            this.Username = "";
+            this.Password = "";
+        }
+
+
         public void PoleNPC(string pole)
         {
             NotifyPropertyChanged(pole);
@@ -139,8 +149,8 @@ namespace AdminPanel.Middleware.Models
                         new Pole ("Корисничко име" , new string[] { UsernameBind } , "UsernameBind" , this),
                         new Pole ("Лозинка" ,  new string[] { PasswordBind } , "PasswordBind" , this, "PW"),
                         new Pole ("Име" , new string[] { ImeBind } , "ImeBind"  , this),
+                        new Pole ("Средно Име" , new string[] { SrednoImeBind } , "SrednoImeBind"  ,this ),
                         new Pole ("Презиме" , new string[] { PrezimeBind } , "PrezimeBind"  ,this ),
-                        //new Pole ("PMA" , new string[] { "mat" , "mak" , "ger" , "asdf" , "fdas" , "dfass"  } , "parametar" , "Predmeti" , "dfass" ),
                     };
             return Polinja;
         }

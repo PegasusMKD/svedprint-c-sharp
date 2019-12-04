@@ -29,7 +29,9 @@ namespace AdminPanel.Middleware.Controllers
             (string responseText, HttpStatusCode responseCode) response = Util.GetWebResponse(json, Properties.Resources.UpdateStudentsTransferYearRoute);
             if (string.IsNullOrWhiteSpace(response.responseText) || response.responseCode != HttpStatusCode.OK) throw new Exception(Properties.ExceptionMessages.InvalidDataMessage);
 
-            if (response.responseText == "005") return true;
+            var deserialized = JsonConvert.DeserializeObject<Dictionary<string,string>>(response.responseText);
+
+            if (deserialized["status_code"] == "005") return true;
             else return false;
         }
     }
