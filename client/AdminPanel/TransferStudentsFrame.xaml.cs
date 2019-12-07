@@ -44,16 +44,16 @@ namespace AdminPanel
 
             DataContext = this;
 
-            students.Add(new Ucenik { Ime = "ime1", Prezime = "prezime", Broj = "1", Tatko = "tatkovo" });
-            students.Add(new Ucenik { Ime = "ime2", Prezime = "prezime2", Broj = "2", Tatko = "tatkovo2" });
-            students.Add(new Ucenik { Ime = "ime3", Prezime = "prezime", Broj = "3", Tatko = "tatkovo" });
-            students.Add(new Ucenik { Ime = "ime4", Prezime = "prezime2", Broj = "4", Tatko = "tatkovo2" });
-            students.Add(new Ucenik { Ime = "ime5", Prezime = "prezime", Broj = "5", Tatko = "tatkovo" });
-            students.Add(new Ucenik { Ime = "ime6", Prezime = "prezime2", Broj = "6", Tatko = "tatkovo2" });
+            students.Add(new Ucenik { Ime = "luka", Prezime = "jovanovski", Broj = "1", Tatko = "tatkovo" });
+            students.Add(new Ucenik { Ime = "fico", Prezime = "jovanov", Broj = "2", Tatko = "tatkovo" });
+            students.Add(new Ucenik { Ime = "darijan", Prezime = "sekerov", Broj = "3", Tatko = "tatkovo" });
+            students.Add(new Ucenik { Ime = "bojan", Prezime = "suklev", Broj = "4", Tatko = "tatkovo" });
+            students.Add(new Ucenik { Ime = "kocka", Prezime = "kostevski", Broj = "5", Tatko = "tatkovo" });
+            students.Add(new Ucenik { Ime = "ivan", Prezime = "kocevski", Broj = "6", Tatko = "tatkovo" });
             students.Add(new Ucenik { Ime = "ime7", Prezime = "prezime", Broj = "7", Tatko = "tatkovo" });
-            students.Add(new Ucenik { Ime = "ime8", Prezime = "prezime2", Broj = "8", Tatko = "tatkovo2" });
+            students.Add(new Ucenik { Ime = "ime8", Prezime = "prezime", Broj = "8", Tatko = "tatkovo" });
             students.Add(new Ucenik { Ime = "ime9", Prezime = "prezime", Broj = "9", Tatko = "tatkovo" });
-            students.Add(new Ucenik { Ime = "ime10", Prezime = "prezime2", Broj = "10", Tatko = "tatkovo2" });
+            students.Add(new Ucenik { Ime = "ime10", Prezime = "prezime", Broj = "10", Tatko = "tatkovo" });
 
             StudentsList.ItemsSource = students;
         }
@@ -61,16 +61,59 @@ namespace AdminPanel
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
             CheckBox cb = (CheckBox)(sender);
-            if(cb.IsChecked.Value == true)
+            int index = int.Parse(cb.Tag.ToString()) - 1;
+            if (cb.IsChecked.Value == true)
             {
-                SelectedStudents.Add(students[int.Parse(cb.Tag.ToString())-1]);
+                SelectedStudents.Add(students[index]);
             }
             else
             {
-                SelectedStudents.Remove(students[int.Parse(cb.Tag.ToString())-1]);
+                SelectedStudents.Remove(students[index]);
             }
 
-            Console.WriteLine(SelectedStudents.Last().Ime);
+            //Console.WriteLine(SelectedStudents.Last().Ime);
+        }
+
+        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox SearchBox = (TextBox)(sender);
+            CollectionView collectionView = (CollectionView)CollectionViewSource.GetDefaultView(StudentsList.ItemsSource);
+            collectionView.Filter = (x) =>
+            {
+                if (String.IsNullOrEmpty(SearchBox.Text)) return true;
+                bool retval = false;
+                foreach (var txt in SearchBox.Text.Split(' '))
+                {
+                    retval |= 
+                        (x as Ucenik).Ime.IndexOf(txt, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                        (x as Ucenik).Prezime.IndexOf(txt, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                        (x as Ucenik).Tatko.IndexOf(txt, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                        (x as Ucenik).Broj.IndexOf(txt, StringComparison.OrdinalIgnoreCase) >= 0;
+                }
+                return retval;
+            };
+
+            StudentsList.ItemsSource = collectionView;
+        }
+
+        private void PremestiBtn_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Console.WriteLine(students[0].Ime);
+            PopUpWindow PopUp = new PopUpWindow(SelectedStudents);
+            PopUp.Show();
+            PopUp.Closed += PopUp_Window_Closed;
+        }
+
+        private void PopUp_Window_Closed(object sender, EventArgs e)
+        {
+            StudentsList.Items.Refresh();
+
+            PopUpWindow PopUp = (PopUpWindow)(sender);
+            if (PopUp.return1)
+            {
+               
+            }
+            //StudentsList.ItemsSource = students;
         }
     }
 

@@ -12,5 +12,6 @@
     <SolidColorBrush x:Key="MenuItemColor" Color="#FFED6A3E"/>
     <SolidColorBrush x:Key="MenuItemHoverColor" Color="#82b3ff"/>
     <SolidColorBrush x:Key="TextColor" Color="White"/>
+    <SolidColorBrush x:Key="Background" Color="#3e5878"/>
     <SolidColorBrush x:Key="UnderBorderColor" Color="White"/>
 </ResourceDictionary>
