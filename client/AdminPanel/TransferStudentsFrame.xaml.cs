@@ -41,20 +41,11 @@ namespace AdminPanel
         {
             InitializeComponent();
             ParalelkiCB.ItemsSource = GetParalelki().ToArray();
-
+            students = Middleware.Controllers.Ucenik.RetrieveStudents(admin);
             DataContext = this;
-
-            students.Add(new Ucenik { Ime = "ime1", Prezime = "prezime", Broj = "1", Tatko = "tatkovo" });
-            students.Add(new Ucenik { Ime = "ime2", Prezime = "prezime2", Broj = "2", Tatko = "tatkovo2" });
-            students.Add(new Ucenik { Ime = "ime3", Prezime = "prezime", Broj = "3", Tatko = "tatkovo" });
-            students.Add(new Ucenik { Ime = "ime4", Prezime = "prezime2", Broj = "4", Tatko = "tatkovo2" });
-            students.Add(new Ucenik { Ime = "ime5", Prezime = "prezime", Broj = "5", Tatko = "tatkovo" });
-            students.Add(new Ucenik { Ime = "ime6", Prezime = "prezime2", Broj = "6", Tatko = "tatkovo2" });
-            students.Add(new Ucenik { Ime = "ime7", Prezime = "prezime", Broj = "7", Tatko = "tatkovo" });
-            students.Add(new Ucenik { Ime = "ime8", Prezime = "prezime2", Broj = "8", Tatko = "tatkovo2" });
-            students.Add(new Ucenik { Ime = "ime9", Prezime = "prezime", Broj = "9", Tatko = "tatkovo" });
-            students.Add(new Ucenik { Ime = "ime10", Prezime = "prezime2", Broj = "10", Tatko = "tatkovo2" });
-
+            //foreach(Ucenik student in tmp_students) students.Add(new Ucenik)
+            //students.Add(new Ucenik { Ime = "ime1", Prezime = "prezime", Broj = "1", Tatko = "tatkovo" });
+            
             StudentsList.ItemsSource = students;
         }
 
