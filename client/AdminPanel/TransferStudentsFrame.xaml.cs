@@ -37,15 +37,14 @@ namespace AdminPanel
 
         List<Ucenik> students = new List<Ucenik>();
         List<Ucenik> SelectedStudents = new List<Ucenik>();
+        Admin admin = new Admin();
         public TransferStudentsFrame(Admin admin,Dictionary<string, List<Klasen>> users)
         {
             InitializeComponent();
             ParalelkiCB.ItemsSource = GetParalelki().ToArray();
             students = Middleware.Controllers.Ucenik.RetrieveStudents(admin);
+            this.admin = admin;
             DataContext = this;
-            //foreach(Ucenik student in tmp_students) students.Add(new Ucenik)
-            //students.Add(new Ucenik { Ime = "ime1", Prezime = "prezime", Broj = "1", Tatko = "tatkovo" });
-            
             StudentsList.ItemsSource = students;
         }
 
@@ -62,7 +61,6 @@ namespace AdminPanel
                 SelectedStudents.Remove(students[index]);
             }
 
-            //Console.WriteLine(SelectedStudents.Last().Ime);
         }
 
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -90,7 +88,7 @@ namespace AdminPanel
         private void PremestiBtn_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Console.WriteLine(students[0].Ime);
-            PopUpWindow PopUp = new PopUpWindow(SelectedStudents);
+            PopUpWindow PopUp = new PopUpWindow(students);
             PopUp.Show();
             PopUp.Closed += PopUp_Window_Closed;
         }
@@ -102,8 +100,10 @@ namespace AdminPanel
             PopUpWindow PopUp = (PopUpWindow)(sender);
             if (PopUp.return1)
             {
-               
+                string _class = PopUp.ParalelkiCB.SelectedItem.ToString();
+                Middleware.Controllers.Ucenik.TransferStudentsClasses(students, admin, _class);
             }
+            else Console.WriteLine("Or not :(");
             //StudentsList.ItemsSource = students;
         }
     }

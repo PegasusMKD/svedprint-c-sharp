@@ -37,15 +37,18 @@
                         <GridViewColumn Width="40">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox IsChecked="{Binding transferClassView,Mode=TwoWay}" Tag="{Binding Broj}" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked" />
+                                    <CheckBox IsChecked="{Binding transferClassView,Mode=TwoWay}"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
+                        <GridViewColumn Header="" Width="Auto" DisplayMemberBinding="{Binding Paralelka}"/>
+                        <GridViewColumn Header="Број" Width="Auto" DisplayMemberBinding="{Binding Broj}"/>
                         <GridViewColumn Header="Име" Width="Auto" DisplayMemberBinding="{Binding Ime}"/>
                         <GridViewColumn Header="Презиме" Width="Auto" DisplayMemberBinding="{Binding Prezime}"/>
                         <GridViewColumn Header="Татково Име" Width="Auto" DisplayMemberBinding="{Binding Tatko}"/>
-                        <GridViewColumn Header="број" Width="Auto" DisplayMemberBinding="{Binding Broj}"/>
+                        <GridViewColumn Header="Смер" Width="Auto" DisplayMemberBinding="{Binding Smer}"/>
+                        
                     </GridView>
                 </ListView.View>
             </ListView>
