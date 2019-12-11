@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -46,13 +47,31 @@ namespace AdminPanel
 
         private void AdminFrame_MouseLeave(object sender, MouseEventArgs e)
         {
-            //var pass = "";
-            var pass = ((((Ugrid.Children[1] as StackPanel).Children[1] as StackPanel).Children[0] as Grid).Children[0] as TextBox).Text;
-            
-            Middleware.Controllers.Admin.UpdateData(admin, pass);
-            Middleware.Controllers.Admin.UpdatePrint(admin);
-        }
 
+            var pass = ((((Ugrid.Children[1] as StackPanel).Children[1] as StackPanel).Children[0] as Grid).Children[0] as TextBox).Text;
+
+            if (admin.UsernamePERMA != admin.Username || !string.IsNullOrWhiteSpace(pass))
+            {
+                Thread t = new Thread(() => Middleware.Controllers.Admin.UpdateData(admin, pass))
+                {
+                    IsBackground = true
+                };
+                t.Start();
+
+                admin.UsernamePERMA = admin.Username;
+            }
+
+            if (admin.IsPrintAllowed != admin.isPrintAllowedLV)
+            {
+                Thread t = new Thread(() => Middleware.Controllers.Admin.UpdatePrint(admin))
+                {
+                    IsBackground = true,
+                };
+                t.Start();
+
+                admin.isPrintAllowedLV = admin.IsPrintAllowed;
+            }
+        }
         /// <summary>
         /// The Button function which activates the year transfer
         /// <para>We should add some kind of a notification when he clicks the button</para>

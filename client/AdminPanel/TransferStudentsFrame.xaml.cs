@@ -35,9 +35,9 @@ namespace AdminPanel
             return Paralelki;
         }
 
-        List<Ucenik> students = new List<Ucenik>();
+        List<Ucenik> students;
         List<Ucenik> SelectedStudents = new List<Ucenik>();
-        Admin admin = new Admin();
+        Admin admin;
         public TransferStudentsFrame(Admin admin,Dictionary<string, List<Klasen>> users)
         {
             InitializeComponent();

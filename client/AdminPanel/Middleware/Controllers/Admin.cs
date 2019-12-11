@@ -64,16 +64,10 @@ namespace AdminPanel.Middleware.Controllers
         {
             string action = String.Empty;
             
-            if (admin.IsPrintAllowed)
-            {
+            if (admin.IsPrintAllowed) 
                 action = "allow";
-              //  admin.IsPrintAllowed = true;
-            }
             else
-            {
                 action = "deny";
-               // admin.IsPrintAllowed = false;
-            }
 
             var json = JsonConvert.SerializeObject(new Dictionary<string, string>
             {

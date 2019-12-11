@@ -16,6 +16,8 @@ namespace AdminPanel.Middleware.Models
         [JsonProperty("school_obj")]
         public Uchilishte Uchilishte { get; set; }
 
+        public string UsernamePERMA;
+        public bool isPrintAllowedLV;
         public Admin(string username = "") => Username = username;
 
         public void GetData(string password)

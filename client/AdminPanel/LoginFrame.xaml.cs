@@ -86,7 +86,8 @@ namespace AdminPanel
             {
                 a.GetData(password.Password);
                 var x = Middleware.Controllers.Klasen.RetrieveUsers(a);
-
+                a.UsernamePERMA = a.Username;
+                a.isPrintAllowedLV = a.IsPrintAllowed;
 
                 ns.Navigate(new MainFrame(ns, a , x));
             }
