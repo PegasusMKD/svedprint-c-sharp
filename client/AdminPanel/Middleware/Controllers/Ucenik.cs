@@ -54,7 +54,7 @@ namespace AdminPanel.Middleware.Controllers
                     { "first_name",student.Ime},
                     { "middle_name",student.SrednoIme},
                     { "last_name",student.Prezime},
-                    { "ctr",student.Counter},/*
+                    { "ctr",student.Counter},
                     {"paralelka", student.Paralelka }
                 });
 
