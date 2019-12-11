@@ -52,16 +52,59 @@ namespace AdminPanel
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
             CheckBox cb = (CheckBox)(sender);
-            if(cb.IsChecked.Value == true)
+            int index = int.Parse(cb.Tag.ToString()) - 1;
+            if (cb.IsChecked.Value == true)
             {
-                SelectedStudents.Add(students[int.Parse(cb.Tag.ToString())-1]);
+                SelectedStudents.Add(students[index]);
             }
             else
             {
-                SelectedStudents.Remove(students[int.Parse(cb.Tag.ToString())-1]);
+                SelectedStudents.Remove(students[index]);
             }
 
-            Console.WriteLine(SelectedStudents.Last().Ime);
+            //Console.WriteLine(SelectedStudents.Last().Ime);
+        }
+
+        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox SearchBox = (TextBox)(sender);
+            CollectionView collectionView = (CollectionView)CollectionViewSource.GetDefaultView(StudentsList.ItemsSource);
+            collectionView.Filter = (x) =>
+            {
+                if (String.IsNullOrEmpty(SearchBox.Text)) return true;
+                bool retval = false;
+                foreach (var txt in SearchBox.Text.Split(' '))
+                {
+                    retval |= 
+                        (x as Ucenik).Ime.IndexOf(txt, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                        (x as Ucenik).Prezime.IndexOf(txt, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                        (x as Ucenik).Tatko.IndexOf(txt, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                        (x as Ucenik).Broj.IndexOf(txt, StringComparison.OrdinalIgnoreCase) >= 0;
+                }
+                return retval;
+            };
+
+            StudentsList.ItemsSource = collectionView;
+        }
+
+        private void PremestiBtn_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Console.WriteLine(students[0].Ime);
+            PopUpWindow PopUp = new PopUpWindow(SelectedStudents);
+            PopUp.Show();
+            PopUp.Closed += PopUp_Window_Closed;
+        }
+
+        private void PopUp_Window_Closed(object sender, EventArgs e)
+        {
+            StudentsList.Items.Refresh();
+
+            PopUpWindow PopUp = (PopUpWindow)(sender);
+            if (PopUp.return1)
+            {
+               
+            }
+            //StudentsList.ItemsSource = students;
         }
     }
 

@@ -1,0 +1,23 @@
+﻿<Window x:Class="AdminPanel.PopUpWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AdminPanel"
+        mc:Ignorable="d"
+        Title="Префрли" Height="200" Width="300" Background="{StaticResource Background}" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                <Border Background="{StaticResource  MenuItemColor}" HorizontalAlignment="Stretch">
+                    <Label FontSize="35" Foreground="{StaticResource TextColor}" HorizontalAlignment="Center">Во класот</Label>
+                </Border>
+                <UniformGrid>
+                <Label FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource TextColor}" Content="{Binding size}"></Label>
+                    <ComboBox Name="ParalelkiCB" FontSize="35"/>
+                </UniformGrid>
+            </StackPanel>
+            <Border Background="{StaticResource MenuItemColor}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="43" MouseLeftButtonDown="ConfirmBtn_MouseLeftButtonDown">
+            <Label FontSize="25" Foreground="{StaticResource TextColor}" HorizontalAlignment="Center" Content="Потврди"/>
+        </Border>
+    </Grid>
+</Window>

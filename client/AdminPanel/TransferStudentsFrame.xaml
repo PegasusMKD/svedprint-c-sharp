@@ -9,54 +9,50 @@
       Background="#3e5878"
       Title="TransferStudentsFrame">
 
-    <StackPanel>
-        
-        
-    <StackPanel VerticalAlignment="Top">
-        <DockPanel>
-            <StackPanel>
-                <Border Background="{StaticResource  MenuItemColor}" HorizontalAlignment="Stretch">
-                    <Label FontSize="35" Foreground="{StaticResource TextColor}" >Клас</Label>
-                </Border>
-                <ComboBox Name="ParalelkiCB" FontSize="35"/>
-            </StackPanel>
-            <StackPanel VerticalAlignment="Center" Margin="30,5">
-                <DockPanel LastChildFill="True" Margin="0,5">
-                    <Border Background="{StaticResource  MenuItemColor}" HorizontalAlignment="Right" >
-                        <Label FontSize="25" Foreground="{StaticResource TextColor}" >барај</Label>
+    <Grid>
+        <StackPanel VerticalAlignment="Top" Height="110" Grid.Row="0">
+            <DockPanel>
+                <StackPanel>
+                    <Border Background="{StaticResource  MenuItemColor}" HorizontalAlignment="Stretch">
+                        <Label FontSize="35" Foreground="{StaticResource TextColor}" >Клас</Label>
                     </Border>
-                    <TextBox FontSize="25" />
-                </DockPanel>
+                    <ComboBox Name="ParalelkiCB" FontSize="35"/>
+                </StackPanel>
+                <StackPanel VerticalAlignment="Center" Margin="30,5">
+                    <DockPanel LastChildFill="True" Margin="0,5">
+                        <Border Background="{StaticResource  MenuItemColor}" HorizontalAlignment="Right" >
+                            <Label FontSize="25" Foreground="{StaticResource TextColor}" >барај</Label>
+                        </Border>
+                        <TextBox FontSize="25" TextChanged="SearchBox_TextChanged"/>
+                    </DockPanel>
 
-            </StackPanel>
+                </StackPanel>
 
-        </DockPanel>
-    </StackPanel>
-
-        <StackPanel VerticalAlignment="Bottom">
-            
-    <ListView Name="StudentsList" ItemsSource="{Binding Path=students}" Background="White" FontSize="35" Foreground="#FF042271" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto">
-            <ListView.View>
-                <GridView>
-
-                    <GridViewColumn Width="40">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox IsChecked="{Binding checkView,Mode=TwoWay}" Tag="{Binding Broj}" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-
-                    <GridViewColumn Header="Име" Width="Auto" DisplayMemberBinding="{Binding Ime}"/>
-                    <GridViewColumn Header="Презиме" Width="Auto" DisplayMemberBinding="{Binding Prezime}"/>
-                    <GridViewColumn Header="Татково Име" Width="Auto" DisplayMemberBinding="{Binding Tatko}"/>
-                    <GridViewColumn Header="број" Width="Auto" DisplayMemberBinding="{Binding Broj}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-        <Border Background="{StaticResource  MenuItemColor}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
-            <Label FontSize="25" Foreground="{StaticResource TextColor}" HorizontalAlignment="Center">Премести</Label>
-        </Border>
+            </DockPanel>
         </StackPanel>
-    </StackPanel>
+        <Grid ScrollViewer.CanContentScroll="True" Margin="0,115,0,0">
+            <ListView  Name="StudentsList" ItemsSource="{Binding Path=students}" Background="White" FontSize="35" Foreground="Black" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,43">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Width="40">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding transferClassView,Mode=TwoWay}" Tag="{Binding Broj}" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="Име" Width="Auto" DisplayMemberBinding="{Binding Ime}"/>
+                        <GridViewColumn Header="Презиме" Width="Auto" DisplayMemberBinding="{Binding Prezime}"/>
+                        <GridViewColumn Header="Татково Име" Width="Auto" DisplayMemberBinding="{Binding Tatko}"/>
+                        <GridViewColumn Header="број" Width="Auto" DisplayMemberBinding="{Binding Broj}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <Border Background="{StaticResource  MenuItemColor}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Grid.Row="1" Height="43" MouseLeftButtonDown="PremestiBtn_MouseLeftButtonDown">
+                <Label FontSize="25" Foreground="{StaticResource TextColor}" HorizontalAlignment="Center">Премести</Label>
+            </Border>
+        </Grid>
+    </Grid>
 </Page>
