@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -38,11 +39,20 @@ namespace AdminPanel
 
         private void UcilisteFrame_MouseLeave(object sender, MouseEventArgs e)
         {
-            Middleware.Controllers.Uchilishte.UpdateDates(admin, admin.Uchilishte);
-            Middleware.Controllers.Uchilishte.UpdateSchool(admin,admin.Uchilishte);
+            Thread t = new Thread(() => Middleware.Controllers.Uchilishte.UpdateDates(admin, admin.Uchilishte))
+            {
+                IsBackground = true,
+            };
+            t.Start();
+            
+            Thread t2 = new Thread(() => Middleware.Controllers.Uchilishte.UpdateSchool(admin, admin.Uchilishte))
+            {
+                IsBackground = true,
+            };
+            t2.Start();
         }
     }
-
+    
     public class UcilisteViewModel
     {
 

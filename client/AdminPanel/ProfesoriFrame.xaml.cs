@@ -1,6 +1,7 @@
 ﻿using AdminPanel.Middleware.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -24,8 +25,8 @@ namespace AdminPanel
             Paralelki.Add("Нема");
             return Paralelki;
         }
-
-
+        
+        
         public Admin admin;
         public Dictionary<string, List<Klasen>> users;
         List<Klasen> Profesori = new List<Klasen>();
@@ -73,9 +74,12 @@ namespace AdminPanel
 
         private void ProfesoriFrame_MouseLeave(object sender, MouseEventArgs e)
         {
-            //Profesori[CB_Profesori.SelectedIndex].Polinja
-            //CB_Profesori_SelectionChanged(null, null);
-            Middleware.Controllers.Klasen.UpdateUsers(admin, users);
+            Thread t = new Thread(() => Middleware.Controllers.Klasen.UpdateUsers(admin, users)) 
+            {
+            IsBackground = true
+            };
+            t.Start();
+            
         }
         
         public void Add_Class_Head(object sender, MouseEventArgs e)

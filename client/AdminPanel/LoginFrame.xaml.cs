@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -50,7 +51,6 @@ namespace AdminPanel
         {
             InitializeComponent();
             DataContext = this;
-
             this.ns = ns;
 
             Username = (string)FindResource("UsernameLabelText");
@@ -96,7 +96,6 @@ namespace AdminPanel
                 MessageBox.Show(ex.Message, Properties.ExceptionMessages.ErrorCaption, MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            
         }
     }
 }

@@ -63,11 +63,11 @@ namespace AdminPanel
 
             if (admin.IsPrintAllowed != admin.isPrintAllowedLV)
             {
-                Thread t = new Thread(() => Middleware.Controllers.Admin.UpdatePrint(admin))
+                Thread t2 = new Thread(() => Middleware.Controllers.Admin.UpdatePrint(admin))
                 {
-                    IsBackground = true,
+                    IsBackground = true
                 };
-                t.Start();
+                t2.Start();
 
                 admin.isPrintAllowedLV = admin.IsPrintAllowed;
             }
@@ -116,9 +116,16 @@ public class AdminViewModel
                 {
                    new Pole { Name = "Корисничко име" , Question = new string[] { admin.Username }, admin = admin,Model_object=admin, Parametar = "Username" },
                    new Pole { Name = "Лозинка" , Question = new string[] { "" } , Type="PW", Model_object = admin, Parametar = "Password" },
-                   new Pole { Name = "Дозволено печатење" , Question = new string[] { "True","False" } , Answer = "True", Model_object = admin, Parametar = "IsPrintAllowed" , Type = "CheckBox" }
+                   new Pole { Name = "Дозволено печатење" , Question = new string[] { "True","False" } , Answer = Capitalize(admin.IsPrintAllowed.ToString()), Model_object = admin, Parametar = "IsPrintAllowed" , Type = "CheckBox" }
                 };
         }
+    }
+
+    private string Capitalize(string s)
+    {
+        char[] a = s.ToCharArray();
+        a[0] = char.ToUpper(a[0]);
+        return new string(a);
     }
 
     public AdminViewModel(Admin admin)
