@@ -102,7 +102,11 @@ namespace AdminPanel
             if (PopUp.return1)
             {
                 string _class = PopUp.ParalelkiCB.SelectedItem.ToString();
-                Middleware.Controllers.Ucenik.TransferStudentsClasses(students, admin, _class);
+                Thread t = new Thread(() => Middleware.Controllers.Ucenik.TransferStudentsClasses(students, admin, _class))
+                {
+                    IsBackground = true
+                };
+                t.Start();
             }
             else Console.WriteLine("Or not :(");
             //StudentsList.ItemsSource = students;

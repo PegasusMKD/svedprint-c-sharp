@@ -32,8 +32,16 @@ namespace AdminPanel
             InitializeComponent();
             DataContext = this;
             MainFrame.Navigate(new LoginFrame(MainFrame.NavigationService));
-        
+            this.Closing += MainWindow_Closing;
+
         }
+
+        void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            // Added as a wait time for the threads to finish, it should take max 500ms
+            Thread.Sleep(500);
+        }
+
 
     }
 }
