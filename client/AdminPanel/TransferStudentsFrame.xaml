@@ -14,7 +14,7 @@
             <DockPanel>
                 <StackPanel>
                     <Border Background="{StaticResource  MenuItemColor}" HorizontalAlignment="Stretch">
-                        <Label FontSize="35" Foreground="{StaticResource TextColor}" >Клас</Label>
+                        <Label FontSize="35" Foreground="{StaticResource TextColor}" >Година</Label>
                     </Border>
                     <ComboBox Name="ParalelkiCB" FontSize="35"/>
                 </StackPanel>

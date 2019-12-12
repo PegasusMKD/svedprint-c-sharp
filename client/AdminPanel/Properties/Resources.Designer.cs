@@ -106,6 +106,15 @@ namespace AdminPanel.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to return_years/.
+        /// </summary>
+        public static string RetrieveYears {
+            get {
+                return ResourceManager.GetString("RetrieveYears", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to https://ocenki.herokuapp.com/admin_stable/.
         /// </summary>
         public static string ServerURI {

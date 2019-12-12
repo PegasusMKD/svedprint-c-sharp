@@ -53,7 +53,7 @@ namespace AdminPanel
 
         private void Build_Students(object sender, RoutedEventArgs e)
         {
-            List<Middleware.Models.Ucenik> k = Middleware.Controllers.Ucenik.RetrieveStudents(admin);
+            //List<Middleware.Models.Ucenik> k = Middleware.Controllers.Ucenik.RetrieveStudents(admin);
             //StudentsWindow main = new StudentsWindow(this.admin, k);
             //App.Current.MainWindow = main;
             //main.Show();

@@ -34,5 +34,20 @@ namespace AdminPanel.Middleware.Controllers
             if (deserialized["status_code"] == "005") return true;
             else return false;
         }
+
+
+        public static List<string> RetrieveYears(Models.Admin admin)
+        {
+            var json = JsonConvert.SerializeObject(new Dictionary<string, string>
+            {
+                {JSONRequestParameters.Token, admin.Token }
+            });
+            (string responseText, HttpStatusCode responseCode) response = Util.GetWebResponse(json, Properties.Resources.RetrieveYears);
+            if (string.IsNullOrWhiteSpace(response.responseText) || response.responseCode != HttpStatusCode.OK) throw new Exception(Properties.ExceptionMessages.InvalidDataMessage);
+
+            var deserialized = JsonConvert.DeserializeObject<List<string>>(response.responseText);
+
+            return deserialized;
+        }
     }
 }

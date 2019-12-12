@@ -132,6 +132,9 @@
   <data name="RetrieveUsersRoute" xml:space="preserve">
     <value>return_users/</value>
   </data>
+  <data name="RetrieveYears" xml:space="preserve">
+    <value>return_years/</value>
+  </data>
   <data name="ServerURI" xml:space="preserve">
     <value>https://ocenki.herokuapp.com/admin_stable/</value>
   </data>
