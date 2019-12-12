@@ -109,7 +109,6 @@ namespace AdminPanel
                 t.Start();
             }
             else Console.WriteLine("Or not :(");
-            //StudentsList.ItemsSource = students;
         }
     }
 
