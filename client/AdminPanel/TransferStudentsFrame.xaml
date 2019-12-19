@@ -57,7 +57,7 @@
             <Border Background="{StaticResource  MenuItemColor}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Grid.Row="1" Height="43" MouseLeftButtonDown="PremestiBtn_MouseLeftButtonDown">
                 <Label FontSize="25" Foreground="{StaticResource TextColor}" HorizontalAlignment="Center">Премести</Label>
             </Border>
-            <Image x:Name="img" gif:ImageBehavior.AnimatedSource="giphy.gif" Margin="0,-129,0,-14" Visibility="Hidden"/>
+            <Image x:Name="img" gif:ImageBehavior.AnimatedSource="myb_works.gif" Margin="0,-129,0,-14" Visibility="Hidden" Stretch="Fill"/>
         </Grid>
     </Grid>
 </Page>

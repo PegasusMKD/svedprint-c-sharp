@@ -216,7 +216,7 @@
     <Resource Include="Resources\Icons\eye.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="giphy.gif" />
+    <Resource Include="myb_works.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
