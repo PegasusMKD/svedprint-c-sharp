@@ -42,6 +42,7 @@ namespace AdminPanel
         public TransferStudentsFrame(Admin admin,Dictionary<string, List<Klasen>> users)
         {
             InitializeComponent();
+
             //ParalelkiCB.ItemsSource = GetParalelki().ToArray();
             ParalelkiCB.ItemsSource = Middleware.Controllers.Global.RetrieveYears(admin);
             ParalelkiCB.SelectedIndex = 0;
@@ -114,10 +115,20 @@ namespace AdminPanel
             else Console.WriteLine("Or not :(");
         }
 
-        private void ParalelkiCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void ParalelkiCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            students = Middleware.Controllers.Ucenik.RetrieveStudents(admin, ParalelkiCB.SelectedItem.ToString());
+            ParalelkiCB.IsDropDownOpen = false;
+            img.Visibility = Visibility.Visible;
+            var year_val = ParalelkiCB.SelectedItem.ToString();
+            students = await Task<List<Ucenik>>.Factory.StartNew(() =>
+           {
+               return Middleware.Controllers.Ucenik.RetrieveStudents(admin, year_val);
+           });
+            
             StudentsList.ItemsSource = students;
+            img.Visibility = Visibility.Hidden;
+           
+            
         }
     }
 

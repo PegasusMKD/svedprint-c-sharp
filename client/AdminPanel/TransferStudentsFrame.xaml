@@ -2,7 +2,8 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:gif="http://wpfanimatedgif.codeplex.com"
       xmlns:local="clr-namespace:AdminPanel"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="600"
@@ -48,7 +49,7 @@
                         <GridViewColumn Header="Презиме" Width="Auto" DisplayMemberBinding="{Binding Prezime}"/>
                         <GridViewColumn Header="Татково Име" Width="Auto" DisplayMemberBinding="{Binding Tatko}"/>
                         <GridViewColumn Header="Смер" Width="Auto" DisplayMemberBinding="{Binding Smer}"/>
-                        
+
                     </GridView>
                 </ListView.View>
             </ListView>
@@ -56,6 +57,7 @@
             <Border Background="{StaticResource  MenuItemColor}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Grid.Row="1" Height="43" MouseLeftButtonDown="PremestiBtn_MouseLeftButtonDown">
                 <Label FontSize="25" Foreground="{StaticResource TextColor}" HorizontalAlignment="Center">Премести</Label>
             </Border>
+            <Image x:Name="img" gif:ImageBehavior.AnimatedSource="giphy.gif" Margin="0,-129,0,-14" Visibility="Hidden"/>
         </Grid>
     </Grid>
 </Page>
