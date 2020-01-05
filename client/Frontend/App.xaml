@@ -288,7 +288,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <SolidColorBrush x:Key="ComboBox.Pressed.Border" Color="#FF569DE5"/>
+        <!--<SolidColorBrush x:Key="ComboBox.Pressed.Border" Color="#FF569DE5"/>
         <Style x:Key="ComboBoxStyle2" TargetType="{x:Type ComboBox}">
             <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
             <Setter Property="Background" Value="{StaticResource ComboBox.Static.Background}"/>
@@ -309,7 +309,7 @@
                     <Setter Property="Template" Value="{StaticResource ComboBoxEditableTemplate}"/>
                 </Trigger>
             </Style.Triggers>
-        </Style>
+        </Style>-->
 
     </Application.Resources>
 </Application>

@@ -207,19 +207,19 @@
                             <Border Height="50" Margin="20,20,20,15" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" Grid.ColumnSpan="2">
                             <Label Content="Педагошки мерки" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
                             </Border>
-                            <ComboBox Name="PedagoskiMerkiCB"  Background="{x:Null}" Margin="38,0,38,10" FontSize="24" VerticalAlignment="Top" Height="38" Style="{DynamicResource ComboBoxStyle2}">
+                            <ComboBox Name="PedagoskiMerkiCB"  Background="{x:Null}" Margin="38,0,38,10" FontSize="24" VerticalAlignment="Top" Height="38">
                             </ComboBox>
-                            <ComboBox Name="PedagoskiMerkiCBNagradi"  Background="{x:Null}" Margin="38,0" FontSize="24" VerticalAlignment="Top" Height="38" Style="{DynamicResource ComboBoxStyle2}">
+                            <ComboBox Name="PedagoskiMerkiCBNagradi"  Background="{x:Null}" Margin="38,0" FontSize="24" VerticalAlignment="Top" Height="38">
                             </ComboBox>
                             <Border Height="50" Margin="20,18,20,0" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" Grid.ColumnSpan="2">
                              <Label Content="Поведение" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
                             </Border>
-                            <ComboBox Name="PovedenieCB"  Background="{x:Null}" Margin="38,20,38,0" FontSize="24" VerticalAlignment="Top" Height="38" Style="{DynamicResource ComboBoxStyle2}">
+                            <ComboBox Name="PovedenieCB"  Background="{x:Null}" Margin="38,20,38,0" FontSize="24" VerticalAlignment="Top" Height="38">
                             </ComboBox>
                         </StackPanel>
                     </Grid>
                 </StackPanel>
-                <StackPanel Name="MaturskiPanel" Visibility="Visible"> <!-- mislam deka treba vaka -->
+                <StackPanel Name="MaturskiPanel" Visibility="Hidden"> <!-- mislam deka treba vaka -->
                     <Border Height="50" Margin="20,20,20,0" VerticalAlignment="Top" Background="#FFED6A3E" BorderThickness="2" CornerRadius="10" Grid.ColumnSpan="2">
                         <Label Content="Матурски предмети" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
                     </Border>
