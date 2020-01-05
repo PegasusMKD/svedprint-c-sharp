@@ -38,7 +38,7 @@ namespace Frontend
 
         private async Task login()
         {
-            Klasen temp = await Login.LoginWithCredAsync(Username_txt.Text, Password_txt.Text);
+            Klasen temp = await Login.LoginWithCredAsync(Username_txt.Text, Password_txt.Password);
 
             if (temp._ime != null && temp._ime != "002" && temp._ime != string.Empty)
             {
@@ -85,7 +85,7 @@ namespace Frontend
 
         private void Password_txt_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (Password_txt.Text == "Лозинка") RemoveText(sender);
+            Pw_Label.Visibility = Visibility.Hidden;
         }
 
         private void RemoveText(object sender)
@@ -95,7 +95,7 @@ namespace Frontend
 
         private void Password_txt_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (Password_txt.Text == "") AddText(sender, "Лозинка");
+            if(Password_txt.Password == "") Pw_Label.Visibility = Visibility.Visible;
         }
 
         private async void Login_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
