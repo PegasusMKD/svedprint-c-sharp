@@ -57,7 +57,7 @@ namespace Frontend
             NeopravdaniTxt.TextChanged += NeopravdaniTxt_TextChanged;
 
             PovedenieCB.ItemsSource = new string[] { "Примeрно", "Добро", "Незадоволително" };
-            PedagoskiMerkiCB.ItemsSource = new string[] { "нема", "усмена опомена", "писмена опомена", "3", "4" };
+            PedagoskiMerkiCB.ItemsSource = new string[] { "нема", "Усмена Опомена", "Писмена Опомена"};
             if (UserKlas._p._smerovi.Keys.Contains("Изборни Предмети")) IzborenPredmetCB.ItemsSource = UserKlas._p._smerovi["Изборни Предмети"]._predmeti;
 
             CanWork = false;
