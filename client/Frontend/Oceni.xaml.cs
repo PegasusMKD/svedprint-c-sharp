@@ -327,11 +327,17 @@ namespace Frontend
 
             //fill OcenkiView
             List<string> predmeti = UserKlas._p._smerovi[Ucenici[brojDn]._smer].GetCeliPredmeti(Ucenici[brojDn]._jazik, Ucenici[brojDn]._izborni, UserKlas._p._smerovi);
+            int ctr = 0;
             for (int i = 0; i < predmeti.Count; i++)
             {
                 if (i < SelectedUcenik._oceni.Count) Ocenkibox[i].Text = SelectedUcenik._oceni[i].ToString();//5 5 5 5 5 5 5 5
                 else Ocenkibox[i].Text = "0";
-                Predmetibox[i].Content = predmeti[i];
+                if (!predmeti[i].Contains("СЈ")) Predmetibox[i].Content = predmeti[i];
+                else
+                {
+                    Predmetibox[i].Content = UserKlas._p._smerovi["Странски Јазици"]._predmeti[int.Parse(SelectedUcenik._jazik.Split(';')[ctr])];
+                    ctr++;
+                }
             }
 
             if (Ocenkibox.Count > 0)

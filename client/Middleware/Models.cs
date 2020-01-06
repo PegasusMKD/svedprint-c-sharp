@@ -527,8 +527,8 @@ namespace Middleware
                         MaturskiPolinja.Add(new MaturskoPole(possible_fields[counter], possible_values[counter], field));
                     counter++;
                 }
-                if (fields[0].ToString() != "")
-                    Console.WriteLine(fields[0]);
+                //if (fields[0].ToString() != "")
+                //    Console.WriteLine(fields[0]);
 
                 MaturskiPredmeti.Add(new MaturskiPredmet(possible_naming[naming_counter], _predmeti.ToArray(), MaturskiPolinja, fields[0].ToString()));
 

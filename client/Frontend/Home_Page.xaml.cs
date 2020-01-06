@@ -1,5 +1,6 @@
 using Middleware;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -53,6 +54,11 @@ namespace Frontend
             if(KlasenKlasa._paralelka.Split('-')[0] == "IV") {
                 foreach (Ucenik ucenik in ucenici)
                 {
+                    if (ucenik._maturska == "")
+                    {
+                        Debug.WriteLine($"{ucenik._ime} {ucenik._prezime}");
+                        continue;
+                    }
                     ucenik.LoadMaturski(KlasenKlasa);
                 }
             }
