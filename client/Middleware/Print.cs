@@ -1216,11 +1216,44 @@ namespace Middleware
                 failed_offset[i] = failed_offset[i - 1] + result.offset;
             }
 
-            foreach (Ucenik u in ucenici)
-            {
-                int current_idx = siteUcenici.IndexOf(u);
                 sw.GetStringBuilder().Clear();
                 List<string> tmparr = new List<string>();
+
+                // uciliste
+                sw.Write($"Средно училиште {klasen._ucilishte};");
+                // grad
+                sw.Write($"{klasen._grad};");
+                // tip na obrazovanie
+                sw.Write($"{ucenici[0]._tip};");
+
+                // smerovi
+                sw.Write($"{klasen._smerovi.Replace(',', '|')};");
+
+                sw.Write("///;");
+
+                // paralelka
+                sw.Write($"{klasen._paralelka.Replace('-', ';')};");
+
+                // broj na gk
+                sw.Write($"{klasen._glavna_kniga};") // ?
+
+                // ucebna godina
+                sw.Write($"20{klasen._godina}/20{klasen._godina + 1}");
+
+                // broj na maski i zenski
+                int maski = ucenici.Where(x => x._gender.Contains("машк")).Count();
+                sw.Write($"{maski}|{ucenici.Count-maski}");
+
+                /*
+                TODO:
+                
+Form of string: start_page$<School name>;<Town>;<Type of education>;<Module of subhects 1>|<Module of subjects 2>|...;<Educational profile?>;
+<Year grade>;<Class number>;<Book's number>;<School year>;<Nmb of males>|<Nmb of females>|<Total>|<Nmb of males 2>|...;
+<Nmb of students>|<Nmb of A's>|<Percent of A's>|<Nmb of B's>|<Percent of B's>|...;
+<Name and last name of homeroom teacher>;<Name of director>
+
+Example string ( for testing ): "start_page$Средно училиште „Раде Јовчевски - Корчагин“;Скопје;Гимназиско образование;Природно-математичко подрачје, комбинација А|Општествено-хуманистичко подрачје, комбинација Б|Јазично уметничко подрачје, комбинација Ц| Природно-математичко подрачје, комбинација Б;///;IV;1;54/3;2018/2019;0|0|20|30|15|10;32|22|15|10|20;Жаклина Пандова;м-р Драган Арсовски"
+                */
 
                 // predmeti
                 tmparr.Clear();
