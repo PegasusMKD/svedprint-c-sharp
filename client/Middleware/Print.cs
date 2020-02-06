@@ -337,7 +337,7 @@ namespace Middleware
                 //if (current_idx == 0 ? failed_offset[0] == 0 : failed_offset[current_idx] == failed_offset[current_idx-1]) {
                 //if (!failed_arr[current_idx])
                 //{
-                    l.Add(sw.ToString());
+                l.Add(sw.ToString());
                 //}
             }
             return l;
@@ -647,7 +647,7 @@ namespace Middleware
 
                 //if (!failed_arr[current_idx])
                 //{
-                    l.Add(sw.ToString());
+                l.Add(sw.ToString());
                 //}
             }
             return l;
@@ -956,7 +956,7 @@ namespace Middleware
             pd.DefaultPageSettings.PaperSize = pd.PrinterSettings.PaperSizes.Cast<PaperSize>().First(size => size.Kind == PaperKind.A3);
             pd.OriginAtMargins = false;
             pd.DefaultPageSettings.Landscape = true;
-            
+
             data.Insert(0, "\"dipl\"");
             string outparam = String.Join("$", data);
 
@@ -1139,14 +1139,14 @@ namespace Middleware
             pd.OriginAtMargins = false;
             pd.DefaultPageSettings.Landscape = false;
 
-            data.Insert(0, "\"start_page\"");
+            data.Insert(0, "\"start_page");
             string outparam = String.Join("$", data);
             //28.06.2019
             string pyscript = rootFolder + "\\print.exe";
             Process py = new Process();
             py.StartInfo.FileName = new Uri(pyscript).AbsolutePath;
             py.StartInfo.UseShellExecute = false;
-            py.StartInfo.Arguments = outparam;
+            py.StartInfo.Arguments = outparam + "\"";
             py.StartInfo.CreateNoWindow = true;
             py.Start();
             py.WaitForExit();
@@ -1197,7 +1197,6 @@ namespace Middleware
 
             // https://raw.githubusercontent.com/darijan2002/ps/ps/gk/sample_params.txt?token=ADAAZQMNTPXEEBZ7LCUYXD245FMAC
             StringWriter sw = new StringWriter();
-            List<string> l = new List<string>();
             string delimiter = "|";
 
             int n = siteUcenici.Count;
@@ -1216,275 +1215,96 @@ namespace Middleware
                 failed_offset[i] = failed_offset[i - 1] + result.offset;
             }
 
-                sw.GetStringBuilder().Clear();
-                List<string> tmparr = new List<string>();
+            sw.GetStringBuilder().Clear();
+            List<string> tmparr = new List<string>();
 
-                // uciliste
-                sw.Write($"Средно училиште {klasen._ucilishte};");
-                // grad
-                sw.Write($"{klasen._grad};");
-                // tip na obrazovanie
-                sw.Write($"{ucenici[0]._tip};");
+            // uciliste
+            sw.Write($"{klasen._ucilishte};");
+            // grad
+            sw.Write($"{klasen._grad};");
+            // tip na obrazovanie
+            sw.Write($"{ucenici[0]._tip};");
 
-                // smerovi
-                sw.Write($"{klasen._smerovi.Replace(',', '|')};");
 
-                sw.Write("///;");
+            // smerovi
+            var blacklist = new List<string> { "ПА", "Странски Јазици", "Изборни Предмети" };
+            if ((new List<string> { "I", "II" }).Contains(klasen._paralelka.Split('-')[0])) sw.Write("///;");
+            else 
+            sw.Write($"{string.Join("|", klasen._smerovi.Split(',').Where(x => !blacklist.Contains(x)))};");
 
-                // paralelka
-                sw.Write($"{klasen._paralelka.Replace('-', ';')};");
+            sw.Write("///;");
 
-                // broj na gk
-                sw.Write($"{klasen._glavna_kniga};") // ?
+            // paralelka
+            sw.Write($"{klasen._paralelka.Replace('-', ';')};");
 
-                // ucebna godina
-                sw.Write($"20{klasen._godina}/20{klasen._godina + 1}");
+            // broj na gk
+            sw.Write(klasen._glavna_kniga + '/' + year_dictionary[klasen._paralelka.Split('-').FirstOrDefault()]);// <----
+            sw.Write(';');
+            // ucebna godina
+            sw.Write($"20{klasen._godina}/20{klasen._godina + 1};");
 
-                // broj na maski i zenski
-                int maski = ucenici.Where(x => x._gender.Contains("машк")).Count();
-                sw.Write($"{maski}|{ucenici.Count-maski}");
+            // broj na maski i zenski
+            sw.Write(";");
 
-                /*
-                TODO:
-                
+            // oceni i udeli
+
+            sw.Write($"{ucenici.Count}");
+
+            var proseci = ucenici.Select(x => decimal.Parse(x.prosek()));
+            for (int i = 5; i >= 2; i--)
+            {
+                sw.Write($"|{proseci.Where(x => decimal.Round(x) == i).Count()}");
+                if (proseci.Where(x => decimal.Round(x) == i).Count() == 0) sw.Write("|0,00%");
+                else 
+                sw.Write($"|{decimal.Round((decimal)100.0 * proseci.Where(x => decimal.Round(x) == i).Count() / proseci.Where(x => decimal.Round(x) > 1).Count(), 2, MidpointRounding.AwayFromZero) }%");
+            }
+
+            sw.Write($"|{proseci.Where(x => decimal.Round(x) > 1).Count()}");
+            sw.Write($"|100,00%");
+
+
+            sw.Write($"|{proseci.Where(x => decimal.Round(x) == 1).Count()}");
+            sw.Write($"|{decimal.Round((decimal)100.0 * proseci.Where(x => decimal.Round(x) == 1).Count() / proseci.Count(), 2) }%");
+
+
+            sw.Write(";");
+
+            // klasen
+            sw.Write($"{klasen._ime} {(!string.IsNullOrWhiteSpace(klasen._srednoIme) ? klasen._srednoIme + " " : "")}{klasen._prezime};");
+
+            // direktor
+            sw.Write(klasen._direktor);
+
+            /*
+            TODO:
+
 Form of string: start_page$<School name>;<Town>;<Type of education>;<Module of subhects 1>|<Module of subjects 2>|...;<Educational profile?>;
 <Year grade>;<Class number>;<Book's number>;<School year>;<Nmb of males>|<Nmb of females>|<Total>|<Nmb of males 2>|...;
 <Nmb of students>|<Nmb of A's>|<Percent of A's>|<Nmb of B's>|<Percent of B's>|...;
 <Name and last name of homeroom teacher>;<Name of director>
 
 Example string ( for testing ): "start_page$Средно училиште „Раде Јовчевски - Корчагин“;Скопје;Гимназиско образование;Природно-математичко подрачје, комбинација А|Општествено-хуманистичко подрачје, комбинација Б|Јазично уметничко подрачје, комбинација Ц| Природно-математичко подрачје, комбинација Б;///;IV;1;54/3;2018/2019;0|0|20|30|15|10;32|22|15|10|20;Жаклина Пандова;м-р Драган Арсовски"
-                */
+            */
 
-                // predmeti
-                tmparr.Clear();
-                tmparr.AddRange(klasen._p._smerovi[u._smer].GetCeliPredmeti(u._jazik, u._izborni, klasen._p._smerovi));
-                while (tmparr.Count < 17)
-                {
-                    tmparr.Add("NaN");
-                }
-                tmparr.AddRange(u._proektni.Split(';').ToList().ConvertAll(x => x.Split(',')[0]));
-                if (tmparr.Contains("Култура за заштита мир и толеранција") || tmparr.Contains("Култура за заштита"))
-                {
-                    // vaka e ama so da se prai
-                    var xxzx = tmparr.FindIndex(x => x == "Култура за заштита мир и толеранција");
-                    if (xxzx == -1)
-                    {
-                        tmparr.FindIndex(x => x == "Култура за заштита");
-                    }
-
-                    tmparr[xxzx] = "Култура за заштита, мир и толеранција";
-                }
-                while (tmparr.Count < 22)
-                {
-                    tmparr.Add("NaN");
-                }
-                sw.Write("\"" + String.Join("/", tmparr) + "\"");
-                sw.Write(";");
-
-                // oceni
-                tmparr.Clear();
-                tmparr.AddRange(u._oceni.ConvertAll(x => x.ToString()));
-                while (tmparr.Count < 17)
-                {
-                    tmparr.Add("NaN");
-                }
-                List<string> tmppoloz = GetPolozilList(u);
-                tmparr.AddRange(tmppoloz);
-                while (tmparr.Count < 22)
-                {
-                    tmparr.Add("NaN");
-                }
-                sw.Write("\"" + String.Join(" ", tmparr) + "\"");
-                sw.Write(";");
-
-                // delovoden broj, godina (klas), paralelka, broj vo dnevnik
-                sw.Write("\"");
-                var god = klasen._paralelka.Split('-').FirstOrDefault();
-                sw.Write(klasen._glavna_kniga + '/' + year_dictionary[god]);// <----
-                sw.Write(delimiter);
-                sw.Write(klasen._paralelka.Replace('-', delimiter[0]));
-                sw.Write(delimiter);
-                sw.Write(u._broj);
-                sw.Write(delimiter);
-
-                // ime prezime na ucenik, ime na tatko, ime na majka, DOB, mesto na raganje, naselba, opshtina, drzhava, drzhavjanstvo (hardcode)
-                sw.Write(u._ime);
-                sw.Write(delimiter);
-                sw.Write(u._prezime);
-                sw.Write(delimiter);
-                if (string.IsNullOrWhiteSpace(u._tatko))
-                {
-                    sw.Write("// //");
-                }
-                else
-                {
-                    sw.Write(u._tatko);
-                }
-
-                sw.Write(delimiter);
-                if (string.IsNullOrWhiteSpace(u._majka) || u._majka[0] == '/')
-                {
-                    sw.Write("/// ///");
-                }
-                else
-                {
-                    sw.Write(u._majka);
-                }
-
-                sw.Write(delimiter);
-                sw.Write(u._roden); // <------
-                sw.Write(delimiter);
-                sw.Write(u._mesto_na_ragjanje); // mesto na ragjanje
-                sw.Write(delimiter);
-                sw.Write(u._mesto_na_zhiveenje);
-                sw.Write(delimiter);
-                sw.Write(klasen._drzava); // <------
-                sw.Write(delimiter);
-                sw.Write(u._drzavjanstvo); // hardcoded drzavjanstvo
-                sw.Write(delimiter);
-
-                var rimsko = klasen._paralelka.Split('-')[0];
-                int idx = rimskoDict.Keys.ToList().IndexOf(rimsko);
-
-                // prethodna godina (oddelenie), uspeh od prethodna godina, prethodna ucebna godina, prethodno uciliste, pat
-
-                sw.Write($"{rimskoDict.Keys.ToArray()[idx - 1]} - {rimskoDict.Values.ToArray()[idx - 1]}");
-
-                sw.Write(delimiter);
-                //sw.Write(string.IsNullOrEmpty(u._prethoden_uspeh) || u._prethoden_uspeh == "5.00" ? "" : u._prethoden_uspeh);
-
-                decimal ocena;
-                bool worked = decimal.TryParse(u._prethoden_uspeh.ToString(CultureInfo.GetCultureInfo("mk-MK")), out ocena);
-                if (!worked)
-                {
-                    sw.Write(u._prethoden_uspeh);
-                }
-                else
-                {
-                    string[] ocena_zbor = new string[] { "", "Недоволен", "Доволен", "Добар", "Многу добар", "Одличен" };
-                    int rounded;
-                    if (ocena - Math.Floor(ocena) < Convert.ToDecimal(0.5))
-                    {
-                        rounded = Convert.ToInt32(Math.Floor(ocena));
-                    }
-                    else
-                    {
-                        rounded = Convert.ToInt32(Math.Ceiling(ocena));
-                    }
-                    int rounded2 = Convert.ToInt32(Math.Round(ocena));
-                    sw.Write(ocena_zbor[rounded]);
-                }
-
-                sw.Write(delimiter);
-                sw.Write($"20{klasen._godina - 1}/20{klasen._godina}");
-                //sw.Write("1990/1991"); HARDCODED
-                sw.Write(delimiter);
-                sw.Write(u._prethodno_uchilishte);
-                sw.Write(delimiter);
-                sw.Write(u._pat_polaga); // fix
-                sw.Write(delimiter);
-
-                sw.Write(u._tip); // <------
-                sw.Write(delimiter);
-
-                string[] paralelka_godina = klasen._paralelka.Split('-');
-                if (int.Parse(year_dictionary[paralelka_godina[0]]) >= 3)
-                {
-                    sw.Write(klasen._p._smerovi[u._smer]._cel_smer);
-                }
-                else
-                {
-                    sw.Write("///");
-                }
-
-                sw.Write(delimiter);
-                sw.Write(u._povedenie);
-                sw.Write(delimiter);
-                sw.Write(u._opravdani);
-                sw.Write(delimiter);
-                sw.Write(u._neopravdani);
-                sw.Write(delimiter);
-
-                //Koja e celta na ovaa godina? ne bi bilo isto so Split-ot odma pod nego?
-                sw.Write($"20{klasen._godina}/20{klasen._godina + 1}"); // ucebna godina. bara kalendarska godina. nesto kako prethodna_uchebna ama ne prethodna tuku segasna
-                // workaround
-
-                //sw.Write("1990/1991");
-                sw.Write(delimiter);
-                //sw.Write("IV - четврта");// <------
-
-                sw.Write($"{rimskoDict.Keys.ToArray()[idx]} - {rimskoDict.Values.ToArray()[idx]}");
-
-                sw.Write(delimiter);
-                sw.Write($"{klasen._ime} {(string.IsNullOrWhiteSpace(klasen._srednoIme) ? "" : $"{klasen._srednoIme}-")}{klasen._prezime}");
-                sw.Write(delimiter);
-                sw.Write(klasen._direktor);
-                sw.Write(delimiter);
-                //sw.Write(u._pedagoski_merki);
-                sw.Write(delimiter);
-                string[] db = klasen._delovoden_broj.Split('-');
-                var val = int.Parse(db[1]) + int.Parse(year_dictionary[paralelka_godina[0]]) - 1;
-
-                /* momentalno
-                if (!failed_arr[current_idx])
-                {
-                    if ((current_idx == 0 && failed_offset[current_idx] == 0) ||
-                        (current_idx > 0 && failed_offset[current_idx] == failed_offset[current_idx - 1]))
-                    {
-                        sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_godina[1]}/{u._broj - failed_offset[current_idx]}");
-                    }
-                } */
-                sw.Write("08-05/7/14");
-                //sw.Write($"{db[0]}-{val.ToString("D2")}/{paralelka_godina[1]}/26");
-
-                sw.Write(delimiter);
-                //sw.Write(klasen._odobreno_sveditelstvo);
-                sw.Write("12.06.2019");
-                sw.Write(delimiter);
-                // BELESKI
-                tmparr.Clear();
-
-                sw.Write("\";\"");
-
-                if (!string.IsNullOrWhiteSpace(u._polagal))
-                    sw.Write(u._polagal);
-                else
-                {
-                    for (int i = 0; i < u._oceni.Count; i++)
-                    {
-                        tmparr.Add("0");
-                    }
-                    sw.Write(string.Join(" ", tmparr));
-                }
-
-                sw.Write("\"");
-                sw.Write($";\"{offsetx}{delimiter}{offsety}\"");
-
-
-                //if (!failed_arr[current_idx])
-                //{
-                    l.Add(sw.ToString());
-                //}
-            }
-            return l;
+            return new List<string> { sw.ToString() };
         }
 
-        public static void PrintCarsav(int printerChoice) // TODO: testing
-        {
-            // Requests.GetCarsav();
+    public static void PrintCarsav(int printerChoice) // TODO: testing
+    {
+        // Requests.GetCarsav();
 
-            Excel.Application excelApp = new Excel.Application();
-            string filepath = Path.Combine(tmpFolder, "excel.xlsx");
-            Excel.Workbook file = excelApp.Workbooks.Open(filepath);
-            Excel.Worksheet sheet = (Excel.Worksheet)file.Worksheets[1]; // base 1
-            sheet.PageSetup.PaperSize = Excel.XlPaperSize.xlPaperA4;
-            sheet.PageSetup.Orientation = Excel.XlPageOrientation.xlLandscape;
-            sheet.PrintOutEx(Preview: true, ActivePrinter: PrinterSettings.InstalledPrinters[printerChoice]);
+        Excel.Application excelApp = new Excel.Application();
+        string filepath = Path.Combine(tmpFolder, "excel.xlsx");
+        Excel.Workbook file = excelApp.Workbooks.Open(filepath);
+        Excel.Worksheet sheet = (Excel.Worksheet)file.Worksheets[1]; // base 1
+        sheet.PageSetup.PaperSize = Excel.XlPaperSize.xlPaperA4;
+        sheet.PageSetup.Orientation = Excel.XlPageOrientation.xlLandscape;
+        sheet.PrintOutEx(Preview: true, ActivePrinter: PrinterSettings.InstalledPrinters[printerChoice]);
 
-            file.Close();
-            excelApp.Quit();
-        }
+        file.Close();
+        excelApp.Quit();
     }
+}
 
 }
 
