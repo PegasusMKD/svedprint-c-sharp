@@ -47,13 +47,10 @@ namespace Frontend
         private void LoadListView()
         {
             // ne treba da gi dava opciite za diplomi za tie sto ne se cetvrta
-            int n;
-            if(Home_Page.KlasenKlasa._paralelka.Split('-')[0] == "IV")
+            int n = Menuitems.Count();
+            if(Home_Page.KlasenKlasa._paralelka.Split('-')[0] != "IV")
             {
-                n = 5;
-            } else
-            {
-                n = 3;
+                n = Menuitems.Count(x => !x.ToLower().Contains("диплома"));
             }
             for (int i = 0; i < n; i++)
             {
