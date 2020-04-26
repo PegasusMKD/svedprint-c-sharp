@@ -198,7 +198,6 @@ namespace Frontend
             {
                 return;
             }
-
             string toBeChanged = UserKlas._p._smerovi.Keys.ElementAt(i);
             if (i == 0) i = 1;
 
@@ -252,7 +251,8 @@ namespace Frontend
 
         private void Img_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (UserKlas._p._smerovi.Count < 2)
+            if (UserKlas._p._smerovi.Count <= 4) //  && new List<string>() { "I", "II" }.Contains(UserKlas._paralelka.Split('-')[0])) ||
+               // (UserKlas._p._smerovi.Count <= 3 && new List<string>() { "III", "IV" }.Contains(UserKlas._paralelka.Split('-')[0]))
             {
                 MessageBox.Show("неможе сите смерови да се избришат");
                 return;

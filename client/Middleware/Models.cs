@@ -82,11 +82,11 @@ namespace Middleware
         public string _jazik { get; set; }
         [JsonProperty(RequestParameters.jazik_ocena)]
         public string _jazik_ocena { get; set; }
-        [JsonProperty(RequestParameters.eksterni)] // format - "predmet:ocena;predmet:ocena"
+        [JsonProperty(RequestParameters.eksterni)] // format - "predmet:ocena;predmet:ocena" [[predmet,ocena],[predmet,ocena]] {"predmet" : ocena, "predmet": ocena}
         public string _eksterni { get; set; }
         [JsonProperty(RequestParameters.interni)] // format - "predmet:ocena;predmet:ocena"
         public string _interni { get; set; }
-        [JsonProperty(RequestParameters.percentilen)] // format - "ocena1 ocena2 ocena3"
+        [JsonProperty(RequestParameters.percentilen)] // format - "ocena1 ocena2 ocena3" [ocena1,ocena2,ocena3,...]
         public string _percentilen { get; set; }
         [JsonProperty(RequestParameters.delovoden_predmeti)] // format - "delrb1 delbr2 delbr3"
         public string _delovoden_predmeti { get; set; }
