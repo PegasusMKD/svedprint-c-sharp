@@ -43,17 +43,14 @@ namespace Frontend
             }
         }
 
-        string[] Menuitems = { "Свидетелство", "Главна книга", "Главна книга за диплома", "Диплома" };
+        string[] Menuitems = { "Свидетелство", "Главна книга", "Предна страна на главна книга", "Главна книга за диплома", "Диплома" };
         private void LoadListView()
         {
             // ne treba da gi dava opciite za diplomi za tie sto ne se cetvrta
-            int n;
-            if(Home_Page.KlasenKlasa._paralelka.Split('-')[0] == "IV")
+            int n = Menuitems.Count();
+            if(Home_Page.KlasenKlasa._paralelka.Split('-')[0] != "IV")
             {
-                n = 4;
-            } else
-            {
-                n = 2;
+                n = Menuitems.Count(x => !x.ToLower().Contains("диплома"));
             }
             for (int i = 0; i < n; i++)
             {
@@ -144,10 +141,11 @@ namespace Frontend
                 case 1:
                     Print.PrintGlavnaKniga(Home_Page.ucenici, uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
                     break;
-                case 2:
+                // nema case 2 zosto e samo za cel klas
+                case 3:
                     Print.PrintGkDiploma(Home_Page.ucenici, uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
                     break;
-                case 3:
+                case 4:
                     Print.PrintDiploma(Home_Page.ucenici, uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
                     break;
             }
@@ -161,31 +159,18 @@ namespace Frontend
             switch (Menu.SelectedIndex)
             {
                 case 0:
-                    //Middleware.Print.PrintSveditelstva(Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
-
-
-                    //for (int i = 0; i < Home_Page.ucenici.Count(); i += 5)
-                    //{
-
-                    //    List<Ucenik> uceniks = new List<Ucenik>();
-                    //    for (int j = 0; j < 5; j++)
-                    //    {
-                    //        uceniks.Add(Home_Page.ucenici[i + j]);
-                    //        if (i + j == Home_Page.ucenici.Count() - 1) break;
-                    //    }
-                    // hmmm
-                        Print.PrintSveditelstva(Home_Page.ucenici, /*uceniks*/ Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
-                    //}
-
-
+                    Print.PrintSveditelstva(Home_Page.ucenici, /*uceniks*/ Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
                     break;
                 case 1:
                     Print.PrintGlavnaKniga(Home_Page.ucenici, Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
                     break;
                 case 2:
-                    Print.PrintGkDiploma(Home_Page.ucenici, Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+                    Print.PrintPrednaStranaGK(Home_Page.ucenici, Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
                     break;
                 case 3:
+                    Print.PrintGkDiploma(Home_Page.ucenici, Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+                    break;
+                case 4:
                     Print.PrintDiploma(Home_Page.ucenici, Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
                     break;
             }

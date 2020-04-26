@@ -337,7 +337,7 @@ namespace Middleware
                 //if (current_idx == 0 ? failed_offset[0] == 0 : failed_offset[current_idx] == failed_offset[current_idx-1]) {
                 //if (!failed_arr[current_idx])
                 //{
-                    l.Add(sw.ToString());
+                l.Add(sw.ToString());
                 //}
             }
             return l;
@@ -647,7 +647,7 @@ namespace Middleware
 
                 //if (!failed_arr[current_idx])
                 //{
-                    l.Add(sw.ToString());
+                l.Add(sw.ToString());
                 //}
             }
             return l;
@@ -956,7 +956,7 @@ namespace Middleware
             pd.DefaultPageSettings.PaperSize = pd.PrinterSettings.PaperSizes.Cast<PaperSize>().First(size => size.Kind == PaperKind.A3);
             pd.OriginAtMargins = false;
             pd.DefaultPageSettings.Landscape = true;
-            
+
             data.Insert(0, "\"dipl\"");
             string outparam = String.Join("$", data);
 
@@ -1125,23 +1125,186 @@ namespace Middleware
             return l;
         }
 
-
-        public static void PrintCarsav(int printerChoice) // TODO: testing
+        public static void PrintPrednaStranaGK(List<Ucenik> siteUcenici, List<Ucenik> ucenici, Klasen klasen, int printerChoice, int offsetx, int offsety)
         {
-            // Requests.GetCarsav();
+            List<string> data = InitPrednaStranaGK(siteUcenici, ucenici, klasen, offsetx, offsety);
+            string rootFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
+            PrintDialog printDialog = new PrintDialog();
+            PrintDocument pd = new PrintDocument();
 
-            Excel.Application excelApp = new Excel.Application();
-            string filepath = Path.Combine(tmpFolder, "excel.xlsx");
-            Excel.Workbook file = excelApp.Workbooks.Open(filepath);
-            Excel.Worksheet sheet = (Excel.Worksheet)file.Worksheets[1]; // base 1
-            sheet.PageSetup.PaperSize = Excel.XlPaperSize.xlPaperA4;
-            sheet.PageSetup.Orientation = Excel.XlPageOrientation.xlLandscape;
-            sheet.PrintOutEx(Preview: true, ActivePrinter: PrinterSettings.InstalledPrinters[printerChoice]);
+            // PrinterSettings.InstalledPrinters - lista na printeri
+            pd.PrinterSettings.PrinterName = PrinterSettings.InstalledPrinters[printerChoice];
 
-            file.Close();
-            excelApp.Quit();
+            pd.DefaultPageSettings.PaperSize = pd.PrinterSettings.PaperSizes.Cast<PaperSize>().First<PaperSize>(size => size.Kind == PaperKind.A3);
+            pd.OriginAtMargins = false;
+            pd.DefaultPageSettings.Landscape = false;
+
+            data.Insert(0, "\"start_page");
+            string outparam = String.Join("$", data);
+            //28.06.2019
+            string pyscript = rootFolder + "\\print.exe";
+            Process py = new Process();
+            py.StartInfo.FileName = new Uri(pyscript).AbsolutePath;
+            py.StartInfo.UseShellExecute = false;
+            py.StartInfo.Arguments = outparam + "\"";
+            py.StartInfo.CreateNoWindow = true;
+            py.Start();
+            py.WaitForExit();
+
+            printQueue = new List<PrintQueueItem>();
+
+            //return;
+            int partition = 5;
+            for (int part = 0; part < 9; part++)
+            {
+                if (partition * part > data.Count - 1)
+                {
+                    break;
+                }
+
+                printQueue.Clear();
+                for (int i = partition * part; i < Math.Min(data.Count - 1, partition * (part + 1)); i++)
+                {
+                    PrintQueueItem x = new PrintQueueItem();
+                    x.sides = new System.Drawing.Image[1];
+                    x.sides[0] = System.Drawing.Image.FromFile(new Uri($"{tmpFolder}start_page.jpg").AbsolutePath);
+
+                    printQueue.Add(x);
+                }
+
+                currentPage = 0;
+                maxSides = 1;
+                pd.PrintPage += new PrintPageEventHandler(onPrintPage);
+
+                for (int i = partition * part; i < Math.Min(data.Count - 1, partition * (part + 1)); i++)
+                {
+                    currentSide = 0;
+                    pd.Print();
+                    currentPage++;
+                }
+
+                printQueue.ForEach(x => x.sides.ToList().ForEach(job => job.Dispose()));
+                pd.Dispose();
+            }
         }
+
+
+
+        public static List<string> InitPrednaStranaGK(List<Ucenik> siteUcenici, List<Ucenik> ucenici, Klasen klasen, int offsetx, int offsety)
+        {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("mk-MK");
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("mk-MK");
+
+            // https://raw.githubusercontent.com/darijan2002/ps/ps/gk/sample_params.txt?token=ADAAZQMNTPXEEBZ7LCUYXD245FMAC
+            StringWriter sw = new StringWriter();
+            string delimiter = "|";
+
+            int n = siteUcenici.Count;
+            int[] failed_offset = new int[n];
+            bool[] failed_arr = new bool[n];
+
+            // i = 0
+            var result = didFail(siteUcenici[0], GetPolozilList(siteUcenici[0]));
+            failed_offset[0] = result.offset;
+            failed_arr[0] = result.did_fail;
+
+            for (int i = 1; i < n; i++)
+            {
+                result = didFail(siteUcenici[i], GetPolozilList(siteUcenici[i]));
+                failed_arr[i] = result.did_fail;
+                failed_offset[i] = failed_offset[i - 1] + result.offset;
+            }
+
+            sw.GetStringBuilder().Clear();
+            List<string> tmparr = new List<string>();
+
+            // uciliste
+            sw.Write($"{klasen._ucilishte};");
+            // grad
+            sw.Write($"{klasen._grad};");
+            // tip na obrazovanie
+            sw.Write($"{ucenici[0]._tip};");
+
+
+            // smerovi
+            var blacklist = new List<string> { "ПА", "Странски Јазици", "Изборни Предмети" };
+            if ((new List<string> { "I", "II" }).Contains(klasen._paralelka.Split('-')[0])) sw.Write("///;");
+            else 
+            sw.Write($"{string.Join("|", klasen._smerovi.Split(',').Where(x => !blacklist.Contains(x)))};");
+
+            sw.Write("///;");
+
+            // paralelka
+            sw.Write($"{klasen._paralelka.Replace('-', ';')};");
+
+            // broj na gk
+            sw.Write(klasen._glavna_kniga + '/' + year_dictionary[klasen._paralelka.Split('-').FirstOrDefault()]);// <----
+            sw.Write(';');
+            // ucebna godina
+            sw.Write($"20{klasen._godina}/20{klasen._godina + 1};");
+
+            // broj na maski i zenski
+            sw.Write(";");
+
+            // oceni i udeli
+
+            sw.Write($"{ucenici.Count}");
+
+            var proseci = ucenici.Select(x => decimal.Parse(x.prosek()));
+            for (int i = 5; i >= 2; i--)
+            {
+                sw.Write($"|{proseci.Where(x => decimal.Round(x) == i).Count()}");
+                if (proseci.Where(x => decimal.Round(x) == i).Count() == 0) sw.Write("|0,00%");
+                else 
+                sw.Write($"|{decimal.Round((decimal)100.0 * proseci.Where(x => decimal.Round(x) == i).Count() / proseci.Where(x => decimal.Round(x) > 1).Count(), 2, MidpointRounding.AwayFromZero) }%");
+            }
+
+            sw.Write($"|{proseci.Where(x => decimal.Round(x) > 1).Count()}");
+            sw.Write($"|100,00%");
+
+
+            sw.Write($"|{proseci.Where(x => decimal.Round(x) == 1).Count()}");
+            sw.Write($"|{decimal.Round((decimal)100.0 * proseci.Where(x => decimal.Round(x) == 1).Count() / proseci.Count(), 2) }%");
+
+
+            sw.Write(";");
+
+            // klasen
+            sw.Write($"{klasen._ime} {(!string.IsNullOrWhiteSpace(klasen._srednoIme) ? klasen._srednoIme + " " : "")}{klasen._prezime};");
+
+            // direktor
+            sw.Write(klasen._direktor);
+
+            /*
+            TODO:
+
+Form of string: start_page$<School name>;<Town>;<Type of education>;<Module of subhects 1>|<Module of subjects 2>|...;<Educational profile?>;
+<Year grade>;<Class number>;<Book's number>;<School year>;<Nmb of males>|<Nmb of females>|<Total>|<Nmb of males 2>|...;
+<Nmb of students>|<Nmb of A's>|<Percent of A's>|<Nmb of B's>|<Percent of B's>|...;
+<Name and last name of homeroom teacher>;<Name of director>
+
+Example string ( for testing ): "start_page$Средно училиште „Раде Јовчевски - Корчагин“;Скопје;Гимназиско образование;Природно-математичко подрачје, комбинација А|Општествено-хуманистичко подрачје, комбинација Б|Јазично уметничко подрачје, комбинација Ц| Природно-математичко подрачје, комбинација Б;///;IV;1;54/3;2018/2019;0|0|20|30|15|10;32|22|15|10|20;Жаклина Пандова;м-р Драган Арсовски"
+            */
+
+            return new List<string> { sw.ToString() };
+        }
+
+    public static void PrintCarsav(int printerChoice) // TODO: testing
+    {
+        // Requests.GetCarsav();
+
+        Excel.Application excelApp = new Excel.Application();
+        string filepath = Path.Combine(tmpFolder, "excel.xlsx");
+        Excel.Workbook file = excelApp.Workbooks.Open(filepath);
+        Excel.Worksheet sheet = (Excel.Worksheet)file.Worksheets[1]; // base 1
+        sheet.PageSetup.PaperSize = Excel.XlPaperSize.xlPaperA4;
+        sheet.PageSetup.Orientation = Excel.XlPageOrientation.xlLandscape;
+        sheet.PrintOutEx(Preview: true, ActivePrinter: PrinterSettings.InstalledPrinters[printerChoice]);
+
+        file.Close();
+        excelApp.Quit();
     }
+}
 
 }
 
