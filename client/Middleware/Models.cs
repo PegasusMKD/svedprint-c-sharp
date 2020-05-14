@@ -139,78 +139,78 @@ namespace Middleware
             }
         }
 
-        public Ucenik(string ime, string srednoIme, string prezime, List<int> oceni, string smer, int broj, string roden, string mesto_na_zhiveenje, string mesto_na_ragjanje, string povedenie, int opravdani, int neopravdani, string tip, string pat_polaga, string tatko, string majka, string gender, string maturska, string izborni, string proektni, string merki, string prethodna_godina, string prethoden_uspeh, string prethodno_uchilishte, string delovoden_broj, string datum_sveditelstvo, string polozhil, string prethodna_uchebna, string pedagoshki_merki, string drzavjanstvo, string pat_polaga_ispit, string ispiten, int duplicate_ctr,
-            string jazik, string jazik_ocena, string polagal, string polozhil_matura)
-        { //string majkino,
-            _ime = ime ?? "";
-            _srednoIme = srednoIme ?? "";
-            _prezime = prezime ?? "";
-            _oceni = oceni ?? new List<int>();
-            _smer = smer ?? "";
-            //Pazzio: broj napravi go da se stava taka kako shto ti gi prakjam, odnosno, da go zima brojot vo dictionary-to, i toa da go koristi za broj vo dnevnik
-            _broj = broj;
-            _roden = roden ?? "01.01.1111";
-            _mesto_na_zhiveenje = mesto_na_zhiveenje ?? "";
-            _mesto_na_ragjanje = mesto_na_ragjanje ?? "";
-            _povedenie = povedenie ?? "";
-            _opravdani = opravdani;
-            _neopravdani = neopravdani;
-            _tip = tip ?? "";
-            _pat_polaga = pat_polaga ?? "-1";
-            _majka = majka ?? "";
-            _tatko = tatko ?? "";
-            _gender = gender ?? "";
-            //Predmet, ocena, datum na polaganje, mozhebi 
-            _maturska = maturska ?? "";
-            SetMaturski(maturska);
-            //Treba da e lista, kako e vo sushtina e Predmet,dali polozhil;predmet,dali go polozhil...
-            _izborni = izborni ?? "";
-            _proektni = proektni ?? "";
-            _pedagoski_merki = merki ?? "";
-            _prethodna_godina = prethodna_godina ?? "";
-            _prethoden_uspeh = prethoden_uspeh ?? "";
-            _prethodno_uchilishte = prethodno_uchilishte ?? "";
-            _prethodna_uchebna = prethodna_uchebna ?? "";
-            //Ova se zema od kaj Klasniot
-            //_delovoden_broj = delovoden_broj ?? "";
-            //_datum_sveditelstvo = datum_sveditelstvo ?? "";
-
-            _polozhil = polozhil ?? "";
-            // _majkino = majkino ?? "";
-
-            _pat_polaga_ispit = pat_polaga_ispit ?? "";
-            _ispiten = ispiten ?? "";
-
-            _drzavjanstvo = drzavjanstvo ?? "";
-
-            _duplicate_ctr = duplicate_ctr;
-
-            //Dodatoci od Pazzio
-            _jazik = jazik ?? "";
-            _jazik_ocena = jazik_ocena ?? "";
-            _polagal = polagal ?? "";
-            _polozhil_matura = polozhil_matura ?? "";
-        }
+        //public Ucenik(string ime, string srednoIme, string prezime, List<int> oceni, string smer, int broj, string roden, string mesto_na_zhiveenje, string mesto_na_ragjanje, string povedenie, int opravdani, int neopravdani, string tip, string pat_polaga, string tatko, string majka, string gender, string maturska, string izborni, string proektni, string merki, string prethodna_godina, string prethoden_uspeh, string prethodno_uchilishte, string delovoden_broj, string datum_sveditelstvo, string polozhil, string prethodna_uchebna, string pedagoshki_merki, string drzavjanstvo, string pat_polaga_ispit, string ispiten, int duplicate_ctr,
+            //string jazik, string jazik_ocena, string polagal, string polozhil_matura)
+        //{ //string majkino,
+            //_ime = ime ?? "";
+            //_srednoIme = srednoIme ?? "";
+            //_prezime = prezime ?? "";
+            //_oceni = oceni ?? new List<int>();
+            //_smer = smer ?? "";
+            ////Pazzio: broj napravi go da se stava taka kako shto ti gi prakjam, odnosno, da go zima brojot vo dictionary-to, i toa da go koristi za broj vo dnevnik
+            //_broj = broj;
+            //_roden = roden ?? "01.01.1111";
+            //_mesto_na_zhiveenje = mesto_na_zhiveenje ?? "";
+            //_mesto_na_ragjanje = mesto_na_ragjanje ?? "";
+            //_povedenie = povedenie ?? "";
+            //_opravdani = opravdani;
+            //_neopravdani = neopravdani;
+            //_tip = tip ?? "";
+            //_pat_polaga = pat_polaga ?? "-1";
+            //_majka = majka ?? "";
+            //_tatko = tatko ?? "";
+            //_gender = gender ?? "";
+            ////Predmet, ocena, datum na polaganje, mozhebi 
+            //_maturska = maturska ?? "";
+            //SetMaturski(maturska);
+            ////Treba da e lista, kako e vo sushtina e Predmet,dali polozhil;predmet,dali go polozhil...
+            //_izborni = izborni ?? "";
+            //_proektni = proektni ?? "";
+            //_pedagoski_merki = merki ?? "";
+            //_prethodna_godina = prethodna_godina ?? "";
+            //_prethoden_uspeh = prethoden_uspeh ?? "";
+            //_prethodno_uchilishte = prethodno_uchilishte ?? "";
+            //_prethodna_uchebna = prethodna_uchebna ?? "";
+            ////Ova se zema od kaj Klasniot
+            ////_delovoden_broj = delovoden_broj ?? "";
+            ////_datum_sveditelstvo = datum_sveditelstvo ?? "";
+//
+            //_polozhil = polozhil ?? "";
+            //// _majkino = majkino ?? "";
+//
+            //_pat_polaga_ispit = pat_polaga_ispit ?? "";
+            //_ispiten = ispiten ?? "";
+//
+            //_drzavjanstvo = drzavjanstvo ?? "";
+//
+            //_duplicate_ctr = duplicate_ctr;
+//
+            ////Dodatoci od Pazzio
+            //_jazik = jazik ?? "";
+            //_jazik_ocena = jazik_ocena ?? "";
+            //_polagal = polagal ?? "";
+            //_polozhil_matura = polozhil_matura ?? "";
+        //}
 
         public Ucenik() { }
 
-        public Ucenik(string ime, string srednoime, string prezime, Smer smer, string br)
-        {
-            _ime = ime;
-            _prezime = prezime;
-            _srednoIme = srednoime;
-            _smer = smer._smer;
-            _broj = int.Parse(br);
-            _tatko = " ";
-            _majka = " ";
-            _roden = " ";
-            _mesto_na_ragjanje = " ";
-            _oceni = new List<int>();
-            foreach (string predmet in smer._predmeti)
-            {
-                _oceni.Add(0);
-            }
-        }
+        //public Ucenik(string ime, string srednoime, string prezime, Smer smer, string br)
+        //{
+        //    _ime = ime;
+        //    _prezime = prezime;
+        //    _srednoIme = srednoime;
+        //    _smer = smer._smer;
+        //    _broj = int.Parse(br);
+        //    _tatko = " ";
+        //    _majka = " ";
+        //    _roden = " ";
+        //    _mesto_na_ragjanje = " ";
+        //    _oceni = new List<int>();
+        //    foreach (string predmet in smer._predmeti)
+        //    {
+        //        _oceni.Add(0);
+        //    }
+        //}
 
         //Od pazzio, mozhno e da zatreba i se koristi vo Print.cs
 

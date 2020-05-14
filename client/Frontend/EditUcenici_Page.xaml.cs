@@ -196,7 +196,7 @@ namespace Frontend
             }
             if(Ucenici.Count == BrojDn)
             {
-                CreateUcenik(polinja[0].Odgovor, polinja[2].Odgovor, polinja[1].Odgovor, polinja[3].GetOdgovor(), (BrojDn + 1).ToString());
+                CreateUcenik(polinja[0].Odgovor, polinja[2].Odgovor, polinja[1].Odgovor, polinja[3].GetOdgovor(), BrojDn + 1);
                 int bk = BrojDn;
                 BrojDn = Ucenici.Count - 1;
                 BrojDn = bk;
@@ -283,7 +283,7 @@ namespace Frontend
                
         }
 
-        private void CreateUcenik(string ime, string srednoime, string prezime, string smer, string br)
+        private void CreateUcenik(string ime, string srednoime, string prezime, string smer, int br)
         {
             if (UserKlas._p._smerovi.ContainsKey(smer) == false)
             {
@@ -291,7 +291,16 @@ namespace Frontend
                 return;
             }
             List<Ucenik> match = Ucenici.Where(x => (x._prezime == prezime) && (x._ime == ime) && (x._srednoIme == srednoime)).ToList();
-            Ucenici.Add(new Ucenik(ime, srednoime, prezime, UserKlas._p._smerovi[smer], br));
+            Ucenici.Add(new Ucenik()
+            {
+                _ime = ime,
+                _srednoIme = srednoime,
+                _prezime = prezime,
+                _smer = UserKlas._p._smerovi[smer]._smer,
+                _broj = br,
+                _oceni = new List<int>(Enumerable.Repeat(0, UserKlas._p._smerovi[smer]._predmeti.Count))
+            }) ; // better constructor, must be tested
+            // Ucenici.Add(new Ucenik(ime, srednoime, prezime, UserKlas._p._smerovi[smer], br));
             Ucenici.Last()._duplicate_ctr = match.Count();
             Ucenici.Last().CreateServerUcenik(UserKlas._token);
             MessageBox.Show("успешно креирање на нов ученик");
