@@ -91,7 +91,7 @@ namespace Middleware
         [JsonProperty(RequestParameters.delovoden_predmeti)] // format - "delrb1 delbr2 delbr3"
         public List<string>_delovoden_predmeti { get; set; }
         [JsonProperty(RequestParameters.polagal)]
-        public List<bool> _polagal { get; set; } // array with ' ' delimiter
+        public List<int> _polagal { get; set; } // array with ' ' delimiter
         [JsonProperty(RequestParameters.polozhil_matura)]
         public string _polozhil_matura { get; set; }
 
