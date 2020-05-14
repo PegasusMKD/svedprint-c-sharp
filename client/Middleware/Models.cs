@@ -83,15 +83,15 @@ namespace Middleware
         [JsonProperty(RequestParameters.jazik_ocena)]
         public string _jazik_ocena { get; set; }
         [JsonProperty(RequestParameters.eksterni)] // format - "predmet:ocena;predmet:ocena" [[predmet,ocena],[predmet,ocena]] {"predmet" : ocena, "predmet": ocena}
-        public string _eksterni { get; set; }
+        public Dictionary<string, int> _eksterni { get; set; }
         [JsonProperty(RequestParameters.interni)] // format - "predmet:ocena;predmet:ocena"
-        public string _interni { get; set; }
+        public Dictionary<string, int> _interni { get; set; }
         [JsonProperty(RequestParameters.percentilen)] // format - "ocena1 ocena2 ocena3" [ocena1,ocena2,ocena3,...]
-        public string _percentilen { get; set; }
+        public List<int>_percentilen { get; set; }
         [JsonProperty(RequestParameters.delovoden_predmeti)] // format - "delrb1 delbr2 delbr3"
-        public string _delovoden_predmeti { get; set; }
+        public List<string>_delovoden_predmeti { get; set; }
         [JsonProperty(RequestParameters.polagal)]
-        public string _polagal { get; set; } // array with ' ' delimiter
+        public List<bool> _polagal { get; set; } // array with ' ' delimiter
         [JsonProperty(RequestParameters.polozhil_matura)]
         public string _polozhil_matura { get; set; }
 
