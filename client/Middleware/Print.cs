@@ -217,14 +217,13 @@ namespace Middleware
                 sw.Write(";");
                 // oceni
                 var ocenki = u._oceni;
-                var polagal = u._polagal.Split(' ');
-                if (!string.IsNullOrEmpty(u._polagal))
+                if (u._polagal.Count != 0)
                 {
-                    for (int i = 0; i < polagal.Length; i++)
+                    for (int i = 0; i < u._polagal.Count; i++)
                     {
-                        if (polagal[i] != "0")
+                        if (u._polagal[i] != 0)
                         {
-                            ocenki[i] = int.Parse(polagal[i]);
+                            ocenki[i] = u._polagal[i];
                         }
                     }
                 }
@@ -630,9 +629,7 @@ namespace Middleware
 
                 sw.Write("\";\"");
 
-                if (!string.IsNullOrWhiteSpace(u._polagal))
-                    sw.Write(u._polagal);
-                else
+                if (u._polagal.Count != 0)
                 {
                     for (int i = 0; i < u._oceni.Count; i++)
                     {
