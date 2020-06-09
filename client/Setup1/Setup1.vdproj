@@ -27,32 +27,32 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_9B5C14782320D45D7C5E6DC9CA0D8F4F"
+        "MsmKey" = "8:_7E2B076DB0EFB4EF89B38BCF4EE7D3FC"
+        "OwnerKey" = "8:_FBBC1208227794579EBDC9D41A71AE8C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_7E2B076DB0EFB4EF89B38BCF4EE7D3FC"
         "OwnerKey" = "8:_697184D548744069A4432F74172EE293"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_F78C13B8F065978E9A7ED9BCB3BD9B67"
-        "OwnerKey" = "8:_9B5C14782320D45D7C5E6DC9CA0D8F4F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_F78C13B8F065978E9A7ED9BCB3BD9B67"
-        "OwnerKey" = "8:_697184D548744069A4432F74172EE293"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_FE5815446F7082FFBE9854BF0F1ECB0F"
+        "MsmKey" = "8:_FBBC1208227794579EBDC9D41A71AE8C"
         "OwnerKey" = "8:_697184D548744069A4432F74172EE293"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_FE5815446F7082FFBE9854BF0F1ECB0F"
-        "OwnerKey" = "8:_9B5C14782320D45D7C5E6DC9CA0D8F4F"
+        "OwnerKey" = "8:_697184D548744069A4432F74172EE293"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_FE5815446F7082FFBE9854BF0F1ECB0F"
+        "OwnerKey" = "8:_FBBC1208227794579EBDC9D41A71AE8C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -64,13 +64,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_9B5C14782320D45D7C5E6DC9CA0D8F4F"
+        "OwnerKey" = "8:_FBBC1208227794579EBDC9D41A71AE8C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_F78C13B8F065978E9A7ED9BCB3BD9B67"
+        "OwnerKey" = "8:_7E2B076DB0EFB4EF89B38BCF4EE7D3FC"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -172,7 +172,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "FrameworkVersion" = "8:.NETFramework,Version=v4.6.1"
+                "FrameworkVersion" = "8:.NETFramework,Version=v4.7.1"
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=671728"
                 }
@@ -211,20 +211,15 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_9B5C14782320D45D7C5E6DC9CA0D8F4F"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_7E2B076DB0EFB4EF89B38BCF4EE7D3FC"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Middleware, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_9B5C14782320D45D7C5E6DC9CA0D8F4F"
-                    {
-                    "Name" = "8:Middleware.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
-            "SourcePath" = "8:Middleware.dll"
+            "SourcePath" = "8:Newtonsoft.Json.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_110DC729B7D3428984A5201C0F97288F"
@@ -242,20 +237,15 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F78C13B8F065978E9A7ED9BCB3BD9B67"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_FBBC1208227794579EBDC9D41A71AE8C"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Middleware, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_F78C13B8F065978E9A7ED9BCB3BD9B67"
-                    {
-                    "Name" = "8:Newtonsoft.Json.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
-            "SourcePath" = "8:Newtonsoft.Json.dll"
+            "SourcePath" = "8:Middleware.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_110DC729B7D3428984A5201C0F97288F"
@@ -360,15 +350,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SvedPrint"
-        "ProductCode" = "8:{98BB46A6-9037-454B-8FA1-0AFCAA59ECF8}"
-        "PackageCode" = "8:{E728262D-24F1-49F4-8A2C-80F0EB51ACAF}"
+        "ProductCode" = "8:{62C3C12A-E77E-4BB1-9863-7AEB40402DB9}"
+        "PackageCode" = "8:{F9215577-97C9-4844-B0F9-201240DFEDE3}"
         "UpgradeCode" = "8:{05080A69-668D-46CE-81AF-95F27A5885E3}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.1"
+        "ProductVersion" = "8:1.0.2"
         "Manufacturer" = "8:FLD"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -938,7 +928,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_697184D548744069A4432F74172EE293"
             {
-            "SourcePath" = "8:..\\Frontend\\obj\\Debug\\SvedPrint.exe"
+            "SourcePath" = "8:..\\Frontend\\obj\\Release\\SvedPrint.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_110DC729B7D3428984A5201C0F97288F"
