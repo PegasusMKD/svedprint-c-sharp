@@ -320,7 +320,7 @@ namespace Middleware
                 sw.Write(delimiter);
                 sw.Write(klasen._ministerstvo);
                 sw.Write(';');
-
+                Console.WriteLine(u._proektni);
                 List<string> proektni_list = new List<string>();
                 foreach (var x in u._proektni.Split(';'))
                 {
