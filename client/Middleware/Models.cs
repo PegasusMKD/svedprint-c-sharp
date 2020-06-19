@@ -232,7 +232,7 @@ namespace Middleware
 
         public List<MaturskiPredmet> MaturskiPredmeti = new List<MaturskiPredmet>();
 
-        public Ucenik(Dictionary<string, string> valuePairs)
+/*        public Ucenik(Dictionary<string, string> valuePairs)
         {
             _ime = valuePairs[RequestParameters.ime] ?? "";
             _srednoIme = valuePairs[RequestParameters.srednoIme] ?? ""; // "srednoIme"
@@ -289,7 +289,7 @@ namespace Middleware
 
         }
 
-
+*/
         public async Task<string> UpdateUcenikData(Dictionary<string, string> UpdatedData, Dictionary<string, string> OrigData, string token)
         {
             Dictionary<string, string> queryParams = new Dictionary<string, string>(UpdatedData);
@@ -316,21 +316,21 @@ namespace Middleware
                 queryParams["broj"] = OrigData["broj"];
             }
             string rez = await Requests.UpdateDataAsync(queryParams, "ucenik");
-            this._ime = UpdatedData["ime"];
-            this._prezime = UpdatedData["prezime"];
-            this._srednoIme = UpdatedData["srednoIme"];
-            this._smer = UpdatedData["smer"];
-            this._broj = int.Parse(UpdatedData["broj"]);
-            this._tatko = UpdatedData["tatko"];
-            this._majka = UpdatedData["majka"];
-            this._roden = UpdatedData["roden"];
-            this._mesto_na_ragjanje = UpdatedData["mesto_na_ragjanje"];
-            this._gender = UpdatedData["gender"];
-            this._roden = UpdatedData["roden"];
-            this._mesto_na_ragjanje = UpdatedData["mesto_na_ragjanje"];
-            this._mesto_na_zhiveenje = UpdatedData["mesto_na_zhiveenje"];
-            this._pat_polaga = UpdatedData["pat"];
-            this._polozhil = UpdatedData["polozhil"];
+            _ime = UpdatedData["ime"];
+            _prezime = UpdatedData["prezime"];
+            _srednoIme = UpdatedData["srednoIme"];
+            _smer = UpdatedData["smer"];
+            _broj = int.Parse(UpdatedData["broj"]);
+            _tatko = UpdatedData["tatko"];
+            _majka = UpdatedData["majka"];
+            _roden = UpdatedData["roden"];
+            _mesto_na_ragjanje = UpdatedData["mesto_na_ragjanje"];
+            _gender = UpdatedData["gender"];
+            _roden = UpdatedData["roden"];
+            _mesto_na_ragjanje = UpdatedData["mesto_na_ragjanje"];
+            _mesto_na_zhiveenje = UpdatedData["mesto_na_zhiveenje"];
+            _pat_polaga = UpdatedData["pat"];
+            _polozhil = UpdatedData["polozhil"];
             if (UpdatedData.Keys.Contains(RequestParameters.pedagoshki_merki)) _pedagoski_merki = UpdatedData[RequestParameters.pedagoshki_merki];
             if (UpdatedData.Keys.Contains(RequestParameters.povedenie)) _povedenie = UpdatedData[RequestParameters.povedenie];
             if (UpdatedData.Keys.Contains(RequestParameters.izborni)) _izborni = UpdatedData[RequestParameters.izborni];
