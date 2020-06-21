@@ -11,6 +11,8 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup1", "Setup1\Setup1.vdp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox", "Sandbox\Sandbox.csproj", "{3F761432-9AC8-4750-9232-A4F1D9994B3F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiddlewareRevisited", "MiddlewareRevisited\MiddlewareRevisited.csproj", "{2359C3A9-7AAD-4CD4-AA64-DAA4DA16C515}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{3F761432-9AC8-4750-9232-A4F1D9994B3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F761432-9AC8-4750-9232-A4F1D9994B3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F761432-9AC8-4750-9232-A4F1D9994B3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2359C3A9-7AAD-4CD4-AA64-DAA4DA16C515}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2359C3A9-7AAD-4CD4-AA64-DAA4DA16C515}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2359C3A9-7AAD-4CD4-AA64-DAA4DA16C515}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2359C3A9-7AAD-4CD4-AA64-DAA4DA16C515}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
