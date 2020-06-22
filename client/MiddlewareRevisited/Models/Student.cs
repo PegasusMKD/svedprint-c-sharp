@@ -10,7 +10,7 @@ namespace MiddlewareRevisited.Models
         public string firstName;
         public string middleName;
         public string lastName;
-        public int number;
+        public Nullable<int> number; // workaround
         public string fathersName;
         public string mothersName;
         public DateTime dateOfBirth;
