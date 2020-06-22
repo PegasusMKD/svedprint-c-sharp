@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MiddlewareRevisited;
 
 namespace Sandbox
 {
@@ -19,14 +20,8 @@ namespace Sandbox
     {
         static void Main(string[] args)
         {
-            Klasa k = new Klasa()
-            {
-                ime = "Darijan",
-                prezime = "Sekerov",
-                broj = 14235
-            };
-
-            Console.WriteLine(JsonConvert.SerializeObject(k));
+            var user = Login.LoginWithCredentials("7sMViyYn3B", "pfvTi1NzxE");
+            Console.WriteLine(JsonConvert.SerializeObject(user));
         }
     }
 }

@@ -7,7 +7,6 @@
         public string lastName;
         public string id;
         public string username;
-        public string password;
         public string token;
         public bool printAllowed;
         public School school;
