@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MiddlewareRevisited.Models
 {
-    class User
+    public class User
     {
         [JsonProperty]
         public string firstName;
