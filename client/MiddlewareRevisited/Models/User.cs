@@ -9,25 +9,15 @@ namespace MiddlewareRevisited.Models
 {
     public class User
     {
-        [JsonProperty]
         public string firstName;
-        [JsonProperty]
         public string middleName;
-        [JsonProperty]
         public string lastName;
-        [JsonProperty]
         public string id;
-        [JsonProperty]
         public string username;
-        [JsonProperty]
         public string password;
-        [JsonProperty]
         public string token;
-        [JsonProperty]
         public bool printAllowed;
-        [JsonProperty]
         public School school;
-        [JsonProperty]
         public SchoolClass schoolClass;
     }
 }

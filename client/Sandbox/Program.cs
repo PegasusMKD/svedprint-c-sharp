@@ -9,25 +9,24 @@ using System.Threading.Tasks;
 
 namespace Sandbox
 {
+    class Klasa
+    {
+        public string ime;
+        public string prezime;
+        public int broj;
+    }
     class Program
     {
         static void Main(string[] args)
         {
+            Klasa k = new Klasa()
+            {
+                ime = "Darijan",
+                prezime = "Sekerov",
+                broj = 14235
+            };
 
-            string json = "{" +
-                " \"companies\": {" +
-                    "\"abc\": \"Abc Company\", " +
-                    "\"def\": \"Def Company\", " +
-                    "\"ghi\": { " +
-                        "\"abc\": 4, " +
-                        "\"ee\": \"fof\"" +
-                    " }" +
-                "}," +
-                "\"name\" : \"darijan\"" +
-            "}";
-            JObject root = JObject.Parse(json);
-            Console.WriteLine(root.Value<JObject>("companies").Property("abc")); 
+            Console.WriteLine(JsonConvert.SerializeObject(k));
         }
-
     }
 }
