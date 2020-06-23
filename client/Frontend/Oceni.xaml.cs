@@ -1,4 +1,5 @@
 using Middleware;
+using MiddlewareRevisited.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace Frontend
     {
         Frame Main;
         Page loginPage;
+        private SchoolClass currentSchoolClass;
         Klasen UserKlas;
         bool CanWork = false;
 
@@ -26,18 +28,10 @@ namespace Frontend
 
         List<Ucenik> Ucenici;
         static int brPredmeti;
-        public Oceni(Frame m, Page loginpage)
+        public Oceni(SchoolClass schoolClass)
         {
             InitializeComponent();
-            Main = m;
-            loginPage = loginpage;
-
-            UserKlas = Home_Page.KlasenKlasa;
-            result = Home_Page.result;
-            smerovi = Home_Page.smerovi;
-            Ucenici = Home_Page.ucenici;
-
-            smerovi_naslov = UserKlas._p.GetSmerovi();
+            currentSchoolClass = schoolClass;
 
             if (UserKlas._paralelka.Contains("IV")) MaturskiPanel.Visibility = Visibility.Visible;
 
