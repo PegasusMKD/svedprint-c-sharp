@@ -46,7 +46,7 @@ namespace Frontend
             try
             {
                 u = await MiddlewareRevisited.Login.LoginWithCredentialsAsync(Username_txt.Text, Password_txt.Password);
-                Main.Content = new Home_Page(Main, this, null);
+                Main.Content = new Home_Page(Main, u);
             } catch(Exception ex)
             {
                 Debug.WriteLine(ex.StackTrace);
