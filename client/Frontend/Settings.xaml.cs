@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MiddlewareRevisited.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,7 +25,7 @@ namespace Frontend
         Frame Main;
         Page HomePage;
         List<Page> ListPages = new List<Page>();
-        public Settings(Frame m, Page homepage)
+        public Settings(Frame m, Page homepage, ref List<SubjectOrientation> subjectOrientations, ref User currentUser, ref List<Student> students)
         {
             InitializeComponent();
             Main = m;
@@ -33,9 +34,9 @@ namespace Frontend
             Title.Content = Menuitems[0];
 
             LoadMainList();
-            ListPages.Add(new Smerovi_Page());
-            ListPages.Add(new EditUcenici_Page());
-            ListPages.Add(new Prosek_Frame());
+            ListPages.Add(new Smerovi_Page(ref subjectOrientations, ref currentUser, ref students));
+            //ListPages.Add(new EditUcenici_Page());
+            //ListPages.Add(new Prosek_Frame());
             Settings_Frame.Content = ListPages[0];
         }
 

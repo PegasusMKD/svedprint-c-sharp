@@ -601,7 +601,7 @@ namespace Frontend
 
         private void Back_Settings(object sender, MouseButtonEventArgs e)
         {
-            Main.Content = new Settings(Main, homePage);
+            //Main.Content = new Settings(Main, loginPage);
         }
 
 

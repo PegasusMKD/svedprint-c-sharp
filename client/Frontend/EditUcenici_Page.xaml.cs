@@ -24,8 +24,8 @@ namespace Frontend
         public EditUcenici_Page()
         {
             InitializeComponent();
-            UserKlas = Home_Page.KlasenKlasa;
-            Ucenici = Home_Page.ucenici;
+            //UserKlas = Home_Page.KlasenKlasa;
+            //Ucenici = Home_Page.ucenici;
             SortUcenici();
             Refresh();
         }
@@ -311,7 +311,7 @@ namespace Frontend
             var ordered = Ucenici.OrderBy(x => x._broj);
 
             Ucenici = ordered.ToList();
-            Home_Page.ucenici = Ucenici;
+            //Home_Page.ucenici = Ucenici;
             //updateBrojDn
             Refresh();
         }

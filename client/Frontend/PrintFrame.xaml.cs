@@ -47,15 +47,15 @@ namespace Frontend
         private void LoadListView()
         {
             // ne treba da gi dava opciite za diplomi za tie sto ne se cetvrta
-            int n = Menuitems.Count();
-            if(Home_Page.KlasenKlasa._paralelka.Split('-')[0] != "IV")
-            {
-                n = Menuitems.Count(x => !x.ToLower().Contains("диплома"));
-            }
-            for (int i = 0; i < n; i++)
-            {
-                Menu.Items.Add(MenuDP(Menuitems[i], i));
-            }
+            //int n = Menuitems.Count();
+            //if(Home_Page.KlasenKlasa._paralelka.Split('-')[0] != "IV")
+            //{
+            //    n = Menuitems.Count(x => !x.ToLower().Contains("диплома"));
+            //}
+            //for (int i = 0; i < n; i++)
+            //{
+            //    Menu.Items.Add(MenuDP(Menuitems[i], i));
+            //}
         }
 
 
@@ -123,57 +123,57 @@ namespace Frontend
 
         private void Btn_edinecnoprint_Clicked(object sender, RoutedEventArgs e)
         {
-            int offsetx, offsety;
-            offsetx = int.Parse(X_offset.Text);
-            offsety = int.Parse(Y_offset.Text);
-            List<int> toPrint = uceniciToPrint.Text.Split(',').ToList().ConvertAll(x => int.Parse(x));
-            // fix dodeka broevite vo dnevnik se isti
-            List<Ucenik> uceniks = Home_Page.ucenici.Where(x => toPrint.Contains(Home_Page.ucenici.IndexOf(x) + 1)).ToList();
-            // posle fix za razlicni broevi
-            //List<Ucenik> uceniks = Home_Page.ucenici.Where(x => toPrint.Contains(x._broj)).ToList();
+            //int offsetx, offsety;
+            //offsetx = int.Parse(X_offset.Text);
+            //offsety = int.Parse(Y_offset.Text);
+            //List<int> toPrint = uceniciToPrint.Text.Split(',').ToList().ConvertAll(x => int.Parse(x));
+            //// fix dodeka broevite vo dnevnik se isti
+            //List<Ucenik> uceniks = Home_Page.ucenici.Where(x => toPrint.Contains(Home_Page.ucenici.IndexOf(x) + 1)).ToList();
+            //// posle fix za razlicni broevi
+            ////List<Ucenik> uceniks = Home_Page.ucenici.Where(x => toPrint.Contains(x._broj)).ToList();
 
-            //Middleware.Print.PrintSveditelstva(uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex);
-            switch (Menu.SelectedIndex)
-            {
-                case 0:
-                    Print.PrintSveditelstva(Home_Page.ucenici, uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
-                    break;
-                case 1:
-                    Print.PrintGlavnaKniga(Home_Page.ucenici, uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
-                    break;
-                // nema case 2 zosto e samo za cel klas
-                case 3:
-                    Print.PrintGkDiploma(Home_Page.ucenici, uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
-                    break;
-                case 4:
-                    Print.PrintDiploma(Home_Page.ucenici, uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
-                    break;
-            }
+            ////Middleware.Print.PrintSveditelstva(uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex);
+            //switch (Menu.SelectedIndex)
+            //{
+            //    case 0:
+            //        Print.PrintSveditelstva(Home_Page.ucenici, uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+            //        break;
+            //    case 1:
+            //        Print.PrintGlavnaKniga(Home_Page.ucenici, uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+            //        break;
+            //    // nema case 2 zosto e samo za cel klas
+            //    case 3:
+            //        Print.PrintGkDiploma(Home_Page.ucenici, uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+            //        break;
+            //    case 4:
+            //        Print.PrintDiploma(Home_Page.ucenici, uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+            //        break;
+            //}
         }
         
         private void Btn_celprint_Clicked(object sender, RoutedEventArgs e)
         {
-            int offsetx, offsety;
-            offsetx = int.Parse(X_offset.Text);
-            offsety = int.Parse(Y_offset.Text);
-            switch (Menu.SelectedIndex)
-            {
-                case 0:
-                    Print.PrintSveditelstva(Home_Page.ucenici, /*uceniks*/ Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
-                    break;
-                case 1:
-                    Print.PrintGlavnaKniga(Home_Page.ucenici, Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
-                    break;
-                case 2:
-                    Print.PrintPrednaStranaGK(Home_Page.ucenici, Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
-                    break;
-                case 3:
-                    Print.PrintGkDiploma(Home_Page.ucenici, Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
-                    break;
-                case 4:
-                    Print.PrintDiploma(Home_Page.ucenici, Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
-                    break;
-            }
+            //int offsetx, offsety;
+            //offsetx = int.Parse(X_offset.Text);
+            //offsety = int.Parse(Y_offset.Text);
+            //switch (Menu.SelectedIndex)
+            //{
+            //    case 0:
+            //        Print.PrintSveditelstva(Home_Page.ucenici, /*uceniks*/ Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+            //        break;
+            //    case 1:
+            //        Print.PrintGlavnaKniga(Home_Page.ucenici, Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+            //        break;
+            //    case 2:
+            //        Print.PrintPrednaStranaGK(Home_Page.ucenici, Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+            //        break;
+            //    case 3:
+            //        Print.PrintGkDiploma(Home_Page.ucenici, Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+            //        break;
+            //    case 4:
+            //        Print.PrintDiploma(Home_Page.ucenici, Home_Page.ucenici, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
+            //        break;
+            //}
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using Middleware;
+using MiddlewareRevisited;
+using MiddlewareRevisited.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,23 +11,23 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using static Frontend.SettingsDesign;
 
+
 namespace Frontend
 {
     public partial class Smerovi_Page : Page
     {
 
-        Klasen UserKlas;
-        Dictionary<string, Smer> smerovi;
-        List<Ucenik> Ucenici;
+        List<SubjectOrientation> subjectOrientations;
+        User currentUser;
+        List<Student> students;
 
-
-        public Smerovi_Page()
+        public Smerovi_Page(ref List<SubjectOrientation> subjectOrientations, ref User currentUser, ref List<Student> students)
         {
             InitializeComponent();
 
-            UserKlas = Home_Page.KlasenKlasa;
-            smerovi = Home_Page.smerovi;
-            Ucenici = Home_Page.ucenici;
+            this.subjectOrientations = subjectOrientations;
+            this.currentUser = currentUser;
+            this.students = students;
 
             GetData();
         }
@@ -40,9 +42,9 @@ namespace Frontend
             st2.Children.Clear();
             int SmerCtr = 0;
 
-            foreach (string x in UserKlas._p._smerovi.Keys)
+            foreach (SubjectOrientation subjectOrientation in subjectOrientations)
             {
-                List<String> Predmeti = UserKlas._p._smerovi[x]._predmeti;
+                List<String> Predmeti = subjectOrientation.subjects;
 
                 StackPanel st = new StackPanel();
                 int PredmetCtr = 0;
@@ -59,12 +61,12 @@ namespace Frontend
 
                 if (SmerCtr % 2 == 0)
                 {
-                    st1.Children.Add(ContentBorder(x));
+                    st1.Children.Add(ContentBorder(subjectOrientation.shortName));
                     st1.Children.Add(st);
                 }
                 else
                 {
-                    st2.Children.Add(ContentBorder(x));
+                    st2.Children.Add(ContentBorder(subjectOrientation.shortName));
                     st2.Children.Add(st);
                 }
                 st.MouseLeave += St_MouseLeave;
@@ -112,8 +114,7 @@ namespace Frontend
             TextBox tx = (TextBox)sender;
             int SmerCtr = int.Parse(tx.Name.Substring(1).Split('s')[0]);
             int PredmetCtr = int.Parse(tx.Name.Substring(1).Split('s')[1]);
-            UserKlas._p._smerovi[UserKlas._p._smerovi.Keys.ElementAt(SmerCtr)].UpdatePredmetAsync(PredmetCtr, tx.Text, UserKlas._token);
-            UpdateVar();
+            //subjectOrientations[subjectOrientations.Select(orientation => orientation.shortName).ElementAt(SmerCtr)].UpdatePredmetAsync(PredmetCtr, tx.Text, UserKlas._token);
         }
 
         private Border ContentBorder(string LabelContent)
@@ -164,55 +165,65 @@ namespace Frontend
             return bd;
         }
 
-        private void NewSmerSaveClicked(object sender, MouseButtonEventArgs e)
+        private async void NewSmerSaveClicked(object sender, MouseButtonEventArgs e)
         {
-            // TODO:
-            // validator za kratenica na smer, max 7 karakteri
-            UserKlas._p.AddSmer(new Smer(DodajPredmeti[DodajPredmeti.Count() - 2].Text, DodajPredmeti[DodajPredmeti.Count - 1].Text), UserKlas._token);
-            UserKlas.SetSmeroviPredmeti(UserKlas._token);
-            UpdateVar();
+            SubjectOrientation subjectOrientation = new SubjectOrientation();
+            subjectOrientation.shortName = DodajPredmeti[DodajPredmeti.Count() - 2].Text;
+            subjectOrientation.fullName = DodajPredmeti[DodajPredmeti.Count - 1].Text;
+
+            subjectOrientation = await MiddlewareRevisited.Controllers.SubjectOrientation.addSubjectOrientation(subjectOrientation, currentUser);
+
+            currentUser.schoolClass.subjectOrientations.Add(subjectOrientation);
+
             GetData();
         }
 
-        private void NewPredmetImgClicked(object sender, MouseButtonEventArgs e, int i, int j)
+        private async void NewPredmetImgClicked(object sender, MouseButtonEventArgs e, int i, int j)
         {
-            string toBeChanged = UserKlas._p._smerovi.Keys.ElementAt(i);
-            int ctr = 0;
-            foreach (Ucenik Ucenik in Ucenici)
-            {
-                if (Ucenik._smer == toBeChanged)
-                {
-                    Ucenik._oceni.Add(1);
-                    Ucenik.UpdateUcenikOceniAsync(UserKlas._token);
-                }
-                ctr++;
-            }
-            UserKlas._p._smerovi[toBeChanged].AddPredmetAsync(DodajPredmeti[j].Text, UserKlas._token);
-            UpdateVar();
+            //string toBeChanged = UserKlas._p._smerovi.Keys.ElementAt(i);
+            //int ctr = 0;
+            //foreach (Ucenik Ucenik in Ucenici)
+            //{
+            //    if (Ucenik._smer == toBeChanged)
+            //    {
+            //        Ucenik._oceni.Add(1);
+            //        Ucenik.UpdateUcenikOceniAsync(UserKlas._token);
+            //    }
+            //    ctr++;
+            //}
+            //UserKlas._p._smerovi[toBeChanged].AddPredmetAsync(DodajPredmeti[j].Text, UserKlas._token);
+
+            SubjectOrientation subjectOrientation = subjectOrientations[i];
+            subjectOrientation.subjects.Add(DodajPredmeti[j].Text);
+
+            await MiddlewareRevisited.Controllers.SubjectOrientation.updateSubjectOrientation(subjectOrientation, currentUser);
             GetData();
         }
 
-        private void RemovePredmetImgClicked(object sender, MouseButtonEventArgs e, int i, int j)
+        private async void RemovePredmetImgClicked(object sender, MouseButtonEventArgs e, int i, int j)
         {
-            if (ContentTextChanged)
-            {
-                return;
-            }
-            string toBeChanged = UserKlas._p._smerovi.Keys.ElementAt(i);
-            if (i == 0) i = 1;
+                        //if (ContentTextChanged)
+                        //{
+                        //    return;
+                        //}
+                        //string toBeChanged = UserKlas._p._smerovi.Keys.ElementAt(i);
+                        //if (i == 0) i = 1;
 
-            int ctr = 0;
-            foreach (Ucenik Ucenik in Ucenici)
-            {
-                if (Ucenik._smer == toBeChanged)
-                {
-                    if (Ucenik._oceni.Count > j) Ucenik._oceni.RemoveAt(j);
-                    Ucenik.UpdateUcenikOceniAsync(UserKlas._token);
-                }
-                ctr++;
-            }
-            UserKlas._p._smerovi[toBeChanged].RemovePredmetAsync(j, UserKlas._token);
-            UpdateVar();
+                        //int ctr = 0;
+                        //foreach (Ucenik Ucenik in Ucenici)
+                        //{
+                        //    if (Ucenik._smer == toBeChanged)
+                        //    {
+                        //        if (Ucenik._oceni.Count > j) Ucenik._oceni.RemoveAt(j);
+                        //        Ucenik.UpdateUcenikOceniAsync(UserKlas._token);
+                        //    }
+                        //    ctr++;
+                        //}
+                        //UserKlas._p._smerovi[toBeChanged].RemovePredmetAsync(j, UserKlas._token);
+            SubjectOrientation subjectOrientation = subjectOrientations[i];
+            subjectOrientation.subjects.RemoveAt(j);
+
+            await MiddlewareRevisited.Controllers.SubjectOrientation.updateSubjectOrientation(subjectOrientation, currentUser);
             GetData();
         }
 
@@ -249,41 +260,46 @@ namespace Frontend
             return img;
         }
 
-        private void Img_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private async void Img_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (UserKlas._p._smerovi.Count <= 4) //  && new List<string>() { "I", "II" }.Contains(UserKlas._paralelka.Split('-')[0])) ||
-               // (UserKlas._p._smerovi.Count <= 3 && new List<string>() { "III", "IV" }.Contains(UserKlas._paralelka.Split('-')[0]))
-            {
-                MessageBox.Show("неможе сите смерови да се избришат");
-                return;
-            }
-            Image img = (Image)sender;
-            String smer = img.Tag.ToString();
-            Smer NovSmer;
-            if (UserKlas._p._smerovi.Keys.ElementAt(0) != smer)
-            {
-                NovSmer = UserKlas._p._smerovi.Values.ElementAt(0);
-            }
-            else NovSmer = UserKlas._p._smerovi.Values.ElementAt(1);
-            int ctr = 0;
-            foreach (Ucenik ucenik in Ucenici)
-            {
-                if (ucenik._smer == smer)
-                {
-                    ucenik.ChangeSmerAsync(NovSmer, UserKlas._token);
-                }
-                ctr++;
-            }
-            UserKlas._p._smerovi[smer].RemoveSmer(UserKlas._token);
-            UserKlas._p._smerovi.Remove(smer);
-            UpdateVar();
-            GetData();
-        }
+            /*
+             * 
+             * Basically delete
+             * 
+             * TODO: Add remove handling for students in backend
+             * */
 
-        private void UpdateVar()
-        {
-            Home_Page.KlasenKlasa = UserKlas;
-            Home_Page.ucenici = Ucenici;
+            //if (UserKlas._p._smerovi.Count <= 4) //  && new List<string>() { "I", "II" }.Contains(UserKlas._paralelka.Split('-')[0])) ||
+            //   // (UserKlas._p._smerovi.Count <= 3 && new List<string>() { "III", "IV" }.Contains(UserKlas._paralelka.Split('-')[0]))
+            //{
+            //    MessageBox.Show("неможе сите смерови да се избришат");
+            //    return;
+            //}
+            //Image img = (Image)sender;
+            //String smer = img.Tag.ToString();
+            //Smer NovSmer;
+            //if (UserKlas._p._smerovi.Keys.ElementAt(0) != smer)
+            //{
+            //    NovSmer = UserKlas._p._smerovi.Values.ElementAt(0);
+            //}
+            //else NovSmer = UserKlas._p._smerovi.Values.ElementAt(1);
+            //int ctr = 0;
+            //foreach (Ucenik ucenik in Ucenici)
+            //{
+            //    if (ucenik._smer == smer)
+            //    {
+            //        ucenik.ChangeSmerAsync(NovSmer, UserKlas._token);
+            //    }
+            //    ctr++;
+            //}
+            //UserKlas._p._smerovi[smer].RemoveSmer(UserKlas._token);
+            //UserKlas._p._smerovi.Remove(smer);
+            Image img = (Image)sender;
+            string shortName = img.Tag.ToString();
+            SubjectOrientation subjectOrientation = (from orientation in subjectOrientations where orientation.shortName.Equals(shortName) select orientation).FirstOrDefault();
+            await MiddlewareRevisited.Controllers.SubjectOrientation.removeSubjectOrientation(subjectOrientation, currentUser);
+            subjectOrientations.RemoveAll(orientation => orientation.id.Equals(subjectOrientation.id));
+            GetData();
         }
 
     }

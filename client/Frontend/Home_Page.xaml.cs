@@ -17,54 +17,34 @@ namespace Frontend
     {
 
         Frame Main;
-        public User currentUser;
-        public static Klasen KlasenKlasa;
-        public static List<Ucenik> ucenici;
-        private Oceni gradesPage;
-        public static List<Dictionary<string, string>> result;
-        public static Dictionary<string, Smer> smerovi;
-        public string CurrentUserData { get; set; }
-        public SchoolClass schoolClass;
+        private User currentUser;
+        private List<Student> students;
+        private List<SubjectOrientation> subjectOrientations;
+        private SchoolClass schoolClass;
+        public string currentUserData { get; set; }
+
 
         public Home_Page(Frame m, User user)
         {
             InitializeComponent();
             Main = m;
             currentUser = user;
+            schoolClass = currentUser.schoolClass;
+            subjectOrientations = schoolClass.subjectOrientations;
+            students = schoolClass.students;
 
-            // userData = $"{Klasen._ime} {(string.IsNullOrWhiteSpace(Klasen._srednoIme) ? "" : $"{Klasen._srednoIme}-")}{Klasen._prezime}, {Klasen._paralelka}";
-
-            // stringot dole desno
-            CurrentUserData = $"{currentUser.firstName} {(string.IsNullOrWhiteSpace(currentUser.middleName) ? "" : $"{currentUser.middleName}-")}{currentUser.lastName}, {currentUser.schoolClass.name}";
+            currentUserData = $"{currentUser.firstName} {(string.IsNullOrWhiteSpace(currentUser.middleName) ? "" : $"{currentUser.middleName}-")}{currentUser.lastName}, {currentUser.schoolClass.name}";
 
             DataContext = this;
 
             SettingsImg.MouseLeftButtonDown += new MouseButtonEventHandler(SettingsImg_Clicked);
 
-            /*
-                        result = Requests.GetData(new Dictionary<string, string>() {
-                            {RequestParameters.token, Klasen._token }
-                        }, RequestScopes.GetParalelka);
 
-            */            //ucenici = result.ConvertAll(x => new Ucenik(x));
-            //KlasenKlasa.SetSmeroviPredmeti(KlasenKlasa._token);
-/*            if (KlasenKlasa._paralelka.Split('-')[0] == "IV") {
-                foreach (Ucenik ucenik in ucenici)
-                {
-                    if (ucenik._maturska == "")
-                    {
-                        Debug.WriteLine($"{ucenik._ime} {ucenik._prezime}");
-                        continue;
-                    }
-                    ucenik.LoadMaturski(KlasenKlasa);
-                }
-            }
-
-*/        }
+        }
 
         private void SettingsImg_Clicked(object sender, MouseButtonEventArgs e)
         {
-            Main.Content = new Settings(Main, this);
+            Main.Content = new Settings(Main, this, ref subjectOrientations, ref currentUser, ref students);
         }
 
         private void MainImgClicked(object sender, MouseButtonEventArgs e)
