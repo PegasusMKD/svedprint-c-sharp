@@ -20,6 +20,7 @@ namespace Frontend
         public User currentUser;
         public static Klasen KlasenKlasa;
         public static List<Ucenik> ucenici;
+        private Oceni gradesPage;
         public static List<Dictionary<string, string>> result;
         public static Dictionary<string, Smer> smerovi;
         public string CurrentUserData { get; set; }
@@ -78,7 +79,8 @@ namespace Frontend
                 //Main.Content = new Oceni(Main, this);
                 //Main.Content = new Oceni(schoolClass);
                 //Main.Navigate(new Oceni(schoolClass));
-                NavigationService.Navigate(new Oceni(schoolClass));
+                if (gradesPage == null) gradesPage = new Oceni(schoolClass);
+                NavigationService.Navigate(gradesPage);
             }
         }
 

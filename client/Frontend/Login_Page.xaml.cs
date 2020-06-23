@@ -20,6 +20,7 @@ namespace Frontend
         public Login_Page(Frame m)
         {
             InitializeComponent();
+            
             Main = m;
             AlertTimer = new System.Windows.Threading.DispatcherTimer();
             AlertTimer.Tick += new EventHandler(AlertTimer_Tick);

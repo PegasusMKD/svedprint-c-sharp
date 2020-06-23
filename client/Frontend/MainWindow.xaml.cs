@@ -25,7 +25,8 @@ namespace Frontend
         public MainWindow()
         {
             InitializeComponent();
-            Main.Content = new Login_Page(Main);
+            Main.Navigate(new Login_Page(Main));
+            //Main.Content = new Login_Page(Main);
         }
 
     }
