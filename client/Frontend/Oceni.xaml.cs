@@ -17,7 +17,7 @@ namespace Frontend
     public partial class Oceni : Page
     {
         Frame Main;
-        Page loginPage;
+        Page homePage;
         private SchoolClass currentSchoolClass;
         Klasen UserKlas;
         bool CanWork = false;
@@ -33,9 +33,9 @@ namespace Frontend
             InitializeComponent();
             currentSchoolClass = schoolClass;
 
-            if (UserKlas._paralelka.Contains("IV")) MaturskiPanel.Visibility = Visibility.Visible;
-
             LoadListView();
+
+            return;
 
             LoadOcenkiView(0);
             Load_stranski_jazici(0);
@@ -150,11 +150,11 @@ namespace Frontend
         {
 
             int i = 0;
-            foreach (var x in Ucenici)
+            foreach (var x in currentSchoolClass.students)
             {
-                Menu.Items.Add(MenuDP(x._ime, x._prezime, i++));
+                Menu.Items.Add(MenuDP(x.firstName, x.lastName, i++));
             }
-            combobox_smer.ItemsSource = smerovi_naslov.Keys;
+            combobox_smer.ItemsSource = currentSchoolClass.subjectOrientations.Select(x => x.fullName);
 
         }
 
@@ -579,17 +579,18 @@ namespace Frontend
 
         private void Back_Home(object sender, MouseButtonEventArgs e)
         {
-            Main.Content = loginPage;
+            Main.GoBack();
+            //Main.Content = homePage;
         }
 
         private void Back_Print(object sender, MouseButtonEventArgs e)
         {
-            Main.Content = new PrintFrame(Main, loginPage);
+            Main.Content = new PrintFrame(Main, homePage);
         }
 
         private void Back_Settings(object sender, MouseButtonEventArgs e)
         {
-            Main.Content = new Settings(Main, loginPage);
+            Main.Content = new Settings(Main, homePage);
         }
 
 

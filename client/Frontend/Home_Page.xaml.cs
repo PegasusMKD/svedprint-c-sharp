@@ -22,7 +22,7 @@ namespace Frontend
         public static List<Ucenik> ucenici;
         public static List<Dictionary<string, string>> result;
         public static Dictionary<string, Smer> smerovi;
-        public string currentUserData { get; set; }
+        public string CurrentUserData { get; set; }
         public SchoolClass schoolClass;
 
         public Home_Page(Frame m, User user)
@@ -34,7 +34,7 @@ namespace Frontend
             // userData = $"{Klasen._ime} {(string.IsNullOrWhiteSpace(Klasen._srednoIme) ? "" : $"{Klasen._srednoIme}-")}{Klasen._prezime}, {Klasen._paralelka}";
 
             // stringot dole desno
-            currentUserData = $"{currentUser.firstName} {(string.IsNullOrWhiteSpace(currentUser.middleName) ? "" : $"{currentUser.middleName}-")}{currentUser.lastName}, {currentUser.schoolClass.name}";
+            CurrentUserData = $"{currentUser.firstName} {(string.IsNullOrWhiteSpace(currentUser.middleName) ? "" : $"{currentUser.middleName}-")}{currentUser.lastName}, {currentUser.schoolClass.name}";
 
             DataContext = this;
 
