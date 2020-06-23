@@ -21,8 +21,8 @@ namespace Frontend
         public Prosek_Frame()
         {
             InitializeComponent();
-            UserKlas = Home_Page.KlasenKlasa;
-            Ucenici = Home_Page.ucenici;
+            //UserKlas = Home_Page.KlasenKlasa;
+            //Ucenici = Home_Page.ucenici;
 
             GetData(PredmetiProsekCalc());
         }
