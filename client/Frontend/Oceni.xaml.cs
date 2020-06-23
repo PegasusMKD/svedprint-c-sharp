@@ -36,11 +36,13 @@ namespace Frontend
             LoadListView();
             home_img.MouseLeftButtonDown += new MouseButtonEventHandler(Back_Home);
 
+            LoadOcenkiView(0);
+            FillOcenki(0);
+            CanWork = true;
+
             return;
 
-            LoadOcenkiView(0);
             Load_stranski_jazici(0);
-            FillOcenki(0);
 
 
             print_img.MouseLeftButtonDown += new MouseButtonEventHandler(Back_Print);
@@ -187,16 +189,17 @@ namespace Frontend
         private void LoadOcenkiView(int BrojDn)
         {
             OcenkiGrid.Children.Clear();
-            if (Ucenici[BrojDn]._smer == "")
+            if(currentSchoolClass.students[BrojDn].subjectOrientation == null)
+            //if (Ucenici[BrojDn]._smer == "")
             {
                 MessageBox.Show("ученикот нема одберено смер");
                 CanWork = true;
                 return;
             }
-
-            List<string> predmeti = UserKlas._p._smerovi[Ucenici[BrojDn]._smer]._predmeti;
+            List<string> subjects = currentSchoolClass.students[BrojDn].subjectOrientation.subjects;
+            //List<string> predmeti = UserKlas._p._smerovi[Ucenici[BrojDn]._smer]._predmeti;
             //combobox_smer.SelectedIndex = 0;
-            int Size = predmeti.Count;
+            int Size = subjects.Count;
             brPredmeti = Size;
             int ctr = 0;
             int ImgHeight = 80;
@@ -206,6 +209,7 @@ namespace Frontend
             Ocenkibox.Clear();
             Predmetibox.Clear();
 
+            // TODO: rewrite needed
             for (int i = 0; ctr < Size; i++)
             {
 
@@ -311,25 +315,30 @@ namespace Frontend
         {
             CanWork = false;
 
-            Ucenik SelectedUcenik = Ucenici[brojDn];
+            //Ucenik SelectedUcenik = Ucenici[brojDn];
+            Student selStudent = currentSchoolClass.students[brojDn];
 
             //fill Menu
-            Ucenik_Name.Content = SelectedUcenik._ime + " " + SelectedUcenik._prezime;
-            Prosek_out.Content = SelectedUcenik.prosek();
+            //Ucenik_Name.Content = SelectedUcenik._ime + " " + SelectedUcenik._prezime;
+            Ucenik_Name.Content = selStudent.firstName + " " + selStudent.lastName;
+            //Prosek_out.Content = SelectedUcenik.prosek();
+            Prosek_out.Content = selStudent.grades.Average().ToString("F2");
             BrojDn_label.Content = (brojDn + 1).ToString();
-            combobox_smer.SelectedValue = smerovi_naslov[SelectedUcenik._smer]._smer;
+            //combobox_smer.SelectedValue = smerovi_naslov[SelectedUcenik._smer]._smer;
+            combobox_smer.SelectedValue = selStudent.subjectOrientation.fullName;
 
             //fill OcenkiView
-            List<string> predmeti = UserKlas._p._smerovi[Ucenici[brojDn]._smer].GetCeliPredmeti(Ucenici[brojDn]._jazik, Ucenici[brojDn]._izborni, UserKlas._p._smerovi);
+            //List<string> predmeti = UserKlas._p._smerovi[Ucenici[brojDn]._smer].GetCeliPredmeti(Ucenici[brojDn]._jazik, Ucenici[brojDn]._izborni, UserKlas._p._smerovi);
+            List<string> subjects = selStudent.subjectOrientation.subjects;
             int ctr = 0;
-            for (int i = 0; i < predmeti.Count; i++)
+            for (int i = 0; i < subjects.Count; i++)
             {
-                if (i < SelectedUcenik._oceni.Count) Ocenkibox[i].Text = SelectedUcenik._oceni[i].ToString();//5 5 5 5 5 5 5 5
+                if (i < selStudent.grades.Count) Ocenkibox[i].Text = selStudent.grades[i].ToString();//5 5 5 5 5 5 5 5
                 else Ocenkibox[i].Text = "0";
-                if (!predmeti[i].Contains("СЈ")) Predmetibox[i].Content = predmeti[i];
+                if (!subjects[i].Contains("СЈ")) Predmetibox[i].Content = subjects[i];
                 else
                 {
-                    Predmetibox[i].Content = UserKlas._p._smerovi["Странски Јазици"]._predmeti[int.Parse(SelectedUcenik._jazik.Split(';')[ctr])];
+                    // Predmetibox[i].Content = UserKlas._p._smerovi["Странски Јазици"]._predmeti[int.Parse(SelectedUcenik._jazik.Split(';')[ctr])];
                     ctr++;
                 }
             }
@@ -341,12 +350,12 @@ namespace Frontend
             }
 
 
-            OpravdaniTxt.Text = SelectedUcenik._opravdani.ToString();
-            NeopravdaniTxt.Text = SelectedUcenik._neopravdani.ToString();
+            OpravdaniTxt.Text = selStudent.justifiedAbsences.ToString();
+            NeopravdaniTxt.Text = selStudent.unjustifiedAbsences.ToString();
 
-            LoadProektnaAktivnost();
-            LoadExtraPolinja(brojDn);
-            LoadMaturskiPanel();
+            //LoadProektnaAktivnost();
+            //LoadExtraPolinja(brojDn);
+            //LoadMaturskiPanel();
 
             CanWork = true;
         }
