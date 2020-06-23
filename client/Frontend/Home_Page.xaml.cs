@@ -21,6 +21,8 @@ namespace Frontend
         private List<Student> students;
         private List<SubjectOrientation> subjectOrientations;
         private SchoolClass schoolClass;
+        private Oceni gradesPage;
+
         public string currentUserData { get; set; }
 
 
