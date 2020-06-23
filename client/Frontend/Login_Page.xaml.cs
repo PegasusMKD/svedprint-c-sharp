@@ -41,16 +41,16 @@ namespace Frontend
         private async Task login()
         {
             // Klasen temp = await Login.LoginWithCredAsync(Username_txt.Text, Password_txt.Password);
-            var dt = DateTime.Now;
+            var dt = DateTime.Now.Millisecond;
             User u;
             try
             {
                 u = await MiddlewareRevisited.Login.LoginWithCredentialsAsync(Username_txt.Text, Password_txt.Password);
-                Main.Content = new Home_Page(Main, this, null);
+                ShowAlertBox((DateTime.Now.Millisecond - dt).ToString());
+                //Main.Content = new Home_Page(Main, this, null);
             } catch(Exception ex)
             {
                 Debug.WriteLine(ex.StackTrace);
-                ShowAlertBox((DateTime.Now - dt).ToString());
             }
             /*
             

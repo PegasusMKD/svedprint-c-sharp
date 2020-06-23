@@ -24,10 +24,11 @@ namespace Sandbox
             var user = Login.LoginWithCredentialsAsync("7sMViyYn3B", "pfvTi1NzxE");
             StreamWriter writer = new StreamWriter("output.txt");
             var dt = DateTime.Now;
-            writer.WriteLine(dt.ToLongTimeString() + dt.Millisecond);
-            writer.WriteLine(JsonConvert.SerializeObject(await user));
+            var startTime = dt.Millisecond;
+            writer.WriteLine(JsonConvert.SerializeObject(user));
             dt = DateTime.Now;
-            writer.WriteLine(dt.ToLongTimeString() + dt.Millisecond);
+            var endTime = dt.Millisecond;
+            writer.WriteLine("Time:" + (endTime - startTime) + " ms");
             writer.Close();
         }
     }
