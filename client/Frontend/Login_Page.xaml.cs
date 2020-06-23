@@ -45,7 +45,7 @@ namespace Frontend
             User u;
             try
             {
-                u = await MiddlewareRevisited.Login.LoginWithCredentialsAsync(Username_txt.Text, Password_txt.Password);
+                u = await MiddlewareRevisited.Login.httpClientLogin(Username_txt.Text, Password_txt.Password);
                 ShowAlertBox((DateTime.Now.Millisecond - dt).ToString());
                 //Main.Content = new Home_Page(Main, this, null);
             } catch(Exception ex)
