@@ -391,6 +391,8 @@ namespace Middleware
         }
         public bool CheckPass()
         {
+            return true;
+            /*
             bool checker = true;
             int n = _oceni.Count;
             if (string.IsNullOrWhiteSpace(_polagal)) return true;
@@ -407,6 +409,7 @@ namespace Middleware
                 }
             }
             return checker;
+            */
         }
 
         public string ProektniToString(List<string> tx)

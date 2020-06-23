@@ -6,6 +6,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using MiddlewareRevisited.Models;
+using MiddlewareRevisited;
 
 namespace Frontend
 {
@@ -28,7 +30,7 @@ namespace Frontend
 
         private void InjectServerLabel()
         {
-            ServerLabel.Content = $"Server branch: {Login.ServerBranch}";
+            ServerLabel.Content = $"Server branch: {Middleware.Login.ServerBranch}";
         }
 
         private async void Login_Btn_Click(object sender, RoutedEventArgs e)
@@ -38,8 +40,20 @@ namespace Frontend
 
         private async Task login()
         {
-            Klasen temp = await Login.LoginWithCredAsync(Username_txt.Text, Password_txt.Password);
-
+            // Klasen temp = await Login.LoginWithCredAsync(Username_txt.Text, Password_txt.Password);
+            var dt = DateTime.Now;
+            User u;
+            try
+            {
+                u = await MiddlewareRevisited.Login.LoginWithCredentialsAsync(Username_txt.Text, Password_txt.Password);
+                Main.Content = new Home_Page(Main, this, null);
+            } catch(Exception ex)
+            {
+                Debug.WriteLine(ex.StackTrace);
+                ShowAlertBox((DateTime.Now - dt).ToString());
+            }
+            /*
+            
             if (temp._ime != null && temp._ime != "002" && temp._ime != string.Empty)
             {
                 ShowAlertBox("Успешно логирање");
@@ -50,6 +64,7 @@ namespace Frontend
                 ShowAlertBox("Неуспешно логирање");
             }
 
+            */
         }
 
         private void ShowAlertBox(string Alert)

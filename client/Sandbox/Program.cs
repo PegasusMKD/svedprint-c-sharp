@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MiddlewareRevisited;
+using System.IO;
 
 namespace Sandbox
 {
@@ -18,10 +19,16 @@ namespace Sandbox
     }
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            var user = Login.LoginWithCredentials("7sMViyYn3B", "pfvTi1NzxE");
-            Console.WriteLine(JsonConvert.SerializeObject(user));
+            var user = Login.LoginWithCredentialsAsync("7sMViyYn3B", "pfvTi1NzxE");
+            StreamWriter writer = new StreamWriter("output.txt");
+            var dt = DateTime.Now;
+            writer.WriteLine(dt.ToLongTimeString() + dt.Millisecond);
+            writer.WriteLine(JsonConvert.SerializeObject(await user));
+            dt = DateTime.Now;
+            writer.WriteLine(dt.ToLongTimeString() + dt.Millisecond);
+            writer.Close();
         }
     }
 }

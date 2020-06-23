@@ -14,30 +14,34 @@ namespace MiddlewareRevisited
 {
     public class Login
     {
-        public static User LoginWithCredentials(string username, string password)
+        public static async Task<User> LoginWithCredentialsAsync(string username, string password)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://34.107.121.20:8080/api/teachers");
             request.Method = WebRequestMethods.Http.Post;
             request.Headers.Add("password", password);
             request.ContentType = "application/json";
-            JObject requestBody = new JObject();
-            requestBody.Add("username", username);
+            request.Proxy = null;
 
-            using (var dataStream = new StreamWriter(request.GetRequestStream()))
+            using (var dataStream = new StreamWriter(await request.GetRequestStreamAsync()))
             {
-                dataStream.Write(requestBody.ToString());
+                JObject requestBody = new JObject();
+                requestBody.Add("username", username);
+                await dataStream.WriteAsync(requestBody.ToString());
             }
 
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            User u = null;
 
-            string responseJson;
-            using (var dataStream = new StreamReader(response.GetResponseStream()))
+            using (var response = (HttpWebResponse)await request.GetResponseAsync())
             {
-                responseJson = dataStream.ReadToEnd();
+
+                string responseJson;
+                using (var dataStream = new StreamReader(response.GetResponseStream()))
+                {
+                    responseJson = await dataStream.ReadToEndAsync();
+                }
+
+                u = JsonConvert.DeserializeObject<User>(responseJson);
             }
-
-            User u = JsonConvert.DeserializeObject<User>(responseJson);
-
             return u;
         }
     }

@@ -41,7 +41,8 @@ namespace Frontend
                 {RequestParameters.token, Klasen._token }
             }, RequestScopes.GetParalelka);
 
-            ucenici = result.ConvertAll(x => new Ucenik(x));
+            //ucenici = result.ConvertAll(x => new Ucenik(x));
+            ucenici = new List<Ucenik>();
             SortUcenici();
             KlasenKlasa.SetSmeroviPredmeti(KlasenKlasa._token);
             if(KlasenKlasa._paralelka.Split('-')[0] == "IV") {
