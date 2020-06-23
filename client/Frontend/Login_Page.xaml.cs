@@ -49,7 +49,9 @@ namespace Frontend
                 ShowAlertBox((DateTime.Now - dt).ToString());
                 // Main.Content = new Home_Page(Main, this, null);
                 // u = await MiddlewareRevisited.Login.LoginWithCredentialsAsync(Username_txt.Text, Password_txt.Password);
-                Main.Content = new Home_Page(Main, u);
+                NavigationService.Navigate(new Home_Page(Main, u));
+                //Main.Navigate(new Home_Page(Main, u));
+                //Main.Content = new Home_Page(Main, u);
             } catch(Exception ex)
             {
                 Debug.WriteLine(ex.StackTrace);

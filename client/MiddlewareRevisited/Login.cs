@@ -21,7 +21,7 @@ namespace MiddlewareRevisited
 
         public static async Task<User> LoginWithCredentialsAsync(string username, string password)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://35.234.92.150:8080/api/teachers");
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://34.107.121.20:8080/api/teachers");
             request.Method = WebRequestMethods.Http.Post;
             request.Headers.Add("password", password);
             request.ContentType = "application/json";
@@ -53,7 +53,7 @@ namespace MiddlewareRevisited
         public static async Task<User> httpClientLogin(string username, string password)
         {
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var data = new HttpRequestMessage(HttpMethod.Post, "http://35.234.92.150:8080/api/teachers");
+            var data = new HttpRequestMessage(HttpMethod.Post, "http://34.107.121.20:8080/api/teachers");
             // var json = JsonConvert.SerializeObject(new Dictionary<string, string>() { {"username", username } });
             var json = new JObject();
             json.Add("username", username);

@@ -34,6 +34,7 @@ namespace Frontend
             currentSchoolClass = schoolClass;
 
             LoadListView();
+            home_img.MouseLeftButtonDown += new MouseButtonEventHandler(Back_Home);
 
             return;
 
@@ -42,7 +43,6 @@ namespace Frontend
             FillOcenki(0);
 
 
-            home_img.MouseLeftButtonDown += new MouseButtonEventHandler(Back_Home);
             print_img.MouseLeftButtonDown += new MouseButtonEventHandler(Back_Print);
             settings_img.MouseLeftButtonDown += new MouseButtonEventHandler(Back_Settings);
             hide_menu_img.MouseLeftButtonDown += new MouseButtonEventHandler(Menu_hide);
@@ -579,8 +579,10 @@ namespace Frontend
 
         private void Back_Home(object sender, MouseButtonEventArgs e)
         {
-            Main.GoBack();
-            //Main.Content = homePage;
+            NavigationService.GoBack();
+            // ((Frame)this.Parent).GoBack();
+            // Main.GoBack();
+            // Main.Content = homePage;
         }
 
         private void Back_Print(object sender, MouseButtonEventArgs e)
