@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Middleware;
+using System;
 using System.Collections.Generic;
 
 namespace MiddlewareRevisited.Models
@@ -42,5 +43,32 @@ namespace MiddlewareRevisited.Models
         public List<int> grades;
         public List<int> droppedGrades;
         public SubjectOrientation subjectOrientation;
+
+        public Dictionary<string, string> GetPolinja()
+        {
+            Dictionary<string, string> polinja = new Dictionary<string, string>();
+            polinja.Add(RequestParameters.ime, firstName);
+            polinja.Add(RequestParameters.srednoIme, middleName);
+            polinja.Add(RequestParameters.prezime, lastName);
+            polinja.Add(RequestParameters.smer, subjectOrientation.shortName);
+            polinja.Add(RequestParameters.tatko, fathersName);
+            polinja.Add(RequestParameters.majka, mothersName);
+            polinja.Add(RequestParameters.broj, number.ToString());
+            polinja.Add(RequestParameters.gender, gender);
+            polinja.Add(RequestParameters.roden, dateOfBirth.ToShortDateString());
+            polinja.Add(RequestParameters.mesto_na_ragjanje, placeOfBirth);
+            polinja.Add(RequestParameters.mesto_na_zhiveenje, placeOfResidence);
+            polinja.Add(RequestParameters.pat_polaga, timesStudiedYear);
+            polinja.Add(RequestParameters.polozhil, passedYear);
+            polinja.Add(RequestParameters.povedenie, behaviorType);
+            polinja.Add(RequestParameters.opravdani, justifiedAbsences.ToString());
+            polinja.Add(RequestParameters.neopravdani, unjustifiedAbsences.ToString());
+            polinja.Add(RequestParameters.proektni, optionalSubjects);
+            //polinja.Add(RequestParameters.pedagoshki_merki, _pedagoski_merki);
+            polinja.Add(RequestParameters.prethodna_godina, lastGradeYear);
+            polinja.Add(RequestParameters.prethodno_uchilishte, lastSchoolName);
+            polinja.Add(RequestParameters.prethoden_uspeh, lastSchoolYearSuccessType);
+            return polinja;
+        }
     }
 }

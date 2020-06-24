@@ -35,7 +35,7 @@ namespace Frontend
 
             LoadMainList();
             ListPages.Add(new Smerovi_Page(ref subjectOrientations, ref currentUser, ref students));
-            //ListPages.Add(new EditUcenici_Page());
+            ListPages.Add(new EditUcenici_Page(ref subjectOrientations, ref currentUser, ref students));
             //ListPages.Add(new Prosek_Frame());
             Settings_Frame.Content = ListPages[0];
         }
