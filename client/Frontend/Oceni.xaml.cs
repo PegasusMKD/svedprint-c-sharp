@@ -322,7 +322,7 @@ namespace Frontend
             //Ucenik_Name.Content = SelectedUcenik._ime + " " + SelectedUcenik._prezime;
             Ucenik_Name.Content = selStudent.firstName + " " + selStudent.lastName;
             //Prosek_out.Content = SelectedUcenik.prosek();
-            Prosek_out.Content = selStudent.grades.Average().ToString("F2");
+            Prosek_out.Content = selStudent.grades.DefaultIfEmpty(0).Average().ToString("F2");
             BrojDn_label.Content = (brojDn + 1).ToString();
             //combobox_smer.SelectedValue = smerovi_naslov[SelectedUcenik._smer]._smer;
             combobox_smer.SelectedValue = selStudent.subjectOrientation.fullName;
@@ -533,10 +533,11 @@ namespace Frontend
             ClickedMenuItem = sender;
 
             OcenkiGrid.Children.Clear();
-            if (Ucenici[brojDn]._smer != "")
+            //if (Ucenici[brojDn]._smer != "")
+            if (currentSchoolClass.students[brojDn].subjectOrientation != null)
             {
                 LoadOcenkiView(brojDn);
-                Load_stranski_jazici(brojDn);
+                //Load_stranski_jazici(brojDn);
                 FillOcenki(brojDn);
             }
             else
