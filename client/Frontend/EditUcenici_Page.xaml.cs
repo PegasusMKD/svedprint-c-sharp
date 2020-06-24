@@ -1,4 +1,5 @@
 using Middleware;
+using MiddlewareRevisited.Models;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -17,16 +18,19 @@ namespace Frontend
     public partial class EditUcenici_Page : Page
     {
 
-        Klasen UserKlas;
-        List<Ucenik> Ucenici;
+        User currentUser;
+        List<Student> students;
+        List<SubjectOrientation> subjectOrientations;
         int BrojDn = 0;
 
-        public EditUcenici_Page()
+        public EditUcenici_Page(ref List<SubjectOrientation> subjectOrientations, ref User currentUser, ref List<Student> students)
         {
             InitializeComponent();
-            //UserKlas = Home_Page.KlasenKlasa;
-            //Ucenici = Home_Page.ucenici;
-            SortUcenici();
+            
+            this.currentUser = currentUser;
+            this.students = students;
+            this.subjectOrientations = subjectOrientations;
+
             Refresh();
         }
 
@@ -42,10 +46,10 @@ namespace Frontend
             polinja.Clear();
             string[] PApredmeti = { "Ги немате пополнето Проектните Активности" };
             string[] Smerovi = { "Ги немате пополнето Смеровите" };
-            if (UserKlas._p._smerovi.Keys.Contains("ПА")) PApredmeti = UserKlas._p._smerovi["ПА"]._predmeti.ToArray();
-            if (UserKlas._p._smerovi.Count > 3)
+            if (subjectOrientations.Select(orientation => orientation.shortName).Contains("ПА")) PApredmeti = (from subjectOrientation in subjectOrientations where subjectOrientation.shortName.Equals("ПА") select subjectOrientation).FirstOrDefault().subjects.ToArray();
+            if (subjectOrientations.Count > 3)
             {
-                Smerovi = UserKlas._p.GetSmerovi().Keys.ToArray();
+                Smerovi = subjectOrientations.Select(orientation => orientation.shortName).ToArray();
             }
             
             List<string> polinjaUpdate = new List<string>();
@@ -67,9 +71,9 @@ namespace Frontend
             polinja.Add(new Pole("Претходно училиште", RequestParameters.prethodno_uchilishte, new string[] { "СУГС - Раде Јовчевски Корчагин" }));
             polinja.Add(new Pole("Претходен успех", RequestParameters.prethoden_uspeh, new string[] { "Одличен" , "Многу добар" , "Добар", "Доволен"}));
 
-            if(Ucenici.Count > 0 && Ucenici.Count > BrojDn)
+            if(students.Count > 0 && students.Count > BrojDn)
             {
-                Dictionary<string, string> PolinjaModels = Ucenici[BrojDn].GetPolinja();
+                Dictionary<string, string> PolinjaModels = students[BrojDn].GetPolinja();
                 foreach (Pole pole in polinja)
                 {
                     ///polinja.Find(y => y.RequestParametar == x.Key).Odgovor = x.Value;
@@ -184,64 +188,64 @@ namespace Frontend
 
         String Valid(int x)
         {
-            if (BrojDn + x >= 0 && BrojDn + x <= Ucenici.Count) BrojDn += x;
+            if (BrojDn + x >= 0 && BrojDn + x <= students.Count) BrojDn += x;
             return (BrojDn + 1).ToString();
         }
 
         private async void SaveBtnClicked(object sender, MouseButtonEventArgs e)
         {
-            if (BrojDn > Ucenici.Count)
-            {
-                MessageBox.Show("Ученикот со таков број во дневник не постои");
-            }
-            if(Ucenici.Count == BrojDn)
-            {
-                CreateUcenik(polinja[0].Odgovor, polinja[2].Odgovor, polinja[1].Odgovor, polinja[3].GetOdgovor(), BrojDn + 1);
-                int bk = BrojDn;
-                BrojDn = Ucenici.Count - 1;
-                BrojDn = bk;
+            //if (BrojDn > Ucenici.Count)
+            //{
+            //    MessageBox.Show("Ученикот со таков број во дневник не постои");
+            //}
+            //if(Ucenici.Count == BrojDn)
+            //{
+            //    CreateUcenik(polinja[0].Odgovor, polinja[2].Odgovor, polinja[1].Odgovor, polinja[3].GetOdgovor(), BrojDn + 1);
+            //    int bk = BrojDn;
+            //    BrojDn = Ucenici.Count - 1;
+            //    BrojDn = bk;
 
-                polinja.Add(new Pole("Поведение", RequestParameters.povedenie, new string[] { "Примeрно" }));
-                polinja.Add(new Pole("Педагошки мерки", RequestParameters.pedagoshki_merki, new string[] { "0" }));
-                polinja.Add(new Pole("Јазици", RequestParameters.jazik, new string[] { "0:1" }));
-                polinja.Add(new Pole("Изборен Предмет 1", RequestParameters.izborni, new string[] { "0"}));
-            }
-            await Save();
+            //    polinja.Add(new Pole("Поведение", RequestParameters.povedenie, new string[] { "Примeрно" }));
+            //    polinja.Add(new Pole("Педагошки мерки", RequestParameters.pedagoshki_merki, new string[] { "0" }));
+            //    polinja.Add(new Pole("Јазици", RequestParameters.jazik, new string[] { "0:1" }));
+            //    polinja.Add(new Pole("Изборен Предмет 1", RequestParameters.izborni, new string[] { "0"}));
+            //}
+            //await Save();
         }
 
         private async Task Save()
         {
-            Dictionary<string, string> tx = new Dictionary<string, string>();
-            Dictionary<string, string> OrigData = new Dictionary<string, string>();
-            List<string> proektni = new List<string>();
-            foreach (Pole x in polinja)
-            {
-                tx.Add(x.RequestParametar, x.GetOdgovor());
+            //Dictionary<string, string> tx = new Dictionary<string, string>();
+            //Dictionary<string, string> OrigData = new Dictionary<string, string>();
+            //List<string> proektni = new List<string>();
+            //foreach (Pole x in polinja)
+            //{
+            //    tx.Add(x.RequestParametar, x.GetOdgovor());
 
-                if(x.RequestParametar == RequestParameters.broj)
-                {
-                    if(int.Parse(x.GetOdgovor()) != BrojDn+1)
-                    {
-                        int i = int.Parse(x.GetOdgovor());
-                        if (Ucenici[i - 1]._broj == i)
-                        {
-                            Ucenici[i - 1]._broj = BrojDn+1;
-                            await Ucenici[i - 1].UpdateUcenik(RequestParameters.broj, (BrojDn + 1).ToString(), UserKlas._token);
-                        }
-                        Ucenici[BrojDn]._broj = i;
-                    }
-                }
-            }
+            //    if(x.RequestParametar == RequestParameters.broj)
+            //    {
+            //        if(int.Parse(x.GetOdgovor()) != BrojDn+1)
+            //        {
+            //            int i = int.Parse(x.GetOdgovor());
+            //            if (Ucenici[i - 1]._broj == i)
+            //            {
+            //                Ucenici[i - 1]._broj = BrojDn+1;
+            //                await Ucenici[i - 1].UpdateUcenik(RequestParameters.broj, (BrojDn + 1).ToString(), UserKlas._token);
+            //            }
+            //            Ucenici[BrojDn]._broj = i;
+            //        }
+            //    }
+            //}
 
-            //tx.Add(RequestParameters.jazik, "0;1");
+            ////tx.Add(RequestParameters.jazik, "0;1");
 
-            OrigData["ime"] = Ucenici[BrojDn]._ime;
-            OrigData["prezime"] = Ucenici[BrojDn]._prezime;
-            OrigData["srednoIme"] = Ucenici[BrojDn]._srednoIme;
-            OrigData["broj"] = BrojDn.ToString();
-            MessageBox.Show(Output(await Ucenici[BrojDn].UpdateUcenikData(tx, OrigData, UserKlas._token)));
+            //OrigData["ime"] = Ucenici[BrojDn]._ime;
+            //OrigData["prezime"] = Ucenici[BrojDn]._prezime;
+            //OrigData["srednoIme"] = Ucenici[BrojDn]._srednoIme;
+            //OrigData["broj"] = BrojDn.ToString();
+            //MessageBox.Show(Output(await Ucenici[BrojDn].UpdateUcenikData(tx, OrigData, UserKlas._token)));
 
-            SortUcenici();
+            //SortUcenici();
         }
 
         public string ProektniToString(List<string> tx)
@@ -285,48 +289,38 @@ namespace Frontend
 
         private void CreateUcenik(string ime, string srednoime, string prezime, string smer, int br)
         {
-            if (UserKlas._p._smerovi.ContainsKey(smer) == false)
-            {
-                MessageBox.Show("Смерот не се совпаѓа");
-                return;
-            }
-            List<Ucenik> match = Ucenici.Where(x => (x._prezime == prezime) && (x._ime == ime) && (x._srednoIme == srednoime)).ToList();
-            Ucenici.Add(new Ucenik()
-            {
-                _ime = ime,
-                _srednoIme = srednoime,
-                _prezime = prezime,
-                _smer = UserKlas._p._smerovi[smer]._smer,
-                _broj = br,
-                _oceni = new List<int>(Enumerable.Repeat(0, UserKlas._p._smerovi[smer]._predmeti.Count))
-            }) ; // better constructor, must be tested
-            // Ucenici.Add(new Ucenik(ime, srednoime, prezime, UserKlas._p._smerovi[smer], br));
-            Ucenici.Last()._duplicate_ctr = match.Count();
-            Ucenici.Last().CreateServerUcenik(UserKlas._token);
-            MessageBox.Show("успешно креирање на нов ученик");
+            //if (UserKlas._p._smerovi.ContainsKey(smer) == false)
+            //{
+            //    MessageBox.Show("Смерот не се совпаѓа");
+            //    return;
+            //}
+            //List<Ucenik> match = Ucenici.Where(x => (x._prezime == prezime) && (x._ime == ime) && (x._srednoIme == srednoime)).ToList();
+            //Ucenici.Add(new Ucenik()
+            //{
+            //    _ime = ime,
+            //    _srednoIme = srednoime,
+            //    _prezime = prezime,
+            //    _smer = UserKlas._p._smerovi[smer]._smer,
+            //    _broj = br,
+            //    _oceni = new List<int>(Enumerable.Repeat(0, UserKlas._p._smerovi[smer]._predmeti.Count))
+            //}) ; // better constructor, must be tested
+            //// Ucenici.Add(new Ucenik(ime, srednoime, prezime, UserKlas._p._smerovi[smer], br));
+            //Ucenici.Last()._duplicate_ctr = match.Count();
+            //Ucenici.Last().CreateServerUcenik(UserKlas._token);
+            //MessageBox.Show("успешно креирање на нов ученик");
         }
         
-        private void SortUcenici()
-        {
-            var ordered = Ucenici.OrderBy(x => x._broj);
-
-            Ucenici = ordered.ToList();
-            //Home_Page.ucenici = Ucenici;
-            //updateBrojDn
-            Refresh();
-        }
-
         private async void DeleteUcenikImgClicked(object sender, MouseButtonEventArgs e)
         {
-            if (BrojDn >= Ucenici.Count)
-            {
-                MessageBox.Show("Ученикот со тој број не постои");
-                return;
-            }
-            await Ucenici[BrojDn].DeleteUcenik(UserKlas._token);
-            Ucenici.RemoveAt(BrojDn);
-            SortUcenici();
-            Refresh();
+            //if (BrojDn >= Ucenici.Count)
+            //{
+            //    MessageBox.Show("Ученикот со тој број не постои");
+            //    return;
+            //}
+            //await Ucenici[BrojDn].DeleteUcenik(UserKlas._token);
+            //Ucenici.RemoveAt(BrojDn);
+            //SortUcenici();
+            //Refresh();
         }
 
     }
