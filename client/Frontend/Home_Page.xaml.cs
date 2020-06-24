@@ -21,6 +21,8 @@ namespace Frontend
         private List<Student> students;
         private List<SubjectOrientation> subjectOrientations;
         private SchoolClass schoolClass;
+        private Oceni gradesPage;
+
         public string currentUserData { get; set; }
 
 
@@ -59,7 +61,8 @@ namespace Frontend
                 //Main.Content = new Oceni(Main, this);
                 //Main.Content = new Oceni(schoolClass);
                 //Main.Navigate(new Oceni(schoolClass));
-                NavigationService.Navigate(new Oceni(schoolClass));
+                if (gradesPage == null) gradesPage = new Oceni(schoolClass);
+                NavigationService.Navigate(gradesPage);
             }
         }
 

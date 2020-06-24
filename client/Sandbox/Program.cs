@@ -19,16 +19,14 @@ namespace Sandbox
     }
     class Program
     {
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
-            var user = Login.LoginWithCredentialsAsync("7sMViyYn3B", "pfvTi1NzxE");
+            var task = Login.httpClientLogin("7sMViyYn3B", "pfvTi1NzxE");
+            task.Wait();
             StreamWriter writer = new StreamWriter("output.txt");
-            var dt = DateTime.Now;
-            var startTime = dt.Millisecond;
-            writer.WriteLine(JsonConvert.SerializeObject(user));
-            dt = DateTime.Now;
-            var endTime = dt.Millisecond;
-            writer.WriteLine("Time:" + (endTime - startTime) + " ms");
+            // writer.WriteLine(JsonConvert.SerializeObject(task.Result));
+           
+            
             writer.Close();
         }
     }
