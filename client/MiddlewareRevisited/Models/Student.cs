@@ -47,27 +47,27 @@ namespace MiddlewareRevisited.Models
         public Dictionary<string, string> GetPolinja()
         {
             Dictionary<string, string> polinja = new Dictionary<string, string>();
-            polinja.Add(RequestParameters.ime, firstName);
-            polinja.Add(RequestParameters.srednoIme, middleName);
-            polinja.Add(RequestParameters.prezime, lastName);
-            polinja.Add(RequestParameters.smer, subjectOrientation.shortName);
-            polinja.Add(RequestParameters.tatko, fathersName);
-            polinja.Add(RequestParameters.majka, mothersName);
-            polinja.Add(RequestParameters.broj, number.ToString());
-            polinja.Add(RequestParameters.gender, gender);
-            polinja.Add(RequestParameters.roden, dateOfBirth.ToShortDateString());
-            polinja.Add(RequestParameters.mesto_na_ragjanje, placeOfBirth);
-            polinja.Add(RequestParameters.mesto_na_zhiveenje, placeOfResidence);
-            polinja.Add(RequestParameters.pat_polaga, timesStudiedYear);
-            polinja.Add(RequestParameters.polozhil, passedYear);
-            polinja.Add(RequestParameters.povedenie, behaviorType);
-            polinja.Add(RequestParameters.opravdani, justifiedAbsences.ToString());
-            polinja.Add(RequestParameters.neopravdani, unjustifiedAbsences.ToString());
-            polinja.Add(RequestParameters.proektni, optionalSubjects);
+            polinja.Add("firstName", firstName);
+            polinja.Add("middleName", middleName);
+            polinja.Add("lastName", lastName);
+            polinja.Add("subjectOrientationName", subjectOrientation.shortName);
+            polinja.Add("fathersName", fathersName);
+            polinja.Add("mothersName", mothersName);
+            polinja.Add("number" , number.ToString());
+            polinja.Add("gender" , gender);
+            polinja.Add("dateOfBirth" , dateOfBirth.ToShortDateString());
+            polinja.Add("placeOfBirth" , placeOfBirth);
+            polinja.Add("placeOfResidence" , placeOfResidence);
+            polinja.Add("timesStudiedYear" , timesStudiedYear);
+            polinja.Add("passedYear" , passedYear);
+            polinja.Add("behaviorType" , behaviorType);
+            polinja.Add("justifiedAbsences", justifiedAbsences.ToString());
+            polinja.Add("unjustifiedAbsences", unjustifiedAbsences.ToString());
+            polinja.Add("optionalSubjects", optionalSubjects);
             //polinja.Add(RequestParameters.pedagoshki_merki, _pedagoski_merki);
-            polinja.Add(RequestParameters.prethodna_godina, lastGradeYear);
-            polinja.Add(RequestParameters.prethodno_uchilishte, lastSchoolName);
-            polinja.Add(RequestParameters.prethoden_uspeh, lastSchoolYearSuccessType);
+            polinja.Add("lastGradeYear", lastGradeYear);
+            polinja.Add("lastSchoolName" , lastSchoolName);
+            polinja.Add("lastSchoolYearSuccessType", lastSchoolYearSuccessType);
             return polinja;
         }
     }

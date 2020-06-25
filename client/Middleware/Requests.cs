@@ -172,14 +172,14 @@ namespace Middleware
     
     public class RequestParameters
     {
-        public const string ime = "ime";
-        public const string srednoIme = "srednoIme";
-        public const string prezime = "prezime";
-        public const string paralelka = "paralelka";
+        public const string ime = "firstName";
+        public const string srednoIme = "middleName";
+        public const string prezime = "lastName";
+        public const string paralelka = "subjectOrientationName";
         public const string token = "token";
-        public const string smer = "smer";
+        public const string smer = "subjectOrientationName";
         public const string oceni = "oceni";
-        public const string broj = "broj";
+        public const string broj = "number";
         public const string predmeti = "predmeti";
         public const string ucenici = "ucenici";
         public const string klasen = "klasen";
@@ -196,17 +196,17 @@ namespace Middleware
         public const string new_middle_name = "new_middle_name";
         public const string new_last_name = "new_last_name";
         public const string new_broj_vo_dnevnik = "new_broj_vo_dnevnik";
-        public const string opravdani = "opravdani";
-        public const string neopravdani = "neopravdani";
+        public const string opravdani = "justifiedAbsences";
+        public const string neopravdani = "unjustifiedAbsences";
         //Dodatoci od Pazzio
-        public const string mesto_na_zhiveenje = "mesto_na_zhiveenje";
-        public const string mesto_na_ragjanje = "mesto_na_ragjanje";
-        public const string tatko = "tatko";
-        public const string majka = "majka";
+        public const string mesto_na_zhiveenje = "placeOfResidence";
+        public const string mesto_na_ragjanje = "placeOfBirth";
+        public const string tatko = "fathersName";
+        public const string majka = "mothersName";
         public const string prethoden_delovoden = "prethoden_delovoden_broj";
         public const string pat_polaga_ispit = "pat_polaga_ispit";
         public const string ispiten = "ispiten_rok";
-        public const string pat_polaga = "pat";
+        public const string pat_polaga = "timesStudiedYear";
         public const string cel_smer = "cel_smer";
         public const string action = "action";
         public const string delete = "del";
@@ -217,19 +217,19 @@ namespace Middleware
         public const string jazik_ocena = "jazik_ocena";
         //
         public const string tip = "tip_obrazovanie";
-        public const string povedenie = "povedenie";
-        public const string roden = "roden";
+        public const string povedenie = "behaviorType";
+        public const string roden = "dateOfBirth";
         public const string gender = "gender";
         public const string maturska = "maturska";
         public const string izborni = "izborni";
-        public const string proektni = "proektni";
+        public const string proektni = "optionalSubjects";
         public const string merki = "merki";
-        public const string prethodna_godina = "prethodna_godina";
-        public const string prethoden_uspeh = "prethoden_uspeh";
-        public const string prethodno_uchilishte = "prethodno_uchilishte";
+        public const string prethodna_godina = "lastGradeYear";
+        public const string prethoden_uspeh = "lastSchoolYearSuccessType";
+        public const string prethodno_uchilishte = "lastSchoolName";
         public const string delovoden_broj = "delovoden_broj";
         public const string datum_sveditelstvo = "datum_na_sveditelstvo";
-        public const string polozhil = "polozhil";
+        public const string polozhil = "passedYear";
         public const string prethodna_uchebna = "prethodna_uchebna";
         public const string pedagoshki_merki = "merki";
         public const string direktor = "direktor";

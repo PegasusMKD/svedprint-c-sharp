@@ -71,6 +71,7 @@
     <Compile Include="Oceni.xaml.cs">
       <DependentUpon>Oceni.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pole.cs" />
     <Compile Include="PrintFrame.xaml.cs">
       <DependentUpon>PrintFrame.xaml</DependentUpon>
     </Compile>
@@ -84,6 +85,7 @@
     <Compile Include="Smerovi_Page.xaml.cs">
       <DependentUpon>Smerovi_Page.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Util.cs" />
     <Page Include="EditUcenici_Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

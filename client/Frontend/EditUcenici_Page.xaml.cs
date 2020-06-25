@@ -1,4 +1,5 @@
 using Middleware;
+using MiddlewareRevisited;
 using MiddlewareRevisited.Models;
 using System;
 using System.Collections.Generic;
@@ -210,42 +211,19 @@ namespace Frontend
             //    polinja.Add(new Pole("Јазици", RequestParameters.jazik, new string[] { "0:1" }));
             //    polinja.Add(new Pole("Изборен Предмет 1", RequestParameters.izborni, new string[] { "0"}));
             //}
-            //await Save();
+            await Save();
         }
 
         private async Task Save()
         {
-            //Dictionary<string, string> tx = new Dictionary<string, string>();
-            //Dictionary<string, string> OrigData = new Dictionary<string, string>();
-            //List<string> proektni = new List<string>();
-            //foreach (Pole x in polinja)
-            //{
-            //    tx.Add(x.RequestParametar, x.GetOdgovor());
+            Student student = new Student();
 
-            //    if(x.RequestParametar == RequestParameters.broj)
-            //    {
-            //        if(int.Parse(x.GetOdgovor()) != BrojDn+1)
-            //        {
-            //            int i = int.Parse(x.GetOdgovor());
-            //            if (Ucenici[i - 1]._broj == i)
-            //            {
-            //                Ucenici[i - 1]._broj = BrojDn+1;
-            //                await Ucenici[i - 1].UpdateUcenik(RequestParameters.broj, (BrojDn + 1).ToString(), UserKlas._token);
-            //            }
-            //            Ucenici[BrojDn]._broj = i;
-            //        }
-            //    }
-            //}
-
-            ////tx.Add(RequestParameters.jazik, "0;1");
-
-            //OrigData["ime"] = Ucenici[BrojDn]._ime;
-            //OrigData["prezime"] = Ucenici[BrojDn]._prezime;
-            //OrigData["srednoIme"] = Ucenici[BrojDn]._srednoIme;
-            //OrigData["broj"] = BrojDn.ToString();
-            //MessageBox.Show(Output(await Ucenici[BrojDn].UpdateUcenikData(tx, OrigData, UserKlas._token)));
-
-            //SortUcenici();
+            if(students.Count > BrojDn)
+            {
+                student = students[int.Parse(BrojDnLabel.Text) - 1];
+            }
+            Util.UpdateObjectByFields<Student>(polinja, student);
+            await MiddlewareRevisited.Controllers.Student.updateStudent(student, currentUser);
         }
 
         public string ProektniToString(List<string> tx)
@@ -321,32 +299,6 @@ namespace Frontend
             //Ucenici.RemoveAt(BrojDn);
             //SortUcenici();
             //Refresh();
-        }
-
-    }
-
-    public class Pole
-    {
-        public string Ime;
-        public string RequestParametar;
-        public string[] DefaultVrednost;
-        public string Odgovor;
-        public bool isCB = false;
-
-        public Pole(string ime, string requestparameter , string[] defaultvrednost , string odgovor = "")
-        {
-            Ime = ime;
-            RequestParametar = requestparameter;
-            DefaultVrednost = defaultvrednost;
-            if(odgovor != "")Odgovor = odgovor;
-            if (defaultvrednost.Length > 1) isCB = true;
-        }
-
-        public string GetOdgovor()
-        {
-           
-            if (Odgovor == "" || Odgovor == null) return DefaultVrednost[0];
-            else return Odgovor;
         }
 
     }
