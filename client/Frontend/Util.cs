@@ -20,17 +20,14 @@ namespace MiddlewareRevisited
             List<string> fieldNames = properties.Select(property => property.Name).ToList();
             foreach(Pole field in source)
             {
-                if(fieldNames.Contains(field.RequestParametar) && field.GetOdgovor() != null)
+                var val = field.GetOdgovor();
+                if (fieldNames.Contains(field.RequestParametar) && val != null)
                 {
-                    var val = field.GetOdgovor();
-                    if(val != null)
-                    {
-                        int intRes = int.MaxValue;
-                        DateTime dateVal = DateTime.Now;
-                        if(DateTime.TryParse(val, out dateVal)) properties[fieldNames.IndexOf(field.RequestParametar)].SetValue(dest, dateVal);
-                        else if (int.TryParse(val, out intRes)) properties[fieldNames.IndexOf(field.RequestParametar)].SetValue(dest, intRes);
-                        else properties[fieldNames.IndexOf(field.RequestParametar)].SetValue(dest, val);
-                    }
+                    int intRes = int.MaxValue;
+                    DateTime dateVal = DateTime.Now;
+                    if (DateTime.TryParse(val, out dateVal)) properties[fieldNames.IndexOf(field.RequestParametar)].SetValue(dest, dateVal);
+                    else if (int.TryParse(val, out intRes)) properties[fieldNames.IndexOf(field.RequestParametar)].SetValue(dest, intRes);
+                    else properties[fieldNames.IndexOf(field.RequestParametar)].SetValue(dest, val);
                 }
             }
         }
