@@ -3,6 +3,7 @@ using MiddlewareRevisited;
 using MiddlewareRevisited.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -211,7 +212,13 @@ namespace Frontend
             //    polinja.Add(new Pole("Јазици", RequestParameters.jazik, new string[] { "0:1" }));
             //    polinja.Add(new Pole("Изборен Предмет 1", RequestParameters.izborni, new string[] { "0"}));
             //}
-            await Save();
+            try
+            {
+                await Save();
+            } catch (Exception ex)
+            {
+                Debug.Fail(ex.Message);
+            }
         }
 
         private async Task Save()
