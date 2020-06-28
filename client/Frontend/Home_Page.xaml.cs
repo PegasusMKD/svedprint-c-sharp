@@ -61,7 +61,7 @@ namespace Frontend
                 //Main.Content = new Oceni(Main, this);
                 //Main.Content = new Oceni(schoolClass);
                 //Main.Navigate(new Oceni(schoolClass));
-                if (gradesPage == null) gradesPage = new Oceni(schoolClass);
+                if (gradesPage == null) gradesPage = new Oceni(currentUser);
                 NavigationService.Navigate(gradesPage);
             }
         }
