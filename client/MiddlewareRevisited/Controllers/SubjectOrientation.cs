@@ -17,7 +17,7 @@ namespace MiddlewareRevisited.Controllers
         {
             HttpClient httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var data = new HttpRequestMessage(HttpMethod.Post, "http://34.107.121.20:8080/api/subjectOrientations");
+            var data = new HttpRequestMessage(HttpMethod.Post, $"http://{Properties.Settings.Default.DB_HOST}:8080/api/subjectOrientations");
             var json = JsonConvert.SerializeObject(subjectOrientation);
             data.Headers.Add("token", currentUser.token);
             data.Content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -30,7 +30,7 @@ namespace MiddlewareRevisited.Controllers
         {
             HttpClient httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var data = new HttpRequestMessage(HttpMethod.Delete, "http://34.107.121.20:8080/api/subjectOrientations");
+            var data = new HttpRequestMessage(HttpMethod.Delete, $"http://{Properties.Settings.Default.DB_HOST}:8080/api/subjectOrientations");
             var json = JsonConvert.SerializeObject(subjectOrientation);
             data.Headers.Add("token", currentUser.token);
             data.Content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -42,7 +42,7 @@ namespace MiddlewareRevisited.Controllers
         {
             HttpClient httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var data = new HttpRequestMessage(HttpMethod.Get, "http://34.107.121.20:8080/api/subjectOrientations");
+            var data = new HttpRequestMessage(HttpMethod.Get, $"http://{Properties.Settings.Default.DB_HOST}:8080/api/subjectOrientations");
             data.Headers.Add("token", currentUser.token);
             var ret = await httpClient.SendAsync(data);
             return JsonConvert.DeserializeObject<List<Models.SubjectOrientation>>(await ret.Content.ReadAsStringAsync());
@@ -52,7 +52,7 @@ namespace MiddlewareRevisited.Controllers
         {
             HttpClient httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var data = new HttpRequestMessage(HttpMethod.Put, "http://34.107.121.20:8080/api/subjectOrientations");
+            var data = new HttpRequestMessage(HttpMethod.Put, $"http://{Properties.Settings.Default.DB_HOST}:8080/api/subjectOrientations");
             var json = JsonConvert.SerializeObject(subjectOrientation); // This should be just the fields that should get updated and shortName, nothing more, nothing less
             data.Headers.Add("token", currentUser.token);
             data.Content = new StringContent(json, Encoding.UTF8, "application/json");

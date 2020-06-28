@@ -2,10 +2,10 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="MiddlewareRevisited.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="DB_HOST" Type="System.String" Scope="User">
-      <Value Profile="(Default)">localhost</Value>
+    <Setting Name="DB_HOST" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">35.234.92.150</Value>
     </Setting>
-    <Setting Name="DB_PORT" Type="System.String" Scope="User">
+    <Setting Name="DB_PORT" Type="System.String" Scope="Application">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

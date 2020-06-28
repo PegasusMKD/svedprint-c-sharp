@@ -55,7 +55,7 @@ DEPRECATED */
         public static async Task<User> httpClientLogin(string username, string password)
         {
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var data = new HttpRequestMessage(HttpMethod.Post, "http://35.234.92.150:8080/api/teachers");
+            var data = new HttpRequestMessage(HttpMethod.Post, $"http://{Properties.Settings.Default.DB_HOST}:8080/api/teachers");
             // 35.234.92.150; 34.107.121.20
             // var json = JsonConvert.SerializeObject(new Dictionary<string, string>() { {"username", username } });
             var json = new JObject();

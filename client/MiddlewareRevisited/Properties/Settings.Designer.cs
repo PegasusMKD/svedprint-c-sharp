@@ -23,27 +23,21 @@ namespace MiddlewareRevisited.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("localhost")]
+        [global::System.Configuration.DefaultSettingValueAttribute("35.234.92.150")]
         public string DB_HOST {
             get {
                 return ((string)(this["DB_HOST"]));
             }
-            set {
-                this["DB_HOST"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string DB_PORT {
             get {
                 return ((string)(this["DB_PORT"]));
-            }
-            set {
-                this["DB_PORT"] = value;
             }
         }
     }
