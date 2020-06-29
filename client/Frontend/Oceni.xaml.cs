@@ -586,7 +586,7 @@ namespace Frontend
 
             try
             {
-                currentStudent.subjectOrientation = currentUser.schoolClass.subjectOrientations.Find(x => x.fullName == (string)combobox_smer.SelectedItem);
+                currentStudent.subjectOrientation = currentUser.schoolClass.subjectOrientations.ElementAtOrDefault(combobox_smer.SelectedIndex);
                 await MiddlewareRevisited.Controllers.Student.updateStudent(currentStudent, currentUser);
             } catch (Exception ex)
             {
@@ -602,7 +602,7 @@ namespace Frontend
             // await Ucenici[br].ChangeSmerAsync(NovSmer, UserKlas._token);
 
             LoadOcenkiView(br);
-            Load_stranski_jazici(br);
+            //Load_stranski_jazici(br);
             FillOcenki(br);
         }
 
