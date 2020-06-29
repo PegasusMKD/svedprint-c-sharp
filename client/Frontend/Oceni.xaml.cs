@@ -2,6 +2,7 @@ using Middleware;
 using MiddlewareRevisited.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,11 +15,12 @@ namespace Frontend
     /// <summary>
     /// Interaktionslogik für Oceni.xaml
     /// </summary>
+
     public partial class Oceni : Page
     {
         Frame Main;
         Page homePage;
-        private SchoolClass currentSchoolClass;
+        private User currentUser;
         Klasen UserKlas;
         bool CanWork = false;
 
@@ -28,16 +30,37 @@ namespace Frontend
 
         List<Ucenik> Ucenici;
         static int brPredmeti;
-        public Oceni(SchoolClass schoolClass)
+        private Student currentStudent;
+        private bool haveGradesChanged;
+        public Oceni(User u)
         {
             InitializeComponent();
-            currentSchoolClass = schoolClass;
+            currentUser = u;
+            currentStudent = currentUser.schoolClass.students[0];
 
             LoadListView();
             home_img.MouseLeftButtonDown += new MouseButtonEventHandler(Back_Home);
 
             LoadOcenkiView(0);
             FillOcenki(0);
+
+            haveGradesChanged = false;
+            OcenkiGrid.MouseLeave += new MouseEventHandler(async (object o, MouseEventArgs e) =>
+            {
+                if (!haveGradesChanged) return;
+                try
+                {
+                    await MiddlewareRevisited.Controllers.Student.updateStudent(currentStudent, currentUser);
+                }
+                catch (Exception ex)
+                {
+                    Debug.Fail(ex.Message);
+                } finally
+                {
+                    haveGradesChanged = false;
+                }
+            });
+
             CanWork = true;
 
             return;
@@ -53,7 +76,7 @@ namespace Frontend
             NeopravdaniTxt.TextChanged += NeopravdaniTxt_TextChanged;
 
             PovedenieCB.ItemsSource = new string[] { "Примeрно", "Добро", "Незадоволително" };
-            PedagoskiMerkiCB.ItemsSource = new string[] { "нема", "Усмена Опомена", "Писмена Опомена"};
+            PedagoskiMerkiCB.ItemsSource = new string[] { "нема", "Усмена Опомена", "Писмена Опомена" };
             if (UserKlas._p._smerovi.Keys.Contains("Изборни Предмети")) IzborenPredmetCB.ItemsSource = UserKlas._p._smerovi["Изборни Предмети"]._predmeti;
 
             CanWork = false;
@@ -103,9 +126,9 @@ namespace Frontend
                 if (SJ_2_CB.Items.Count == 0) SJ_2_CB.ItemsSource = UserKlas._p._smerovi["Странски Јазици"]._predmeti;
                 if (!string.IsNullOrWhiteSpace(Ucenici[BrojDn]._jazik) && Ucenici[BrojDn]._jazik.Length > 2)
                 {
-                    string[] jazici = Ucenici[BrojDn]._jazik.Split(new char[]{ ';',':'}); // hardcoded
-                     SJ_1_CB.SelectedIndex = int.Parse(jazici[0]);
-                     SJ_2_CB.SelectedIndex = int.Parse(jazici[1]);
+                    string[] jazici = Ucenici[BrojDn]._jazik.Split(new char[] { ';', ':' }); // hardcoded
+                    SJ_1_CB.SelectedIndex = int.Parse(jazici[0]);
+                    SJ_2_CB.SelectedIndex = int.Parse(jazici[1]);
                 }
                 else
                 {
@@ -143,7 +166,7 @@ namespace Frontend
 
         private async void OpravdaniTxt_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (!int.TryParse(OpravdaniTxt.Text, out int n)) return;
+            if (!int.TryParse(OpravdaniTxt.Text, out _)) return;
             Ucenici[Br]._opravdani = int.Parse(OpravdaniTxt.Text);
             await Ucenici[Br].UpdateUcenik(RequestParameters.opravdani, Ucenici[Br]._opravdani.ToString(), UserKlas._token);
         }
@@ -152,25 +175,24 @@ namespace Frontend
         {
 
             int i = 0;
-            foreach (var x in currentSchoolClass.students)
+            foreach (var x in currentUser.schoolClass.students)
             {
                 Menu.Items.Add(MenuDP(x.firstName, x.lastName, i++));
             }
-            combobox_smer.ItemsSource = currentSchoolClass.subjectOrientations.Select(x => x.fullName);
+            combobox_smer.ItemsSource = currentUser.schoolClass.subjectOrientations.Select(x => x.fullName);
 
         }
 
         private DockPanel MenuDP(string Name, string Prezime, int brojDn)
         {
             DockPanel st = new DockPanel();
-            Label tx = new Label();
-            tx.Content = (brojDn + 1).ToString() + ". " + Name + " " + Prezime;
+            Label tx = new Label { Content = (brojDn + 1).ToString() + ". " + Name + " " + Prezime };
             st.Children.Add(tx);
             st.Height = 50;
             st.Width = 800;
             st.MaxWidth = 800;
             st.HorizontalAlignment = HorizontalAlignment.Left;
-            st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(165, 166, 140));
+            st.Background = new SolidColorBrush(Color.FromRgb(165, 166, 140));
             tx.FontSize = 22;
             tx.BorderThickness = new Thickness(0);
             tx.FontFamily = new System.Windows.Media.FontFamily("Arial Black");
@@ -189,14 +211,14 @@ namespace Frontend
         private void LoadOcenkiView(int BrojDn)
         {
             OcenkiGrid.Children.Clear();
-            if(currentSchoolClass.students[BrojDn].subjectOrientation == null)
+            if (currentUser.schoolClass.students[BrojDn].subjectOrientation == null)
             //if (Ucenici[BrojDn]._smer == "")
             {
                 MessageBox.Show("ученикот нема одберено смер");
                 CanWork = true;
                 return;
             }
-            List<string> subjects = currentSchoolClass.students[BrojDn].subjectOrientation.subjects;
+            List<string> subjects = currentUser.schoolClass.students[BrojDn].subjectOrientation.subjects;
             //List<string> predmeti = UserKlas._p._smerovi[Ucenici[BrojDn]._smer]._predmeti;
             //combobox_smer.SelectedIndex = 0;
             int Size = subjects.Count;
@@ -229,7 +251,7 @@ namespace Frontend
 
                     OcenkiGrid.RowDefinitions[i].Height = new GridLength(ImgHeight);
 
-                    System.Windows.Controls.Image img = new System.Windows.Controls.Image();
+                    Image img = new Image();
                     BitmapImage bm = new BitmapImage();
                     bm.BeginInit();
                     bm.UriSource = new Uri("ocenki_bk.png", UriKind.Relative);
@@ -246,23 +268,25 @@ namespace Frontend
 
                     OcenkiGrid.Children.Add(panel);
 
-                    TextBox tx = new TextBox();
-                    //tx.Text = ocenki[j];
-                    tx.VerticalAlignment = VerticalAlignment.Center;
-                    tx.HorizontalAlignment = HorizontalAlignment.Center;
-                    tx.FontSize = 23;
-                    tx.TextAlignment = TextAlignment.Center;
-                    tx.FontFamily = new System.Windows.Media.FontFamily("Crimson Text");
-                    tx.FontWeight = FontWeights.Medium;
-                    tx.BorderThickness = new Thickness(0, 0, 0, 2);
-                    tx.BorderBrush = System.Windows.Media.Brushes.White;
-                    tx.Width = 20;
-                    tx.Foreground = System.Windows.Media.Brushes.White;
-                    tx.CaretBrush = System.Windows.Media.Brushes.White;
-                    tx.SelectionBrush = System.Windows.Media.Brushes.Coral;
-                    tx.Background = System.Windows.Media.Brushes.Transparent;
+                    TextBox tx = new TextBox
+                    {
+                        //tx.Text = ocenki[j];
+                        VerticalAlignment = VerticalAlignment.Center,
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        FontSize = 23,
+                        TextAlignment = TextAlignment.Center,
+                        FontFamily = new FontFamily("Crimson Text"),
+                        FontWeight = FontWeights.Medium,
+                        BorderThickness = new Thickness(0, 0, 0, 2),
+                        BorderBrush = Brushes.White,
+                        Width = 20,
+                        Foreground = Brushes.White,
+                        CaretBrush = Brushes.White,
+                        SelectionBrush = Brushes.Coral,
+                        Background = Brushes.Transparent
+                    };
                     tx.TextChanged += OcenkiBox_Text_Changed;
-                    tx.Name = "t" + (Ocenkibox.Count).ToString();
+                    tx.Name = "t" + Ocenkibox.Count.ToString();
                     Ocenkibox.Add(tx);
 
                     Border panel2 = new Border();
@@ -286,10 +310,12 @@ namespace Frontend
 
                     OcenkiGrid.RowDefinitions[i].Height = new GridLength(TxtHeight);
 
-                    Label tx = new Label();
-                    tx.FontSize = 20;
-                    tx.FontFamily = new System.Windows.Media.FontFamily("Arial Black");
-                    tx.Foreground = System.Windows.Media.Brushes.White;
+                    Label tx = new Label
+                    {
+                        FontSize = 20,
+                        FontFamily = new System.Windows.Media.FontFamily("Arial Black"),
+                        Foreground = System.Windows.Media.Brushes.White
+                    };
                     //tx.Content = predmeti[ctr + j - 4];
                     Predmetibox.Add(tx);
 
@@ -316,24 +342,24 @@ namespace Frontend
             CanWork = false;
 
             //Ucenik SelectedUcenik = Ucenici[brojDn];
-            Student selStudent = currentSchoolClass.students[brojDn];
+            //Student currentStudent = currentSchoolClass.students[brojDn];
 
             //fill Menu
             //Ucenik_Name.Content = SelectedUcenik._ime + " " + SelectedUcenik._prezime;
-            Ucenik_Name.Content = selStudent.firstName + " " + selStudent.lastName;
+            Ucenik_Name.Content = currentStudent.firstName + " " + currentStudent.lastName;
             //Prosek_out.Content = SelectedUcenik.prosek();
-            Prosek_out.Content = selStudent.grades.DefaultIfEmpty(0).Average().ToString("F2");
+            Prosek_out.Content = currentStudent.grades.DefaultIfEmpty(0).Average().ToString("F2");
             BrojDn_label.Content = (brojDn + 1).ToString();
             //combobox_smer.SelectedValue = smerovi_naslov[SelectedUcenik._smer]._smer;
-            combobox_smer.SelectedValue = selStudent.subjectOrientation.fullName;
+            combobox_smer.SelectedValue = currentStudent.subjectOrientation.fullName;
 
             //fill OcenkiView
             //List<string> predmeti = UserKlas._p._smerovi[Ucenici[brojDn]._smer].GetCeliPredmeti(Ucenici[brojDn]._jazik, Ucenici[brojDn]._izborni, UserKlas._p._smerovi);
-            List<string> subjects = selStudent.subjectOrientation.subjects;
+            List<string> subjects = currentStudent.subjectOrientation.subjects;
             int ctr = 0;
             for (int i = 0; i < subjects.Count; i++)
             {
-                if (i < selStudent.grades.Count) Ocenkibox[i].Text = selStudent.grades[i].ToString();//5 5 5 5 5 5 5 5
+                if (i < currentStudent.grades.Count) Ocenkibox[i].Text = currentStudent.grades[i].ToString();//5 5 5 5 5 5 5 5
                 else Ocenkibox[i].Text = "0";
                 if (!subjects[i].Contains("СЈ")) Predmetibox[i].Content = subjects[i];
                 else
@@ -350,8 +376,8 @@ namespace Frontend
             }
 
 
-            OpravdaniTxt.Text = selStudent.justifiedAbsences.ToString();
-            NeopravdaniTxt.Text = selStudent.unjustifiedAbsences.ToString();
+            OpravdaniTxt.Text = currentStudent.justifiedAbsences.ToString();
+            NeopravdaniTxt.Text = currentStudent.unjustifiedAbsences.ToString();
 
             //LoadProektnaAktivnost();
             //LoadExtraPolinja(brojDn);
@@ -439,7 +465,7 @@ namespace Frontend
             CheckBox Check = new CheckBox();
             Check.HorizontalAlignment = HorizontalAlignment.Right;
             Check.VerticalAlignment = VerticalAlignment.Top;
-            if(PreValue[1].ToLower() == "реализирал")Check.IsChecked = true;
+            if (PreValue[1].ToLower() == "реализирал") Check.IsChecked = true;
             Check.RenderTransform = new ScaleTransform(2.5, 2.5);
             realiziranoProektni.Add(Check);
             Check.Tag = i.ToString();
@@ -472,7 +498,7 @@ namespace Frontend
             await Ucenici[Br].UpdateProektniAsync(i, ((ComboBox)sender).SelectedValue.ToString(), realiziranoProektni[i].IsChecked.Value, UserKlas._token);
         }
 
-        private async void OcenkiBox_Text_Changed(object sender, EventArgs e)
+        private void OcenkiBox_Text_Changed(object sender, EventArgs e)
         {
             TextBox tx = (TextBox)sender;
 
@@ -489,12 +515,16 @@ namespace Frontend
             Ocenkibox[(TextBoxBr + 1) % brPredmeti].Focus();
 
             //update
-            int br = int.Parse(BrojDn_label.Content.ToString());
-            Ucenici[br-1]._oceni = Array.ConvertAll(Ocenkibox.ToArray(), x => int.Parse(x.Text)).ToList();
-            await Ucenici[br - 1].UpdateUcenikOceniAsync(UserKlas._token);
+            haveGradesChanged = true;
+            //if (TextBoxBr >= currentStudent.grades.Count)
+            //{
+            //    currentStudent.grades.AddRange(Enumerable.Repeat(0, TextBoxBr + 1 - currentStudent
+            //        .grades.Count));    
+            //}
+            currentStudent.grades[TextBoxBr] = int.Parse(tx.Text); 
 
             //Menu
-            Prosek_out.Content = Ucenici[br - 1].prosek();
+            Prosek_out.Content = currentStudent.grades.DefaultIfEmpty(0).Average();
         }
 
         private void OcenkiBox_GetFocus(object sender, EventArgs e)
@@ -522,6 +552,8 @@ namespace Frontend
             CanWork = false;
 
             Br = brojDn;
+            currentStudent = currentUser.schoolClass.students[Br];
+            haveGradesChanged = false;
 
             if (ClickedMenuItem != null)//hover
             {
@@ -534,7 +566,7 @@ namespace Frontend
 
             OcenkiGrid.Children.Clear();
             //if (Ucenici[brojDn]._smer != "")
-            if (currentSchoolClass.students[brojDn].subjectOrientation != null)
+            if (currentUser.schoolClass.students[brojDn].subjectOrientation != null)
             {
                 LoadOcenkiView(brojDn);
                 //Load_stranski_jazici(brojDn);
@@ -546,7 +578,7 @@ namespace Frontend
             }
         }
 
-        private async void Combobox_Smer_SelectionChanged(object sender,SelectionChangedEventArgs e)
+        private async void Combobox_Smer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (!CanWork) return;
 
@@ -658,7 +690,7 @@ namespace Frontend
                     Border MaturskoPoleIme = SettingsDesign.ContentBorder(Pole.Ime);
                     // MaturskoPoleIme.HorizontalAlignment = HorizontalAlignment.Left;
                     MaturskoPoleIme.Margin = new Thickness(5, 0, 5, 5);
-                    
+
 
                     //Odgovor
                     TextBox MaturskoPoleTxt = SettingsDesign.ContentTextBox(Pole.GetVrednost());
@@ -715,11 +747,11 @@ namespace Frontend
             //else if (PredmetCtr == 4 && PoleCtr > 1) PoleCtr++;
 
             // ime na pole e hardcoded, kje treba da se napravi enum
-            if(Ucenici[Br].MaturskiPredmeti[PredmetCtr].MaturskiPolinja[PoleCtr].Ime == "Перцентилен ранг")
+            if (Ucenici[Br].MaturskiPredmeti[PredmetCtr].MaturskiPolinja[PoleCtr].Ime == "Перцентилен ранг")
             {
                 decimal d;
                 var didSucceed = decimal.TryParse(tx.Text, out d);
-                if(!didSucceed)
+                if (!didSucceed)
                 {
                     tx.Text = "00.00";
                 }
@@ -758,46 +790,46 @@ namespace Frontend
     }
 }
 
-    //public class MaturskiPredmet
-    //{
-    //    public string Ime;
-    //    public string IzbranPredmet = "";
-    //    public string[] MozniPredmeti;
-    //    public List<MaturskoPole> MaturskiPolinja = new List<MaturskoPole>();
+//public class MaturskiPredmet
+//{
+//    public string Ime;
+//    public string IzbranPredmet = "";
+//    public string[] MozniPredmeti;
+//    public List<MaturskoPole> MaturskiPolinja = new List<MaturskoPole>();
 
-    //    public MaturskiPredmet(string ime , string[] moznipredmeti)
-    //    {
-    //        Ime = ime;
-    //        MozniPredmeti = moznipredmeti;
+//    public MaturskiPredmet(string ime , string[] moznipredmeti)
+//    {
+//        Ime = ime;
+//        MozniPredmeti = moznipredmeti;
 
-    //        if (MozniPredmeti.Length > 0) IzbranPredmet = moznipredmeti[0];
+//        if (MozniPredmeti.Length > 0) IzbranPredmet = moznipredmeti[0];
 
-    //        //MaturskiPolinja
-    //        MaturskiPolinja.Add(new MaturskoPole("Ocenka", "5"));
-    //        if(ime != "Interen")
-    //        MaturskiPolinja.Add(new MaturskoPole("Percentiran", "5,0"));
-    //        MaturskiPolinja.Add(new MaturskoPole("Datum", "01.01.2004"));
-    //        MaturskiPolinja.Add(new MaturskoPole("delovoden", "2/5"));
-    //    }
+//        //MaturskiPolinja
+//        MaturskiPolinja.Add(new MaturskoPole("Ocenka", "5"));
+//        if(ime != "Interen")
+//        MaturskiPolinja.Add(new MaturskoPole("Percentiran", "5,0"));
+//        MaturskiPolinja.Add(new MaturskoPole("Datum", "01.01.2004"));
+//        MaturskiPolinja.Add(new MaturskoPole("delovoden", "2/5"));
+//    }
 
-    //    public string GetOutParam()
-    //    {
-    //        string rez = Ime;
-    //        string Delimetar = "|";
-    //        rez += Delimetar;
-    //        rez += IzbranPredmet;
-    //        rez += Delimetar;
-    //        foreach(MaturskoPole Pole in MaturskiPolinja)
-    //        {
-    //            rez += Pole.Ime;
-    //            rez += Delimetar;
-    //            rez += Pole.GetVrednost();
-    //            rez += Delimetar;
-    //        }
+//    public string GetOutParam()
+//    {
+//        string rez = Ime;
+//        string Delimetar = "|";
+//        rez += Delimetar;
+//        rez += IzbranPredmet;
+//        rez += Delimetar;
+//        foreach(MaturskoPole Pole in MaturskiPolinja)
+//        {
+//            rez += Pole.Ime;
+//            rez += Delimetar;
+//            rez += Pole.GetVrednost();
+//            rez += Delimetar;
+//        }
 
-    //        return rez;
-    //    }
-    //}
+//        return rez;
+//    }
+//}
 
 //    public class MaturskoPole
 //    {

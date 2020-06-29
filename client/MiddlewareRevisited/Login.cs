@@ -68,6 +68,7 @@ DEPRECATED */
                 var responseMessage = await httpClient.SendAsync(data);
                 responseMessage.EnsureSuccessStatusCode();
                 var str = await responseMessage.Content.ReadAsStringAsync();
+                Debug.WriteLine(str);
                 u = JsonConvert.DeserializeObject<User>(str);
                 return u;
             }  catch(Exception ex)
