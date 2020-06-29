@@ -180,7 +180,6 @@ namespace Frontend
                 Menu.Items.Add(MenuDP(x.firstName, x.lastName, i++));
             }
             combobox_smer.ItemsSource = currentUser.schoolClass.subjectOrientations.Select(x => x.fullName);
-
         }
 
         private DockPanel MenuDP(string Name, string Prezime, int brojDn)
