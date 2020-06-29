@@ -17,7 +17,7 @@ namespace MiddlewareRevisited.Controllers
         // TODO: Rework so it works like AdminPanel middleware 
         // TASK<Models.Student> -> Task zoso ne go koristis returnatiot Student
         // i plus vekje go imas updatenato lokalno Student-ot
-        public static async Task updateStudent(Models.Student student, Models.User currentUser)
+        public static async Task<Models.Student> updateStudent(Models.Student student, Models.User currentUser)
         {
             HttpClient httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -27,7 +27,7 @@ namespace MiddlewareRevisited.Controllers
             data.Content = new StringContent(json, Encoding.UTF8, "application/json");
             var ret = await httpClient.SendAsync(data);
             if (!ret.IsSuccessStatusCode) throw new Exception("status code poopy");
-            // return JsonConvert.DeserializeObject<Models.Student>(await ret.Content.ReadAsStringAsync());
+            return JsonConvert.DeserializeObject<Models.Student>(await ret.Content.ReadAsStringAsync());
         }
     }
 }

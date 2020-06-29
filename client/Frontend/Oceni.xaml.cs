@@ -583,13 +583,23 @@ namespace Frontend
             if (!CanWork) return;
 
             CanWork = false;
+
+            try
+            {
+                currentStudent.subjectOrientation = currentUser.schoolClass.subjectOrientations.Find(x => x.fullName == (string)combobox_smer.SelectedItem);
+                await MiddlewareRevisited.Controllers.Student.updateStudent(currentStudent, currentUser);
+            } catch (Exception ex)
+            {
+                Debug.Fail(ex.Message);
+            }
+
+
             int br = int.Parse(BrojDn_label.Content.ToString());
             br--;
 
-            var x = UserKlas._p.GetSmerovi().Values.ToList();
-            Smer NovSmer = x[combobox_smer.SelectedIndex];
-
-            await Ucenici[br].ChangeSmerAsync(NovSmer, UserKlas._token);
+            // var x = UserKlas._p.GetSmerovi().Values.ToList();
+            // Smer NovSmer = x[combobox_smer.SelectedIndex];
+            // await Ucenici[br].ChangeSmerAsync(NovSmer, UserKlas._token);
 
             LoadOcenkiView(br);
             Load_stranski_jazici(br);
