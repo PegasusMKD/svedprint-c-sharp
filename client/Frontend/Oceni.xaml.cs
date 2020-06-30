@@ -580,20 +580,21 @@ namespace Frontend
         {
             if (!CanWork) return;
 
+            int br = int.Parse(BrojDn_label.Content.ToString()) - 1;
+
             CanWork = false;
 
             try
             {
                 currentStudent.subjectOrientation = currentUser.schoolClass.subjectOrientations.ElementAtOrDefault(combobox_smer.SelectedIndex);
-                await MiddlewareRevisited.Controllers.Student.updateStudent(currentStudent, currentUser);
+                currentStudent = await MiddlewareRevisited.Controllers.Student.updateStudent(currentStudent, currentUser);
+                currentUser.schoolClass.students[br] = currentStudent;
             } catch (Exception ex)
             {
                 Debug.Fail(ex.Message);
             }
 
 
-            int br = int.Parse(BrojDn_label.Content.ToString());
-            br--;
 
             // var x = UserKlas._p.GetSmerovi().Values.ToList();
             // Smer NovSmer = x[combobox_smer.SelectedIndex];

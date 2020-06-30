@@ -26,7 +26,7 @@ namespace MiddlewareRevisited.Controllers
             data.Headers.Add("token", currentUser.token);
             data.Content = new StringContent(json, Encoding.UTF8, "application/json");
             var ret = await httpClient.SendAsync(data);
-            if (!ret.IsSuccessStatusCode) throw new Exception("status code poopy");
+            if (!ret.IsSuccessStatusCode) throw new Exception(await ret.Content.ReadAsStringAsync());
             return JsonConvert.DeserializeObject<Models.Student>(await ret.Content.ReadAsStringAsync());
         }
     }
