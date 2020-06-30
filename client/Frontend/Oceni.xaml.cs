@@ -173,7 +173,6 @@ namespace Frontend
 
         private void LoadListView()
         {
-
             int i = 0;
             foreach (var x in currentUser.schoolClass.students)
             {
