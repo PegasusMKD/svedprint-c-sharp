@@ -15,7 +15,8 @@
             <RowDefinition Height="10*"/>
         </Grid.RowDefinitions>
         <Grid Background="#FFED6A3D" Grid.Row="0" >
-            <Label Name="title" FontSize="50" Grid.Row="0" Foreground="White" HorizontalAlignment="Center">Ime Prezime
+            <Label Name="title" FontSize="50" Grid.Row="0" Foreground="White" HorizontalAlignment="Center" >
+                <Binding Path="firstName"/>
             </Label>
             <DockPanel HorizontalAlignment="Right" VerticalAlignment="Center">
                 <Border Background="White" Height="50" Width="50" CornerRadius="50" Margin="5">
@@ -54,21 +55,23 @@
                 </Border>
             </StackPanel>
         </Grid>
-        <TabPanel  Grid.Row="2" >
+        <TabControl Grid.Row="2">
             <TabItem Header="Оцени" FontSize="20" Background="LightGreen">
-                <Label>oceni</Label>
+                <Label Content="oceni"></Label>
             </TabItem>
             <TabItem Header="Проектна Активност"  FontSize="20" Background="AliceBlue">
                 <Label></Label>
             </TabItem>
-            <TabItem Header="Лични Податоци"  FontSize="20">
-                <Label></Label>
+            <TabItem Header="Лични Податоци" Name="personalDataTabItem" FontSize="20">
+                <StackPanel Name="personalDataTabItemFields">
+                    
+                </StackPanel>
             </TabItem>
             <TabItem Header="Матурски предмети"  FontSize="20" >
                 <Label></Label>
             </TabItem>
             
-        </TabPanel>
+        </TabControl>
        
     </Grid>
     
