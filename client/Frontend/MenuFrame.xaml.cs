@@ -31,7 +31,7 @@ namespace Frontend
 
             foreach(Student s in user.schoolClass.students)
             {
-                elements.Add(new KeyValuePair<string, Page>(s.lastName + " " + s.firstName, new NewOceniFrame(s)));
+                elements.Add(new KeyValuePair<string, Page>(s.lastName + " " + s.firstName, new NewOceniFrame(s,user.schoolClass.subjectOrientations)));
             }
 
             DesignMenu ListLayer = new DesignMenu(elements, ref Source);

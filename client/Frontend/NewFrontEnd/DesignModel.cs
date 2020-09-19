@@ -63,4 +63,59 @@ namespace Frontend.NewFrontEnd
             Element = lbl;
         }
     }
+
+    class OcenkaBox : DesignModel
+    {
+        static int Width = 50;
+        static int Height = 50;
+        static SolidColorBrush Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("DarkBlue"));
+        TextBox Ocenka = new TextBox();
+        public OcenkaBox(int ocenka,string  Predmet)
+        {
+            StackPanel st = new StackPanel();
+
+            Element = st;
+            Border bd = new Border();
+            bd.CornerRadius = new CornerRadius(50);
+            bd.Height = Height;
+            bd.Width = Width;
+            bd.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+            bd.VerticalAlignment = VerticalAlignment.Center;
+            bd.Margin = new Thickness(10, 10, 10, 0);
+            bd.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("DarkBlue"));
+            st.Children.Add(bd);
+
+
+
+            Ocenka.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+            Ocenka.VerticalAlignment = VerticalAlignment.Center;
+            Ocenka.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("Transparent"));
+            Ocenka.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("Transparent"));
+            Ocenka.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("White"));
+            Ocenka.FontSize = 30;
+            Ocenka.Text = ocenka.ToString();
+            bd.Child = Ocenka ;
+
+            Label Predmet_lbl = new Label();
+            Predmet_lbl.HorizontalAlignment = HorizontalAlignment.Center;
+            Predmet_lbl.VerticalAlignment = VerticalAlignment.Center;
+            Predmet_lbl.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("White"));
+            Predmet_lbl.Content = Predmet;
+
+            st.Children.Add(Predmet_lbl);
+ 
+        }
+
+        public int GetOcenka()
+        {
+            return short.Parse(Ocenka.Text);//try catch
+        }
+        /*
+             <StackPanel>
+                        <Border Background = "" Width= "50" Height= "50" CornerRadius= "50" HorizontalAlignment= "Center" VerticalAlignment= "Center" Margin= "10,10,10,0" >
+                            < TextBox HorizontalAlignment= "Center" Background= "{x:Null}" BorderBrush= "{x:Null}"  FontSize= "30" Foreground= "White" VerticalAlignment= "Center" SelectionBrush= "{x:Null}" OpacityMask= "White" > 5 </ TextBox >
+                        </ Border >
+                        < Label HorizontalAlignment= "Center" Foreground= "White" VerticalAlignment= "Center" > Предмет </ Label >
+                    </ StackPanel >*/
+    }
 }
