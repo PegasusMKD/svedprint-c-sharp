@@ -13,7 +13,7 @@ namespace Frontend
         {
             InitializeComponent();
             
-            title.Content = s.firstName;
+            title.Content = s.firstName + s.lastName;
         }
     }
 }

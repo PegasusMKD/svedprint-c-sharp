@@ -54,21 +54,21 @@
                 </Border>
             </StackPanel>
         </Grid>
-        <TabPanel  Grid.Row="2" >
-            <TabItem Header="Оцени" FontSize="20" Background="LightGreen">
+        <TabControl  Grid.Row="2" >
+            <TabItem Header="Оцени" FontSize="20">
                 <Label>oceni</Label>
             </TabItem>
-            <TabItem Header="Проектна Активност"  FontSize="20" Background="AliceBlue">
-                <Label></Label>
+            <TabItem Header="Проектна Активност"  FontSize="20" >
+                <Label>fad</Label>
             </TabItem>
             <TabItem Header="Лични Податоци"  FontSize="20">
-                <Label></Label>
+                <Label>afdsa</Label>
             </TabItem>
             <TabItem Header="Матурски предмети"  FontSize="20" >
-                <Label></Label>
+                <Label>fdasfsda</Label>
             </TabItem>
             
-        </TabPanel>
+        </TabControl>
        
     </Grid>
     

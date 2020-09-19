@@ -40,7 +40,7 @@ namespace Frontend.NewFrontEnd
 
         private void Label_Clicked(object sender, System.Windows.Input.MouseButtonEventArgs e,Page Target)
         {
-            //Label lbl = ((Label)sender);
+            Label lbl = ((Label)sender);
             //MessageBox.Show("clicked");
             //Source_Frame.Content = Target;
             Source_Frame.Navigate(Target);
