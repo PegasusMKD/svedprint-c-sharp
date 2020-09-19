@@ -41,7 +41,6 @@ namespace Frontend
 
             SettingsImg.MouseLeftButtonDown += new MouseButtonEventHandler(SettingsImg_Clicked);
 
-
         }
 
         private void SettingsImg_Clicked(object sender, MouseButtonEventArgs e)
