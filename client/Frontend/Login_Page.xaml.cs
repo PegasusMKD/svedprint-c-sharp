@@ -26,6 +26,11 @@ namespace Frontend
             AlertTimer.Tick += new EventHandler(AlertTimer_Tick);
             AlertTimer.Interval = new TimeSpan(0, 0, 5);
 
+            Username_txt.Text = "7sMViyYn3B";
+            Password_txt.Password = "pfvTi1NzxE";
+
+            login();
+
             InjectServerLabel();
         }
 

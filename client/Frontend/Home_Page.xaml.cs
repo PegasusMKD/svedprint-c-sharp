@@ -68,7 +68,8 @@ namespace Frontend
 
         private void PrintImgClicked(object sender, MouseButtonEventArgs e)
         {
-            Main.Content = new PrintFrame(Main, this);
+            //Main.Content = new PrintFrame(Main, this);
+            NavigationService.Navigate(new MenuFrame(currentUser));
         }
     }
 }

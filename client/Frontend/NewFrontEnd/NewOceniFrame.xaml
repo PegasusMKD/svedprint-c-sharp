@@ -1,0 +1,75 @@
+﻿<Page x:Class="Frontend.NewOceniFrame"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Frontend"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="643"
+      Background="White"
+      Title="NewOceniFrame">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="10*"/>
+        </Grid.RowDefinitions>
+        <Grid Background="#FFED6A3D" Grid.Row="0" >
+            <Label Name="title" FontSize="50" Grid.Row="0" Foreground="White" HorizontalAlignment="Center">Ime Prezime
+            </Label>
+            <DockPanel HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Border Background="White" Height="50" Width="50" CornerRadius="50" Margin="5">
+                    <Label Foreground="Black" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center">+</Label>
+                </Border>
+                <Border Background="White" Height="50" Width="50" CornerRadius="50" Margin="5">
+                    <Label Foreground="Black" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center">-</Label>
+                </Border>
+                <Border Background="White" Height="50" Width="50" CornerRadius="50" Margin="5">
+                    <Label Foreground="Black" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Center">Settings</Label>
+                </Border>
+            </DockPanel>
+        </Grid>
+        <Grid Grid.Row="1" Background="#FF4B86C6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel VerticalAlignment="Top" Grid.Column="1" >
+                <Label Grid.Row="1" FontSize="30" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Top" >Смер</Label>
+                <ComboBox Margin="10" FontSize="35" Grid.Row="2"/>
+            </StackPanel>
+            <StackPanel Grid.Column="0">
+                <Label HorizontalAlignment="Center" Foreground="White" VerticalAlignment="Top" FontSize="20">Бр Дневник</Label>
+                <Border  Background="#FF395F86"  CornerRadius="50" Margin="5" Height="60" Width="60">
+                    <Label Foreground="White" HorizontalAlignment="Center" FontSize="30" VerticalAlignment="Center">1</Label>
+                </Border>
+            </StackPanel>
+
+            <StackPanel Grid.Column="2">
+                <Label HorizontalAlignment="Center" Foreground="White" VerticalAlignment="Top" FontSize="20">Просек</Label>
+                <Border  Background="#FF395F86"  CornerRadius="20" Margin="10" Height="50">
+                    <Label Foreground="White" HorizontalAlignment="Center" FontSize="30" VerticalAlignment="Center">5.0</Label>
+                </Border>
+            </StackPanel>
+        </Grid>
+        <TabPanel  Grid.Row="2" >
+            <TabItem Header="Оцени" FontSize="20" Background="LightGreen">
+                <Label>oceni</Label>
+            </TabItem>
+            <TabItem Header="Проектна Активност"  FontSize="20" Background="AliceBlue">
+                <Label></Label>
+            </TabItem>
+            <TabItem Header="Лични Податоци"  FontSize="20">
+                <Label></Label>
+            </TabItem>
+            <TabItem Header="Матурски предмети"  FontSize="20" >
+                <Label></Label>
+            </TabItem>
+            
+        </TabPanel>
+       
+    </Grid>
+    
+</Page>
