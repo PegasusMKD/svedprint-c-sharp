@@ -7,5 +7,6 @@ namespace MiddlewareRevisited.Models
         public string id;
         public DateTime dateWhenTestimonyConfirmed;
         public string name;
+        public int numberOfMustSubjects;
     }
 }

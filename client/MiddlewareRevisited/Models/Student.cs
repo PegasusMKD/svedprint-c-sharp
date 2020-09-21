@@ -37,11 +37,12 @@ namespace MiddlewareRevisited.Models
         public string citizenship;
         public string nameOfSchool;
         public bool printedTestimony;
-        public string optionalSubjects;
+        public OptionalSubjects[] optionalSubjects;
         public string diplomaBusinessNumber;
         public List<int> languages;
         public List<int> grades;
         public List<int> droppedGrades;
+        public string country;
         public SubjectOrientation subjectOrientation;
 
         public Dictionary<string, string> GetPolinja()
@@ -63,11 +64,12 @@ namespace MiddlewareRevisited.Models
             polinja.Add("behaviorType" , behaviorType);
             polinja.Add("justifiedAbsences", justifiedAbsences.ToString());
             polinja.Add("unjustifiedAbsences", unjustifiedAbsences.ToString());
-            polinja.Add("optionalSubjects", optionalSubjects);
+            //polinja.Add("optionalSubjects", optionalSubjects);
             //polinja.Add(RequestParameters.pedagoshki_merki, _pedagoski_merki);
             polinja.Add("lastGradeYear", lastGradeYear);
             polinja.Add("lastSchoolName" , lastSchoolName);
             polinja.Add("lastSchoolYearSuccessType", lastSchoolYearSuccessType);
+            polinja.Add("country", country);
             return polinja;
         }
     }

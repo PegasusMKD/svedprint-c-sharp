@@ -23,6 +23,9 @@ namespace Frontend
         private SchoolClass schoolClass;
         private Oceni gradesPage;
 
+        public static List<Student> students_static;
+        public static User currentUser_static;
+
         public string currentUserData { get; set; }
 
 
@@ -34,6 +37,9 @@ namespace Frontend
             schoolClass = currentUser.schoolClass;
             subjectOrientations = schoolClass.subjectOrientations;
             students = schoolClass.students;
+
+            students_static = students;
+            currentUser_static = currentUser;
 
             currentUserData = $"{currentUser.firstName} {(string.IsNullOrWhiteSpace(currentUser.middleName) ? "" : $"{currentUser.middleName}-")}{currentUser.lastName}, {currentUser.schoolClass.name}";
 

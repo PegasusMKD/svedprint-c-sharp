@@ -1,4 +1,6 @@
 ﻿using Middleware;
+using MiddlewareRevisited.Models;
+using MiddlewareRevisited.Models.PrintModels;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -123,6 +125,12 @@ namespace Frontend
 
         private void Btn_edinecnoprint_Clicked(object sender, RoutedEventArgs e)
         {
+            Student student = Home_Page.students_static[0];
+            User currentUser = Home_Page.currentUser_static;
+            ReportCard reportCard = new ReportCard(ref student, ref currentUser, "./Models/PrintModels/rsz_1front.jpg", "./Models/PrintModels/rsz_1back.jpg",
+                "E:\\front-page.jpeg", "E:\\back-page.jpeg");
+            reportCard.resetData();
+            reportCard.generatePreview(0,0);
             //int offsetx, offsety;
             //offsetx = int.Parse(X_offset.Text);
             //offsety = int.Parse(Y_offset.Text);
