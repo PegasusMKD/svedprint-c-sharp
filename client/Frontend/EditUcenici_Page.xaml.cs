@@ -75,11 +75,13 @@ namespace Frontend
 
             if(students.Count > 0 && students.Count > BrojDn)
             {
-                Dictionary<string, string> PolinjaModels = students[BrojDn].GetPolinja();
+                // conflicting code
+                // do not use this page
+                // Dictionary<string, string> PolinjaModels = students[BrojDn].GetPolinja(); 
                 foreach (Pole pole in polinja)
                 {
                     ///polinja.Find(y => y.RequestParametar == x.Key).Odgovor = x.Value;
-                    polinja.Find(x => x.Ime == pole.Ime).Odgovor = PolinjaModels[pole.RequestParametar];
+                    // polinja.Find(x => x.Ime == pole.Ime).Odgovor = PolinjaModels[pole.RequestParametar];
                 }
             }
 
