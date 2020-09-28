@@ -1,14 +1,8 @@
-﻿using Middleware;
-using MiddlewareRevisited.Models;
-using MiddlewareRevisited.Models.PrintModels;
+﻿using MiddlewareRevisited.Models.PrintModels;
 using MiddlewareRevisited.Models.PrintModels.Printer;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Drawing.Printing;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
