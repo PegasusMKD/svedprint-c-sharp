@@ -3,11 +3,13 @@ using MiddlewareRevisited.Models.PrintModels.Printer;
 using System;
 using System.Collections.Generic;
 using System.Drawing.Printing;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Frontend
 {
@@ -129,6 +131,23 @@ namespace Frontend
             int offsetx = int.Parse(X_offset.Text);
             int offsety = int.Parse(Y_offset.Text);
             int val = combobox_printer.SelectedIndex;
+            IEnumerable<dynamic> previewIterator = this.iteratorContainer.previewIterator(offsetx, offsety);
+            foreach (System.Drawing.Image[] image in previewIterator)
+            {
+                using (MemoryStream memory = new MemoryStream())
+                {
+                    image[0].Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+                    memory.Position = 0;
+                    BitmapImage bitmapimage = new BitmapImage();
+                    bitmapimage.BeginInit();
+                    bitmapimage.StreamSource = memory;
+                    bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmapimage.EndInit();
+                    SvedImg.Source = bitmapimage;
+                }
+                break;
+            }
+            
             Task.Factory.StartNew(() =>
             {
                 IEnumerable<dynamic> printIterator = this.iteratorContainer.printIterator(offsetx, offsety);
@@ -136,8 +155,10 @@ namespace Frontend
                 {
                     Printer printer = new Printer();
                     printer.print(reportCard[0].Clone(), val);
+                    
                 }
             });
+
         }
 
         private void Btn_celprint_Clicked(object sender, RoutedEventArgs e)
