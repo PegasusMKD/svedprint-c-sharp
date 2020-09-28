@@ -53,5 +53,16 @@ namespace MiddlewareRevisited.Models.PrintModels
                 image.clearPreview();
             }
         }
+
+        public void clearPreview(int idx)
+        {
+            images[idx].clearPreview();
+        }
+
+        public dynamic getSinglePreview(int idx, int horizontalMargin, int verticalMargin) { 
+                if (idx < 0 || idx >= images.Count)
+                    throw new IndexOutOfRangeException("Index out of range");
+                return images[idx].generatePreview(horizontalMargin, verticalMargin);
+        }
     }
 }

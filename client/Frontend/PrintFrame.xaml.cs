@@ -4,9 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Drawing.Printing;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -83,7 +85,7 @@ namespace Frontend
             tx.FontSize = 22;
             tx.FontFamily = new System.Windows.Media.FontFamily("Arial Black");
             tx.Foreground = System.Windows.Media.Brushes.White;
-            tx.VerticalAlignment = VerticalAlignment.Center;
+            tx.VerticalAlignment = System.Windows.VerticalAlignment.Center;
             st.MouseLeftButtonDown += new MouseButtonEventHandler((sender, e) => MouseLeftButtonDown(sender, e, brojDn + 1));
             st.MouseEnter += new MouseEventHandler(MouseEnter);
             st.MouseLeave += new MouseEventHandler(MouseLeave);
@@ -131,34 +133,38 @@ namespace Frontend
             int offsetx = int.Parse(X_offset.Text);
             int offsety = int.Parse(Y_offset.Text);
             int val = combobox_printer.SelectedIndex;
-            IEnumerable<dynamic> previewIterator = this.iteratorContainer.previewIterator(offsetx, offsety);
-            foreach (System.Drawing.Image[] image in previewIterator)
-            {
-                using (MemoryStream memory = new MemoryStream())
-                {
-                    image[0].Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
-                    memory.Position = 0;
-                    BitmapImage bitmapimage = new BitmapImage();
-                    bitmapimage.BeginInit();
-                    bitmapimage.StreamSource = memory;
-                    bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
-                    bitmapimage.EndInit();
-                    SvedImg.Source = bitmapimage;
-                }
-                break;
-            }
-            
+            List<int> studentsToPrint = getIdxOfStudentsToPrint(studentsToPrint);
+
             Task.Factory.StartNew(() =>
             {
                 IEnumerable<dynamic> printIterator = this.iteratorContainer.printIterator(offsetx, offsety);
+                int ctr = 0;
                 foreach (dynamic reportCard in printIterator)
                 {
+                    ctr++;
+                    if (!studentsToPrint.Contains(ctr)) continue;
                     Printer printer = new Printer();
                     printer.print(reportCard[0].Clone(), val);
-                    
+
                 }
             });
 
+        }
+
+        private List<int> getIdxOfStudentsToPrint(List<int> studentsToPrint)
+        {
+            List<int> studentsToPrint = new List<int>();
+            string[] studentsToPrintStrings = uceniciToPrint.Text.Split(',');
+            foreach (string student in studentsToPrintStrings)
+            {
+                if (student.Contains("-"))
+                {
+                    string[] rangeBounds = student.Split('-');
+                    studentsToPrint.AddRange(Enumerable.Range(int.Parse(rangeBounds[0]), int.Parse(rangeBounds[1])));
+                }
+                else studentsToPrint.Add(int.Parse(student));
+            }
+            return studentsToPrint;
         }
 
         private void Btn_celprint_Clicked(object sender, RoutedEventArgs e)
