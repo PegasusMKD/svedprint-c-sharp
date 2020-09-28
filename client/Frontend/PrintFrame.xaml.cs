@@ -133,7 +133,7 @@ namespace Frontend
             int offsetx = int.Parse(X_offset.Text);
             int offsety = int.Parse(Y_offset.Text);
             int val = combobox_printer.SelectedIndex;
-            List<int> studentsToPrint = getIdxOfStudentsToPrint(studentsToPrint);
+            List<int> studentsToPrint = getIdxOfStudentsToPrint();
 
             Task.Factory.StartNew(() =>
             {
@@ -151,7 +151,7 @@ namespace Frontend
 
         }
 
-        private List<int> getIdxOfStudentsToPrint(List<int> studentsToPrint)
+        private List<int> getIdxOfStudentsToPrint()
         {
             List<int> studentsToPrint = new List<int>();
             string[] studentsToPrintStrings = uceniciToPrint.Text.Split(',');
@@ -164,7 +164,7 @@ namespace Frontend
                 }
                 else studentsToPrint.Add(int.Parse(student));
             }
-            return studentsToPrint;
+            return studentsToPrint.Distinct().ToList();
         }
 
         private void Btn_celprint_Clicked(object sender, RoutedEventArgs e)
