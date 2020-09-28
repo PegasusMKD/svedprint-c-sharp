@@ -1,11 +1,15 @@
 ﻿using Middleware;
 using MiddlewareRevisited.Models;
 using MiddlewareRevisited.Models.PrintModels;
+using MiddlewareRevisited.Models.PrintModels.Printer;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Drawing.Printing;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -20,6 +24,7 @@ namespace Frontend
     {
         Frame Main;
         Page HomePage;
+        PrintIterator<ReportCard> iteratorContainer;
         public PrintFrame(Frame m, Page homepage)
         {
             if (!Properties.Settings.Default.IsPrintAllowed) return; // print block, treba test
@@ -30,6 +35,8 @@ namespace Frontend
             LoadPrinterBox();
             LoadListView();
             Menu.SelectedIndex = 0;
+            List<string> filenames = new List<string>() { "./Models/PrintModels/ReportCard/rsz_1front.jpg", "./Models/PrintModels/ReportCard/rsz_1back.jpg" };
+            this.iteratorContainer = new PrintIterator<ReportCard>(ref Home_Page.students_static, Home_Page.currentUser_static, filenames);
         }
 
         private void LoadPrinterBox()
@@ -125,40 +132,20 @@ namespace Frontend
 
         private void Btn_edinecnoprint_Clicked(object sender, RoutedEventArgs e)
         {
-            Student student = Home_Page.students_static[0];
-            User currentUser = Home_Page.currentUser_static;
-            ReportCard reportCard = new ReportCard(ref student, ref currentUser, "./Models/PrintModels/rsz_1front.jpg", "./Models/PrintModels/rsz_1back.jpg",
-                "E:\\front-page.jpeg", "E:\\back-page.jpeg");
-            reportCard.resetData();
-            reportCard.generatePreview(0,0);
-            //int offsetx, offsety;
-            //offsetx = int.Parse(X_offset.Text);
-            //offsety = int.Parse(Y_offset.Text);
-            //List<int> toPrint = uceniciToPrint.Text.Split(',').ToList().ConvertAll(x => int.Parse(x));
-            //// fix dodeka broevite vo dnevnik se isti
-            //List<Ucenik> uceniks = Home_Page.ucenici.Where(x => toPrint.Contains(Home_Page.ucenici.IndexOf(x) + 1)).ToList();
-            //// posle fix za razlicni broevi
-            ////List<Ucenik> uceniks = Home_Page.ucenici.Where(x => toPrint.Contains(x._broj)).ToList();
-
-            ////Middleware.Print.PrintSveditelstva(uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex);
-            //switch (Menu.SelectedIndex)
-            //{
-            //    case 0:
-            //        Print.PrintSveditelstva(Home_Page.ucenici, uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
-            //        break;
-            //    case 1:
-            //        Print.PrintGlavnaKniga(Home_Page.ucenici, uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
-            //        break;
-            //    // nema case 2 zosto e samo za cel klas
-            //    case 3:
-            //        Print.PrintGkDiploma(Home_Page.ucenici, uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
-            //        break;
-            //    case 4:
-            //        Print.PrintDiploma(Home_Page.ucenici, uceniks, Home_Page.KlasenKlasa, combobox_printer.SelectedIndex, offsetx, offsety);
-            //        break;
-            //}
+            int offsetx = int.Parse(X_offset.Text);
+            int offsety = int.Parse(Y_offset.Text);
+            int val = combobox_printer.SelectedIndex;
+            Task.Factory.StartNew(() =>
+            {
+                IEnumerable<dynamic> printIterator = this.iteratorContainer.printIterator(offsetx, offsety);
+                foreach (dynamic reportCard in printIterator)
+                {
+                    Printer printer = new Printer();
+                    printer.print(reportCard[0].Clone(), val);
+                }
+            });
         }
-        
+
         private void Btn_celprint_Clicked(object sender, RoutedEventArgs e)
         {
             //int offsetx, offsety;

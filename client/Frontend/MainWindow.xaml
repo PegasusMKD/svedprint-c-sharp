@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Frontend"
         mc:Ignorable="d"
-        Title="SvedPrint" Height="600" Width="900" Background="#FFF1F3CE" Icon="grades_icon_xlj_icon.ico" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+        Title="SvedPrint" Height="600" Width="900" Background="#FFF1F3CE" WindowStartupLocation="CenterScreen" WindowState="Maximized">
 	<Grid>
 		<Frame x:Name="Main" NavigationUIVisibility="Hidden"/>
 	</Grid>

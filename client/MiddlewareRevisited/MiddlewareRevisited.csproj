@@ -55,11 +55,14 @@
     <Compile Include="Helpers.cs" />
     <Compile Include="Login.cs" />
     <Compile Include="Models\OptionalSubjects.cs" />
-    <Compile Include="Models\PrintModels\ICustomImage.cs" />
-    <Compile Include="Models\PrintModels\ICustomImageCollection.cs" />
-    <Compile Include="Models\PrintModels\ReportCard.cs" />
-    <Compile Include="Models\PrintModels\ReportCardBack.cs" />
-    <Compile Include="Models\PrintModels\ReportCardFront.cs" />
+    <Compile Include="Models\PrintModels\Generic\GenericPrinter.cs" />
+    <Compile Include="Models\PrintModels\Generic\ICustomImage.cs" />
+    <Compile Include="Models\PrintModels\Generic\ICustomImageCollection.cs" />
+    <Compile Include="Models\PrintModels\Generic\PrintIterator.cs" />
+    <Compile Include="Models\PrintModels\Printer\Printer.cs" />
+    <Compile Include="Models\PrintModels\ReportCard\ReportCard.cs" />
+    <Compile Include="Models\PrintModels\ReportCard\ReportCardBack.cs" />
+    <Compile Include="Models\PrintModels\ReportCard\ReportCardFront.cs" />
     <Compile Include="Models\School.cs" />
     <Compile Include="Models\SchoolClass.cs" />
     <Compile Include="Models\Student.cs" />
@@ -97,12 +100,13 @@
     <Content Include="Models\PrintModels\front.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Models\PrintModels\rsz_1back.jpg">
+    <Content Include="Models\PrintModels\ReportCard\rsz_1back.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Models\PrintModels\rsz_1front.jpg">
+    <Content Include="Models\PrintModels\ReportCard\rsz_1front.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

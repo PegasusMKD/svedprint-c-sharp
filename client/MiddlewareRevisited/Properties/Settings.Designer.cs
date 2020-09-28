@@ -12,7 +12,7 @@ namespace MiddlewareRevisited.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.5.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.7.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -25,19 +25,19 @@ namespace MiddlewareRevisited.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("34.107.76.93")]
-        public string DB_HOST {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DB_PORT {
             get {
-                return ((string)(this["DB_HOST"]));
+                return ((string)(this["DB_PORT"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string DB_PORT {
+        [global::System.Configuration.DefaultSettingValueAttribute("34.107.76.93")]
+        public string DB_HOST {
             get {
-                return ((string)(this["DB_PORT"]));
+                return ((string)(this["DB_HOST"]));
             }
         }
     }
