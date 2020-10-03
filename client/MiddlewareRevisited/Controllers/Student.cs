@@ -43,10 +43,10 @@ namespace MiddlewareRevisited.Controllers
                 var data = new HttpRequestMessage(HttpMethod.Post, $"http://{Properties.Settings.Default.DB_HOST}:8080/api/students/page");
                 data.Headers.Add("token", user.token);
                 data.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
-                var json = new JObject
-                {
-                    { "schoolClass", JsonConvert.SerializeObject(user.schoolClass) }
-                }.ToString() ;
+
+                var json = new JObject(
+                        new JProperty("schoolClass", JToken.FromObject(user.schoolClass)
+                    )).ToString();
 
                 data.Content = new StringContent(json, Encoding.UTF8, "application/json");
                 var response = await http.SendAsync(data);
