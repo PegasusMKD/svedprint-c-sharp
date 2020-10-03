@@ -25,12 +25,16 @@ namespace Frontend
     {
         // instead of making new frames, reuse one frame
         private NewOceniFrame currentStudentDetailsPage;
+        private List<Student> students;
         public static User CurrentUser { get; set; }
         public MenuFrame(User user)
         {
             InitializeComponent();
 
             CurrentUser = user;
+            students = user.schoolClass.students;
+
+            students = MiddlewareRevisited.Controllers.Student.GetAllStudentsShortAsync(user).GetAwaiter().GetResult();
             Dictionary<Student, Page> elements = new Dictionary<Student, Page>();
 
 

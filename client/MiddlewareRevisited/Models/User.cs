@@ -10,6 +10,7 @@
         public string token;
         public bool printAllowed;
         public School school;
+        [Newtonsoft.Json.JsonProperty("schoolClass")]
         public SchoolClass schoolClass;
     }
 }

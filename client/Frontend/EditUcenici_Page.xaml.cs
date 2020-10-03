@@ -232,7 +232,7 @@ namespace Frontend
                 student = students[int.Parse(BrojDnLabel.Text) - 1];
             }
             Util.UpdateObjectByFields<Student>(polinja, student);
-            await MiddlewareRevisited.Controllers.Student.updateStudent(student, currentUser);
+            await MiddlewareRevisited.Controllers.Student.UpdateStudent(student, currentUser);
         }
 
         public string ProektniToString(List<string> tx)
