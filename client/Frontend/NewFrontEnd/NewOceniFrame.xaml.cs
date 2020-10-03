@@ -37,8 +37,10 @@ namespace Frontend
             });
         }
 
-        public void init(Student s, User u)
+        public async void init(Student s, User u)
         {
+            s = await MiddlewareRevisited.Controllers.Student.GetStudentByIdAsync(s.Id, u);
+
             shouldUpdate = false;
             CurrentStudent = s;
             currentUser = u;
@@ -85,9 +87,9 @@ namespace Frontend
             OcenkaBox tmp;
 
             //Debug.Assert(s.grades.Count == Predmeti.Count);
-            int minCount = Math.Min(s.grades.Count, Predmeti.Count); // temporary fix, fix asap
 
-            for (int i = 0; i < minCount; i++)
+            while (s.grades.Count < Predmeti.Count) s.grades.Add(0);
+            for (int i = 0; i < Predmeti.Count; i++)
             {
                 int ocenka = s.grades[i];
                 tmp = new OcenkaBox(ocenka, Predmeti[i]);
