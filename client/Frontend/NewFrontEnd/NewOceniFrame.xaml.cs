@@ -67,9 +67,14 @@ namespace Frontend
                 {
 
                     var txt = new TextBox();
+                    Console.WriteLine(x.Name);
                     Binding binding = new Binding(x.Name) { UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged, Mode = BindingMode.TwoWay };
-                    txt.SetBinding(TextBox.TextProperty, binding);
-                    //txt.TextChanged += new TextChangedEventHandler((o, e) => { shouldUpdate = true; });
+
+                    DefaultPole Pole = new DefaultPole(x.CustomAttributes.FirstOrDefault().ConstructorArguments[0].Value.ToString(), "", x.Name , ".");
+                    //txt.SetBinding(TextBox.TextProperty, binding);
+                    personalDataTabItemFields.Children.Add(Pole.GetDesign());
+                    /*
+                    txt.TextChanged += new TextChangedEventHandler((o, e) => { shouldUpdate = true; });
 
                     var lbl = new Label();
                     lbl.Content = x.CustomAttributes.FirstOrDefault().ConstructorArguments[0].Value;
@@ -80,6 +85,8 @@ namespace Frontend
                     dockPanel.Children.Add(txt);
 
                     personalDataTabItemFields.Children.Add(dockPanel);
+
+                    DefaultPole Pole1 = new DefaultPole("Korisnicko ime", "Ime Prezime", t, "username");*/
                 }
             }
             title.Content = $"{s.firstName} {s.lastName}";

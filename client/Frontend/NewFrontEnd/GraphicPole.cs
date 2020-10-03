@@ -76,7 +76,7 @@ namespace Frontend.NewFrontEnd
             Border bd = new Border();
             bd.Height = 50.0;
             bd.VerticalAlignment = VerticalAlignment.Top;
-            bd.Background = (Brush)Application.Current.FindResource("MenuItemColor");
+            bd.Background = (Brush)new System.Windows.Media.BrushConverter().ConvertFromString("#FFED6A3E");//(Brush)Application.Current.FindResource("MenuItemColor");
             bd.BorderThickness = new Thickness(2);
             bd.CornerRadius = new CornerRadius(10);
             bd.Child = CreateDefaultLabel(Content);
@@ -92,7 +92,7 @@ namespace Frontend.NewFrontEnd
             lbl.FontWeight = FontWeights.Bold;
             if (Content.Length < 15) lbl.FontSize = 30.0;
             else lbl.FontSize = 30.0 / (Content.Length / 15);
-            lbl.Foreground = (Brush)Application.Current.FindResource("TextColor");
+            lbl.Foreground = (Brush)new System.Windows.Media.BrushConverter().ConvertFromString("#fff");//(Brush)Application.Current.FindResource("TextColor");
             return lbl;
         }
         public static Border CreateDefaultUnderBorder()
@@ -100,7 +100,7 @@ namespace Frontend.NewFrontEnd
             Border bd = new Border();
             bd.Height = 10;
             bd.VerticalAlignment = VerticalAlignment.Center;
-            bd.Background = (Brush)Application.Current.FindResource("UnderBorderColor");
+            bd.Background = (Brush)new System.Windows.Media.BrushConverter().ConvertFromString("#fff");//(Brush)Application.Current.FindResource("UnderBorderColor");
             bd.BorderThickness = new Thickness(2);
             bd.CornerRadius = new CornerRadius(5);
             return bd;
@@ -148,7 +148,7 @@ namespace Frontend.NewFrontEnd
             if (Text.Length < 15) tx.FontSize = 35.0;
             else tx.FontSize = 35.0 / (Text.Length / 10);
             tx.Background = Brushes.Transparent;
-            tx.Foreground = (Brush)Application.Current.FindResource("TextColor");
+            tx.Foreground = (Brush)new System.Windows.Media.BrushConverter().ConvertFromString("#ffffff");//(Brush)Application.Current.FindResource("TextColor");
             tx.HorizontalAlignment = HorizontalAlignment.Stretch;
             tx.VerticalAlignment = VerticalAlignment.Center;
             tx.BorderThickness = new Thickness(0);

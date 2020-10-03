@@ -1,0 +1,20 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Frontend.Resources"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="UsernameLabelText">Корисничко име</system:String>
+    <system:String x:Key="PasswordLabelText">Лозинка</system:String>
+    <system:String x:Key="LoginButtonText">Најави се</system:String>
+    <system:String x:Key="Build_Users_Button_Text">Build Users</system:String>
+    <system:String x:Key="Build_Students_Button_Text">Build Students</system:String>
+    <system:String x:Key="Transfer_Year_Button_Text">Transfer To New School Year</system:String>
+    <system:String x:Key="UpdateUsersText">Update</system:String>
+
+    <SolidColorBrush x:Key="MenuItemColor" Color="#FFED6A3E"/>
+    <SolidColorBrush x:Key="MenuItemHoverColor" Color="#82b3ff"/>
+    <SolidColorBrush x:Key="TextColor" Color="White"/>
+    <SolidColorBrush x:Key="Background" Color="#3e5878"/>
+    <SolidColorBrush x:Key="UnderBorderColor" Color="White"/>
+
+</ResourceDictionary>

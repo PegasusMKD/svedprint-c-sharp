@@ -71,9 +71,10 @@
                 <Label>fad</Label>
             </TabItem>
             <TabItem Header="Лични Податоци" Name="personalDataTabItem" FontSize="20">
-                <StackPanel Name="personalDataTabItemFields">
-                    
-                </StackPanel>
+                <ScrollViewer><UniformGrid Name="personalDataTabItemFields" Background="DarkSlateBlue" Columns="2">
+
+                    </UniformGrid>
+                </ScrollViewer>
             </TabItem>
             <TabItem  Header="Матурски предмети"  FontSize="20" >
                 <Label>fdasfsda</Label>
