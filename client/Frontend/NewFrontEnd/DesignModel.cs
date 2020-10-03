@@ -51,7 +51,7 @@ namespace Frontend.NewFrontEnd
             //MessageBox.Show("clicked");
             //Source_Frame.Content = Target;
             if (childFrame == null) childFrame = new NewOceniFrame(student, currentUser);
-            childFrame.init(student, currentUser);
+            else childFrame.init(student, currentUser);
             parentFrame.Navigate(childFrame);
         }
     }

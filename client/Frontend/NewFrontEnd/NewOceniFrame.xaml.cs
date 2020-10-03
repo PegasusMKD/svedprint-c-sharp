@@ -80,12 +80,12 @@ namespace Frontend
                     personalDataTabItemFields.Children.Add(dockPanel);
                 }
             }
+
             title.Content = $"{s.firstName} {s.lastName}";
             //title.Content = s.subjectOrientation.shortName;
 
             Smer_cb.ItemsSource = currentUser.schoolClass.subjectOrientations;
-            Smer_cb.SelectedValuePath = "id";
-            Smer_cb.SelectedValue = s.subjectOrientation.id;
+            Smer_cb.SelectedItem = s.subjectOrientation;
             Smer_cb.DisplayMemberPath = "shortName";
 
 
