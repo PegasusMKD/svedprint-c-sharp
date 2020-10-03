@@ -103,14 +103,14 @@ namespace Frontend.NewFrontEnd
             Ocenka.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("Transparent"));
             Ocenka.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("White"));
             Ocenka.FontSize = 30;
-            //Ocenka.Text = ocenka.ToString();
+            //Ocenka.Text = (model.ToString();
             bd.Child = Ocenka ;
 
 
             if ("ocenka" != null)
             {
                 Binding myBind = new Binding();
-                myBind.Path = new PropertyPath(string.Format("ocenki[{0}]", index));
+                myBind.Path = new PropertyPath(string.Format("grades[{0}]", index));
                 myBind.Source = model;
                 myBind.Mode = BindingMode.TwoWay;
                 myBind.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;

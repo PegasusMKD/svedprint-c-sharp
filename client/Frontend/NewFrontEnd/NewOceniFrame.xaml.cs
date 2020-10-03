@@ -31,7 +31,7 @@ namespace Frontend
 
             MouseLeave += new MouseEventHandler(async (obj, e) =>
             {
-                CurrentStudent = await MiddlewareRevisited.Controllers.Student.UpdateStudent(CurrentStudent, currentUser);
+                //CurrentStudent = await MiddlewareRevisited.Controllers.Student.UpdateStudent(CurrentStudent, currentUser);
                 shouldUpdate = false;
 
             });
@@ -100,8 +100,7 @@ namespace Frontend
             while (s.grades.Count < Predmeti.Count) s.grades.Add(0);
             for (int i = 0; i < Predmeti.Count; i++)
             {
-                int ocenka = s.grades[i];
-                tmp = new OcenkaBox(ocenka, Predmeti[i]);
+                tmp = new OcenkaBox(i, Predmeti[i],s);
 
                 Ocenki.Add(tmp);
                 unigrid.Children.Add(tmp.GetModel());
