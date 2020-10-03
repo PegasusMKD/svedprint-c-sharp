@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -29,7 +30,7 @@ namespace MiddlewareRevisited.Models.PrintModels
             constructor = type.GetConstructor(parameterTypes);
             foreach (Student student in students)
             {
-                images.Add((ICustomImage)constructor.Invoke(new object[] { student, homeroomTeacher, imageNames, "E:\\frontal.jpg", "E:\\back.jpg" }));
+                images.Add((ICustomImage)constructor.Invoke(new object[] { student, homeroomTeacher, imageNames, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "front.jpg" ), Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "back.jpg" )}));
             }
             
         }
