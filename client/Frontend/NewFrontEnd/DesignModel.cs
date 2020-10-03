@@ -1,11 +1,11 @@
 ﻿using MiddlewareRevisited.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 
 namespace Frontend.NewFrontEnd
@@ -48,11 +48,11 @@ namespace Frontend.NewFrontEnd
             //MessageBox.Show("clicked");
             //Source_Frame.Content = Target;
             if (childFrame == null) childFrame = new NewOceniFrame(student, currentUser);
-            else childFrame.init(student, currentUser);
+            childFrame.init(student, currentUser);
             parentFrame.Navigate(childFrame);
         }
     }
-
+   
     class MenuLabel : DesignModel
     {
         static int Width = 800;
@@ -77,7 +77,7 @@ namespace Frontend.NewFrontEnd
         static int Height = 50;
         static SolidColorBrush Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("DarkBlue"));
         TextBox Ocenka = new TextBox();
-        public OcenkaBox(int ocenka,string  Predmet)
+        public OcenkaBox(int index, string Predmet,object model)
         {
             StackPanel st = new StackPanel();
 
@@ -100,8 +100,19 @@ namespace Frontend.NewFrontEnd
             Ocenka.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("Transparent"));
             Ocenka.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("White"));
             Ocenka.FontSize = 30;
-            Ocenka.Text = ocenka.ToString();
+            //Ocenka.Text = ocenka.ToString();
             bd.Child = Ocenka ;
+
+
+            if ("ocenka" != null)
+            {
+                Binding myBind = new Binding();
+                myBind.Path = new PropertyPath(string.Format("ocenki[{0}]", index));
+                myBind.Source = model;
+                myBind.Mode = BindingMode.TwoWay;
+                myBind.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+                Ocenka.SetBinding(TextBox.TextProperty, myBind);
+            }
 
             Label Predmet_lbl = new Label();
             Predmet_lbl.HorizontalAlignment = HorizontalAlignment.Center;
@@ -112,6 +123,8 @@ namespace Frontend.NewFrontEnd
             st.Children.Add(Predmet_lbl);
  
         }
+
+
 
         public int GetOcenka()
         {

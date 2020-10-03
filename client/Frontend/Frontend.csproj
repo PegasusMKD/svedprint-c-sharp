@@ -69,6 +69,7 @@
       <DependentUpon>MenuFrame.xaml</DependentUpon>
     </Compile>
     <Compile Include="NewFrontEnd\DesignModel.cs" />
+    <Compile Include="NewFrontEnd\GraphicPole.cs" />
     <Compile Include="NewFrontEnd\NewOceniFrame.xaml.cs">
       <DependentUpon>NewOceniFrame.xaml</DependentUpon>
     </Compile>
