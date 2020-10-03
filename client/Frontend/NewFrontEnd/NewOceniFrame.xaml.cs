@@ -31,10 +31,17 @@ namespace Frontend
 
             MouseLeave += new MouseEventHandler(async (obj, e) =>
             {
-                //CurrentStudent = await MiddlewareRevisited.Controllers.Student.updateStudent(CurrentStudent, currentUser);
+                CurrentStudent = await MiddlewareRevisited.Controllers.Student.UpdateStudent(CurrentStudent, currentUser);
                 shouldUpdate = false;
 
             });
+
+            Smer_cb.SelectionChanged += SmerUpdated;
+        }
+
+        private void SmerUpdated(object sender, SelectionChangedEventArgs e)
+        {
+            CurrentStudent.subjectOrientation = (SubjectOrientation)Smer_cb.SelectedItem;
         }
 
         public async void init(Student s, User u)
@@ -58,7 +65,7 @@ namespace Frontend
                 {
 
                     var txt = new TextBox();
-                    Binding binding = new Binding(x.Name) { UpdateSourceTrigger = UpdateSourceTrigger.Default, Mode = BindingMode.TwoWay };
+                    Binding binding = new Binding(x.Name) { UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged, Mode = BindingMode.TwoWay };
                     txt.SetBinding(TextBox.TextProperty, binding);
                     //txt.TextChanged += new TextChangedEventHandler((o, e) => { shouldUpdate = true; });
 
@@ -76,8 +83,10 @@ namespace Frontend
             title.Content = $"{s.firstName} {s.lastName}";
             //title.Content = s.subjectOrientation.shortName;
 
-            Smer_cb.ItemsSource = currentUser.schoolClass.subjectOrientations.Select(x => x.shortName).ToList();
-            Smer_cb.SelectedItem = s.subjectOrientation.shortName;
+            Smer_cb.ItemsSource = currentUser.schoolClass.subjectOrientations;
+            Smer_cb.SelectedItem = s.subjectOrientation;
+            Smer_cb.DisplayMemberPath = "shortName";
+
 
             //  Block of code to try
             List<string> Predmeti = currentUser.schoolClass.subjectOrientations.Find(x => x.shortName == s.subjectOrientation.shortName).subjects;
