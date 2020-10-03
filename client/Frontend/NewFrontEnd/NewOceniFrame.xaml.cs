@@ -31,17 +31,14 @@ namespace Frontend
 
             MouseLeave += new MouseEventHandler(async (obj, e) =>
             {
+                if (!shouldUpdate) return;
                 CurrentStudent = await MiddlewareRevisited.Controllers.Student.UpdateStudent(CurrentStudent, currentUser);
+                init(CurrentStudent, currentUser);
                 shouldUpdate = false;
 
             });
 
-            Smer_cb.SelectionChanged += SmerUpdated;
-        }
-
-        private void SmerUpdated(object sender, SelectionChangedEventArgs e)
-        {
-            CurrentStudent.subjectOrientation = (SubjectOrientation)Smer_cb.SelectedItem;
+            Smer_cb.SelectionChanged += (object sender, SelectionChangedEventArgs e) => { CurrentStudent.subjectOrientation = (SubjectOrientation)Smer_cb.SelectedItem; shouldUpdate = true; };
         }
 
         public async void init(Student s, User u)
@@ -90,7 +87,7 @@ namespace Frontend
 
 
             //  Block of code to try
-            List<string> Predmeti = currentUser.schoolClass.subjectOrientations.Find(x => x.shortName == s.subjectOrientation.shortName).subjects;
+            List<string> Predmeti = currentUser.schoolClass.subjectOrientations.Find(x => x.id == s.subjectOrientation.id).subjects;
 
             Ocenki.Clear();
             unigrid.Children.Clear();
