@@ -41,7 +41,7 @@ namespace Frontend.NewFrontEnd
             }
 
             if (elements.Count == 0) return;
-            childFrame = new NewOceniFrame(elements[0], User);
+            else childFrame = new NewOceniFrame(elements[0], User);
             parentFrame.Navigate(childFrame);
         }
 
@@ -127,18 +127,9 @@ namespace Frontend.NewFrontEnd
  
         }
 
-
-
         public int GetOcenka()
         {
             return short.Parse(Ocenka.Text);//try catch
         }
-        /*
-             <StackPanel>
-                        <Border Background = "" Width= "50" Height= "50" CornerRadius= "50" HorizontalAlignment= "Center" VerticalAlignment= "Center" Margin= "10,10,10,0" >
-                            < TextBox HorizontalAlignment= "Center" Background= "{x:Null}" BorderBrush= "{x:Null}"  FontSize= "30" Foreground= "White" VerticalAlignment= "Center" SelectionBrush= "{x:Null}" OpacityMask= "White" > 5 </ TextBox >
-                        </ Border >
-                        < Label HorizontalAlignment= "Center" Foreground= "White" VerticalAlignment= "Center" > Предмет </ Label >
-                    </ StackPanel >*/
     }
 }

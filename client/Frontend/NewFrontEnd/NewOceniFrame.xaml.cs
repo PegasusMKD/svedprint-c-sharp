@@ -56,7 +56,7 @@ namespace Frontend
             title.DataContext = CurrentStudent;
             personalDataTabItem.DataContext = CurrentStudent;
             //title.Content = CurrentStudent.firstName;
-
+            personalDataTabItemFields.Children.Clear();
             foreach (var x in CurrentStudent.GetType().GetProperties())
             {
                 DockPanel dockPanel = new DockPanel()
@@ -67,7 +67,6 @@ namespace Frontend
                 {
 
                     var txt = new TextBox();
-                    Console.WriteLine(x.Name);
                     Binding binding = new Binding(x.Name) { UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged, Mode = BindingMode.TwoWay };
 
                     DefaultPole Pole = new DefaultPole(x.CustomAttributes.FirstOrDefault().ConstructorArguments[0].Value.ToString(), "", x.Name , ".");
