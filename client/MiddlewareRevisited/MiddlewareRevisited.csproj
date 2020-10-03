@@ -48,6 +48,7 @@
     <Compile Include="Controllers\Student.cs" />
     <Compile Include="Controllers\SubjectOrientation.cs" />
     <Compile Include="Login.cs" />
+    <Compile Include="Models\Meta\PageResponse.cs" />
     <Compile Include="Models\School.cs" />
     <Compile Include="Models\SchoolClass.cs" />
     <Compile Include="Models\Student.cs" />

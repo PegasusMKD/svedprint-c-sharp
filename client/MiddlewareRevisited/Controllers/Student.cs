@@ -1,4 +1,5 @@
 ﻿using MiddlewareRevisited.Models;
+using MiddlewareRevisited.Models.Meta;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -34,9 +35,31 @@ namespace MiddlewareRevisited.Controllers
             }
         }
 
+        public static async Task<Models.Student> GetStudentByIdAsync(string studentId, User user)
+        {
+            Models.Student s;
+            using (var http = new HttpClient())
+            {
+                var data = new HttpRequestMessage(HttpMethod.Post, $"http://{Properties.Settings.Default.DB_HOST}:8080/api/students/getOne");
+                data.Headers.Add("token", user.token);
+                data.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                //var json = new JObject(
+                //        new JProperty("schoolClass", JToken.FromObject(user.schoolClass)
+                //    )).ToString();
+
+                data.Content = new StringContent(studentId, Encoding.UTF8, MediaTypeNames.Text.Plain);
+                var response = await http.SendAsync(data).ConfigureAwait(false);
+                if (!response.IsSuccessStatusCode) throw new Exception(await response.Content.ReadAsStringAsync());
+                s = JsonConvert.DeserializeObject<Models.Student>(await response.Content.ReadAsStringAsync());
+            }
+
+            return s;
+        }
+
         public static async Task<List<Models.Student>> GetAllStudentsShortAsync(Models.User user)
         {
-            List<Models.Student> students;
+            PageResponse<Models.Student> students;
 
             using (HttpClient http = new HttpClient())
             {
@@ -49,12 +72,12 @@ namespace MiddlewareRevisited.Controllers
                     )).ToString();
 
                 data.Content = new StringContent(json, Encoding.UTF8, "application/json");
-                var response = await http.SendAsync(data);
+                var response = await http.SendAsync(data).ConfigureAwait(false);
                 if (!response.IsSuccessStatusCode) throw new Exception(await response.Content.ReadAsStringAsync());
-                students = JsonConvert.DeserializeObject<List<Models.Student>>(await response.Content.ReadAsStringAsync());
+                students = JsonConvert.DeserializeObject<PageResponse<Models.Student>>(await response.Content.ReadAsStringAsync());
             }
 
-            return students;
+            return students.content;
         }
     }
 }
