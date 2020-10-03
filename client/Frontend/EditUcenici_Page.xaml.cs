@@ -73,17 +73,6 @@ namespace Frontend
             polinja.Add(new Pole("Претходно училиште", RequestParameters.prethodno_uchilishte, new string[] { "СУГС - Раде Јовчевски Корчагин" }));
             polinja.Add(new Pole("Претходен успех", RequestParameters.prethoden_uspeh, new string[] { "Одличен" , "Многу добар" , "Добар", "Доволен"}));
 
-            if(students.Count > 0 && students.Count > BrojDn)
-            {
-                // conflicting code
-                // do not use this page
-                // Dictionary<string, string> PolinjaModels = students[BrojDn].GetPolinja(); 
-                foreach (Pole pole in polinja)
-                {
-                    ///polinja.Find(y => y.RequestParametar == x.Key).Odgovor = x.Value;
-                    // polinja.Find(x => x.Ime == pole.Ime).Odgovor = PolinjaModels[pole.RequestParametar];
-                }
-            }
 
             if (polinja.Find(x => x.RequestParametar == RequestParameters.broj).GetOdgovor() == "0") polinja.Find(x => x.RequestParametar == RequestParameters.broj).Odgovor = (BrojDn+1).ToString();
 
