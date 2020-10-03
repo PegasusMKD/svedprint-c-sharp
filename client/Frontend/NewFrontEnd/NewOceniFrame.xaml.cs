@@ -82,7 +82,8 @@ namespace Frontend
             //title.Content = s.subjectOrientation.shortName;
 
             Smer_cb.ItemsSource = currentUser.schoolClass.subjectOrientations;
-            Smer_cb.SelectedItem = s.subjectOrientation;
+            Smer_cb.SelectedValuePath = "id";
+            Smer_cb.SelectedValue = s.subjectOrientation.id;
             Smer_cb.DisplayMemberPath = "shortName";
 
 
