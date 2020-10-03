@@ -32,20 +32,25 @@ namespace Frontend
             MouseLeave += new MouseEventHandler(async (obj, e) =>
             {
                 if (!shouldUpdate) return;
-                CurrentStudent = await MiddlewareRevisited.Controllers.Student.UpdateStudent(CurrentStudent, currentUser);
+                await MiddlewareRevisited.Controllers.Student.UpdateStudent(CurrentStudent, currentUser).ContinueWith(val =>{
+                        CurrentStudent = val.Result;
+                        shouldUpdate = false;
+                });
                 init(CurrentStudent, currentUser);
-                shouldUpdate = false;
-
             });
 
             Smer_cb.SelectionChanged += (object sender, SelectionChangedEventArgs e) => { CurrentStudent.subjectOrientation = (SubjectOrientation)Smer_cb.SelectedItem; shouldUpdate = true; };
+        }
+
+        private void SmerUpdated(object sender, SelectionChangedEventArgs e)
+        {
+            CurrentStudent.subjectOrientation = (SubjectOrientation)Smer_cb.SelectedItem;
         }
 
         public async void init(Student s, User u)
         {
             s = await MiddlewareRevisited.Controllers.Student.GetStudentByIdAsync(s.id, u);
 
-            shouldUpdate = false;
             CurrentStudent = s;
             currentUser = u;
             title.DataContext = CurrentStudent;
@@ -77,17 +82,18 @@ namespace Frontend
                     personalDataTabItemFields.Children.Add(dockPanel);
                 }
             }
-
             title.Content = $"{s.firstName} {s.lastName}";
             //title.Content = s.subjectOrientation.shortName;
 
             Smer_cb.ItemsSource = currentUser.schoolClass.subjectOrientations;
-            Smer_cb.SelectedItem = s.subjectOrientation;
+            Smer_cb.SelectedValuePath = "id";
+            Smer_cb.SelectedValue = s.subjectOrientation.id;
             Smer_cb.DisplayMemberPath = "shortName";
+            shouldUpdate = false;
 
 
             //  Block of code to try
-            List<string> Predmeti = currentUser.schoolClass.subjectOrientations.Find(x => x.id == s.subjectOrientation.id).subjects;
+            List<string> Predmeti = s.subjectOrientation == null ? new List<string>() : s.subjectOrientation.subjects;
 
             Ocenki.Clear();
             unigrid.Children.Clear();
