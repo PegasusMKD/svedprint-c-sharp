@@ -30,16 +30,15 @@ namespace Frontend
         public MenuFrame(User user)
         {
             InitializeComponent();
-
+            
             CurrentUser = user;
             students = user.schoolClass.students;
-
-            students = MiddlewareRevisited.Controllers.Student.GetAllStudentsShortAsync(user).GetAwaiter().GetResult();
+            MiddlewareRevisited.Controllers.Student.GetAllStudentsShortAsync(user).ContinueWith(val => students = val.Result).Wait();
             Dictionary<Student, Page> elements = new Dictionary<Student, Page>();
 
 
             int ctr = 0;
-            foreach(Student s in user.schoolClass.students)
+            foreach(Student s in students)
             {
                 elements.Add(s, currentStudentDetailsPage);
                 ctr++;

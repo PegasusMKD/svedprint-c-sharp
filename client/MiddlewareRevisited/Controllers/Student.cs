@@ -1,4 +1,5 @@
 ﻿using MiddlewareRevisited.Models;
+using MiddlewareRevisited.Models.Meta;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -36,7 +37,7 @@ namespace MiddlewareRevisited.Controllers
 
         public static async Task<List<Models.Student>> GetAllStudentsShortAsync(Models.User user)
         {
-            List<Models.Student> students;
+            PageResponse<Models.Student> students;
 
             using (HttpClient http = new HttpClient())
             {
@@ -49,12 +50,12 @@ namespace MiddlewareRevisited.Controllers
                     )).ToString();
 
                 data.Content = new StringContent(json, Encoding.UTF8, "application/json");
-                var response = await http.SendAsync(data);
+                var response = await http.SendAsync(data).ConfigureAwait(false);
                 if (!response.IsSuccessStatusCode) throw new Exception(await response.Content.ReadAsStringAsync());
-                students = JsonConvert.DeserializeObject<List<Models.Student>>(await response.Content.ReadAsStringAsync());
+                students = JsonConvert.DeserializeObject<PageResponse<Models.Student>>(await response.Content.ReadAsStringAsync());
             }
 
-            return students;
+            return students.content;
         }
     }
 }

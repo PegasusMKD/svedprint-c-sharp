@@ -45,10 +45,10 @@ namespace MiddlewareRevisited.Models
         public string mothersName { get => _mothersName; set { if (_mothersName != value) { _mothersName = value; NotifyPropertyChanged(); } } }
 
         [PersonalData("Датум на раѓање")]
-        public DateTime dateOfBirth { get => _dateOfBirth; set { if (_dateOfBirth != value) { _dateOfBirth = value; NotifyPropertyChanged(); } } }
+        public DateTime? dateOfBirth { get => _dateOfBirth; set { if (_dateOfBirth != value) { _dateOfBirth = value; NotifyPropertyChanged(); } } }
 
         [PersonalData("Место на живеење")]
-        public string placeOfResidence { get => _placeOfResidence; set { if (_fathersName != value) { _fathersName = value; NotifyPropertyChanged(); } } }
+        public string placeOfResidence { get => _placeOfResidence; set { if (_placeOfResidence != value) { _placeOfResidence = value; NotifyPropertyChanged(); } } }
 
         [PersonalData("Место на раѓање")]
         public string placeOfBirth { get => _placeOfBirth; set { if (_placeOfBirth != value) { _placeOfBirth = value; NotifyPropertyChanged(); } } }
@@ -68,10 +68,10 @@ namespace MiddlewareRevisited.Models
         [PersonalData("Положил година???")]
         public string passedYear { get => _passedYear; set { if (_passedYear != value) { _passedYear = value; NotifyPropertyChanged(); } } }
         [PersonalData("Оправдани изостаноци")]
-        public int justifiedAbsences { get => _justifiedAbsences; set { if (_justifiedAbsences != value) { _justifiedAbsences = value; NotifyPropertyChanged(); } } }
+        public int? justifiedAbsences { get => _justifiedAbsences; set { if (_justifiedAbsences != value) { _justifiedAbsences = value; NotifyPropertyChanged(); } } }
 
         [PersonalData("Неоправдани изостаноци")]
-        public int unjustifiedAbsences { get => _unjustifiedAbsences; set { if (_unjustifiedAbsences != value) { _unjustifiedAbsences = value; NotifyPropertyChanged(); } } }
+        public int? unjustifiedAbsences { get => _unjustifiedAbsences; set { if (_unjustifiedAbsences != value) { _unjustifiedAbsences = value; NotifyPropertyChanged(); } } }
 
         [PersonalData("Тип на испит??")]
         public string examType { get => _examType; set { if (_examType != value) { _examType = value; NotifyPropertyChanged(); } } }
@@ -92,19 +92,19 @@ namespace MiddlewareRevisited.Models
         public string lastSchoolYearSuccessType { get => _lastSchoolYearSuccessType; set { if (_lastSchoolYearSuccessType != value) { _lastSchoolYearSuccessType = value; NotifyPropertyChanged(); } } }
 
         //[PersonalData("Место на живеење")]
-        public int lastSchoolYear { get => _lastSchoolYear; set => _lastSchoolYear = value; }
+        public int? lastSchoolYear { get => _lastSchoolYear; set => _lastSchoolYear = value; }
         //[PersonalData("Место на живеење")]
         public string lastSchoolName { get => _lastSchoolName; set => _lastSchoolName = value; }
         //[PersonalData("Место на живеење")]
         public string lastBusinessNumber { get => _lastBusinessNumber; set => _lastBusinessNumber = value; }
         //[PersonalData("Место на живеење")]
-        public DateTime dateWhenTestimonyWasPrinted { get => _dateWhenTestimonyWasPrinted; set => _dateWhenTestimonyWasPrinted = value; }
+        public DateTime? dateWhenTestimonyWasPrinted { get => _dateWhenTestimonyWasPrinted; set => _dateWhenTestimonyWasPrinted = value; }
         //[PersonalData("Место на живеење")]
         public string citizenship { get => _citizenship; set => _citizenship = value; }
         //[PersonalData("Место на живеење")]
         public string nameOfSchool { get => _nameOfSchool; set => _nameOfSchool = value; }
         //[PersonalData("Место на живеење")]
-        public bool printedTestimony { get => _printedTestimony; set => _printedTestimony = value; }
+        public bool? printedTestimony { get => _printedTestimony; set => _printedTestimony = value; }
         //[PersonalData("Место на живеење")]
         public string optionalSubjects { get => _optionalSubjects; set => _optionalSubjects = value; }
         //[PersonalData("Место на живеење")]
@@ -122,10 +122,10 @@ namespace MiddlewareRevisited.Models
         private string _firstName;
         private string _middleName;
         private string _lastName;
-        private Nullable<int> _number;
+        private int? _number;
         private string _fathersName;
         private string _mothersName;
-        private DateTime _dateOfBirth;
+        private DateTime? _dateOfBirth;
         private string _placeOfResidence;
         private string _placeOfBirth;
         private string _timesStudiedYear;
@@ -133,21 +133,21 @@ namespace MiddlewareRevisited.Models
         private string _examMonth;
         private string _passedExam;
         private string _passedYear;
-        private int _justifiedAbsences;
-        private int _unjustifiedAbsences;
+        private int? _justifiedAbsences;
+        private int? _unjustifiedAbsences;
         private string _examType;
         private string _educationType;
         private string _studentType;
         private string _behaviorType;
         private string _lastGradeYear;
         private string _lastSchoolYearSuccessType;
-        private int _lastSchoolYear;
+        private int? _lastSchoolYear;
         private string _lastSchoolName;
         private string _lastBusinessNumber;
-        private DateTime _dateWhenTestimonyWasPrinted;
+        private DateTime? _dateWhenTestimonyWasPrinted;
         private string _citizenship;
         private string _nameOfSchool;
-        private bool _printedTestimony;
+        private bool? _printedTestimony;
         private string _optionalSubjects;
         private string _diplomaBusinessNumber;
         private List<int> _languages;
