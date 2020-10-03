@@ -22,7 +22,7 @@ namespace MiddlewareRevisited.Models
     {
 
         // properties
-        public string Id { get; set; }
+        public string id { get => _id; set => _id = value; }
         [PersonalData("Пол")]
         public string gender { get => _gender; set { if (_gender != value) { _gender = value; NotifyPropertyChanged(); } } } 
 
@@ -118,6 +118,7 @@ namespace MiddlewareRevisited.Models
         //[PersonalData("Место на живеење")]
         public SubjectOrientation subjectOrientation { get => _subjectOrientation; set => _subjectOrientation = value; }
 
+        private string _id;
         private string _gender;
         private string _firstName;
         private string _middleName;

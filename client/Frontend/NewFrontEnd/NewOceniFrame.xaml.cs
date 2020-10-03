@@ -46,7 +46,7 @@ namespace Frontend
 
         public async void init(Student s, User u)
         {
-            s = await MiddlewareRevisited.Controllers.Student.GetStudentByIdAsync(s.Id, u);
+            s = await MiddlewareRevisited.Controllers.Student.GetStudentByIdAsync(s.id, u);
 
             shouldUpdate = false;
             CurrentStudent = s;
