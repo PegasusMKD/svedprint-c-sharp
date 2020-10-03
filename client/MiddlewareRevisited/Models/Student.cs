@@ -20,9 +20,6 @@ namespace MiddlewareRevisited.Models
     }
     public class Student : INotifyPropertyChanged
     {
-        // fields
-        private string _id;
-        private string _gender;
 
         // properties
         public string Id { get; set; }
@@ -121,6 +118,7 @@ namespace MiddlewareRevisited.Models
         //[PersonalData("Место на живеење")]
         public SubjectOrientation subjectOrientation { get => _subjectOrientation; set => _subjectOrientation = value; }
 
+        private string _gender;
         private string _firstName;
         private string _middleName;
         private string _lastName;

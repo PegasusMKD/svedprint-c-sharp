@@ -23,22 +23,25 @@ namespace Frontend
     /// </summary>
     public partial class MenuFrame : Page
     {
+        // instead of making new frames, reuse one frame
+        private NewOceniFrame currentStudentDetailsPage;
+        public static User CurrentUser { get; set; }
         public MenuFrame(User user)
         {
             InitializeComponent();
 
-            List<KeyValuePair<string, Page>> elements = new List<KeyValuePair<string, Page>>();
-            ObservableCollection<Student> observable = new ObservableCollection<Student>();
+            CurrentUser = user;
+            Dictionary<Student, Page> elements = new Dictionary<Student, Page>();
 
 
             int ctr = 0;
             foreach(Student s in user.schoolClass.students)
             {
-                elements.Add(new KeyValuePair<string, Page>(s.lastName + " " + s.firstName, new NewOceniFrame(s, user.schoolClass.subjectOrientations, user) { Name = $"ucenik{ctr}" }));
+                elements.Add(s, currentStudentDetailsPage);
                 ctr++;
             }
 
-            DesignMenu ListLayer = new DesignMenu(elements, ref Source);
+            DesignMenu ListLayer = new DesignMenu(elements, user, ref Source);
             DesignModel Model = ListLayer;
             MainGrid.Children.Add(Model.GetModel());
         }

@@ -24,21 +24,26 @@ namespace Frontend
         private bool shouldUpdate;
 
 
-        public NewOceniFrame(Student s, List<SubjectOrientation> subjectOrientations, User u)
+        public NewOceniFrame(Student s,  User u)
         {
             InitializeComponent();
+            init(s, u);
 
+            MouseLeave += new MouseEventHandler(async (obj, e) =>
+            {
+                //CurrentStudent = await MiddlewareRevisited.Controllers.Student.updateStudent(CurrentStudent, currentUser);
+                shouldUpdate = false;
+
+            });
+        }
+
+        public void init(Student s, User u)
+        {
             shouldUpdate = false;
             CurrentStudent = s;
             currentUser = u;
             title.DataContext = CurrentStudent;
             personalDataTabItem.DataContext = CurrentStudent;
-            MouseLeave += new MouseEventHandler(async (obj, e) =>
-            {
-                    CurrentStudent = await MiddlewareRevisited.Controllers.Student.updateStudent(CurrentStudent, currentUser);
-                    shouldUpdate = false;
-
-            });
             //title.Content = CurrentStudent.firstName;
 
             foreach (var x in CurrentStudent.GetType().GetProperties())
@@ -69,25 +74,27 @@ namespace Frontend
             title.Content = $"{s.firstName} {s.lastName}";
             //title.Content = s.subjectOrientation.shortName;
 
-            Smer_cb.ItemsSource = subjectOrientations.Select(x => x.shortName).ToList();
+            Smer_cb.ItemsSource = currentUser.schoolClass.subjectOrientations.Select(x => x.shortName).ToList();
             Smer_cb.SelectedItem = s.subjectOrientation.shortName;
-            int ctr = 0;
 
-            try
-            {
-                //  Block of code to try
-                List<string> Predmeti = subjectOrientations.Find(x => x.shortName == s.subjectOrientation.shortName).subjects;
-                foreach (int ocenka in s.grades)
-                {
-                    Ocenki.Add(new OcenkaBox(ocenka, Predmeti[ctr++]));
-                    unigrid.Children.Add(Ocenki.Last().GetModel());
-                }
-            }
-            catch (Exception e)
-            {
-                //  Block of code to handle errors
-            }
+            //  Block of code to try
+            List<string> Predmeti = currentUser.schoolClass.subjectOrientations.Find(x => x.shortName == s.subjectOrientation.shortName).subjects;
 
+            Ocenki.Clear();
+            unigrid.Children.Clear();
+            OcenkaBox tmp;
+
+            //Debug.Assert(s.grades.Count == Predmeti.Count);
+            int minCount = Math.Min(s.grades.Count, Predmeti.Count); // temporary fix, fix asap
+
+            for (int i = 0; i < minCount; i++)
+            {
+                int ocenka = s.grades[i];
+                tmp = new OcenkaBox(ocenka, Predmeti[i]);
+
+                Ocenki.Add(tmp);
+                unigrid.Children.Add(tmp.GetModel());
+            }
         }
 
         public List<int> GetOcenki()

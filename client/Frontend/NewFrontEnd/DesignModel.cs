@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MiddlewareRevisited.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,37 +21,42 @@ namespace Frontend.NewFrontEnd
 
     class DesignMenu : DesignModel
     {
-        Frame Source_Frame;
-        public DesignMenu(List<KeyValuePair<string, Page>> elements,ref Frame Source_Frame)
+        private NewOceniFrame childFrame;
+        private Frame parentFrame;
+        private User currentUser;
+        public DesignMenu(Dictionary<Student, Page> elements, User User, ref Frame ParentFrame)
         {
             Element = new ListView();
             ScrollViewer.SetHorizontalScrollBarVisibility(Element, ScrollBarVisibility.Hidden);
-            this.Source_Frame = Source_Frame;
-
+            this.parentFrame = ParentFrame;
+            currentUser = User;
 
             int i = 0;
-            foreach (KeyValuePair<string,Page> element in elements)
+            foreach (var element in elements)
             {
-                Label lbl = ((Label)new MenuLabel(element.Key).GetModel());
+                Label lbl = (Label)new MenuLabel($"{element.Key.firstName} {element.Key.lastName}").GetModel();
                 ((ListView)Element).Items.Add(lbl);
-                lbl.MouseLeftButtonDown += ((sender,e) =>  Label_Clicked(sender,e,element.Value));     
-                if(i++==0)Source_Frame.Navigate(element.Value);
+
+                lbl.MouseLeftButtonDown += (sender,e) =>  Label_Clicked(sender,e,(NewOceniFrame)element.Value,element.Key);     
+                if(i++==0)ParentFrame.Navigate(element.Value);
             }
         }
 
-        private void Label_Clicked(object sender, System.Windows.Input.MouseButtonEventArgs e,Page Target)
+        private void Label_Clicked(object sender, System.Windows.Input.MouseButtonEventArgs e, NewOceniFrame Target, Student student)
         {
             Label lbl = ((Label)sender);
             //MessageBox.Show("clicked");
             //Source_Frame.Content = Target;
-            Source_Frame.Navigate(Target);
+            if (childFrame == null) childFrame = new NewOceniFrame(student, currentUser);
+            else childFrame.init(student, currentUser);
+            parentFrame.Navigate(childFrame);
         }
     }
 
     class MenuLabel : DesignModel
     {
         static int Width = 800;
-        static int Fontsize = 40;
+        static int Fontsize = 36;
         static SolidColorBrush BackgroundColor = new SolidColorBrush(Color.FromRgb(255, 183, 94));
 
         public MenuLabel(string text)
@@ -60,6 +66,7 @@ namespace Frontend.NewFrontEnd
             lbl.Width = Width;
             lbl.FontSize = Fontsize;
             lbl.Background = BackgroundColor;
+            lbl.ToolTip = text;
             Element = lbl;
         }
     }
