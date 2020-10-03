@@ -117,6 +117,7 @@ namespace MiddlewareRevisited.Models
         public List<int> droppedGrades { get => _droppedGrades; set => _droppedGrades = value; }
         //[PersonalData("Место на живеење")]
         public SubjectOrientation subjectOrientation { get => _subjectOrientation; set => _subjectOrientation = value; }
+        public SchoolClass schoolClass { get => _schoolClass; set => _schoolClass = value; }
 
         private string _id;
         private string _gender;
@@ -155,6 +156,7 @@ namespace MiddlewareRevisited.Models
         private List<int> _grades;
         private List<int> _droppedGrades;
         private SubjectOrientation _subjectOrientation;
+        private SchoolClass _schoolClass;
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void NotifyPropertyChanged([CallerMemberName] String propertyName = "")

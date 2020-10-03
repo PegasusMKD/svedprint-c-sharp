@@ -31,7 +31,7 @@ namespace Frontend
 
             MouseLeave += new MouseEventHandler(async (obj, e) =>
             {
-                //CurrentStudent = await MiddlewareRevisited.Controllers.Student.UpdateStudent(CurrentStudent, currentUser);
+                CurrentStudent = await MiddlewareRevisited.Controllers.Student.UpdateStudent(CurrentStudent, currentUser);
                 shouldUpdate = false;
 
             });
@@ -84,7 +84,8 @@ namespace Frontend
             //title.Content = s.subjectOrientation.shortName;
 
             Smer_cb.ItemsSource = currentUser.schoolClass.subjectOrientations;
-            Smer_cb.SelectedItem = s.subjectOrientation;
+            Smer_cb.SelectedValuePath = "id";
+            Smer_cb.SelectedValue = s.subjectOrientation.id;
             Smer_cb.DisplayMemberPath = "shortName";
 
 

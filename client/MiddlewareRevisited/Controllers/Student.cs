@@ -22,6 +22,7 @@ namespace MiddlewareRevisited.Controllers
         // i plus vekje go imas updatenato lokalno Student-ot
         public static async Task<Models.Student> UpdateStudent(Models.Student student, Models.User currentUser)
         {
+            student.schoolClass = currentUser.schoolClass;
             using (HttpClient httpClient = new HttpClient())
             {
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
