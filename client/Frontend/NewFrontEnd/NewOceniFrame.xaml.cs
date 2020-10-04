@@ -67,13 +67,13 @@ namespace Frontend
                 {
 
                     var txt = new TextBox();
-                    Binding binding = new Binding(x.Name) { UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged, Mode = BindingMode.TwoWay };
+                    //Binding binding = new Binding(x.Name) { UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged, Mode = BindingMode.TwoWay };
 
-                    DefaultPole Pole = new DefaultPole(x.CustomAttributes.FirstOrDefault().ConstructorArguments[0].Value.ToString(), "", x.Name , ".");
+                    DefaultPole Pole = new DefaultPole(x.CustomAttributes.FirstOrDefault().ConstructorArguments[0].Value.ToString(), "", null ,x.Name);
                     //txt.SetBinding(TextBox.TextProperty, binding);
                     personalDataTabItemFields.Children.Add(Pole.GetDesign());
+                    //txt.TextChanged += new TextChangedEventHandler((o, e) => { shouldUpdate = true; });
                     /*
-                    txt.TextChanged += new TextChangedEventHandler((o, e) => { shouldUpdate = true; });
 
                     var lbl = new Label();
                     lbl.Content = x.CustomAttributes.FirstOrDefault().ConstructorArguments[0].Value;

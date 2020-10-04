@@ -153,15 +153,19 @@ namespace Frontend.NewFrontEnd
             tx.VerticalAlignment = VerticalAlignment.Center;
             tx.BorderThickness = new Thickness(0);
             tx.Margin = new Thickness(5);
+            
             if (Binding != null)
             {
                 Binding myBind = new Binding();
                 myBind.Path = new PropertyPath(Binding);
-                myBind.Source = Model_object;
+                if(Model_object != null) myBind.Source = Model_object;
                 myBind.Mode = BindingMode.TwoWay;
                 myBind.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
                 tx.SetBinding(TextBox.TextProperty, myBind);
             }
+
+            //Binding binding = new Binding((string)Model_object) { UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged, Mode = BindingMode.TwoWay };
+            //tx.SetBinding(TextBox.TextProperty, binding);
             if (tx.Text == "") tx.Text = Text;
             tx.LostFocus += AnswerBox_LostFocus;
             //Answer = tx.Text;
