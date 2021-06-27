@@ -3,7 +3,6 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Frontend"
       mc:Ignorable="d" 
 	  d:DesignHeight="600" d:DesignWidth="900"
       Title="SvedPrint" Background="#FFF1F3CE">
@@ -19,11 +18,11 @@
             <Grid.RowDefinitions>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Image Grid.Column="1" Source="MainIcon.png" Margin="30,0" MaxWidth="350" MaxHeight="350" MouseLeftButtonDown="MainImgClicked"/>
+            <Image Grid.Column="1" Source="/Images\MainIcon.png" Margin="30,0" MaxWidth="350" MaxHeight="350" MouseLeftButtonDown="MainImgClicked"/>
 
-            <Image Source="print.png" Margin="25,0,0,0" MaxWidth="280" MaxHeight="280" MouseLeftButtonDown="PrintImgClicked" />
+            <Image Source="/Images\print.png" Margin="25,0,0,0" MaxWidth="280" MaxHeight="280" MouseLeftButtonDown="PrintImgClicked" />
 
-            <Image Name ="SettingsImg" Source="settings.png" Margin="0,0,25,0" Grid.Column="2" MaxWidth="280" MaxHeight="280" />
+            <Image Name ="SettingsImg" Source="/Images\settings.png" Margin="0,0,25,0" Grid.Column="2" MaxWidth="280" MaxHeight="280" />
 
         </Grid>
     </DockPanel>

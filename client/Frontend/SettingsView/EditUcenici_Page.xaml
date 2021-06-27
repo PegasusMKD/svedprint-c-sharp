@@ -20,14 +20,14 @@
        
         
         <Grid Margin="0,2,0,2" VerticalAlignment="Top" HorizontalAlignment="Center" >
-            <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="prosek_krug.png" Margin="0" Width="65" Grid.Row="1" Grid.Column="1"/>
+            <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Images\prosek_krug.png" Margin="0" Width="65" Grid.Row="1" Grid.Column="1"/>
             <TextBox Name ="BrojDnLabel" Grid.Column="1" Margin="0" Grid.Row="1" TextWrapping="Wrap" Text="1" Background="{x:Null}" BorderBrush="{x:Null}" SelectionBrush="White" Foreground="White" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0"/>
-            <Image Name="LeftTriangle" Margin="0,0,150,3" VerticalAlignment="Bottom" Source="triangle left.png" Height="50" MouseLeftButtonDown="LeftTriangleClicked"/>
-            <Image Name="RightTriangle" Margin="150,0,0,3" VerticalAlignment="Bottom" Source="triangle right.png" Height="50" MouseLeftButtonDown="RightTriangleClicked"/>
+            <Image Name="LeftTriangle" Margin="0,0,150,3" VerticalAlignment="Bottom" Source="/Images\triangle left.png" Height="50" MouseLeftButtonDown="LeftTriangleClicked"/>
+            <Image Name="RightTriangle" Margin="150,0,0,3" VerticalAlignment="Bottom" Source="/Images\triangle right.png" Height="50" MouseLeftButtonDown="RightTriangleClicked"/>
         </Grid>
         <DockPanel HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,5,20,5">
-            <Image Source="check_icon.png" MouseLeftButtonDown="SaveBtnClicked" />
-            <Image Source="trash_icon.png" MouseLeftButtonDown ="DeleteUcenikImgClicked" Margin="10,0,0,0"></Image>
+            <Image Source="/Images\check_icon.png" MouseLeftButtonDown="SaveBtnClicked" />
+            <Image Source="/Images\trash_icon.png" MouseLeftButtonDown ="DeleteUcenikImgClicked" Margin="10,0,0,0"></Image>
         </DockPanel>
 
 

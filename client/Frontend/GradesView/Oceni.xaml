@@ -3,7 +3,6 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Frontend"
       mc:Ignorable="d" Background="#FFF1F3CE"
       d:DesignHeight="600" d:DesignWidth="900"
       Title="Oceni">
@@ -101,7 +100,7 @@
         </Grid.ColumnDefinitions>
         <UniformGrid VerticalAlignment="Center" HorizontalAlignment="Stretch" Columns="3">
             <Image x:Name="print_img" Margin="0,5" Source="print.png" Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UniformGrid}}, Path=Height}" />
-            <Image x:Name="home_img" Source="home_icon.png" Margin="0" Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UniformGrid}}, Path=Height}"/>
+            <Image x:Name="home_img" Source=".\Images/home_icon.png" Margin="0" Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UniformGrid}}, Path=Height}"/>
             <Image x:Name="settings_img" Margin="0,5" Source="settings.png" Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UniformGrid}}, Path=Height}" />
         </UniformGrid>
         <ListView Name ="Menu" Grid.RowSpan="2" Background="#FFF1F3CE" BorderThickness="1,1,1,2" BorderBrush="#FFF1F3CE" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Row="1"/>

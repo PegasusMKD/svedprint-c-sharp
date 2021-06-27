@@ -50,6 +50,7 @@ namespace Frontend
         private void MainImgClicked(object sender, MouseButtonEventArgs e)
         {
             schoolClass = currentUser.schoolClass;
+
             if (schoolClass.students.Count == 0)
             { MessageBox.Show("Нема пополнето ученици"); return; }
             if (schoolClass.subjectOrientations.Count == 0)
