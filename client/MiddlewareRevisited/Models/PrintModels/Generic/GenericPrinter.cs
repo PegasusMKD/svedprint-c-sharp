@@ -19,15 +19,13 @@ namespace MiddlewareRevisited.Models.PrintModels
         public Student student;
         public User homeroomTeacher;
 
-        public string saveAs; // 
         public (int x, int y, string value, Font font, int width, int height)[] data { get; set; }
 
-        public GenericPrinter(ref Student student, ref User homeroomTeacher, string filename, string saveAs)
+        public GenericPrinter(ref Student student, ref User homeroomTeacher, string filename)
         {
             this.student = student;
             this.backgroundPath = filename;
             this.homeroomTeacher = homeroomTeacher;
-            this.saveAs = saveAs;
         }
 
         public void clearBackground()

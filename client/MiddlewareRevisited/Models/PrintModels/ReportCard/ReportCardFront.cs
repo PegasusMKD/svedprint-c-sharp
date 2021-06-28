@@ -21,7 +21,7 @@ namespace MiddlewareRevisited.Models.PrintModels
 
         private int nextSubjectDifference = 79;
 
-       public ReportCardFront(ref Student student, ref User homeroomTeacher,string filename, string saveAs) : base(ref student, ref homeroomTeacher, filename, saveAs)
+       public ReportCardFront(ref Student student, ref User homeroomTeacher,string filename) : base(ref student, ref homeroomTeacher, filename)
         {
             this.smallFont = new Font("arial", 20, FontStyle.Bold);
             this.normalFont = new Font("arial", 30, FontStyle.Bold);
@@ -75,7 +75,7 @@ namespace MiddlewareRevisited.Models.PrintModels
                 (x: 1160, y: 830, value: homeroomTeacher.schoolClass.year.name, font: this.bigFont, width: 0, height: 0),
                 (x: 1085, y: 974, value: $"{student.firstName} {student.middleName} {student.lastName}", font: this.bigFont, width: 0, height: 0),
                 (x: 730, y: 1103, value: student.fathersName != null ? student.fathersName : student.mothersName, font: this.normalFont, width: 0, height: 0),
-                (x: 1820, y: 1103, value: student.dateOfBirth.ToShortDateString(), font: this.normalFont, width: 0, height: 0),
+                (x: 1820, y: 1103, value: (student.dateOfBirth ?? DateTime.Now).ToShortDateString(), font: this.normalFont, width: 0, height: 0),
                 (x: 670, y: 1205, value: student.placeOfBirth, font: this.normalFont, width: 0, height: 0),
                 (x: 1760, y: 1205, value: student.placeOfBirth, font: this.normalFont, width: 0, height: 0),
                 (x: 545, y: 1296, value: student.country, font: this.normalFont, width: 0, height: 0),

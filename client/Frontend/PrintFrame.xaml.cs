@@ -132,20 +132,18 @@ namespace Frontend
         {
             int offsetx = int.Parse(X_offset.Text);
             int offsety = int.Parse(Y_offset.Text);
-            int val = combobox_printer.SelectedIndex;
+            int printerChoice = combobox_printer.SelectedIndex;
             List<int> studentsToPrint = getIdxOfStudentsToPrint();
 
             Task.Factory.StartNew(() =>
             {
-                IEnumerable<dynamic> printIterator = this.iteratorContainer.printIterator(offsetx, offsety);
-                int ctr = 0;
+                IEnumerable<dynamic> printIterator = iteratorContainer.previewIterator(offsetx, offsety);
+                int idx = 1;
                 foreach (dynamic reportCard in printIterator)
                 {
-                    ctr++;
-                    if (!studentsToPrint.Contains(ctr)) continue;
+                    if (!studentsToPrint.Contains(idx++)) continue;
                     Printer printer = new Printer();
-                    printer.print(reportCard[0].Clone(), val);
-
+                    printer.Print(reportCard, printerChoice);
                 }
             });
 
@@ -159,8 +157,8 @@ namespace Frontend
             {
                 if (student.Contains("-"))
                 {
-                    string[] rangeBounds = student.Split('-');
-                    studentsToPrint.AddRange(Enumerable.Range(int.Parse(rangeBounds[0]), int.Parse(rangeBounds[1])));
+                    int[] rangeBounds = student.Split('-').Select(val => int.Parse(val)).ToArray();
+                    studentsToPrint.AddRange(Enumerable.Range(rangeBounds[0], rangeBounds[1]));
                 }
                 else studentsToPrint.Add(int.Parse(student));
             }

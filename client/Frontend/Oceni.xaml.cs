@@ -50,7 +50,7 @@ namespace Frontend
                 if (!haveGradesChanged) return;
                 try
                 {
-                    await MiddlewareRevisited.Controllers.Student.updateStudent(currentStudent, currentUser);
+                    await MiddlewareRevisited.Controllers.Student.UpdateStudent(currentStudent, currentUser);
                 }
                 catch (Exception ex)
                 {
@@ -587,7 +587,7 @@ namespace Frontend
             try
             {
                 currentStudent.subjectOrientation = currentUser.schoolClass.subjectOrientations.ElementAtOrDefault(combobox_smer.SelectedIndex);
-                currentStudent = await MiddlewareRevisited.Controllers.Student.updateStudent(currentStudent, currentUser);
+                currentStudent = await MiddlewareRevisited.Controllers.Student.UpdateStudent(currentStudent, currentUser);
                 currentUser.schoolClass.students[br] = currentStudent;
             } catch (Exception ex)
             {

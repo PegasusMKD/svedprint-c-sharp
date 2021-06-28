@@ -1,6 +1,5 @@
-using Middleware;
-using MiddlewareRevisited;
 using MiddlewareRevisited.Models;
+using Middleware;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -28,7 +27,6 @@ namespace Frontend
         public EditUcenici_Page(ref List<SubjectOrientation> subjectOrientations, ref User currentUser, ref List<Student> students)
         {
             InitializeComponent();
-            
             this.currentUser = currentUser;
             this.students = students;
             this.subjectOrientations = subjectOrientations;
@@ -73,15 +71,6 @@ namespace Frontend
             polinja.Add(new Pole("Претходно училиште", RequestParameters.prethodno_uchilishte, new string[] { "СУГС - Раде Јовчевски Корчагин" }));
             polinja.Add(new Pole("Претходен успех", RequestParameters.prethoden_uspeh, new string[] { "Одличен" , "Многу добар" , "Добар", "Доволен"}));
 
-            if(students.Count > 0 && students.Count > BrojDn)
-            {
-                Dictionary<string, string> PolinjaModels = students[BrojDn].GetPolinja();
-                foreach (Pole pole in polinja)
-                {
-                    ///polinja.Find(y => y.RequestParametar == x.Key).Odgovor = x.Value;
-                    polinja.Find(x => x.Ime == pole.Ime).Odgovor = PolinjaModels[pole.RequestParametar];
-                }
-            }
 
             if (polinja.Find(x => x.RequestParametar == RequestParameters.broj).GetOdgovor() == "0") polinja.Find(x => x.RequestParametar == RequestParameters.broj).Odgovor = (BrojDn+1).ToString();
 
@@ -229,8 +218,8 @@ namespace Frontend
             {
                 student = students[int.Parse(BrojDnLabel.Text) - 1];
             }
-            Util.UpdateObjectByFields<Student>(polinja, student);
-            await MiddlewareRevisited.Controllers.Student.updateStudent(student, currentUser);
+            MiddlewareRevisited.Util.UpdateObjectByFields<Student>(polinja, student);
+            await MiddlewareRevisited.Controllers.Student.UpdateStudent(student, currentUser);
         }
 
         public string ProektniToString(List<string> tx)

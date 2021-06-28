@@ -171,7 +171,7 @@ namespace Frontend
             subjectOrientation.shortName = DodajPredmeti[DodajPredmeti.Count() - 2].Text;
             subjectOrientation.fullName = DodajPredmeti[DodajPredmeti.Count - 1].Text;
 
-            subjectOrientation = await MiddlewareRevisited.Controllers.SubjectOrientation.addSubjectOrientation(subjectOrientation, currentUser);
+            subjectOrientation = await MiddlewareRevisited.Controllers.SubjectOrientation.AddSubjectOrientation(subjectOrientation, currentUser);
 
             currentUser.schoolClass.subjectOrientations.Add(subjectOrientation);
 
@@ -180,50 +180,19 @@ namespace Frontend
 
         private async void NewPredmetImgClicked(object sender, MouseButtonEventArgs e, int i, int j)
         {
-            //string toBeChanged = UserKlas._p._smerovi.Keys.ElementAt(i);
-            //int ctr = 0;
-            //foreach (Ucenik Ucenik in Ucenici)
-            //{
-            //    if (Ucenik._smer == toBeChanged)
-            //    {
-            //        Ucenik._oceni.Add(1);
-            //        Ucenik.UpdateUcenikOceniAsync(UserKlas._token);
-            //    }
-            //    ctr++;
-            //}
-            //UserKlas._p._smerovi[toBeChanged].AddPredmetAsync(DodajPredmeti[j].Text, UserKlas._token);
-
             SubjectOrientation subjectOrientation = subjectOrientations[i];
             subjectOrientation.subjects.Add(DodajPredmeti[j].Text);
 
-            await MiddlewareRevisited.Controllers.SubjectOrientation.updateSubjectOrientation(subjectOrientation, currentUser);
+            await MiddlewareRevisited.Controllers.SubjectOrientation.UpdateSubjectOrientation(subjectOrientation, currentUser);
             GetData();
         }
 
         private async void RemovePredmetImgClicked(object sender, MouseButtonEventArgs e, int i, int j)
         {
-                        //if (ContentTextChanged)
-                        //{
-                        //    return;
-                        //}
-                        //string toBeChanged = UserKlas._p._smerovi.Keys.ElementAt(i);
-                        //if (i == 0) i = 1;
-
-                        //int ctr = 0;
-                        //foreach (Ucenik Ucenik in Ucenici)
-                        //{
-                        //    if (Ucenik._smer == toBeChanged)
-                        //    {
-                        //        if (Ucenik._oceni.Count > j) Ucenik._oceni.RemoveAt(j);
-                        //        Ucenik.UpdateUcenikOceniAsync(UserKlas._token);
-                        //    }
-                        //    ctr++;
-                        //}
-                        //UserKlas._p._smerovi[toBeChanged].RemovePredmetAsync(j, UserKlas._token);
             SubjectOrientation subjectOrientation = subjectOrientations[i];
             subjectOrientation.subjects.RemoveAt(j);
 
-            await MiddlewareRevisited.Controllers.SubjectOrientation.updateSubjectOrientation(subjectOrientation, currentUser);
+            await MiddlewareRevisited.Controllers.SubjectOrientation.UpdateSubjectOrientation(subjectOrientation, currentUser);
             GetData();
         }
 
@@ -297,7 +266,7 @@ namespace Frontend
             Image img = (Image)sender;
             string shortName = img.Tag.ToString();
             SubjectOrientation subjectOrientation = (from orientation in subjectOrientations where orientation.shortName.Equals(shortName) select orientation).FirstOrDefault();
-            await MiddlewareRevisited.Controllers.SubjectOrientation.removeSubjectOrientation(subjectOrientation, currentUser);
+            await MiddlewareRevisited.Controllers.SubjectOrientation.RemoveSubjectOrientation(subjectOrientation, currentUser);
             subjectOrientations.RemoveAll(orientation => orientation.id.Equals(subjectOrientation.id));
             GetData();
         }

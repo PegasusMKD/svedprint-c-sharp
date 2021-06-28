@@ -1,4 +1,3 @@
-using Middleware;
 using MiddlewareRevisited.Models;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,11 +16,10 @@ namespace Frontend
     {
 
         Frame Main;
-        private User currentUser;
+        private MiddlewareRevisited.Models.User currentUser;
         private List<Student> students;
         private List<SubjectOrientation> subjectOrientations;
         private SchoolClass schoolClass;
-        private Oceni gradesPage;
 
         public static List<Student> students_static;
         public static User currentUser_static;
@@ -36,7 +34,7 @@ namespace Frontend
             currentUser = user;
             schoolClass = currentUser.schoolClass;
             subjectOrientations = schoolClass.subjectOrientations;
-            students = schoolClass.students;
+            MiddlewareRevisited.Controllers.Student.GetAllStudentsFullAsync(user).ContinueWith(st => students = st.Result).Wait();
 
             students_static = students;
             currentUser_static = currentUser;
@@ -46,7 +44,6 @@ namespace Frontend
             DataContext = this;
 
             SettingsImg.MouseLeftButtonDown += new MouseButtonEventHandler(SettingsImg_Clicked);
-
 
         }
 
@@ -58,17 +55,19 @@ namespace Frontend
         private void MainImgClicked(object sender, MouseButtonEventArgs e)
         {
             schoolClass = currentUser.schoolClass;
-            if (schoolClass.students.Count == 0)
+            if (students.Count == 0)
             { MessageBox.Show("Нема пополнето ученици"); return; }
-            if (schoolClass.subjectOrientations.Count == 0)
+            if (subjectOrientations.Count == 0)
             { MessageBox.Show("Нема Смерови"); return; }
             else
             {
                 //Main.Content = new Oceni(Main, this);
                 //Main.Content = new Oceni(schoolClass);
                 //Main.Navigate(new Oceni(schoolClass));
-                if (gradesPage == null) gradesPage = new Oceni(currentUser);
-                NavigationService.Navigate(gradesPage);
+                //if (gradesPage == null) gradesPage = new Oceni(currentUser);
+                //NavigationService.Navigate(gradesPage);
+                //NavigationService.Navigate(new NewOceniFrame(students));
+                NavigationService.Navigate(new MenuFrame(currentUser));
             }
         }
 

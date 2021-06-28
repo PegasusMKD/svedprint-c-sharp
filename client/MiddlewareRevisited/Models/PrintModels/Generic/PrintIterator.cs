@@ -20,17 +20,16 @@ namespace MiddlewareRevisited.Models.PrintModels
             ConstructorInfo constructor;
             if(type.GetInterfaces().Contains(typeof(ICustomImageCollection)))
             {
-                parameterTypes = new Type[5];
+                parameterTypes = new Type[3];
                 parameterTypes[0] = typeof(Student);
                 parameterTypes[1] = typeof(User).MakeByRefType();
                 parameterTypes[2] = typeof(List<string>);
-                parameterTypes[3] = typeof(string);
-                parameterTypes[4] = typeof(string);
             }
             constructor = type.GetConstructor(parameterTypes);
             foreach (Student student in students)
             {
-                images.Add((ICustomImage)constructor.Invoke(new object[] { student, homeroomTeacher, imageNames, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "front.jpg" ), Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "back.jpg" )}));
+                if (student.grades == null) continue;
+                images.Add((ICustomImage)constructor.Invoke(new object[] { student, homeroomTeacher, imageNames }));
             }
             
         }

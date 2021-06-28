@@ -13,7 +13,7 @@ namespace MiddlewareRevisited.Controllers
     public class SubjectOrientation
     {
 
-        public static async Task<Models.SubjectOrientation> addSubjectOrientation(Models.SubjectOrientation subjectOrientation, Models.User currentUser)
+        public static async Task<Models.SubjectOrientation> AddSubjectOrientation(Models.SubjectOrientation subjectOrientation, Models.User currentUser)
         {
             HttpClient httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -26,7 +26,7 @@ namespace MiddlewareRevisited.Controllers
         }
 
 
-        public static async Task removeSubjectOrientation(Models.SubjectOrientation subjectOrientation, Models.User currentUser)
+        public static async Task RemoveSubjectOrientation(Models.SubjectOrientation subjectOrientation, Models.User currentUser)
         {
             HttpClient httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -35,10 +35,9 @@ namespace MiddlewareRevisited.Controllers
             data.Headers.Add("token", currentUser.token);
             data.Content = new StringContent(json, Encoding.UTF8, "application/json");
             await httpClient.SendAsync(data);
-            return;
         }
 
-        public static async Task<List<Models.SubjectOrientation>> getSubjectOrientations(Models.User currentUser)
+        public static async Task<List<Models.SubjectOrientation>> GetSubjectOrientations(Models.User currentUser)
         {
             HttpClient httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -48,7 +47,7 @@ namespace MiddlewareRevisited.Controllers
             return JsonConvert.DeserializeObject<List<Models.SubjectOrientation>>(await ret.Content.ReadAsStringAsync());
         }
 
-        public static async Task<Models.SubjectOrientation> updateSubjectOrientation(Models.SubjectOrientation subjectOrientation, Models.User currentUser)
+        public static async Task<Models.SubjectOrientation> UpdateSubjectOrientation(Models.SubjectOrientation subjectOrientation, Models.User currentUser)
         {
             HttpClient httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

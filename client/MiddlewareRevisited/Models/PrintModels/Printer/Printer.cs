@@ -11,62 +11,64 @@ namespace MiddlewareRevisited.Models.PrintModels.Printer
 {
     public class Printer
     {
-        (Image singleImage, Image[] duplex) images;
-        public void print(Image image, int printerChoice)
+        Image[] images;
+        int page = 0;
+
+        public void Print(Image image, int printerChoice)
         {
+            images = new Image[] { (Image)image.Clone() };
+
             Task.Factory.StartNew(() =>
             {
                 PrintDocument printDocument = new PrintDocument();
-                images.singleImage = image;
                 printDocument.PrinterSettings.PrinterName = PrinterSettings.InstalledPrinters[printerChoice];
                 printDocument.PrinterSettings.Duplex = Duplex.Simplex;
-                printDocument.PrintPage += new PrintPageEventHandler(onPrintPage);
+                printDocument.PrintPage += new PrintPageEventHandler(OnPrintPage);
                 printDocument.Print();
                 image.Dispose();
                 printDocument.Dispose();
             });
-            
         }
 
-        public void print(Image[] _images, int printerChoice)
+        public void Print(Image[] _images, int printerChoice)
         {
-            PrintDocument printDocument = new PrintDocument();
-            images.duplex = _images;
-            printDocument.PrinterSettings.PrinterName = PrinterSettings.InstalledPrinters[printerChoice];
-            if (!printDocument.PrinterSettings.CanDuplex)
-            {
-                printDocument.Dispose();
-                throw new Exception("The selected printer can't print double sided!");
-            }
-            printDocument.PrinterSettings.Duplex = Duplex.Horizontal;
-            printDocument.PrintPage += new PrintPageEventHandler(onPrintPage);
-            printDocument.Print();
-            foreach (Image image in _images)
-            {
-                image.Dispose();
-            }
-            printDocument.Dispose();
+            images = _images.Select(img => (Image)img.Clone()).ToArray();
 
+            Task.Factory.StartNew(() =>
+            {
+                PrintDocument printDocument = new PrintDocument();
+                printDocument.PrinterSettings.PrinterName = PrinterSettings.InstalledPrinters[printerChoice];
+                //if (!printDocument.PrinterSettings.CanDuplex)
+                //{
+                //    printDocument.Dispose();
+                //    throw new Exception("The selected printer can't print double sided!");
+                //}
+                printDocument.PrinterSettings.Duplex = Duplex.Horizontal;
+                printDocument.PrintPage += new PrintPageEventHandler(OnPrintPage);
+                printDocument.Print();
+                foreach (Image image in _images)
+                {
+                    image.Dispose();
+                }
+                printDocument.Dispose();
+            });
         }
 
-        private void onPrintPage(object sender, PrintPageEventArgs e)
+
+        private void OnPrintPage(object sender, PrintPageEventArgs e)
         {
             using(var graphics = e.Graphics)
             {
-                if(images.duplex != null)
+                e.HasMorePages = false;
+                graphics.DrawImage(images[page], e.PageBounds);
+                images[page++].Dispose();
+
+                if (page < images.Length)
                 {
                     e.HasMorePages = true;
-                    foreach (Image image in images.duplex) {
-                        graphics.DrawImage(image, e.PageBounds);
-                        image.Dispose();
-                    }
+                    return;
+                }
 
-                }
-                else {
-                    e.HasMorePages = false;
-                    graphics.DrawImage(images.singleImage, e.PageBounds);
-                    images.singleImage.Dispose();
-                }
                 graphics.Dispose();
             }
         }

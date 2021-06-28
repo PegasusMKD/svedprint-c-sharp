@@ -118,7 +118,7 @@ namespace Frontend
             st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(237, 106, 61));
             ClickedMenuItem = sender;
 
-            if(i<3)
+            if(i<2)
             Settings_Frame.Content = ListPages[i];
 
 

@@ -14,7 +14,7 @@ namespace MiddlewareRevisited.Models.PrintModels
         public Font normalFont;
         public Font bigFont;
 
-        public ReportCardBack(ref Student student, ref User homeroomTeacher, string filename, string saveAs) : base(ref student,ref homeroomTeacher, filename, saveAs)
+        public ReportCardBack(ref Student student, ref User homeroomTeacher, string filename) : base(ref student,ref homeroomTeacher, filename)
         {
             this.smallFont = new Font("arial", 20, FontStyle.Bold);
             this.normalFont = new Font("arial", 30, FontStyle.Bold);

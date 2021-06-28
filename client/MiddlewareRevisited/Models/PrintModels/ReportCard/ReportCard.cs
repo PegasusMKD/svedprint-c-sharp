@@ -16,11 +16,11 @@ namespace MiddlewareRevisited.Models.PrintModels
 
         ICustomImage[] sides = new GenericPrinter[2];
 
-        public ReportCard(Student student, ref User homeroomTeacher, List<string> filenames, string saveAsFront, string saveAsBack)
+        public ReportCard(Student student, ref User homeroomTeacher, List<string> filenames)
         {
             this.student = student;
-            sides[0] = new ReportCardFront(ref this.student, ref homeroomTeacher, filenames[0], saveAsFront);
-            sides[1] = new ReportCardBack(ref this.student, ref homeroomTeacher, filenames[1], saveAsBack);
+            sides[0] = new ReportCardFront(ref this.student, ref homeroomTeacher, filenames[0]);
+            sides[1] = new ReportCardBack(ref this.student, ref homeroomTeacher, filenames[1]);
         }
 
         public dynamic generateMainPage(int horizontalMargin, int verticalMargin, bool appending = false)
