@@ -36,11 +36,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>grades_icon_xlj_icon.ico</ApplicationIcon>
+    <ApplicationIcon>Images\grades_icon_xlj_icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework.Aero2" />
     <Reference Include="System" />
@@ -65,47 +65,44 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="EditUcenici_Page.xaml.cs">
+    <Compile Include="SettingsView\EditUcenici_Page.xaml.cs">
       <DependentUpon>EditUcenici_Page.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MenuFrame.xaml.cs">
+    <Compile Include="GradesView\MenuFrame.xaml.cs">
       <DependentUpon>MenuFrame.xaml</DependentUpon>
     </Compile>
     <Compile Include="NewFrontEnd\DesignModel.cs" />
     <Compile Include="NewFrontEnd\GraphicPole.cs" />
-    <Compile Include="NewFrontEnd\NewOceniFrame.xaml.cs">
+    <Compile Include="GradesView\NewOceniFrame.xaml.cs">
       <DependentUpon>NewOceniFrame.xaml</DependentUpon>
     </Compile>
-    <Compile Include="OcenaControl.xaml.cs">
-      <DependentUpon>OcenaControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Oceni.xaml.cs">
+    <Compile Include="GradesView\Oceni.xaml.cs">
       <DependentUpon>Oceni.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pole.cs" />
-    <Compile Include="PrintFrame.xaml.cs">
+    <Compile Include="NewFrontEnd\Pole.cs" />
+    <Compile Include="PrintView\PrintFrame.xaml.cs">
       <DependentUpon>PrintFrame.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Prosek_Frame.xaml.cs">
+    <Compile Include="SettingsView\Prosek_Frame.xaml.cs">
       <DependentUpon>Prosek_Frame.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Settings.xaml.cs">
+    <Compile Include="SettingsView\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SettingsDesign.cs" />
-    <Compile Include="Smerovi_Page.xaml.cs">
+    <Compile Include="NewFrontEnd\SettingsDesign.cs" />
+    <Compile Include="SettingsView\Smerovi_Page.xaml.cs">
       <DependentUpon>Smerovi_Page.xaml</DependentUpon>
     </Compile>
     <Compile Include="Util.cs" />
-    <Page Include="EditUcenici_Page.xaml">
+    <Page Include="SettingsView\EditUcenici_Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Home_Page.xaml">
+    <Page Include="HomeView\Home_Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Login_Page.xaml">
+    <Page Include="LoginView\Login_Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -117,37 +114,33 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Home_Page.xaml.cs">
+    <Compile Include="HomeView\Home_Page.xaml.cs">
       <DependentUpon>Home_Page.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Login_Page.xaml.cs">
+    <Compile Include="LoginView\Login_Page.xaml.cs">
       <DependentUpon>Login_Page.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="MenuFrame.xaml">
+    <Page Include="GradesView\MenuFrame.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="NewFrontEnd\NewOceniFrame.xaml">
+    <Page Include="GradesView\NewOceniFrame.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="OcenaControl.xaml">
+    <Page Include="GradesView\Oceni.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Oceni.xaml">
+    <Page Include="PrintView\PrintFrame.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PrintFrame.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Prosek_Frame.xaml">
+    <Page Include="SettingsView\Prosek_Frame.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -155,11 +148,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Settings.xaml">
+    <Page Include="SettingsView\Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Smerovi_Page.xaml">
+    <Page Include="SettingsView\Smerovi_Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -183,32 +176,32 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="grades_icon.png" />
+    <Resource Include="Images\grades_icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="MainIcon.png" />
+    <Resource Include="Images\MainIcon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="settings.png" />
-    <Resource Include="print.png" />
+    <Resource Include="Images\settings.png" />
+    <Resource Include="Images\print.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ocenki_bk.png" />
+    <Resource Include="Images\ocenki_bk.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="prosek_krug.png" />
+    <Resource Include="Images\prosek_krug.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="prosek_rk.png" />
+    <Resource Include="Images\prosek_rk.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="arrow-back-icon.png" />
+    <Resource Include="Images\arrow-back-icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="arrow_back_reverse.png" />
+    <Resource Include="Images\arrow_back_reverse.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="home_icon.png" />
+    <Resource Include="Images\home_icon.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MiddlewareRevisited\MiddlewareRevisited.csproj">
@@ -221,35 +214,35 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="triangle right.png" />
-    <Resource Include="triangle left.png" />
+    <Resource Include="Images\triangle right.png" />
+    <Resource Include="Images\triangle left.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="check_icon.png" />
+    <Resource Include="Images\check_icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="plus.png" />
+    <Resource Include="Images\plus.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="trash_icon.png" />
+    <Resource Include="Images\trash_icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="x.png" />
+    <Resource Include="Images\x.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="x_2.png" />
+    <Resource Include="Images\x_2.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="load.gif" />
+    <Resource Include="Images\load.gif" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="3.gif" />
+    <Resource Include="Images\3.gif" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Load_Icon.jpg" />
+    <Resource Include="Images\Load_Icon.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="grades_icon_xlj_icon.ico">
+    <Content Include="Images\grades_icon_xlj_icon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

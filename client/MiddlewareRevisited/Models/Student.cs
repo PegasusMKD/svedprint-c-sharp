@@ -166,5 +166,33 @@ namespace MiddlewareRevisited.Models
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+
+        //public Dictionary<string, string> GetPolinja()
+        //{
+        //    Dictionary<string, string> polinja = new Dictionary<string, string>();
+        //    polinja.Add("firstName", firstName);
+        //    polinja.Add("middleName", middleName);
+        //    polinja.Add("lastName", lastName);
+        //    polinja.Add("subjectOrientationName", subjectOrientation.shortName);
+        //    polinja.Add("fathersName", fathersName);
+        //    polinja.Add("mothersName", mothersName);
+        //    polinja.Add("number", number.ToString());
+        //    polinja.Add("gender", gender);
+        //    polinja.Add("dateOfBirth", dateOfBirth.ToShortDateString());
+        //    polinja.Add("placeOfBirth", placeOfBirth);
+        //    polinja.Add("placeOfResidence", placeOfResidence);
+        //    polinja.Add("timesStudiedYear", timesStudiedYear);
+        //    polinja.Add("passedYear", passedYear);
+        //    polinja.Add("behaviorType", behaviorType);
+        //    polinja.Add("justifiedAbsences", justifiedAbsences.ToString());
+        //    polinja.Add("unjustifiedAbsences", unjustifiedAbsences.ToString());
+        //    polinja.Add("optionalSubjects", optionalSubjects);
+        //    //polinja.Add(RequestParameters.pedagoshki_merki, _pedagoski_merki);
+        //    polinja.Add("lastGradeYear", lastGradeYear);
+        //    polinja.Add("lastSchoolName", lastSchoolName);
+        //    polinja.Add("lastSchoolYearSuccessType", lastSchoolYearSuccessType);
+        //    return polinja;
+        //}
     }
 }

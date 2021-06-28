@@ -28,7 +28,7 @@
             <ColumnDefinition Width="44*"/>
         </Grid.ColumnDefinitions>
 
-        <Image x:Name="Logo_img" Source="grades_icon.png" Panel.ZIndex="1" UseLayoutRounding="False" Margin="3,0.5,0,1.5" Grid.RowSpan="5" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2"/>
+        <Image x:Name="Logo_img" Source="/Images/grades_icon.png" Panel.ZIndex="1" UseLayoutRounding="False" Margin="3,0.5,0,1.5" Grid.RowSpan="5" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2"/>
         <StackPanel x:Name="Username_panel" Grid.Column="3" Margin="1,0,20,0" Background="#FF5184B6" Grid.Row="3" Grid.ColumnSpan="2" Height="4" VerticalAlignment="Top"/>
         <StackPanel x:Name="Password_panel" Grid.Column="3" Margin="1,0,20,10" Background="#FF5184B6" Height="4" VerticalAlignment="Bottom" Grid.Row="4" Grid.ColumnSpan="2"/>
         <Button x:Name="Login_Btn"  Content="Логирај се" Grid.Column="4" Margin="10,14,0,37" Background="#FFFF5D00" BorderBrush="{x:Null}" Foreground="White" FontSize="36" Grid.Row="5" Width="212" HorizontalAlignment="Left" VerticalAlignment="Center" Height="61" FontFamily="Segoe UI Black" Click="Login_Btn_Click"

@@ -26,8 +26,8 @@ namespace Frontend
             AlertTimer.Tick += new EventHandler(AlertTimer_Tick);
             AlertTimer.Interval = new TimeSpan(0, 0, 5);
 
-            Username_txt.Text = "OCA1Nx6HbM";
-            Password_txt.Password = "8QCJcT1amm";
+            Username_txt.Text = "IgZxuAXq04";
+            Password_txt.Password = "eYcRWOaL1p";
 
             login();
 
@@ -56,7 +56,7 @@ namespace Frontend
             } catch(Exception ex)
             {
                 Debug.WriteLine(ex.StackTrace);
-                ShowAlertBox((DateTime.Now - dt).ToString());
+                ShowAlertBox((ex.StackTrace).ToString());
             }
         }
 
