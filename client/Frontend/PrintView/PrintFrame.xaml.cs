@@ -134,6 +134,7 @@ namespace Frontend
             int offsety = int.Parse(Y_offset.Text);
             int printerChoice = combobox_printer.SelectedIndex;
             List<int> studentsToPrint = getIdxOfStudentsToPrint();
+            int max = studentsToPrint.Max<int>();
 
             Task.Factory.StartNew(() =>
             {
@@ -144,6 +145,7 @@ namespace Frontend
                     if (!studentsToPrint.Contains(idx++)) continue;
                     Printer printer = new Printer();
                     printer.Print(reportCard, printerChoice);
+                    if (idx > max) return;
                 }
             });
 
