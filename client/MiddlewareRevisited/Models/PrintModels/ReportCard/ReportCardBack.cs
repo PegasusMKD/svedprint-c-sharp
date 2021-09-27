@@ -1,4 +1,5 @@
 ﻿using MiddlewareRevisited.Models.PrintModels;
+using MiddlewareRevisited.Utility;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MiddlewareRevisited.Utility;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -48,7 +49,7 @@ namespace MiddlewareRevisited.Models.PrintModels
         public dynamic generateMainPage(int horizontalMargin, int verticalMargin, bool appending = false)
         {
             this.background = Image.FromFile(backgroundPath);
-            this.mainPage = Helpers.GetEmptyImage(this.background.Width, this.background.Height);
+            this.mainPage = ImageUtility.GetEmptyImage(this.background.Width, this.background.Height);
             using (var graphics = Graphics.FromImage(this.mainPage))
             {
                 if (appending) graphics.Clear(Color.Transparent);
@@ -71,7 +72,7 @@ namespace MiddlewareRevisited.Models.PrintModels
         public dynamic generatePreview(int horizontalMargin, int verticalMargin)
         {
             generateMainPage(horizontalMargin, verticalMargin, true);
-            this.preview = Helpers.GetEmptyImage(2481, 3508);
+            this.preview = ImageUtility.GetEmptyImage(2481, 3508);
             using (var canvas = Graphics.FromImage(this.preview))
             {
                 canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;

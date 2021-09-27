@@ -23,8 +23,8 @@ namespace Frontend
             AlertTimer.Tick += new EventHandler(AlertTimer_Tick);
             AlertTimer.Interval = new TimeSpan(0, 0, 5);
 
-            Username_txt.Text = "ful7ngnPUj";
-            Password_txt.Password = "RcLWDwpPxJ";
+            Username_txt.Text = "9i2Bzz1aqF";
+            Password_txt.Password = "qaeI6TKeJ7";
 
             login();
 

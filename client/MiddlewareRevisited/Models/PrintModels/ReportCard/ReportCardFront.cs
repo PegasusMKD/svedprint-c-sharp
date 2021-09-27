@@ -1,5 +1,6 @@
 ﻿using Middleware;
 using MiddlewareRevisited.Models.PrintModels;
+using MiddlewareRevisited.Utility;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -8,7 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static MiddlewareRevisited.Helpers;
+using static MiddlewareRevisited.Utility.ImageUtility;
 
 namespace MiddlewareRevisited.Models.PrintModels
 {

@@ -21,7 +21,7 @@ namespace MiddlewareRevisited
             var data = new HttpRequestMessage(HttpMethod.Post, $"http://{Properties.Settings.Default.DB_HOST}:8080/api/teachers");
             var json = new JObject();
             json.Add("username", username);
-            data.Headers.Add("password", password);
+            data.Headers.Add("password", Utility.Encryption.EncryptSHA256(password));
             data.Content = new StringContent(json.ToString(), Encoding.UTF8, "application/json");
             try
             {
