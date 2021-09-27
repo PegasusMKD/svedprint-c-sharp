@@ -1,8 +1,5 @@
 ﻿using MiddlewareRevisited.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -12,7 +9,7 @@ namespace Frontend.NewFrontEnd
 {
     class DesignModel
     {
-       protected UIElement Element;
+        protected UIElement Element;
         public UIElement GetModel()
         {
             return Element;
@@ -37,7 +34,7 @@ namespace Frontend.NewFrontEnd
                 Label lbl = (Label)new MenuLabel($"{element.firstName} {element.lastName}").GetModel();
                 ((ListView)Element).Items.Add(lbl);
 
-                lbl.MouseLeftButtonDown += (sender,e) =>  Label_Clicked(sender,e,element);     
+                lbl.MouseLeftButtonDown += (sender, e) => Label_Clicked(sender, e, element);
             }
 
             if (elements.Count == 0) return;
@@ -55,7 +52,7 @@ namespace Frontend.NewFrontEnd
             parentFrame.Navigate(childFrame);
         }
     }
-   
+
     class MenuLabel : DesignModel
     {
         static int Width = 800;
@@ -80,7 +77,7 @@ namespace Frontend.NewFrontEnd
         static int Height = 50;
         static SolidColorBrush Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("DarkBlue"));
         TextBox Ocenka = new TextBox();
-        public OcenkaBox(int index, string Predmet,object model)
+        public OcenkaBox(int index, string Predmet, object model)
         {
             StackPanel st = new StackPanel();
 
@@ -104,7 +101,7 @@ namespace Frontend.NewFrontEnd
             Ocenka.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("White"));
             Ocenka.FontSize = 30;
             //Ocenka.Text = (model.ToString();
-            bd.Child = Ocenka ;
+            bd.Child = Ocenka;
 
 
             if ("ocenka" != null)
@@ -124,7 +121,7 @@ namespace Frontend.NewFrontEnd
             Predmet_lbl.Content = Predmet;
 
             st.Children.Add(Predmet_lbl);
- 
+
         }
 
         public int GetOcenka()

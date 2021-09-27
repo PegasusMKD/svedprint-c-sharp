@@ -1,6 +1,4 @@
-﻿using Middleware;
-using MiddlewareRevisited;
-using MiddlewareRevisited.Models;
+﻿using MiddlewareRevisited.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,7 +54,7 @@ namespace Frontend
                     ctx.TextChanged += Ctx_TextChanged;
                     ctx.Name = "n" + SmerCtr.ToString() + "s" + PredmetCtr.ToString();
                     st.Children.Add(ctx);
-                    st.Children.Add(TextBorderGrid(true, SmerCtr, PredmetCtr++));
+                    st.Children.Add(TextBorderGrid(false, SmerCtr, PredmetCtr++));
                 }
 
                 if (SmerCtr % 2 == 0)
@@ -138,22 +136,22 @@ namespace Frontend
             border.Margin = new Thickness(0, -42, 35, 0);
             border.Width = 35;
             border.HorizontalAlignment = HorizontalAlignment.Right;
-
-            Image img = new Image();
-            img.Source = new BitmapImage(new Uri("check_icon.png", UriKind.Relative));
-            border.Child = img;
-
-            gd.Children.Add(border);
-            if (IsX == false)
+            Image img = new Image
             {
-                img.MouseLeftButtonDown += new MouseButtonEventHandler((sender, e) => NewPredmetImgClicked(sender, e, SmerCtr, PredmetCtr));
-            }
-            if (IsX == true)
+                Source = new BitmapImage(new Uri(@"/Images/check_icon.png", UriKind.Relative))
+            };
+
+            if (IsX)
             {
                 img.MouseLeftButtonDown += new MouseButtonEventHandler((sender, e) => RemovePredmetImgClicked(sender, e, SmerCtr, PredmetCtr));
                 img.MouseEnter += RemovePredmedimgMouseEnter;
                 img.MouseLeave += RemovePredmedimgMouseLeave;
             }
+            else
+                img.MouseLeftButtonDown += new MouseButtonEventHandler((sender, e) => NewPredmetImgClicked(sender, e, SmerCtr, PredmetCtr));
+
+            border.Child = img;
+            gd.Children.Add(border);
             return gd;
         }
 

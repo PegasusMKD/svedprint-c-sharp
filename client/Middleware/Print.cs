@@ -100,7 +100,7 @@ namespace Middleware
                 g.DrawImage(printQueue[currentPage].sides[currentSide], e.PageBounds);
                 currentSide++;
             }
-            e.HasMorePages = (currentSide < maxSides);
+            e.HasMorePages = currentSide < maxSides;
             g.Dispose();
         }
 

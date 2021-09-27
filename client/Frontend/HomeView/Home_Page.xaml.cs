@@ -1,8 +1,5 @@
 using MiddlewareRevisited.Models;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -16,7 +13,7 @@ namespace Frontend
     {
 
         Frame Main;
-        private MiddlewareRevisited.Models.User currentUser;
+        private User currentUser;
         private List<Student> students;
         private List<SubjectOrientation> subjectOrientations;
         private SchoolClass schoolClass;

@@ -1,10 +1,7 @@
-﻿using Middleware;
+﻿using Frontend;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Frontend;
 
 namespace MiddlewareRevisited
 {
@@ -18,7 +15,7 @@ namespace MiddlewareRevisited
             Type T = typeof(TYPE);
             var properties = T.GetFields();
             List<string> fieldNames = properties.Select(property => property.Name).ToList();
-            foreach(Pole field in source)
+            foreach (Pole field in source)
             {
                 var val = field.GetOdgovor();
                 if (fieldNames.Contains(field.RequestParametar) && val != null)
