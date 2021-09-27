@@ -245,9 +245,8 @@
     <Resource Include="Images\Load_Icon.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Images\grades_icon_xlj_icon.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Resource Include="grades_icon.png" />
+    <Resource Include="Images\grades_icon_xlj_icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.NetAnalyzers.5.0.3\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll" />

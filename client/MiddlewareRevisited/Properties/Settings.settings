@@ -6,7 +6,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="DB_HOST" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">35.198.141.236</Value>
+      <Value Profile="(Default)">localhost</Value>
     </Setting>
   </Settings>
 </SettingsFile>

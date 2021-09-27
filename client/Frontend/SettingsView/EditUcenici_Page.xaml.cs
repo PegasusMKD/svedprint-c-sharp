@@ -1,9 +1,8 @@
-using MiddlewareRevisited.Models;
 using Middleware;
+using MiddlewareRevisited.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -51,28 +50,28 @@ namespace Frontend
             {
                 Smerovi = subjectOrientations.Select(orientation => orientation.shortName).ToArray();
             }
-            
+
             List<string> polinjaUpdate = new List<string>();
-            
-            polinja.Add(new Pole("Име", RequestParameters.ime,  new string[] { "Име" } ));
+
+            polinja.Add(new Pole("Име", RequestParameters.ime, new string[] { "Име" }));
             polinja.Add(new Pole("Презиме", RequestParameters.prezime, new string[] { "Презиме" }));
             polinja.Add(new Pole("Татково име", RequestParameters.srednoIme, new string[] { "Татково име" }));
             polinja.Add(new Pole("Смер", RequestParameters.smer, Smerovi));
             polinja.Add(new Pole("Број во дневник", RequestParameters.broj, new string[] { "0" }));
             polinja.Add(new Pole("Датум на раѓање", RequestParameters.roden, new string[] { "00.00.0000" }));
-            polinja.Add(new Pole("Пол", RequestParameters.gender, new string[] { "Машки" , "Женски" }));
+            polinja.Add(new Pole("Пол", RequestParameters.gender, new string[] { "Машки", "Женски" }));
             polinja.Add(new Pole("Место на раѓање", RequestParameters.mesto_na_ragjanje, new string[] { "Скопје" }));
             polinja.Add(new Pole("Место на живеење", RequestParameters.mesto_na_zhiveenje, new string[] { "Скопје" }));
             polinja.Add(new Pole("Родител (Татко)", RequestParameters.tatko, new string[] { "Име Презиме" }));
             polinja.Add(new Pole("Родител (Мајка)", RequestParameters.majka, new string[] { "Име Презиме" }));
-            polinja.Add(new Pole("По кој пат ја учи годината", RequestParameters.pat_polaga, new string[] { "прв пат" , "втор пат" , "трет пат" }));
-            polinja.Add(new Pole("Дали е положена годината", RequestParameters.polozhil, new string[] { "завршил" , "не завршил" }));
-            polinja.Add(new Pole("Претходна година", RequestParameters.prethodna_godina, new string[] { "I", "II", "III" , "IV"}));
+            polinja.Add(new Pole("По кој пат ја учи годината", RequestParameters.pat_polaga, new string[] { "прв пат", "втор пат", "трет пат" }));
+            polinja.Add(new Pole("Дали е положена годината", RequestParameters.polozhil, new string[] { "завршил", "не завршил" }));
+            polinja.Add(new Pole("Претходна година", RequestParameters.prethodna_godina, new string[] { "I", "II", "III", "IV" }));
             polinja.Add(new Pole("Претходно училиште", RequestParameters.prethodno_uchilishte, new string[] { "СУГС - Раде Јовчевски Корчагин" }));
-            polinja.Add(new Pole("Претходен успех", RequestParameters.prethoden_uspeh, new string[] { "Одличен" , "Многу добар" , "Добар", "Доволен"}));
+            polinja.Add(new Pole("Претходен успех", RequestParameters.prethoden_uspeh, new string[] { "Одличен", "Многу добар", "Добар", "Доволен" }));
 
 
-            if (polinja.Find(x => x.RequestParametar == RequestParameters.broj).GetOdgovor() == "0") polinja.Find(x => x.RequestParametar == RequestParameters.broj).Odgovor = (BrojDn+1).ToString();
+            if (polinja.Find(x => x.RequestParametar == RequestParameters.broj).GetOdgovor() == "0") polinja.Find(x => x.RequestParametar == RequestParameters.broj).Odgovor = (BrojDn + 1).ToString();
 
             int index = 0;
             foreach (Pole Pole in polinja)
@@ -83,7 +82,7 @@ namespace Frontend
 
                 if (Pole.isCB)
                 {
-                    ComboBox CB = CreateComboBox(Pole.Ime , Pole.DefaultVrednost);
+                    ComboBox CB = CreateComboBox(Pole.Ime, Pole.DefaultVrednost);
                     CB.SelectedValue = Pole.GetOdgovor();
                     CB.SelectionChanged += CB_SelectionChanged;
                     ListPolinjaCB.Add(CB);
@@ -121,7 +120,7 @@ namespace Frontend
         {
             TextBox tx = (TextBox)(sender);
             Pole pol = polinja.Find(x => x.Ime == tx.Tag.ToString());
-            if(tx.Text != "")polinja.Find(x => x.Ime == tx.Tag.ToString()).Odgovor = tx.Text;
+            if (tx.Text != "") polinja.Find(x => x.Ime == tx.Tag.ToString()).Odgovor = tx.Text;
         }
 
         private void CB_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -135,7 +134,7 @@ namespace Frontend
             TextBox tx = (TextBox)(sender);
             Pole pol = polinja.Find(x => x.Ime == tx.Tag.ToString());
             if (tx.Text == "") AddText(sender, pol.DefaultVrednost[0]);
-            else polinja.Find( x=> x.Ime == tx.Tag.ToString()).Odgovor = tx.Text;
+            else polinja.Find(x => x.Ime == tx.Tag.ToString()).Odgovor = tx.Text;
         }
 
         private void txtPolinjaGotFocus(object sender, RoutedEventArgs e)
@@ -204,7 +203,8 @@ namespace Frontend
             try
             {
                 await Save();
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Debug.Fail(ex.Message);
             }
@@ -214,7 +214,7 @@ namespace Frontend
         {
             Student student = new Student();
 
-            if(students.Count > BrojDn)
+            if (students.Count > BrojDn)
             {
                 student = students[int.Parse(BrojDnLabel.Text) - 1];
             }
@@ -258,7 +258,7 @@ namespace Frontend
 
         private void CreateUcenikImgClicked(object sender, MouseButtonEventArgs e)
         {
-               
+
         }
 
         private void CreateUcenik(string ime, string srednoime, string prezime, string smer, int br)
@@ -283,7 +283,7 @@ namespace Frontend
             //Ucenici.Last().CreateServerUcenik(UserKlas._token);
             //MessageBox.Show("успешно креирање на нов ученик");
         }
-        
+
         private async void DeleteUcenikImgClicked(object sender, MouseButtonEventArgs e)
         {
             //if (BrojDn >= Ucenici.Count)

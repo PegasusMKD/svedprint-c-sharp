@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="SvedPrint" Height="600" Width="900" Background="#FFF1F3CE" Icon="Images\grades_icon_xlj_icon.ico" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+        Title="SvedPrint" Height="600" Width="900" Background="#FFF1F3CE" Icon="/Images/grades_icon_xlj_icon.ico" WindowStartupLocation="CenterScreen" WindowState="Maximized">
 	<Grid>
 		<Frame x:Name="Main" NavigationUIVisibility="Hidden"/>
 	</Grid>

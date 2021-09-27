@@ -1,13 +1,10 @@
-﻿using Middleware;
+﻿using MiddlewareRevisited.Models;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using MiddlewareRevisited.Models;
-using MiddlewareRevisited;
 
 namespace Frontend
 {
@@ -20,14 +17,14 @@ namespace Frontend
         public Login_Page(Frame m)
         {
             InitializeComponent();
-            
+
             Main = m;
             AlertTimer = new System.Windows.Threading.DispatcherTimer();
             AlertTimer.Tick += new EventHandler(AlertTimer_Tick);
             AlertTimer.Interval = new TimeSpan(0, 0, 5);
 
-            Username_txt.Text = "IgZxuAXq04";
-            Password_txt.Password = "eYcRWOaL1p";
+            Username_txt.Text = "ful7ngnPUj";
+            Password_txt.Password = "RcLWDwpPxJ";
 
             login();
 
@@ -53,10 +50,11 @@ namespace Frontend
                 User u = await MiddlewareRevisited.Login.httpClientLogin(Username_txt.Text, Password_txt.Password);
                 ShowAlertBox((DateTime.Now - dt).ToString());
                 NavigationService.Navigate(new Home_Page(Main, u));
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 Debug.WriteLine(ex.StackTrace);
-                ShowAlertBox((ex.StackTrace).ToString());
+                ShowAlertBox(ex.StackTrace.ToString());
             }
         }
 
@@ -85,10 +83,8 @@ namespace Frontend
 
         private void AddText(object sender, string v)
         {
-            if (string.IsNullOrWhiteSpace(((System.Windows.Controls.TextBox)sender).Text))
-            {
-                ((System.Windows.Controls.TextBox)sender).Text = v;
-            }
+            if (string.IsNullOrWhiteSpace(((TextBox)sender).Text)) 
+                ((TextBox)sender).Text = v;
         }
 
         private void Password_txt_GotFocus(object sender, RoutedEventArgs e)
@@ -98,20 +94,18 @@ namespace Frontend
 
         private void RemoveText(object sender)
         {
-            ((System.Windows.Controls.TextBox)sender).Text = "";
+            ((TextBox)sender).Text = "";
         }
 
         private void Password_txt_LostFocus(object sender, RoutedEventArgs e)
         {
-            if(Password_txt.Password == "") Pw_Label.Visibility = Visibility.Visible;
+            if (Password_txt.Password == "") Pw_Label.Visibility = Visibility.Visible;
         }
 
-        private async void Login_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        private async void Login_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
-            {
                 await login();
-            }
         }
 
     }

@@ -55,7 +55,8 @@ namespace Frontend
                 catch (Exception ex)
                 {
                     Debug.Fail(ex.Message);
-                } finally
+                }
+                finally
                 {
                     haveGradesChanged = false;
                 }
@@ -519,7 +520,7 @@ namespace Frontend
             //    currentStudent.grades.AddRange(Enumerable.Repeat(0, TextBoxBr + 1 - currentStudent
             //        .grades.Count));    
             //}
-            currentStudent.grades[TextBoxBr] = int.Parse(tx.Text); 
+            currentStudent.grades[TextBoxBr] = int.Parse(tx.Text);
 
             //Menu
             Prosek_out.Content = currentStudent.grades.DefaultIfEmpty(0).Average();
@@ -589,7 +590,8 @@ namespace Frontend
                 currentStudent.subjectOrientation = currentUser.schoolClass.subjectOrientations.ElementAtOrDefault(combobox_smer.SelectedIndex);
                 currentStudent = await MiddlewareRevisited.Controllers.Student.UpdateStudent(currentStudent, currentUser);
                 currentUser.schoolClass.students[br] = currentStudent;
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Debug.Fail(ex.Message);
             }

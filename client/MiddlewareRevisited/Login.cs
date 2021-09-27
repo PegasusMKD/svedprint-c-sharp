@@ -25,12 +25,14 @@ namespace MiddlewareRevisited
             data.Content = new StringContent(json.ToString(), Encoding.UTF8, "application/json");
             try
             {
-                var responseMessage = await httpClient.SendAsync(data);
+                HttpResponseMessage responseMessage = await httpClient.SendAsync(data);
                 responseMessage.EnsureSuccessStatusCode();
-                var str = await responseMessage.Content.ReadAsStringAsync();
+                string str = await responseMessage.Content.ReadAsStringAsync();
                 Debug.WriteLine(str);
                 return JsonConvert.DeserializeObject<User>(str);
-            }  catch(Exception ex)  {
+            }
+            catch (Exception ex)
+            {
                 Debug.WriteLine(ex.Message);
                 Debug.WriteLine(ex.StackTrace);
                 Debug.WriteLine("-- END OF EXCEPTION --");

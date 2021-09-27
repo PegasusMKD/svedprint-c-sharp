@@ -2,11 +2,8 @@ using Frontend.NewFrontEnd;
 using MiddlewareRevisited.Models;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 
 namespace Frontend
@@ -24,7 +21,7 @@ namespace Frontend
         private bool shouldUpdate;
 
 
-        public NewOceniFrame(Student s,  User u)
+        public NewOceniFrame(Student s, User u)
         {
             InitializeComponent();
             init(s, u);
@@ -32,9 +29,10 @@ namespace Frontend
             MouseLeave += new MouseEventHandler(async (obj, e) =>
             {
                 if (!shouldUpdate) return;
-                await MiddlewareRevisited.Controllers.Student.UpdateStudent(CurrentStudent, currentUser).ContinueWith(val =>{
-                        CurrentStudent = val.Result;
-                        shouldUpdate = false;
+                await MiddlewareRevisited.Controllers.Student.UpdateStudent(CurrentStudent, currentUser).ContinueWith(val =>
+                {
+                    CurrentStudent = val.Result;
+                    shouldUpdate = false;
                 });
                 init(CurrentStudent, currentUser);
             });
@@ -69,7 +67,7 @@ namespace Frontend
                     var txt = new TextBox();
                     //Binding binding = new Binding(x.Name) { UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged, Mode = BindingMode.TwoWay };
 
-                    DefaultPole Pole = new DefaultPole(x.CustomAttributes.FirstOrDefault().ConstructorArguments[0].Value.ToString(), "", null ,x.Name);
+                    DefaultPole Pole = new DefaultPole(x.CustomAttributes.FirstOrDefault().ConstructorArguments[0].Value.ToString(), "", null, x.Name);
                     //txt.SetBinding(TextBox.TextProperty, binding);
                     personalDataTabItemFields.Children.Add(Pole.GetDesign());
                     //txt.TextChanged += new TextChangedEventHandler((o, e) => { shouldUpdate = true; });
@@ -110,7 +108,7 @@ namespace Frontend
             while (s.grades.Count < Predmeti.Count) s.grades.Add(0);
             for (int i = 0; i < Predmeti.Count; i++)
             {
-                tmp = new OcenkaBox(i, Predmeti[i],s);
+                tmp = new OcenkaBox(i, Predmeti[i], s);
 
                 Ocenki.Add(tmp);
                 unigrid.Children.Add(tmp.GetModel());

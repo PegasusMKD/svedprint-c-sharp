@@ -3,15 +3,12 @@ using MiddlewareRevisited.Models.PrintModels.Printer;
 using System;
 using System.Collections.Generic;
 using System.Drawing.Printing;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace Frontend
 {
@@ -74,18 +71,18 @@ namespace Frontend
         private DockPanel MenuDP(string Name, int brojDn)
         {
             DockPanel st = new DockPanel();
-            System.Windows.Controls.Label tx = new System.Windows.Controls.Label();
+            Label tx = new Label();
             tx.Content = Name;
             st.Children.Add(tx);
             st.Height = 50;
             st.Width = 400;
             st.MaxWidth = 400;
             st.HorizontalAlignment = HorizontalAlignment.Left;
-            st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(165, 166, 140));
+            st.Background = new SolidColorBrush(Color.FromRgb(165, 166, 140));
             tx.FontSize = 22;
-            tx.FontFamily = new System.Windows.Media.FontFamily("Arial Black");
-            tx.Foreground = System.Windows.Media.Brushes.White;
-            tx.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+            tx.FontFamily = new FontFamily("Arial Black");
+            tx.Foreground = Brushes.White;
+            tx.VerticalAlignment = VerticalAlignment.Center;
             st.MouseLeftButtonDown += new MouseButtonEventHandler((sender, e) => MouseLeftButtonDown(sender, e, brojDn + 1));
             st.MouseEnter += new MouseEventHandler(MouseEnter);
             st.MouseLeave += new MouseEventHandler(MouseLeave);
@@ -97,7 +94,7 @@ namespace Frontend
         private void MouseEnter(object sender, MouseEventArgs e)
         {
             DockPanel st = (DockPanel)sender;
-            st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(237, 106, 61));
+            st.Background = new SolidColorBrush(Color.FromRgb(237, 106, 61));
         }
 
         private void MouseLeave(object sender, MouseEventArgs e)
@@ -105,7 +102,7 @@ namespace Frontend
             DockPanel st = (DockPanel)sender;
             if (ClickedMenuItem != sender)
             {
-                st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(165, 166, 140));
+                st.Background = new SolidColorBrush(Color.FromRgb(165, 166, 140));
             }
         }
 
@@ -114,10 +111,10 @@ namespace Frontend
             if (ClickedMenuItem != null)
             {
                 DockPanel st2 = (DockPanel)ClickedMenuItem;
-                st2.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(165, 166, 140));
+                st2.Background = new SolidColorBrush(Color.FromRgb(165, 166, 140));
             }
             DockPanel st = (DockPanel)sender;
-            st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(237, 106, 61));
+            st.Background = new SolidColorBrush(Color.FromRgb(237, 106, 61));
             ClickedMenuItem = sender;
 
             Title.Content = Menuitems[i - 1];

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -64,7 +60,7 @@ namespace Frontend
             return CreateBorder(10, 0, 25, 5, "#FF3D84C6");
         }
 
-        public static ComboBox CreateComboBox(string PoleTag,string[] izbori)
+        public static ComboBox CreateComboBox(string PoleTag, string[] izbori)
         {
             ComboBox CB = new ComboBox();
             CB.OverridesDefaultStyle = false;
@@ -72,9 +68,9 @@ namespace Frontend
             CB.Tag = PoleTag;
             CB.Margin = new Thickness(30, 5, 30, 5);
             CB.FontSize = 24;
-           // CB.BorderBrush = Brushes.Yellow;
-           // CB.Background = Brushes.Yellow;
-           // CB.Resources.Add(SystemColors.WindowBrushKey, Brushes.Yellow);
+            // CB.BorderBrush = Brushes.Yellow;
+            // CB.Background = Brushes.Yellow;
+            // CB.Resources.Add(SystemColors.WindowBrushKey, Brushes.Yellow);
             return CB;
         }
 

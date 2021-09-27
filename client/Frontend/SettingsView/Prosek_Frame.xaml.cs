@@ -33,7 +33,7 @@ namespace Frontend
             int ctr = 0;
             foreach (KeyValuePair<string, string> entry in res)
             {
-            
+
                 StackPanel st = new StackPanel();
                 st.Children.Add(ContentLabel(entry.Key));
                 st.Children.Add(TextBorderGrid(entry.Value));
@@ -56,7 +56,7 @@ namespace Frontend
             gd.Margin = new Thickness(0, 0, 0, 10);
 
             Border border = CreateBorder(10, 0, 0, 5, "#FF3D84C6");
-            border.Margin = new Thickness(25, 0, 20, 0);         
+            border.Margin = new Thickness(25, 0, 20, 0);
 
             Border Circle = CreateBorder(60, 0, 0, 30, "#FF3D84C6");
             Circle.Margin = new Thickness(0, -35, 5, -10);
@@ -88,7 +88,7 @@ namespace Frontend
         {
             // StringBuilder zosto pobrzo e od obicno string concatenation
             Dictionary<string, StringBuilder> PredmetiProsek = new Dictionary<string, StringBuilder>();
-            foreach(Ucenik ucenik in Ucenici)
+            foreach (Ucenik ucenik in Ucenici)
             {
                 if (ucenik._smer == "" || UserKlas._p._smerovi.Keys.Contains(ucenik._smer) == false) continue;
                 // List<string> PredmetiOdSmer = UserKlas._p._smerovi[ucenik._smer]._predmeti;
@@ -96,7 +96,7 @@ namespace Frontend
 
                 if (PredmetiOdSmer.Count == 0) continue;
 
-                for (int i = 0; i <ucenik._oceni.Count && i < PredmetiOdSmer.Count; i++)
+                for (int i = 0; i < ucenik._oceni.Count && i < PredmetiOdSmer.Count; i++)
                 {
                     if (string.IsNullOrWhiteSpace(PredmetiOdSmer[i])) continue;
                     if (PredmetiProsek.ContainsKey(PredmetiOdSmer[i]))
@@ -115,7 +115,7 @@ namespace Frontend
 
             Dictionary<string, StringBuilder> t = PredmetiProsek;
             Dictionary<string, string> retval = new Dictionary<string, string>();
-            foreach(var predmet in t.ToArray())
+            foreach (var predmet in t.ToArray())
             {
                 //PredmetiProsek[predmet.Key].Clear();
                 //PredmetiProsek[predmet.Key].Append(Array.ConvertAll(predmet.Value.ToString().Split(' '), x => float.Parse(x)).Average().ToString("n2"));
@@ -123,7 +123,7 @@ namespace Frontend
                 retval[predmet.Key] = Array.ConvertAll(predmet.Value.ToString().Split(' '), x => float.Parse(x)).Average().ToString("n2");
             }
 
-            
+
             return retval;
         }
 

@@ -1,18 +1,9 @@
 ﻿using MiddlewareRevisited.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Frontend
 {
@@ -118,8 +109,8 @@ namespace Frontend
             st.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(237, 106, 61));
             ClickedMenuItem = sender;
 
-            if(i<2)
-            Settings_Frame.Content = ListPages[i];
+            if (i < 2)
+                Settings_Frame.Content = ListPages[i];
 
 
             Title.Content = Menuitems[i];
