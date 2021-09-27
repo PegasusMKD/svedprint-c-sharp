@@ -1,4 +1,5 @@
 ﻿using MiddlewareRevisited.Models;
+using MiddlewareRevisited.Utility;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -23,8 +24,8 @@ namespace Frontend
             AlertTimer.Tick += new EventHandler(AlertTimer_Tick);
             AlertTimer.Interval = new TimeSpan(0, 0, 5);
 
-            Username_txt.Text = "9i2Bzz1aqF";
-            Password_txt.Password = "qaeI6TKeJ7";
+            Username_txt.Text = "4yH2k1b3iv";
+            Password_txt.Password = "NxRAx6yyuS";
 
             login();
 
@@ -43,11 +44,11 @@ namespace Frontend
 
         private async Task login()
         {
-            // Klasen temp = await Login.LoginWithCredAsync(Username_txt.Text, Password_txt.Password);
             var dt = DateTime.Now;
             try
             {
-                User u = await MiddlewareRevisited.Login.httpClientLogin(Username_txt.Text, Password_txt.Password);
+                HttpClientFactory.SetToken(await MiddlewareRevisited.Login.httpClientLogin(Username_txt.Text, Password_txt.Password));
+                User u = await MiddlewareRevisited.Controllers.Teacher.GetUserByAuthorization();
                 ShowAlertBox((DateTime.Now - dt).ToString());
                 NavigationService.Navigate(new Home_Page(Main, u));
             }

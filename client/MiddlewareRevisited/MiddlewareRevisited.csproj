@@ -56,8 +56,10 @@
   <ItemGroup>
     <Compile Include="Controllers\Student.cs" />
     <Compile Include="Controllers\SubjectOrientation.cs" />
+    <Compile Include="Controllers\Teacher.cs" />
     <Compile Include="Utility\Encryption.cs" />
     <Compile Include="Utility\Grades.cs" />
+    <Compile Include="Utility\HttpClientFactory.cs" />
     <Compile Include="Utility\ImageUtility.cs" />
     <Compile Include="Login.cs" />
     <Compile Include="Models\OptionalSubjects.cs" />
