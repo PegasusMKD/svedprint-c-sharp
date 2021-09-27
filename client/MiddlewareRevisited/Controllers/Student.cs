@@ -1,5 +1,6 @@
 ﻿using MiddlewareRevisited.Models;
 using MiddlewareRevisited.Models.Meta;
+using MiddlewareRevisited.Utility;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -24,12 +25,10 @@ namespace MiddlewareRevisited.Controllers
         public static async Task<Models.Student> UpdateStudent(Models.Student student, Models.User currentUser)
         {
             student.schoolClass = currentUser.schoolClass;
-            using (HttpClient httpClient = new HttpClient())
+            using (HttpClient httpClient = Utility.HttpClientFactory.GetAuthenticatedClient())
             {
-                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var data = new HttpRequestMessage(HttpMethod.Put, $"http://{Properties.Settings.Default.DB_HOST}:8080/api/students");
                 var json = JsonConvert.SerializeObject(student);
-                data.Headers.Add("token", currentUser.token);
                 data.Content = new StringContent(json, Encoding.UTF8, "application/json");
                 var ret = await httpClient.SendAsync(data);
                 if (!ret.IsSuccessStatusCode) throw new Exception(await ret.Content.ReadAsStringAsync());
@@ -40,15 +39,9 @@ namespace MiddlewareRevisited.Controllers
         public static async Task<Models.Student> GetStudentByIdAsync(string studentId, User user)
         {
             Models.Student s;
-            using (var http = new HttpClient())
+            using (var http = HttpClientFactory.GetAuthenticatedClient())
             {
                 var data = new HttpRequestMessage(HttpMethod.Post, $"http://{Properties.Settings.Default.DB_HOST}:8080/api/students/getOne");
-                data.Headers.Add("token", user.token);
-                data.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
-                //var json = new JObject(
-                //        new JProperty("schoolClass", JToken.FromObject(user.schoolClass)
-                //    )).ToString();
 
                 data.Content = new StringContent(studentId, Encoding.UTF8, MediaTypeNames.Text.Plain);
                 var response = await http.SendAsync(data).ConfigureAwait(false);
@@ -62,11 +55,9 @@ namespace MiddlewareRevisited.Controllers
         public static async Task<List<Models.Student>> GetAllStudentsShortAsync(Models.User user)
         {
             PageResponse<Models.Student> page;
-            using (HttpClient http = new HttpClient())
+            using (HttpClient http = HttpClientFactory.GetAuthenticatedClient())
             {
                 var data = new HttpRequestMessage(HttpMethod.Post, $"http://{Properties.Settings.Default.DB_HOST}:8080/api/students/page");
-                data.Headers.Add("token", user.token);
-                data.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
                 var json = new JObject(
                         new JProperty("schoolClass", JToken.FromObject(user.schoolClass)
@@ -92,11 +83,9 @@ namespace MiddlewareRevisited.Controllers
         public static async Task<List<Models.Student>> GetAllStudentsFullAsync(Models.User user)
         {
             List<Models.Student> items;
-            using (HttpClient http = new HttpClient())
+            using (HttpClient http = HttpClientFactory.GetAuthenticatedClient())
             {
                 var data = new HttpRequestMessage(HttpMethod.Get, $"http://{Properties.Settings.Default.DB_HOST}:8080/api/students");
-                data.Headers.Add("token", user.token);
-                data.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
                 var response = await http.SendAsync(data).ConfigureAwait(false);
                 if (!response.IsSuccessStatusCode) throw new Exception(await response.Content.ReadAsStringAsync());

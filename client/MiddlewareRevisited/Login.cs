@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -13,30 +14,36 @@ namespace MiddlewareRevisited
     public class Login
     {
 
-        private static HttpClient httpClient = new HttpClient();
-
-        public static async Task<User> httpClientLogin(string username, string password)
+        public static async Task<string> httpClientLogin(string username, string password)
         {
-            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var data = new HttpRequestMessage(HttpMethod.Post, $"http://{Properties.Settings.Default.DB_HOST}:8080/api/teachers");
-            var json = new JObject();
-            json.Add("username", username);
-            data.Headers.Add("password", Utility.Encryption.EncryptSHA256(password));
-            data.Content = new StringContent(json.ToString(), Encoding.UTF8, "application/json");
-            try
+            var account = new Dictionary<string, string>();
+            account.Add("grant_type", "password");
+            account.Add("username", username);
+            account.Add("password", Utility.Encryption.EncryptSHA256(password));
+
+            using (HttpClient httpClient = new HttpClient())
             {
+                var data = new HttpRequestMessage(HttpMethod.Post, $"http://{Properties.Settings.Default.DB_HOST}:8080/oauth/token");
+                var base64authorization = Convert.ToBase64String(Encoding.ASCII.GetBytes("svedprintclientid:FHSs82BbPzagP"));
+                data.Headers.Add("Authorization", $"Basic {base64authorization}");
+
+                data.Content = new FormUrlEncodedContent(account);
+
                 HttpResponseMessage responseMessage = await httpClient.SendAsync(data);
-                responseMessage.EnsureSuccessStatusCode();
+                if (!responseMessage.IsSuccessStatusCode) throw new Exception(await responseMessage.Content.ReadAsStringAsync());
                 string str = await responseMessage.Content.ReadAsStringAsync();
-                Debug.WriteLine(str);
-                return JsonConvert.DeserializeObject<User>(str);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-                Debug.WriteLine(ex.StackTrace);
-                Debug.WriteLine("-- END OF EXCEPTION --");
-                throw ex;
+
+                try
+                {
+                    return JsonConvert.DeserializeObject<JObject>(str)["access_token"].ToString();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                    Debug.WriteLine(ex.StackTrace);
+                    Debug.WriteLine("-- END OF EXCEPTION --");
+                    throw ex;
+                }
             }
         }
     }
