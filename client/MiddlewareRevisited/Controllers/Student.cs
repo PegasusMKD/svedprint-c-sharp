@@ -22,10 +22,9 @@ namespace MiddlewareRevisited.Controllers
         // TODO: Rework so it works like AdminPanel middleware 
         // TASK<Models.Student> -> Task zoso ne go koristis returnatiot Student
         // i plus vekje go imas updatenato lokalno Student-ot
-        public static async Task<Models.Student> UpdateStudent(Models.Student student, Models.User currentUser)
+        public static async Task<Models.Student> UpdateStudent(Models.Student student)
         {
-            student.schoolClass = currentUser.schoolClass;
-            using (HttpClient httpClient = Utility.HttpClientFactory.GetAuthenticatedClient())
+            using (HttpClient httpClient = HttpClientFactory.GetAuthenticatedClient())
             {
                 var data = new HttpRequestMessage(HttpMethod.Put, $"http://{Properties.Settings.Default.DB_HOST}:8080/api/students");
                 var json = JsonConvert.SerializeObject(student);
@@ -36,7 +35,7 @@ namespace MiddlewareRevisited.Controllers
             }
         }
 
-        public static async Task<Models.Student> GetStudentByIdAsync(string studentId, User user)
+        public static async Task<Models.Student> GetStudentByIdAsync(string studentId)
         {
             Models.Student s;
             using (var http = HttpClientFactory.GetAuthenticatedClient())
@@ -52,18 +51,13 @@ namespace MiddlewareRevisited.Controllers
             return s;
         }
 
-        public static async Task<List<Models.Student>> GetAllStudentsShortAsync(Models.User user)
+        public static async Task<List<Models.Student>> GetAllStudentsShortAsync()
         {
             PageResponse<Models.Student> page;
             using (HttpClient http = HttpClientFactory.GetAuthenticatedClient())
             {
-                var data = new HttpRequestMessage(HttpMethod.Post, $"http://{Properties.Settings.Default.DB_HOST}:8080/api/students/page");
+                var data = new HttpRequestMessage(HttpMethod.Get, $"http://{Properties.Settings.Default.DB_HOST}:8080/api/students/page");
 
-                var json = new JObject(
-                        new JProperty("schoolClass", JToken.FromObject(user.schoolClass)
-                    )).ToString();
-
-                data.Content = new StringContent(json, Encoding.UTF8, "application/json");
                 var response = await http.SendAsync(data).ConfigureAwait(false);
                 if (!response.IsSuccessStatusCode) throw new Exception(await response.Content.ReadAsStringAsync());
                 try
@@ -80,7 +74,7 @@ namespace MiddlewareRevisited.Controllers
         }
 
 
-        public static async Task<List<Models.Student>> GetAllStudentsFullAsync(Models.User user)
+        public static async Task<List<Models.Student>> GetAllStudentsFullAsync()
         {
             List<Models.Student> items;
             using (HttpClient http = HttpClientFactory.GetAuthenticatedClient())

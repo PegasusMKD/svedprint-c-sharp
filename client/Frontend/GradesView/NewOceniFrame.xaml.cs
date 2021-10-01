@@ -29,7 +29,7 @@ namespace Frontend
             MouseLeave += new MouseEventHandler(async (obj, e) =>
             {
                 if (!shouldUpdate) return;
-                await MiddlewareRevisited.Controllers.Student.UpdateStudent(CurrentStudent, currentUser).ContinueWith(val =>
+                await MiddlewareRevisited.Controllers.Student.UpdateStudent(CurrentStudent).ContinueWith(val =>
                 {
                     CurrentStudent = val.Result;
                     shouldUpdate = false;
@@ -47,7 +47,7 @@ namespace Frontend
 
         public async void init(Student s, User u)
         {
-            s = await MiddlewareRevisited.Controllers.Student.GetStudentByIdAsync(s.id, u);
+            s = await MiddlewareRevisited.Controllers.Student.GetStudentByIdAsync(s.id);
 
             CurrentStudent = s;
             currentUser = u;

@@ -4,9 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.Net.Http.Headers;
 using Newtonsoft.Json;
-using MiddlewareRevisited.Models;
 using MiddlewareRevisited.Utility;
 
 namespace MiddlewareRevisited.Controllers
@@ -14,7 +12,7 @@ namespace MiddlewareRevisited.Controllers
     public class SubjectOrientation
     {
 
-        public static async Task<Models.SubjectOrientation> AddSubjectOrientation(Models.SubjectOrientation subjectOrientation, Models.User currentUser)
+        public static async Task<Models.SubjectOrientation> AddSubjectOrientation(Models.SubjectOrientation subjectOrientation)
         {
             using(HttpClient httpClient = HttpClientFactory.GetAuthenticatedClient())
             {
@@ -29,7 +27,7 @@ namespace MiddlewareRevisited.Controllers
         }
 
 
-        public static async Task RemoveSubjectOrientation(Models.SubjectOrientation subjectOrientation, Models.User currentUser)
+        public static async Task RemoveSubjectOrientation(Models.SubjectOrientation subjectOrientation)
         {
             using (HttpClient httpClient = HttpClientFactory.GetAuthenticatedClient())
             {
@@ -41,7 +39,7 @@ namespace MiddlewareRevisited.Controllers
                 
         }
 
-        public static async Task<List<Models.SubjectOrientation>> GetSubjectOrientations(Models.User currentUser)
+        public static async Task<List<Models.SubjectOrientation>> GetSubjectOrientations()
         {
             using (HttpClient httpClient = HttpClientFactory.GetAuthenticatedClient())
             {
@@ -52,7 +50,7 @@ namespace MiddlewareRevisited.Controllers
                 
         }
 
-        public static async Task<Models.SubjectOrientation> UpdateSubjectOrientation(Models.SubjectOrientation subjectOrientation, Models.User currentUser)
+        public static async Task<Models.SubjectOrientation> UpdateSubjectOrientation(Models.SubjectOrientation subjectOrientation)
         {
             using (HttpClient httpClient = HttpClientFactory.GetAuthenticatedClient())
             {

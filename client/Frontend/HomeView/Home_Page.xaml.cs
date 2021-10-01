@@ -31,7 +31,7 @@ namespace Frontend
             currentUser = user;
             schoolClass = currentUser.schoolClass;
             subjectOrientations = schoolClass.subjectOrientations;
-            MiddlewareRevisited.Controllers.Student.GetAllStudentsFullAsync(user).ContinueWith(st => students = st.Result).Wait();
+            MiddlewareRevisited.Controllers.Student.GetAllStudentsFullAsync().ContinueWith(st => students = st.Result).Wait();
 
             students_static = students;
             currentUser_static = currentUser;
