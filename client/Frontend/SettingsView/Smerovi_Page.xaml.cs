@@ -27,14 +27,14 @@ namespace Frontend
             this.currentUser = currentUser;
             this.students = students;
 
-            GetData();
+            UpdatePanels();
         }
 
         List<TextBox> DodajPredmeti = new List<TextBox>();
-        bool ContentTextChanged = false;
-        private void GetData()
-        {
+        private bool ContentTextChanged;
 
+        private void UpdatePanels()
+        {
             DodajPredmeti.Clear();
             st1.Children.Clear();
             st2.Children.Clear();
@@ -42,19 +42,18 @@ namespace Frontend
 
             foreach (SubjectOrientation subjectOrientation in subjectOrientations)
             {
-                List<String> Predmeti = subjectOrientation.subjects;
+                List<string> Predmeti = subjectOrientation.subjects;
 
                 StackPanel st = new StackPanel();
                 int PredmetCtr = 0;
                 foreach (string s in Predmeti)
                 {
-
                     TextBox ctx = new TextBox();
                     ctx = ContentTextBox(s);
                     ctx.TextChanged += Ctx_TextChanged;
                     ctx.Name = "n" + SmerCtr.ToString() + "s" + PredmetCtr.ToString();
                     st.Children.Add(ctx);
-                    st.Children.Add(TextBorderGrid(false, SmerCtr, PredmetCtr++));
+                    st.Children.Add(TextBorderGrid(true, SmerCtr, PredmetCtr++));
                 }
 
                 if (SmerCtr % 2 == 0)
@@ -92,28 +91,14 @@ namespace Frontend
             NewSmerST.Children.Add(NewSmerSaveLabel());
 
             if (SmerCtr % 2 == 0)
-            {
                 st1.Children.Add(NewSmerST);
-            }
             else
-            {
                 st2.Children.Add(NewSmerST);
-            }
         }
 
-        private void St_MouseLeave(object sender, MouseEventArgs e)
-        {
-            ContentTextChanged = false;
-        }
+        private void St_MouseLeave(object sender, MouseEventArgs e) => ContentTextChanged = false;
 
-        private void Ctx_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            ContentTextChanged = true;
-            TextBox tx = (TextBox)sender;
-            int SmerCtr = int.Parse(tx.Name.Substring(1).Split('s')[0]);
-            int PredmetCtr = int.Parse(tx.Name.Substring(1).Split('s')[1]);
-            //subjectOrientations[subjectOrientations.Select(orientation => orientation.shortName).ElementAt(SmerCtr)].UpdatePredmetAsync(PredmetCtr, tx.Text, UserKlas._token);
-        }
+        private void Ctx_TextChanged(object sender, TextChangedEventArgs e) => ContentTextChanged = true;
 
         private Border ContentBorder(string LabelContent)
         {
@@ -122,7 +107,8 @@ namespace Frontend
             DP.HorizontalAlignment = HorizontalAlignment.Center;
             DP.VerticalAlignment = VerticalAlignment.Center;
             DP.Children.Add(CreateLabel(LabelContent, 30, "Arial"));
-            if (LabelContent != "Додај Смер" && LabelContent != "зачувај") DP.Children.Add(CreateTrashIcon(LabelContent));
+            if (LabelContent != "Додај Смер" && LabelContent != "зачувај")
+                DP.Children.Add(CreateTrashIcon(LabelContent));
             bd.Child = DP;
             return bd;
         }
@@ -158,7 +144,7 @@ namespace Frontend
         private Border NewSmerSaveLabel()
         {
             Border bd = ContentBorder("зачувај");
-            bd.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FF3D84C6"));
+            bd.Background = new BrushConverter().ConvertFrom("#FF3D84C6") as SolidColorBrush;
             bd.MouseLeftButtonDown += NewSmerSaveClicked;
             return bd;
         }
@@ -169,11 +155,11 @@ namespace Frontend
             subjectOrientation.shortName = DodajPredmeti[DodajPredmeti.Count() - 2].Text;
             subjectOrientation.fullName = DodajPredmeti[DodajPredmeti.Count - 1].Text;
 
-            subjectOrientation = await MiddlewareRevisited.Controllers.SubjectOrientation.AddSubjectOrientation(subjectOrientation, currentUser);
+            subjectOrientation = await MiddlewareRevisited.Controllers.SubjectOrientation.AddSubjectOrientation(subjectOrientation);
 
             currentUser.schoolClass.subjectOrientations.Add(subjectOrientation);
 
-            GetData();
+            UpdatePanels();
         }
 
         private async void NewPredmetImgClicked(object sender, MouseButtonEventArgs e, int i, int j)
@@ -181,8 +167,8 @@ namespace Frontend
             SubjectOrientation subjectOrientation = subjectOrientations[i];
             subjectOrientation.subjects.Add(DodajPredmeti[j].Text);
 
-            await MiddlewareRevisited.Controllers.SubjectOrientation.UpdateSubjectOrientation(subjectOrientation, currentUser);
-            GetData();
+            await MiddlewareRevisited.Controllers.SubjectOrientation.UpdateSubjectOrientation(subjectOrientation);
+            UpdatePanels();
         }
 
         private async void RemovePredmetImgClicked(object sender, MouseButtonEventArgs e, int i, int j)
@@ -190,21 +176,21 @@ namespace Frontend
             SubjectOrientation subjectOrientation = subjectOrientations[i];
             subjectOrientation.subjects.RemoveAt(j);
 
-            await MiddlewareRevisited.Controllers.SubjectOrientation.UpdateSubjectOrientation(subjectOrientation, currentUser);
-            GetData();
+            await MiddlewareRevisited.Controllers.SubjectOrientation.UpdateSubjectOrientation(subjectOrientation);
+            UpdatePanels();
         }
 
         private void RemovePredmedimgMouseEnter(object sender, MouseEventArgs e)
         {
             if (ContentTextChanged == true) return;
             Image img = (Image)sender;
-            img.Source = new BitmapImage(new Uri("x_2.png", UriKind.Relative));
+            img.Source = new BitmapImage(new Uri(@"/Images/x_2.png", UriKind.Relative));
         }
 
         private void RemovePredmedimgMouseLeave(object sender, MouseEventArgs e)
         {
             Image img = (Image)sender;
-            img.Source = new BitmapImage(new Uri("check_icon.png", UriKind.Relative));
+            img.Source = new BitmapImage(new Uri(@"/Images/check_icon.png", UriKind.Relative));
         }
 
         private TextBox ContentTextBox(string Text)
@@ -220,7 +206,7 @@ namespace Frontend
         {
             Image img = new Image();
             img.Tag = smer;
-            img.Source = new BitmapImage(new Uri("trash_icon.png", UriKind.Relative));
+            img.Source = new BitmapImage(new Uri(@"/Images/trash_icon.png", UriKind.Relative));
             img.HorizontalAlignment = HorizontalAlignment.Right;
             img.Margin = new Thickness(10, 5, 10, 5);
             img.MouseLeftButtonDown += Img_MouseLeftButtonDown;
@@ -264,9 +250,9 @@ namespace Frontend
             Image img = (Image)sender;
             string shortName = img.Tag.ToString();
             SubjectOrientation subjectOrientation = (from orientation in subjectOrientations where orientation.shortName.Equals(shortName) select orientation).FirstOrDefault();
-            await MiddlewareRevisited.Controllers.SubjectOrientation.RemoveSubjectOrientation(subjectOrientation, currentUser);
+            await MiddlewareRevisited.Controllers.SubjectOrientation.RemoveSubjectOrientation(subjectOrientation);
             subjectOrientations.RemoveAll(orientation => orientation.id.Equals(subjectOrientation.id));
-            GetData();
+            UpdatePanels();
         }
 
     }

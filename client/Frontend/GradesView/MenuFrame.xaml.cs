@@ -19,7 +19,7 @@ namespace Frontend
 
             CurrentUser = user;
             students = user.schoolClass.students;
-            MiddlewareRevisited.Controllers.Student.GetAllStudentsShortAsync(user).ContinueWith(val => students = val.Result).Wait();
+            MiddlewareRevisited.Controllers.Student.GetAllStudentsShortAsync().ContinueWith(val => students = val.Result).Wait();
 
             DesignMenu ListLayer = new DesignMenu(students, user, ref Source);
             DesignModel Model = ListLayer;
