@@ -1,7 +1,10 @@
 ﻿using MiddlewareRevisited.Models;
 using MiddlewareRevisited.Utility;
 using System;
+using System.Configuration;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,12 +27,15 @@ namespace Frontend
             AlertTimer.Tick += new EventHandler(AlertTimer_Tick);
             AlertTimer.Interval = new TimeSpan(0, 0, 5);
 
-            Username_txt.Text = "4yH2k1b3iv";
-            Password_txt.Password = "NxRAx6yyuS";
-
-            login();
+            Username_txt.Text = "UOsnFcihGn";
+            Password_txt.Password = "ZR5ILNfGxz";
 
             InjectServerLabel();
+
+            //Task t = Task.Run(async () => await login());
+            //t.Wait();
+
+            Loaded += async (o, ev) => await login();
         }
 
         private void InjectServerLabel()
@@ -44,13 +50,15 @@ namespace Frontend
 
         private async Task login()
         {
-            var dt = DateTime.Now;
+            DateTime dt = DateTime.Now;
+
+            HttpClientFactory.SetToken(await MiddlewareRevisited.Login.httpClientLogin(Username_txt.Text, Password_txt.Password));
+            User u = await MiddlewareRevisited.Controllers.Teacher.GetUserByAuthorization();
+            ShowAlertBox((DateTime.Now - dt).ToString());
+            NavigationService.Navigate(new Home_Page(Main, u));
+
             try
             {
-                HttpClientFactory.SetToken(await MiddlewareRevisited.Login.httpClientLogin(Username_txt.Text, Password_txt.Password));
-                User u = await MiddlewareRevisited.Controllers.Teacher.GetUserByAuthorization();
-                ShowAlertBox((DateTime.Now - dt).ToString());
-                NavigationService.Navigate(new Home_Page(Main, u));
             }
             catch (Exception ex)
             {
@@ -84,7 +92,7 @@ namespace Frontend
 
         private void AddText(object sender, string v)
         {
-            if (string.IsNullOrWhiteSpace(((TextBox)sender).Text)) 
+            if (string.IsNullOrWhiteSpace(((TextBox)sender).Text))
                 ((TextBox)sender).Text = v;
         }
 

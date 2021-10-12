@@ -28,6 +28,7 @@ namespace MiddlewareRevisited.Controllers
             {
                 var data = new HttpRequestMessage(HttpMethod.Put, $"http://{Properties.Settings.Default.DB_HOST}:8080/api/students");
                 var json = JsonConvert.SerializeObject(student);
+                
                 data.Content = new StringContent(json, Encoding.UTF8, "application/json");
                 var ret = await httpClient.SendAsync(data);
                 if (!ret.IsSuccessStatusCode) throw new Exception(await ret.Content.ReadAsStringAsync());
@@ -56,7 +57,9 @@ namespace MiddlewareRevisited.Controllers
             PageResponse<Models.Student> page;
             using (HttpClient http = HttpClientFactory.GetAuthenticatedClient())
             {
-                var data = new HttpRequestMessage(HttpMethod.Get, $"http://{Properties.Settings.Default.DB_HOST}:8080/api/students/page");
+                var data = new HttpRequestMessage(HttpMethod.Post, $"http://{Properties.Settings.Default.DB_HOST}:8080/api/students/page");
+                // vvvvv
+                data.Content = new StringContent(null, Encoding.UTF8, "application/json");
 
                 var response = await http.SendAsync(data).ConfigureAwait(false);
                 if (!response.IsSuccessStatusCode) throw new Exception(await response.Content.ReadAsStringAsync());

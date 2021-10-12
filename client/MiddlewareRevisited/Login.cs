@@ -28,6 +28,7 @@ namespace MiddlewareRevisited
                 data.Headers.Add("Authorization", $"Basic {base64authorization}");
 
                 data.Content = new FormUrlEncodedContent(account);
+                //httpClient.Timeout = TimeSpan.FromSeconds(5);
 
                 HttpResponseMessage responseMessage = await httpClient.SendAsync(data);
                 if (!responseMessage.IsSuccessStatusCode) throw new Exception(await responseMessage.Content.ReadAsStringAsync());
