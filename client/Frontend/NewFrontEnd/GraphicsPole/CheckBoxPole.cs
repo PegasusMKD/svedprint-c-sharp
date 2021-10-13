@@ -7,21 +7,18 @@ namespace Frontend.NewFrontEnd.GraphicsPole
 {
     class CheckBoxPole
     {
-        Design DesignPole = null;
-        object Model_object = null;
-        string Binding = null;
+        Design DesignPole;
+        object Model_object;
+        string Binding;
         public CheckBoxPole(string Question, string DefaultAnswer, object Model_object, string Binding)
         {
             this.Model_object = Model_object;
             this.Binding = Binding;
 
             DesignPole = new Design(Question, GetCheckBox(DefaultAnswer));
-            DesignPole.SetAnswer(DefaultAnswer);
+            DesignPole.Answer = DefaultAnswer;
         }
-        public UIElement GetDesign()
-        {
-            return DesignPole.GetDesign();
-        }
+        public UIElement GetDesign => DesignPole.CreateStackPanelDesign();
 
         Viewbox GetCheckBox(string DefaultAnswer)
         {
@@ -53,7 +50,7 @@ namespace Frontend.NewFrontEnd.GraphicsPole
         private void Checkb_CheckedChange(object sender, RoutedEventArgs e)
         {
             var Btn = (CheckBox)sender;
-            DesignPole.SetAnswer(Btn.IsChecked.ToString());
+            DesignPole.Answer = Btn.IsChecked.ToString();
         }
     }
 }

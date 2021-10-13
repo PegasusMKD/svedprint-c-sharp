@@ -5,19 +5,20 @@ namespace Frontend.NewFrontEnd.DesignModel
 {
     class MenuLabel : DesignModel
     {
-        static int Width = 800;
-        static int Fontsize = 36;
-        static SolidColorBrush BackgroundColor = new SolidColorBrush(Color.FromRgb(255, 183, 94));
+        private const int width = 800;
+        private const int fontSize = 36;
+        private readonly SolidColorBrush BackgroundColor = new SolidColorBrush(Color.FromRgb(255, 183, 94));
 
         public MenuLabel(string text)
         {
-            Label lbl = new Label();
-            lbl.Content = text;
-            lbl.Width = Width;
-            lbl.FontSize = Fontsize;
-            lbl.Background = BackgroundColor;
-            lbl.ToolTip = text;
-            Element = lbl;
+            Element = new Label
+            {
+                Content = text,
+                Width = width,
+                FontSize = fontSize,
+                Background = BackgroundColor,
+                ToolTip = text
+            };
         }
     }
 }

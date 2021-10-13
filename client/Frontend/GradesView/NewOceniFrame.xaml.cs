@@ -46,6 +46,7 @@ namespace Frontend
             CurrentStudent.subjectOrientation = (SubjectOrientation)Smer_cb.SelectedItem;
         }
 
+        // TODO
         public async void init(Student s, User u)
         {
             s = await MiddlewareRevisited.Controllers.Student.GetStudentByIdAsync(s.id);
@@ -68,7 +69,7 @@ namespace Frontend
                     var txt = new TextBox();
                     //Binding binding = new Binding(x.Name) { UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged, Mode = BindingMode.TwoWay };
 
-                    DefaultPole Pole = new DefaultPole(x.CustomAttributes.FirstOrDefault().ConstructorArguments[0].Value.ToString(), "", null, x.Name);
+                    DefaultPole Pole = new DefaultPole(x.CustomAttributes.FirstOrDefault().ConstructorArguments[0].Value.ToString(), x.Name);
                     //txt.SetBinding(TextBox.TextProperty, binding);
                     personalDataTabItemFields.Children.Add(Pole.GetDesign());
                     //txt.TextChanged += new TextChangedEventHandler((o, e) => { shouldUpdate = true; });
@@ -112,13 +113,13 @@ namespace Frontend
                 tmp = new OcenkaBox(i, Predmeti[i], s);
 
                 Ocenki.Add(tmp);
-                unigrid.Children.Add(tmp.GetModel());
+                unigrid.Children.Add(tmp.Element);
             }
         }
 
-        public List<int> GetOcenki()
+        public IEnumerable<int> GetOcenki()
         {
-            return Ocenki.Select(x => x.GetOcenka()).ToList();
+            return Ocenki.Select(x => x.OcenkaValue);
         }
     }
 }

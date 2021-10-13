@@ -23,7 +23,7 @@ namespace Frontend
 
             DesignMenu ListLayer = new DesignMenu(students, user, ref Source);
             DesignModel Model = ListLayer;
-            MainGrid.Children.Add(Model.GetModel());
+            MainGrid.Children.Add(Model.Element);
         }
     }
 }

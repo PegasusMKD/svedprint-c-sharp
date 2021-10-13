@@ -8,12 +8,12 @@ namespace Frontend.NewFrontEnd.GraphicsPole
 {
     class DefaultPole
     {
-        Design DesignPole = null;
-        object Model_object = null;
-        string Binding = null;
-        public DefaultPole(string Question, string Answer, object Model_object, string Binding)
+        private readonly Design DesignPole;
+        private readonly object modelObject;
+        private readonly string Binding;
+        public DefaultPole(string Question, string Binding, string Answer = "", object modelObject = null)
         {
-            this.Model_object = Model_object;
+            this.modelObject = modelObject;
             this.Binding = Binding;
 
             DesignPole = new Design(Question, GetAnswerBox(Answer));
@@ -35,7 +35,7 @@ namespace Frontend.NewFrontEnd.GraphicsPole
             {
                 Binding myBind = new Binding();
                 myBind.Path = new PropertyPath(Binding);
-                if (Model_object != null) myBind.Source = Model_object;
+                if (modelObject != null) myBind.Source = modelObject;
                 myBind.Mode = BindingMode.TwoWay;
                 myBind.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
                 tx.SetBinding(TextBox.TextProperty, myBind);
@@ -59,7 +59,7 @@ namespace Frontend.NewFrontEnd.GraphicsPole
 
         public UIElement GetDesign()
         {
-            return DesignPole.GetDesign();
+            return DesignPole.CreateStackPanelDesign();
         }
     }
 }

@@ -86,7 +86,7 @@ namespace Frontend.NewFrontEnd.GraphicsPole
 
         public UIElement GetDesign()
         {
-            return design.GetDesign();
+            return design.CreateStackPanelDesign();
         }
 
         Viewbox GetRadioButtons(string[] Questions)
@@ -115,9 +115,9 @@ namespace Frontend.NewFrontEnd.GraphicsPole
         private void RadioBtn_Checked(object sender, RoutedEventArgs e)
         {
             RadioButton radioBtn = (RadioButton)sender;
-            design.SetAnswer(radioBtn.Content.ToString());
-            Model_object.GetType().GetProperty(Binding).SetValue(Model_object, design.GetAnswer());
-            Console.WriteLine(design.GetAnswer());
+            design.Answer = radioBtn.Content.ToString();
+            Model_object.GetType().GetProperty(Binding).SetValue(Model_object, design.Answer);
+            Console.WriteLine(design.Answer);
             //Model_object.GetType().GetProperty(Parametar).SetValue(Model_object, Answer);
         }
 

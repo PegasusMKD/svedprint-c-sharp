@@ -20,7 +20,7 @@ namespace Frontend.NewFrontEnd.GraphicsPole
 
         public UIElement GetDesign()
         {
-            return design.GetDesign();
+            return design.CreateStackPanelDesign();
         }
 
         public ComboBox GetComboBox(string[] Questions)
@@ -48,7 +48,7 @@ namespace Frontend.NewFrontEnd.GraphicsPole
         private void CB_SelectionChanged(object sender, RoutedEventArgs e)
         {
             var cb = (ComboBox)sender;
-            design.SetAnswer(cb.SelectedItem.ToString());
+            design.Answer = cb.SelectedItem.ToString();
         }
     }
 }

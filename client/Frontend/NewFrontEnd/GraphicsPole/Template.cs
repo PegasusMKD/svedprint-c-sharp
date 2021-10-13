@@ -16,7 +16,7 @@ namespace Frontend.NewFrontEnd.GraphicsPole
         }
         public UIElement GetDesign()
         {
-            return DesignPole.GetDesign();
+            return DesignPole.CreateStackPanelDesign();
         }
     }
 }

@@ -8,10 +8,10 @@ namespace Frontend.NewFrontEnd.GraphicsPole
 {
     class Design
     {
-        public Border Title;
-        public UIElement AnswerGrid;
-        public Border UnderBorder;
-        string Answer = "";
+        public Border Title { get; set; }
+        public UIElement AnswerGrid { get; set; }
+        public Border UnderBorder { get; set; }
+        public string Answer { get; set; } = "";
 
         public Design(Border title, UIElement answerGrid, Border underBorder)
         {
@@ -20,26 +20,22 @@ namespace Frontend.NewFrontEnd.GraphicsPole
             UnderBorder = underBorder;
         }
 
-        public Design(Border title, UIElement answerGrid)
-        {
-            Title = title;
-            AnswerGrid = answerGrid;
-            UnderBorder = CreateDefaultUnderBorder();
-        }
+        public Design(Border title, UIElement answerGrid) :
+            this(title, answerGrid, CreateDefaultUnderBorder())
+        { }
+        //title = title;
+        //answergrid = answergrid;
+        //underborder = createdefaultunderborder();
 
-        public Design(string Question, UIElement answerGrid)
-        {
-            Title = CreateDefaultTitle(Question);
-            AnswerGrid = answerGrid;
-            UnderBorder = CreateDefaultUnderBorder();
-        }
 
-        public Design()
-        {
+        public Design(string Question, UIElement answerGrid) :
+            this(CreateDefaultTitle(Question), answerGrid)
+        { }
+        //Title = CreateDefaultTitle(Question);
+        //AnswerGrid = answerGrid;
+        //UnderBorder = CreateDefaultUnderBorder();
 
-        }
-
-        public StackPanel GetDesign()
+        public StackPanel CreateStackPanelDesign()
         {
             StackPanel st = new StackPanel();
             st.Margin = new Thickness(10);
@@ -49,42 +45,41 @@ namespace Frontend.NewFrontEnd.GraphicsPole
             return st;
         }
 
-        public void SetTitle(Border title)
-        {
-            Title = title;
-        }
-
         public void SetAnswerBox(object AnswerBox)
         {
             AnswerGrid = (UIElement)AnswerBox;
         }
 
-        public void SetUnderBorder(Border UnderBorder)
-        {
-            this.UnderBorder = UnderBorder;
-        }
-
         public static Border CreateDefaultTitle(string Content)
         {
-            Border bd = new Border();
-            bd.Height = 50.0;
-            bd.VerticalAlignment = VerticalAlignment.Top;
-            bd.Background = (Brush)new BrushConverter().ConvertFromString("#FFED6A3E");//(Brush)Application.Current.FindResource("MenuItemColor");
-            bd.BorderThickness = new Thickness(2);
-            bd.CornerRadius = new CornerRadius(10);
-            bd.Child = CreateDefaultLabel(Content);
+            Border bd = new Border
+            {
+                Height = 50.0,
+                VerticalAlignment = VerticalAlignment.Top,
+                Background = (Brush)new BrushConverter().ConvertFromString("#FFED6A3E"),//(Brush)Application.Current.FindResource("MenuItemColor");
+                BorderThickness = new Thickness(2),
+                CornerRadius = new CornerRadius(10),
+                Child = CreateDefaultLabel(Content)
+            };
             return bd;
         }
         public static Label CreateDefaultLabel(string Content)
         {
-            Label lbl = new Label();
-            lbl.Content = Content;
-            lbl.VerticalAlignment = VerticalAlignment.Center;
-            lbl.HorizontalContentAlignment = HorizontalAlignment.Center;
-            lbl.FontFamily = new FontFamily("Arial");
-            lbl.FontWeight = FontWeights.Bold;
-            if (Content.Length < 15) lbl.FontSize = 30.0;
-            else lbl.FontSize = 30.0 / (Content.Length / 15);
+            Label lbl = new Label
+            {
+                Content = new TextBox { 
+                    Text = Content,
+                    IsReadOnly = true,
+                    TextWrapping = TextWrapping.NoWrap
+                    //FontStretch = FontStretches.
+                },
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalContentAlignment = HorizontalAlignment.Center,
+                FontFamily = new FontFamily("Arial"),
+                FontWeight = FontWeights.Bold
+            };
+            //if (Content.Length < 15) lbl.FontSize = 30.0;
+            //else lbl.FontSize = 30.0 / (Content.Length / 15);
             lbl.Foreground = (Brush)new BrushConverter().ConvertFromString("#fff");//(Brush)Application.Current.FindResource("TextColor");
             return lbl;
         }
@@ -108,16 +103,6 @@ namespace Frontend.NewFrontEnd.GraphicsPole
             img.Tag = broj_na_predmet;
             img.Margin = new Thickness(0, 0, 3, 0);
             return img;
-        }
-
-        public string GetAnswer()
-        {
-            return Answer;
-        }
-
-        public void SetAnswer(string Answer)
-        {
-            this.Answer = Answer;
         }
 
     }

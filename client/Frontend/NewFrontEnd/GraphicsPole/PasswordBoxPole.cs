@@ -19,7 +19,7 @@ namespace Frontend.NewFrontEnd.GraphicsPole
 
         public UIElement GetDesign()
         {
-            return design.GetDesign();
+            return design.CreateStackPanelDesign();
         }
 
         private PasswordBox GetPasswordBox()
