@@ -1,4 +1,5 @@
-using Frontend.NewFrontEnd;
+using Frontend.NewFrontEnd.DesignModel;
+using Frontend.NewFrontEnd.GraphicsPole;
 using MiddlewareRevisited.Models;
 using System;
 using System.Collections.Generic;

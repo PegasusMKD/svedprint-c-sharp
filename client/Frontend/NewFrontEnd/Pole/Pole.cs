@@ -1,4 +1,4 @@
-﻿namespace Frontend
+﻿namespace Frontend.NewFrontEnd.Pole
 {
     public class Pole
     {

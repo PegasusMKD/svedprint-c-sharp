@@ -68,21 +68,30 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="NewFrontEnd\DesignModel\DesignMenu.cs" />
+    <Compile Include="NewFrontEnd\DesignModel\MenuLabel.cs" />
+    <Compile Include="NewFrontEnd\DesignModel\OcenkaBox.cs" />
+    <Compile Include="NewFrontEnd\GraphicsPole\CheckBoxPole.cs" />
+    <Compile Include="NewFrontEnd\GraphicsPole\ComboBoxPole.cs" />
+    <Compile Include="NewFrontEnd\GraphicsPole\DefaultPole.cs" />
+    <Compile Include="NewFrontEnd\GraphicsPole\PasswordBoxPole.cs" />
+    <Compile Include="NewFrontEnd\GraphicsPole\RadioBtnsPole.cs" />
+    <Compile Include="NewFrontEnd\GraphicsPole\Template.cs" />
     <Compile Include="SettingsView\EditUcenici_Page.xaml.cs">
       <DependentUpon>EditUcenici_Page.xaml</DependentUpon>
     </Compile>
     <Compile Include="GradesView\MenuFrame.xaml.cs">
       <DependentUpon>MenuFrame.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NewFrontEnd\DesignModel.cs" />
-    <Compile Include="NewFrontEnd\GraphicPole.cs" />
+    <Compile Include="NewFrontEnd\DesignModel\DesignModel.cs" />
+    <Compile Include="NewFrontEnd\GraphicsPole\Design.cs" />
     <Compile Include="GradesView\NewOceniFrame.xaml.cs">
       <DependentUpon>NewOceniFrame.xaml</DependentUpon>
     </Compile>
     <Compile Include="GradesView\Oceni.xaml.cs">
       <DependentUpon>Oceni.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NewFrontEnd\Pole.cs" />
+    <Compile Include="NewFrontEnd\Pole\Pole.cs" />
     <Compile Include="PrintView\PrintFrame.xaml.cs">
       <DependentUpon>PrintFrame.xaml</DependentUpon>
     </Compile>
@@ -92,7 +101,7 @@
     <Compile Include="SettingsView\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NewFrontEnd\SettingsDesign.cs" />
+    <Compile Include="NewFrontEnd\SettingsDesign\SettingsDesign.cs" />
     <Compile Include="SettingsView\Smerovi_Page.xaml.cs">
       <DependentUpon>Smerovi_Page.xaml</DependentUpon>
     </Compile>

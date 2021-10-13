@@ -1,4 +1,4 @@
-﻿using Frontend.NewFrontEnd;
+﻿using Frontend.NewFrontEnd.DesignModel;
 using MiddlewareRevisited.Models;
 using System.Collections.Generic;
 using System.Windows.Controls;

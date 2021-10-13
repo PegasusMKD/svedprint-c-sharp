@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using static Frontend.SettingsDesign;
+using static Frontend.NewFrontEnd.SettingsDesign.SettingsDesign;
 
 namespace Frontend
 {

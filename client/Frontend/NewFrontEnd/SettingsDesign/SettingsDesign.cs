@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace Frontend
+namespace Frontend.NewFrontEnd.SettingsDesign
 {
     class SettingsDesign
     {
@@ -17,24 +17,24 @@ namespace Frontend
             return tx;
         }
 
-        public static Border CreateBorder(int BorderHeight, int TopMargin, int MarginLeft_Right, int CornerRadius, String Color)
+        public static Border CreateBorder(int BorderHeight, int TopMargin, int MarginLeft_Right, int CornerRadius, string Color)
         {
             Border Border = new Border();
             Border.Height = BorderHeight;
             Border.Margin = new Thickness(MarginLeft_Right, TopMargin, MarginLeft_Right, 0);
-            Border.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom(Color));
+            Border.Background = (SolidColorBrush)new BrushConverter().ConvertFrom(Color);
             Border.VerticalAlignment = VerticalAlignment.Center;
             Border.BorderThickness = new Thickness(2);
             Border.CornerRadius = new CornerRadius(CornerRadius);
             return Border;
         }
 
-        public static Label CreateLabel(string LabelContent, int LabelFontSize, String FontStyle)
+        public static Label CreateLabel(string LabelContent, int LabelFontSize, string FontStyle)
         {
             Label lb = new Label();
             lb.Content = LabelContent;
             lb.HorizontalAlignment = HorizontalAlignment.Center;
-            lb.Foreground = System.Windows.Media.Brushes.White;
+            lb.Foreground = Brushes.White;
             lb.FontSize = LabelFontSize;
             lb.FontFamily = new FontFamily("Arial");
             lb.FontWeight = FontWeights.Bold;
@@ -45,13 +45,13 @@ namespace Frontend
         {
             TextBox tx = new TextBox();
             tx.FontSize = FontSize;
-            tx.Background = System.Windows.Media.Brushes.Transparent;
-            tx.Foreground = System.Windows.Media.Brushes.White;
+            tx.Background = Brushes.Transparent;
+            tx.Foreground = Brushes.White;
             tx.HorizontalAlignment = HorizontalAlignment.Center;
             tx.VerticalAlignment = VerticalAlignment.Center;
             tx.BorderThickness = new Thickness(0);
-            tx.SelectionBrush = System.Windows.Media.Brushes.White;
-            tx.BorderBrush = System.Windows.Media.Brushes.White;
+            tx.SelectionBrush = Brushes.White;
+            tx.BorderBrush = Brushes.White;
             return tx;
         }
 
