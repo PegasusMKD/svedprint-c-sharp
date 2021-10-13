@@ -56,8 +56,11 @@ namespace MiddlewareRevisited.Controllers
             PageResponse<Models.Student> page;
             using (HttpClient http = HttpClientFactory.GetAuthenticatedClient())
             {
-                var data = new HttpRequestMessage(HttpMethod.Get, $"http://{Properties.Settings.Default.DB_HOST}:8080/api/students/page");
+                var data = new HttpRequestMessage(HttpMethod.Post, $"http://{Properties.Settings.Default.DB_HOST}:8080/api/students/page");
 
+                var json = new JObject().ToString();
+
+                data.Content = new StringContent(json, Encoding.UTF8, "application/json");
                 var response = await http.SendAsync(data).ConfigureAwait(false);
                 if (!response.IsSuccessStatusCode) throw new Exception(await response.Content.ReadAsStringAsync());
                 try
