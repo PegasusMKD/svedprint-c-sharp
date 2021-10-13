@@ -4,10 +4,6 @@ namespace Frontend.NewFrontEnd.DesignModel
 {
     class DesignModel
     {
-        protected UIElement Element;
-        public UIElement GetModel()
-        {
-            return Element;
-        }
+        public UIElement Element { get; protected set;  }
     }
 }
