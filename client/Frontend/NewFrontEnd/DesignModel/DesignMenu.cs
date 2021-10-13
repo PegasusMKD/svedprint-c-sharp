@@ -1,5 +1,6 @@
 ﻿using MiddlewareRevisited.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Controls;
 
 namespace Frontend.NewFrontEnd.DesignModel
@@ -16,14 +17,12 @@ namespace Frontend.NewFrontEnd.DesignModel
             parentFrame = ParentFrame;
             currentUser = User;
 
-            int i = 0;
-            foreach (var element in elements)
-            {
-                Label lbl = (Label)new MenuLabel($"{element.firstName} {element.lastName}").GetModel();
-                ((ListView)Element).Items.Add(lbl);
 
+            (Element as ListView).ItemsSource = elements.Select(element => {
+                Label lbl = (Label)new MenuLabel($"{element.firstName} {element.lastName}").Element;
                 lbl.MouseLeftButtonDown += (sender, e) => Label_Clicked(sender, e, element);
-            }
+                return lbl;
+            });
 
             if (elements.Count == 0) return;
             else childFrame = new NewOceniFrame(elements[0], User);
