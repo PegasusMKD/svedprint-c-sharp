@@ -59,7 +59,7 @@ namespace MiddlewareRevisited.Controllers
             {
                 var data = new HttpRequestMessage(HttpMethod.Post, $"http://{Properties.Settings.Default.DB_HOST}:8080/api/students/page");
                 // vvvvv
-                data.Content = new StringContent(null, Encoding.UTF8, "application/json");
+                // data.Content = new StringContent(null, Encoding.UTF8, "application/json");
 
                 var response = await http.SendAsync(data).ConfigureAwait(false);
                 if (!response.IsSuccessStatusCode) throw new Exception(await response.Content.ReadAsStringAsync());
